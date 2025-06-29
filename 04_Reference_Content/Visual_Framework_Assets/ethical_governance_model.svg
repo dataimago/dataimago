@@ -1,0 +1,157 @@
+<svg width="1000" height="800" viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: 'Futura', sans-serif; font-style: italic; font-weight: bold; font-size: 26px; fill: #333; }
+      .subtitle { font-family: 'Futura', sans-serif; font-style: italic; font-size: 14px; fill: #666; }
+      .layer-title { font-family: 'Futura', sans-serif; font-weight: bold; font-size: 16px; fill: white; }
+      .component-title { font-family: 'Futura', sans-serif; font-weight: bold; font-size: 12px; fill: #333; }
+      .description { font-family: 'Futura', sans-serif; font-size: 10px; fill: #666; }
+      .white-text { fill: white; }
+      
+      .democratic-layer { fill: #2E86AB; stroke: #1E5A78; stroke-width: 2; }
+      .transparency-layer { fill: #A23B72; stroke: #7A2B55; stroke-width: 2; }
+      .accountability-layer { fill: #F18F01; stroke: #C07001; stroke-width: 2; }
+      .participation-layer { fill: #C73E1D; stroke: #9A2E15; stroke-width: 2; }
+      
+      .stakeholder { fill: #E8E8E8; stroke: #333; stroke-width: 2; }
+      .ai-system { fill: #4A4A4A; stroke: #333; stroke-width: 2; }
+      .feedback-loop { fill: none; stroke: #F18F01; stroke-width: 3; stroke-dasharray: 5,5; }
+      .flow-arrow { fill: none; stroke: #333; stroke-width: 2; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="500" y="40" text-anchor="middle" class="title">Democratic AI Governance Model</text>
+  <text x="500" y="60" text-anchor="middle" class="subtitle">dataimago's Framework for Ethical AI Accountability</text>
+
+  <!-- Central AI System -->
+  <circle cx="500" cy="400" r="80" class="ai-system"/>
+  <text x="500" y="390" text-anchor="middle" class="layer-title">dataimago</text>
+  <text x="500" y="405" text-anchor="middle" class="layer-title">AI SYSTEMS</text>
+  <text x="500" y="420" text-anchor="middle" class="white-text">Emancipatory</text>
+  <text x="500" y="435" text-anchor="middle" class="white-text">Intelligence</text>
+
+  <!-- Democratic Participation Layer -->
+  <ellipse cx="500" cy="400" rx="200" ry="120" fill="none" stroke="#2E86AB" stroke-width="4" stroke-dasharray="10,5"/>
+  <text x="300" y="350" class="component-title" fill="#2E86AB">DEMOCRATIC PARTICIPATION</text>
+
+  <!-- Stakeholder Groups -->
+  
+  <!-- Students/Families -->
+  <rect x="200" y="250" width="120" height="60" rx="10" class="stakeholder"/>
+  <text x="260" y="270" text-anchor="middle" class="component-title">Students &amp;</text>
+  <text x="260" y="285" text-anchor="middle" class="component-title">Families</text>
+  <text x="260" y="300" text-anchor="middle" class="description">Primary beneficiaries</text>
+
+  <!-- Teachers -->
+  <rect x="100" y="350" width="120" height="60" rx="10" class="stakeholder"/>
+  <text x="160" y="375" text-anchor="middle" class="component-title">Teachers &amp;</text>
+  <text x="160" y="390" text-anchor="middle" class="component-title">Educators</text>
+  <text x="160" y="405" text-anchor="middle" class="description">Direct users</text>
+
+  <!-- Community Leaders -->
+  <rect x="200" y="480" width="120" height="60" rx="10" class="stakeholder"/>
+  <text x="260" y="505" text-anchor="middle" class="component-title">Community</text>
+  <text x="260" y="520" text-anchor="middle" class="component-title">Leaders</text>
+  <text x="260" y="535" text-anchor="middle" class="description">Local context</text>
+
+  <!-- Administrators -->
+  <rect x="680" y="250" width="120" height="60" rx="10" class="stakeholder"/>
+  <text x="740" y="270" text-anchor="middle" class="component-title">School/District</text>
+  <text x="740" y="285" text-anchor="middle" class="component-title">Administrators</text>
+  <text x="740" y="300" text-anchor="middle" class="description">Implementation</text>
+
+  <!-- Policymakers -->
+  <rect x="780" y="350" width="120" height="60" rx="10" class="stakeholder"/>
+  <text x="840" y="375" text-anchor="middle" class="component-title">Policy</text>
+  <text x="840" y="390" text-anchor="middle" class="component-title">Makers</text>
+  <text x="840" y="405" text-anchor="middle" class="description">Governance</text>
+
+  <!-- Researchers -->
+  <rect x="680" y="480" width="120" height="60" rx="10" class="stakeholder"/>
+  <text x="740" y="505" text-anchor="middle" class="component-title">Researchers &amp;</text>
+  <text x="740" y="520" text-anchor="middle" class="component-title">Academics</text>
+  <text x="740" y="535" text-anchor="middle" class="description">Evaluation</text>
+
+  <!-- Governance Mechanisms -->
+  
+  <!-- Transparency Layer -->
+  <rect x="50" y="600" width="200" height="80" rx="10" class="transparency-layer"/>
+  <text x="150" y="625" text-anchor="middle" class="layer-title">TRANSPARENCY</text>
+  <text x="150" y="645" text-anchor="middle" class="white-text">• Open algorithms</text>
+  <text x="150" y="660" text-anchor="middle" class="white-text">• Decision explanations</text>
+  <text x="150" y="675" text-anchor="middle" class="white-text">• Data sovereignty</text>
+
+  <!-- Accountability Layer -->
+  <rect x="275" y="600" width="200" height="80" rx="10" class="accountability-layer"/>
+  <text x="375" y="625" text-anchor="middle" class="layer-title">ACCOUNTABILITY</text>
+  <text x="375" y="645" text-anchor="middle" class="white-text">• Impact assessment</text>
+  <text x="375" y="660" text-anchor="middle" class="white-text">• Bias monitoring</text>
+  <text x="375" y="675" text-anchor="middle" class="white-text">• Course correction</text>
+
+  <!-- Participation Layer -->
+  <rect x="525" y="600" width="200" height="80" rx="10" class="participation-layer"/>
+  <text x="625" y="625" text-anchor="middle" class="layer-title">PARTICIPATION</text>
+  <text x="625" y="645" text-anchor="middle" class="white-text">• Co-design processes</text>
+  <text x="625" y="660" text-anchor="middle" class="white-text">• Ongoing input</text>
+  <text x="625" y="675" text-anchor="middle" class="white-text">• Democratic deliberation</text>
+
+  <!-- Oversight Layer -->
+  <rect x="750" y="600" width="200" height="80" rx="10" class="democratic-layer"/>
+  <text x="850" y="625" text-anchor="middle" class="layer-title">OVERSIGHT</text>
+  <text x="850" y="645" text-anchor="middle" class="white-text">• Advisory councils</text>
+  <text x="850" y="660" text-anchor="middle" class="white-text">• External audits</text>
+  <text x="850" y="675" text-anchor="middle" class="white-text">• Democratic review</text>
+
+  <!-- Flow Arrows from Stakeholders to AI System -->
+  <path d="M 320 280 L 420 360" class="flow-arrow"/>
+  <path d="M 220 380 L 420 390" class="flow-arrow"/>
+  <path d="M 320 510 L 420 440" class="flow-arrow"/>
+  <path d="M 680 280 L 580 360" class="flow-arrow"/>
+  <path d="M 780 380 L 580 390" class="flow-arrow"/>
+  <path d="M 680 510 L 580 440" class="flow-arrow"/>
+
+  <!-- Feedback Loops -->
+  <path d="M 500 480 Q 300 550 150 600" class="feedback-loop"/>
+  <path d="M 500 480 Q 400 550 375 600" class="feedback-loop"/>
+  <path d="M 500 480 Q 600 550 625 600" class="feedback-loop"/>
+  <path d="M 500 480 Q 700 550 850 600" class="feedback-loop"/>
+
+  <!-- Input/Output Labels -->
+  <text x="350" y="200" text-anchor="middle" class="component-title">INPUT</text>
+  <text x="350" y="215" text-anchor="middle" class="description">Values, priorities, constraints</text>
+
+  <text x="650" y="200" text-anchor="middle" class="component-title">OUTPUT</text>
+  <text x="650" y="215" text-anchor="middle" class="description">AI recommendations, decisions</text>
+
+  <!-- Critical Safeguards Box -->
+  <rect x="50" y="100" width="300" height="120" rx="10" fill="#F0F0F0" stroke="#333" stroke-width="2"/>
+  <text x="200" y="125" text-anchor="middle" class="component-title">CRITICAL SAFEGUARDS</text>
+  
+  <text x="60" y="145" class="description">✓ Anti-domination monitoring</text>
+  <text x="60" y="160" class="description">✓ Power imbalance detection</text>
+  <text x="60" y="175" class="description">✓ Marginalized voice amplification</text>
+  <text x="60" y="190" class="description">✓ Democratic participation verification</text>
+  <text x="60" y="205" class="description">✓ Emancipatory outcome assessment</text>
+
+  <!-- Implementation Principles Box -->
+  <rect x="650" y="100" width="300" height="120" rx="10" fill="#F0F0F0" stroke="#333" stroke-width="2"/>
+  <text x="800" y="125" text-anchor="middle" class="component-title">IMPLEMENTATION PRINCIPLES</text>
+  
+  <text x="660" y="145" class="description">• Iterative co-design with affected communities</text>
+  <text x="660" y="160" class="description">• Continuous feedback and adaptation</text>
+  <text x="660" y="175" class="description">• Transparent decision-making processes</text>
+  <text x="660" y="190" class="description">• Democratic oversight mechanisms</text>
+  <text x="660" y="205" class="description">• Right to explanation and appeal</text>
+
+  <!-- Footer -->
+  <text x="500" y="750" text-anchor="middle" class="description">
+    "Democratic AI governance ensures technology serves human flourishing rather than replacing human agency"
+  </text>
+  <text x="500" y="770" text-anchor="middle" class="description">
+    — dataimago Ethical AI Framework
+  </text>
+</svg>
