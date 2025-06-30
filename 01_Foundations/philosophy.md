@@ -2,7 +2,7 @@
 
 ## Core Philosophy
 
-**Superalignment is not embedding culture in AI; it is embedding AI in culture for emancipatory ends**
+**Superalignment is the embedding of AI in culture for emancipatory ends, not the embedding of culture in AI.**
 
 Superalignment is the defining challenge of our time. At dataimago, we invert the conventional approach to alignment. Rather than adapting human complexity to technological constraints, we embed AI into the rich, lived, and contested terrain of human culture. We believe that only by grounding AI in real social contexts—education, governance, art, and daily life—can its alignment with human freedom emerge. Superalignment is not just technical; it is cultural, moral, and political.
 
