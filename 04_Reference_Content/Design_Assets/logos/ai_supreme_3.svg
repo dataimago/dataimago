@@ -12,7 +12,7 @@
         filter: url(#inset-shadow);
       }
       .data-plain, .imago-plain {
-        fill: rgb(225, 225, 225);
+        fill: rgb(255, 255, 255);
       }
       .background {
         fill: rgb(220, 220, 220);
@@ -24,14 +24,14 @@
       <!-- Base blur -->
       <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
       <!-- Shadow on top-left -->
-      <feOffset in="blur" dx="-2" dy="-2" result="offset1" />
+      <feOffset in="blur" dx="-1" dy="-1" result="offset1" />
       <!-- Shadow on bottom-right -->
-      <feOffset in="blur" dx="2" dy="2" result="offset2" />
+      <feOffset in="blur" dx="1" dy="1" result="offset2" />
       <!-- Light highlight (top-left) -->
-      <feFlood flood-color="rgb(190, 190, 190)" flood-opacity="0.5" result="flood1" />
+      <feFlood flood-color="rgb(230, 230, 230)" flood-opacity="0.5" result="flood1" />
       <feComposite in="flood1" in2="offset1" operator="in" result="shadow1" />
       <!-- Dark shadow (bottom-right) -->
-      <feFlood flood-color="rgb(100, 100, 100)" flood-opacity="0.2" result="flood2" />
+      <feFlood flood-color="rgb(180, 180, 180)" flood-opacity="0.2" result="flood2" />
       <feComposite in="flood2" in2="offset2" operator="in" result="shadow2" />
       <!-- Merge highlights and shadows -->
       <feMerge>
@@ -43,7 +43,7 @@
   </defs>
 
   <!-- Background -->
-  <rect class="background" width="100%" height="100%" rx="10" ry="10"/>
+  <rect class="background" width="100%" height="100%" rx="5" ry="5" stroke="rgb(180, 180, 180)" stroke-width="2"/>
 
   <!-- Text -->
   <text x="110" y="380" class="futura data">a</text>
