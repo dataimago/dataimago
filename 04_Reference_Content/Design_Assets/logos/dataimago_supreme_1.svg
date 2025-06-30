@@ -1,4 +1,4 @@
-<svg width="460" height="150" viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg">
+<svg width="480" height="150" viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <style>
         .futura {
@@ -18,13 +18,13 @@
         }
       </style>
     </defs>
-
+  
     <!-- Red Background -->
-    <rect class="background" width="100%" height="100%" />
-
+    <rect class="background" width="100%" height="100%" rx="20" ry="20"/>
+  
     <!-- "Data" text -->
-    <text x="50" y="100" class="futura data">data</text>
-
+    <text x="61" y="95" class="futura data">data</text>
+  
     <!-- "Imago" text  -->
-    <text x="185" y="100" class="futura imago">imago</text>
+    <text x="196" y="95" class="futura imago">imago</text>
   </svg>

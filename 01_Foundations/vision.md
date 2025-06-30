@@ -2,7 +2,7 @@
 
 ## Core Vision
 
-**Superalignment—not by default, but by design**
+**Superalignment not by nurture, but by nature**
 
 **Superalignment is a property of the use of AI, not an inherent trait of AI.** dataimago envisions a future where artificial intelligence becomes aligned with human values not by accident, but through intentional, ethical, and cultural design. Superalignment is an outcome of use, structure, and purpose—not an inherent trait.
 
