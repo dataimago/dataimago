@@ -1,6 +1,6 @@
 # dataimago
 
-A repository containing foundational framing documents related to dataimago PBC
+A repository containing foundational framing documents related to dataimago
 
 ## Repository Structure
 
