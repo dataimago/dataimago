@@ -1,4 +1,4 @@
-# dataimago-ideation
+# dataimago
 
 A repository containing foundational framing documents related to dataimago PBC
 
@@ -7,7 +7,7 @@ A repository containing foundational framing documents related to dataimago PBC
 This repository has been streamlined into four core directories that better distill the essence of dataimago:
 
 ```
-dataimago-ideation/
+dataimago/
 ├── 01_Foundations/
 │   ├── mission.md               # Emancipation through AI superalignment
 │   ├── vision.md               # Superalignment by design, not default
