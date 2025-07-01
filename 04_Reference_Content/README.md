@@ -1,3 +1,7 @@
+div align="center">
+  <img src="../04_Reference_Content/Design_Assets/logos/ai_monogram_supreme_1.svg" alt="dataimago monogram">
+</div>
+
 # 04 Reference Content
 
 This directory consolidates all reference materials, design assets, and visual frameworks that support dataimago's philosophical and practical work.
