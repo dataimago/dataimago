@@ -54,10 +54,6 @@ dataimago represents a fundamental inversion: instead of embedding culture in AI
 - **02_Manifesto/dataimago_vs_palantir.md**: Why we reject surveillance capitalism
 - **03_Application_Architecture/emancipatory_data_science_platform.md**: Practical implementation strategy
 
-### Frankfurt School Foundation
-
-Our work builds on critical theory—particularly Horkheimer, Adorno, and Habermas—to ensure AI serves human emancipation rather than instrumental domination.
-
 ---
 
 *This repository contains the intellectual foundations for building AI systems that serve human flourishing rather than extraction or control.*
