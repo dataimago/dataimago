@@ -2,6 +2,8 @@ div align="center">
   <img src="../04_Reference_Content/Design_Assets/logos/ai_monogram_supreme_1.svg" alt="dataimago monogram">
 </div>
 
+---
+
 # 02 Manifesto
 
 This directory contains manifestos that articulate dataimago's counter-narrative to dominant AI paradigms and establish our philosophical position within the broader landscape of AI development.
