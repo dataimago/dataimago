@@ -2,6 +2,8 @@
   <img src="../04_Reference_Content/Design_Assets/logos/ai_monogram_supreme_1.svg" alt="dataimago monogram">
 </div>
 
+---
+
 # 01 Foundations
 
 This directory contains foundational documents that define dataimago's core identity, purpose, and philosophical commitments.
