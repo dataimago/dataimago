@@ -1,4 +1,4 @@
-div align="center">
+<div align="center">
   <img src="../04_Reference_Content/Design_Assets/logos/ai_monogram_supreme_1.svg" alt="dataimago monogram">
 </div>
 
