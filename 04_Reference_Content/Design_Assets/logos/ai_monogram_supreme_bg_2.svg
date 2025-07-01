@@ -9,9 +9,11 @@
       }
       .data, .imago {
         fill: black;
+        font-size: 380px;
         filter: url(#inset-shadow);
       }
       .data-plain, .imago-plain {
+        font-size: 380px;
         fill: rgb(30, 30, 30);
       }
       .background {
@@ -46,8 +48,8 @@
   <rect class="background" width="100%" height="100%" rx="5" ry="5"/>
 
   <!-- Text -->
-  <text x="110" y="380" class="futura data">a</text>
-  <text x="249" y="380" class="futura imago">i</text>
-  <text x="110" y="380" class="futura data-plain">a</text>
-  <text x="249" y="380" class="futura imago-plain">i</text>
+  <text x="105" y="360" class="futura data">a</text>
+  <text x="237" y="360" class="futura imago">i</text>
+  <text x="105" y="360" class="futura data-plain">a</text>
+  <text x="237" y="360" class="futura imago-plain">i</text>
 </svg>

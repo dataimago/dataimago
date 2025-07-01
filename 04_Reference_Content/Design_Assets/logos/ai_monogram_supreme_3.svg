@@ -8,23 +8,25 @@
         font-weight: bold;
       }
       .data {
-        fill: white;
+        fill: black;
       }
       .imago {
-        fill: white;
+        fill: red;
+        font-size: 380px;
       }
       .background {
-        fill: red;
+        fill: none;
       }
     </style>
   </defs>
 
-  <!-- Rounded Red Background -->
+  <!-- Transparent Background -->
   <rect class="background" width="100%" height="100%" rx="5" ry="5" />
 
+  <!-- "Imago" text -->
+  <text x="245.5" y="355" class="futura imago">i</text>
+  
   <!-- "Data" text -->
   <text x="105" y="360" class="futura data">a</text>
 
-  <!-- "Imago" text -->
-  <text x="244" y="360" class="futura imago">i</text>
 </svg>

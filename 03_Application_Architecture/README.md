@@ -2,19 +2,27 @@
 
 This directory contains the comprehensive application development strategy for dataimago's emancipatory data science platform—the practical implementation of our mission to achieve superalignment through embedding AI in culture.
 
-## Core Document
+## Core Documents
 
+### Strategic Framework
 - **emancipatory_data_science_platform.md** - Comprehensive strategy connecting technical implementation to philosophical foundations
+
+### R Package Development Standards
+- **r_package_nextjs_best_practices.md** - Comprehensive guide for building R packages optimized for NextJS integration and AI-assisted interfaces
+- **r_package_web_optimization_checklist.md** - Detailed checklist ensuring R packages meet web deployment and AI integration standards
 
 ## Directory Structure
 
 ```
 03_Application_Architecture/
 ├── emancipatory_data_science_platform.md
+├── r_package_nextjs_best_practices.md
+├── r_package_web_optimization_checklist.md
 ├── ai_conversations/
 │   ├── nextjs_monorepo.txt
 │   ├── ai_nextjs_r_integration.txt
-│   └── r_nextjs_integration.txt
+│   ├── r_nextjs_integration.txt
+│   └── ai_agentic_reasoning_ecosystem.txt
 └── visual_frameworks/
     ├── application_development_visual_framework_062925.key
     └── nextjs_application_development_framework.png
@@ -42,6 +50,7 @@ Each CRAN package becomes a democratically governed space for human-AI collabora
 - **Model Context Protocol Integration**: Standardized AI tool access and assistance
 - **DuckDB Analytics Backend**: High-performance data processing with real-time collaboration
 - **Dynamic Package Routing**: Single NextJS application serving 22,000 CRAN packages
+- **R Package Standards**: Comprehensive best practices and optimization checklist for web integration
 
 ### **2. Human-AI Interaction Framework**
 - **AI as Research Assistant**: Suggests approaches while preserving human interpretation
@@ -81,6 +90,7 @@ Addresses **superalignment as social, moral, and political task** by creating te
 - Single-package NextJS integration with R/Quarto
 - Basic AI assistant for documentation and code assistance
 - Proof-of-concept with sgpFlow package
+- R package development standards implementation and validation
 
 ### **Phase 2: Multi-Package Platform** (Months 7-12)
 - Dynamic routing for multiple R packages
