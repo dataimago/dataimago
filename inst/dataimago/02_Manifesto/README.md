@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../04_Reference_Content/Design_Assets/logos/ai_monogram_supreme_1.svg" alt="dataimago monogram">
+  <img src="../04_dataimago_Content/Design_Assets/logos/ai_monogram_supreme_1.svg" alt="dataimago monogram">
 </div>
 
 ---

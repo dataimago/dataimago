@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="../04_Reference_Content/Design_Assets/logos/ai_monogram_supreme_1.svg" alt="dataimago monogram">
+  <img src="../04_dataimago_Content/Design_Assets/logos/ai_monogram_supreme_1.svg" alt="dataimago monogram">
 </div>
 
 ---
@@ -11,7 +11,7 @@ This directory consolidates all reference materials, design assets, and visual f
 ## Directory Structure
 
 ```
-04_Reference_Content/
+04_dataimago_Content/
 ├── Design_Assets/
 │   ├── branding_guide.md
 │   └── logos/

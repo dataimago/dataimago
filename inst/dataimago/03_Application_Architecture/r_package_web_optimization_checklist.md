@@ -10,7 +10,7 @@
 - [ ] Package name follows web-friendly conventions (lowercase, hyphens allowed)
 - [ ] GitHub repository configured with appropriate topics and keywords
 - [ ] License compatible with web deployment (GPL-3, MIT, or Apache-2.0)
-- [ ] Package version follows semantic versioning (x.y.z)
+- [ ] Package version follows dataimago versioning scheme (x.x-x.x)
 - [ ] System requirements documented (R version, Node.js if needed)
 
 ### 🎯 Architecture Planning
@@ -56,7 +56,7 @@
 - [ ] `Package:` - Clear, web-friendly name
 - [ ] `Type: Package`
 - [ ] `Title:` - Descriptive title (< 65 characters)
-- [ ] `Version:` - Semantic versioning
+- [ ] `Version:` - dataimago versioning scheme (x.x-x.x)
 - [ ] `Author:` - Complete author information
 - [ ] `Maintainer:` - Valid email address
 - [ ] `Description:` - Detailed description (> 100 characters)

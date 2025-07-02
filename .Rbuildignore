@@ -1,0 +1,29 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.git$
+^\.gitignore$
+^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.travis\.yml$
+^appveyor\.yml$
+^codecov\.yml$
+
+# Exclude sections from original numbered directories to be included in inst/
+# 01_Foundations
+^inst/dataimago/01_Foundations/ai_conversations
+^inst/dataimago/01_Foundations/published_content
+# 02_Manifesto
+^inst/dataimago/02_Manifesto/ai_conversations
+^inst/dataimago/02_Manifesto/notes
+# 03_Application_Architecture
+^inst/dataimago/03_Application_Architecture/ai_conversations
+# 04_dataimago_Content
+^inst/dataimago/04_dataimago_Content/Visual_Framework_Assets/notes
+^inst/dataimago/04_dataimago_Content/Design_Assets/branding_guide.md$
+^inst/dataimago/04_dataimago_Content/Design_Assets/logos/.*\.svg$
+
+# Exclude large binary files
+.*\.pdf$
+.*\.key$

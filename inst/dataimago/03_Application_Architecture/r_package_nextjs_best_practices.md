@@ -74,7 +74,7 @@ r-package/
 ```json
 {
   "package": "packageName",
-  "version": "1.0.0",
+  "version": "1.0-0.1",
   "tools": [
     {
       "name": "function_name",
@@ -116,7 +116,7 @@ Each major function should have a corresponding JSON schema file for validation 
 Package: packageName
 Type: Package
 Title: Clear, Descriptive Title
-Version: 1.0.0
+Version: 1.0-0.1
 Author: Author Name
 Maintainer: maintainer@email.com
 Description: Detailed description including use cases and integration points.
