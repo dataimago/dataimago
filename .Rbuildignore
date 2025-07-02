@@ -1,3 +1,7 @@
+# Exclude CLAUDE.md
+^CLAUDE\.md$
+
+# Exclude various file types and CI control files
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.git$
@@ -23,6 +27,9 @@
 ^inst/dataimago/04_dataimago_Content/Visual_Framework_Assets/notes
 ^inst/dataimago/04_dataimago_Content/Design_Assets/branding_guide.md$
 ^inst/dataimago/04_dataimago_Content/Design_Assets/logos/.*\.svg$
+
+# Exclude quarto generated files
+^quarto_website/_site$
 
 # Exclude large binary files
 .*\.pdf$

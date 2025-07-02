@@ -1,0 +1,61 @@
+project:
+  type: website
+  title: "dataimago: Ethical AI-Native Data Science"
+  output-dir: ../docs
+
+website:
+  title: "dataimago"
+  description: "Ethical AI-Native Data Science Foundation Package"
+  site-url: "https://dataimago.github.io/dataimago/"
+  repo-url: "https://github.com/dataimago/dataimago"
+  repo-actions: [edit, issue]
+  
+  navbar:
+    title: "dataimago"
+    logo: "assets/img/ai_monogram_supreme_favicon.png"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: api_reference.qmd
+        text: API Reference
+      - text: Foundation
+        menu:
+          - href: foundations/mission.qmd
+            text: Mission & Vision
+          - href: foundations/philosophy.qmd
+            text: Philosophy
+          - href: manifesto/critical_theory_manifesto.qmd
+            text: Critical Theory Manifesto
+    right:
+      - icon: github
+        href: "https://github.com/dataimago/dataimago"
+
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - section: "Getting Started"
+        contents:
+          - index.qmd
+          - api_reference.qmd
+      - section: "Foundation"
+        contents:
+          - foundations/mission.qmd
+          - foundations/philosophy.qmd
+          - foundations/governance.qmd
+      - section: "Manifesto"
+        contents:
+          - manifesto/critical_theory_manifesto.qmd
+          - manifesto/superalignment_and_emancipation.qmd
+          - manifesto/dataimago_vs_palantir.qmd
+
+format:
+  html:
+    theme: 
+      - cosmo
+      - assets/css/dataimago.scss
+    css: assets/css/styles.css
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap

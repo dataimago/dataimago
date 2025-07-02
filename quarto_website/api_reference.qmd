@@ -1,0 +1,345 @@
+---
+title: "dataimago API Reference"
+subtitle: "dataimago Ethical AI Framework"
+version: "0.0-0.1"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+# DESCRIPTION
+
+```
+Package: dataimago
+Version: 0.0-0.1
+Date: 2025-07-02
+Title: Ethical AI-Native Data Science Foundation Package
+Description: An R package containing the philosophical foundations, 
+    technical architecture, and application templates for dataimago's 
+    emancipatory data science platform. Provides versioned access to 
+    critical theory frameworks, application blueprints, and packageSkeleton 
+    functionality for creating AI-native data science applications that 
+    reconcile meaning (hermeneutics) and measurement (positivism).
+Authors@R: c(person(given=c("Damian", "W."), family="Betebenner", email="dbetebenner@nciea.org", role=c("aut", "cre"), 
+		comment = c(ORCID = "0000-0003-0476-5599")))
+Maintainer: Damian W. Betebenner <dbetebenner@nciea.org>
+Depends: R (>= 4.0)
+Imports: 
+    jsonlite (>= 1.9.0),
+    yaml (>= 2.3.0),
+    fs (>= 1.6.0),
+    usethis (>= 2.2.0),
+    rlang (>= 1.1.0),
+    crayon,
+    glue (>= 1.7.0),
+    whisker (>= 0.4.0),
+    Rd2md
+Suggests: 
+    knitr, 
+    rmarkdown, 
+    testthat (>= 3.2.0),
+    quarto (>= 1.4.0),
+    shiny (>= 1.8.0),
+    plumber (>= 1.2.0)
+URL: https://dataimago.github.io/dataimago/
+BugReports: https://github.com/dataimago/dataimago/issues/
+License: MIT + file LICENSE
+LazyData: Yes
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Config/testthat/edition: 3
+```
+
+## dataimago Foundation
+
+This package is built on dataimago's ethical AI framework:
+
+- [Mission & Vision](../foundations/mission.html)
+- [Philosophy](../foundations/philosophy.html)
+- [Critical Theory Manifesto](../manifesto/critical_theory_manifesto.html)
+
+# Convert .Rd Files to QMD Format using Rd2md
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Convert .Rd Files to QMD Format using Rd2md
+
+## Usage
+
+```r
+convert_rd_files_to_qmd(rd_files)
+```
+
+## Arguments
+
+* `rd_files`: Character vector of paths to .Rd files
+
+## Keyword
+
+internal
+
+## Value
+
+List containing converted documentation for each function
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Generate Quarto Documentation from R Package
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Converts R package documentation (.Rd files) and metadata (DESCRIPTION)
+into Quarto-compatible .qmd files for website generation. Integrates
+dataimago branding and philosophical foundations.
+
+## Usage
+
+```r
+create_quarto_documentation(
+  package_path = ".",
+  output_path = "quarto_website",
+  include_description = TRUE,
+  include_foundation_links = TRUE,
+  template = "dataimago"
+)
+```
+
+## Arguments
+
+* `package_path`: Character. Path to the R package root directory (default: ".")
+* `output_path`: Character. Path to quarto website directory (default: "quarto_website")
+* `include_description`: Logical. Include DESCRIPTION file in output (default: TRUE)
+* `include_foundation_links`: Logical. Add links to dataimago foundations (default: TRUE)
+* `template`: Character. Documentation template to use (default: "dataimago")
+
+## Details
+
+This function performs the following operations:
+
+* Parses the package DESCRIPTION file for metadata
+* Converts all .Rd files in man/ to Quarto markdown format using Rd2md
+* Generates a comprehensive api_reference.qmd file
+* Updates dataimago design assets and branding
+* Integrates philosophical foundation context where appropriate
+
+The generated documentation maintains the dataimago ethical framework while
+providing comprehensive package reference material suitable for AI-assisted
+development and human consumption.
+
+## Value
+
+Invisible. Creates/updates .qmd files in the quarto_website directory
+
+## Examples
+
+_Examples using dataimago's ethical AI framework:_
+
+
+```r
+# Generate documentation for current package
+create_quarto_documentation()
+
+# Generate for specific package with custom output
+create_quarto_documentation(
+  package_path = "/path/to/my/package",
+  output_path = "docs/website"
+)
+```
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Extract Field from DESCRIPTION Lines
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Extract Field from DESCRIPTION Lines
+
+## Usage
+
+```r
+extract_desc_field(desc_lines, field_name)
+```
+
+## Arguments
+
+* `desc_lines`: Character vector of DESCRIPTION file lines
+* `field_name`: Name of field to extract
+
+## Keyword
+
+internal
+
+## Value
+
+Character string with field value or NULL if not found
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Generate API Reference QMD Content
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Generate API Reference QMD Content
+
+## Usage
+
+```r
+generate_api_reference_qmd(
+  desc_content,
+  rd_content,
+  include_description = TRUE,
+  include_foundation_links = TRUE
+)
+```
+
+## Arguments
+
+* `desc_content`: Parsed DESCRIPTION content
+* `rd_content`: Converted .Rd content
+* `include_description`: Include DESCRIPTION section
+* `include_foundation_links`: Include dataimago foundation links
+
+## Keyword
+
+internal
+
+## Value
+
+Character vector with complete qmd content
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Parse DESCRIPTION File
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Parse DESCRIPTION File
+
+## Usage
+
+```r
+parse_description_file(desc_file)
+```
+
+## Arguments
+
+* `desc_file`: Path to DESCRIPTION file
+
+## Keyword
+
+internal
+
+## Value
+
+List containing parsed DESCRIPTION fields
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Post-Process Markdown to QMD Format with dataimago Customizations
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Post-Process Markdown to QMD Format with dataimago Customizations
+
+## Usage
+
+```r
+post_process_md_to_qmd(md_content, func_name)
+```
+
+## Arguments
+
+* `md_content`: Character vector of markdown content from Rd2md
+* `func_name`: Function name for customization
+
+## Keyword
+
+internal
+
+## Value
+
+Character vector with qmd-formatted content
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Update dataimago Assets in Quarto Website
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Update dataimago Assets in Quarto Website
+
+## Usage
+
+```r
+update_dataimago_assets(output_path, package_path)
+```
+
+## Arguments
+
+* `output_path`: Path to quarto website directory
+* `package_path`: Path to package root
+
+## Keyword
+
+internal
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+

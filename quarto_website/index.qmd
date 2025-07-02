@@ -1,0 +1,53 @@
+---
+title: "dataimago: Ethical AI-Native Data Science"
+subtitle: "Reconciling meaning (hermeneutics) and measurement (positivism)"
+---
+
+![](assets/img/ai_monogram_supreme_COLOR.png){width=200 .center}
+
+## Welcome to dataimago
+
+**dataimago** is an AI-native company founded to realize a deeply ethical, future-oriented vision for how artificial intelligence can support human flourishing.
+
+### 🌟 Vision
+
+To become the most transformative AI organization of the 21st century, aligning superintelligence with human emancipation, and using flow-based performance management to reshape how societies learn, heal, grow, and govern.
+
+### 🎯 Mission
+
+To develop AI systems and analytic tools that reconcile meaning (hermeneutics) and measurement (positivism) in ways that reduce human suffering and enable agency at all levels of society—from individuals to high level policy makers.
+
+## Package Overview
+
+The `dataimago` R package contains the philosophical foundations, technical architecture, and application templates for dataimago's emancipatory data science platform. It provides versioned access to critical theory frameworks, application blueprints, and packageSkeleton functionality for creating AI-native data science applications.
+
+### Key Features
+
+- **Ethical AI Framework**: Built on Frankfurt School critical theory and modern alignment discourse
+- **Application Templates**: Scaffolding for NextJS + R integration, Shiny dashboards, and research packages
+- **Documentation Generation**: Convert R package documentation to Quarto websites with philosophical context
+- **Foundation Access**: Programmatic access to mission, vision, philosophy, and governance documents
+
+## Getting Started
+
+```r
+# Install the package (when available)
+# devtools::install_github("dataimago/dataimago")
+
+# Load the package
+library(dataimago)
+
+# Generate documentation for your package
+create_quarto_documentation()
+```
+
+## Philosophy in Practice
+
+dataimago represents a fundamental inversion: instead of embedding culture in AI, we **embed AI in culture** for emancipatory ends. This approach transforms AI from an instrument of domination into a force for human flourishing.
+
+## Learn More
+
+- [API Reference](api_reference.qmd) - Complete function documentation
+- [Mission & Vision](foundations/mission.qmd) - Core purpose and goals
+- [Philosophy](foundations/philosophy.qmd) - Ethical framework and principles
+- [Critical Theory Manifesto](manifesto/critical_theory_manifesto.qmd) - Theoretical foundation
