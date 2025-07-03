@@ -30,6 +30,7 @@
 
 # Exclude quarto generated files
 ^quarto_website/_site$
+^quarto_website/\.quarto
 
 # Exclude large binary files
 .*\.pdf$

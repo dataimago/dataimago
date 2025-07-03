@@ -147,7 +147,7 @@ create_quarto_documentation <- function(package_path = ".",
     update_dataimago_assets(output_path, package_path)
   }
   
-  cat(crayon::green("✓ Quarto documentation generated successfully\n"))
+  cat(crayon::green("\u2713 Quarto documentation generated successfully\n"))
   cat(crayon::silver("  API reference: "), api_file, "\n")
   
   invisible(api_file)

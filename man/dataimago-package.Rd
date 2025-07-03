@@ -125,7 +125,7 @@ bootstrap_emancipatory_framework(path = "my-project")
 \section{Package Metadata}{
 
 \itemize{
-\item \strong{Version}: 0.0-0.1 (using dataimago semantic versioning)
+\item \strong{Version}: 0.0-0.2 (using dataimago semantic versioning)
 \item \strong{License}: MIT
 \item \strong{Maintainer}: Damian W. Betebenner \href{mailto:dbetebenner@nciea.org}{dbetebenner@nciea.org}
 \item \strong{Website}: https://dataimago.github.io/dataimago/

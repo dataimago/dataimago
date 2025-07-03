@@ -1,6 +1,6 @@
 Package: dataimago
-Version: 0.0-0.1
-Date: 2025-07-02
+Version: 0.0-0.2
+Date: 2025-07-03
 Title: Ethical AI-Native Data Science Foundation Package
 Description: An R package containing the philosophical foundations, 
     technical architecture, and application templates for dataimago's 
