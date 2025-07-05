@@ -248,6 +248,7 @@ convert_rd_files_to_qmd <- function(rd_files) {
   return(rd_content)
 }
 
+
 #' Post-Process Markdown to QMD Format with dataimago Customizations
 #' 
 #' @param md_content Character vector of markdown content from Rd2md
@@ -337,11 +338,9 @@ generate_api_reference_qmd <- function(desc_content, rd_content,
   
   # Add DESCRIPTION section if requested
   if (include_description && !is.null(desc_content$full_text)) {
-    qmd_content <- c(qmd_content, "# DESCRIPTION")
+    qmd_content <- c(qmd_content, "# Package Information")
     qmd_content <- c(qmd_content, "")
-    qmd_content <- c(qmd_content, "```")
-    qmd_content <- c(qmd_content, desc_content$full_text)
-    qmd_content <- c(qmd_content, "```")
+    qmd_content <- c(qmd_content, format_description_fields(desc_content))
     qmd_content <- c(qmd_content, "")
   }
   
@@ -357,10 +356,8 @@ generate_api_reference_qmd <- function(desc_content, rd_content,
     qmd_content <- c(qmd_content, "")
   }
   
-  # Add function documentation
-  for (func_name in names(rd_content)) {
-    qmd_content <- c(qmd_content, rd_content[[func_name]])
-  }
+  # Add function documentation sections
+  qmd_content <- c(qmd_content, add_function_documentation_sections(rd_content))
   
   return(qmd_content)
 }
@@ -394,4 +391,99 @@ update_dataimago_assets <- function(output_path, package_path) {
   }
   
   invisible(TRUE)
+}
+
+#' Format DESCRIPTION Fields for Quarto Display
+#' 
+#' @param desc_content Parsed DESCRIPTION content list
+#' @return Character vector with formatted DESCRIPTION fields
+#' @keywords internal
+format_description_fields <- function(desc_content) {
+  
+  formatted_lines <- c()
+  
+  # Define field display order and labels
+  field_order <- list(
+    list(field = "package", label = "Package"),
+    list(field = "version", label = "Version"),
+    list(field = "title", label = "Title"),
+    list(field = "description", label = "Description"),
+    list(field = "authors", label = "Authors"),
+    list(field = "maintainer", label = "Maintainer"),
+    list(field = "license", label = "License"),
+    list(field = "url", label = "URL"),
+    list(field = "bug_reports", label = "Bug Reports"),
+    list(field = "depends", label = "Depends"),
+    list(field = "imports", label = "Imports"),
+    list(field = "suggests", label = "Suggests")
+  )
+  
+  # Format each field that exists
+  for (field_info in field_order) {
+    field_value <- desc_content[[field_info$field]]
+    
+    if (!is.null(field_value) && field_value != "") {
+      # Format as bold label followed by content
+      formatted_lines <- c(formatted_lines, paste0("**", field_info$label, "**: ", field_value))
+      formatted_lines <- c(formatted_lines, "")
+    }
+  }
+  
+  return(formatted_lines)
+}
+
+#' Add Function Documentation Sections with Exported/Non-exported Structure
+#' 
+#' @param rd_content List of converted .Rd content
+#' @return Character vector with structured function documentation
+#' @keywords internal
+add_function_documentation_sections <- function(rd_content) {
+  
+  if (length(rd_content) == 0) {
+    return(character(0))
+  }
+  
+  section_lines <- c()
+  
+  # Separate exported and non-exported functions
+  # For now, we'll use a simple heuristic: functions with @keywords internal are non-exported
+  exported_functions <- c()
+  internal_functions <- c()
+  
+  for (func_name in names(rd_content)) {
+    # Check if function content contains "keyword.*internal" pattern
+    func_content <- paste(rd_content[[func_name]], collapse = "\n")
+    
+    if (grepl("keyword.*internal", func_content, ignore.case = TRUE)) {
+      internal_functions <- c(internal_functions, func_name)
+    } else {
+      exported_functions <- c(exported_functions, func_name)
+    }
+  }
+  
+  # Add exported functions section
+  if (length(exported_functions) > 0) {
+    section_lines <- c(section_lines, "# Exported Functions")
+    section_lines <- c(section_lines, "")
+    section_lines <- c(section_lines, "The following functions are exported and available for use:")
+    section_lines <- c(section_lines, "")
+    
+    for (func_name in exported_functions) {
+      section_lines <- c(section_lines, rd_content[[func_name]])
+    }
+  }
+  
+  # Add internal functions section
+  if (length(internal_functions) > 0) {
+    section_lines <- c(section_lines, "# Internal Functions")
+    section_lines <- c(section_lines, "")
+    section_lines <- c(section_lines, "The following functions are internal to the package:")
+    section_lines <- c(section_lines, "")
+    
+    for (func_name in internal_functions) {
+      section_lines <- c(section_lines, rd_content[[func_name]])
+    }
+  }
+  
+  return(section_lines)
 }

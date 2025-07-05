@@ -125,7 +125,7 @@ bootstrap_emancipatory_framework(path = "my-project")
 \section{Package Metadata}{
 
 \itemize{
-\item \strong{Version}: 0.0-0.2 (using dataimago semantic versioning)
+\item \strong{Version}: 0.0-0.3 (using dataimago semantic versioning)
 \item \strong{License}: MIT
 \item \strong{Maintainer}: Damian W. Betebenner \href{mailto:dbetebenner@nciea.org}{dbetebenner@nciea.org}
 \item \strong{Website}: https://dataimago.github.io/dataimago/
@@ -156,7 +156,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Damian W. Betebenner \email{dbetebenner@nciea.org} (\href{https://orcid.org/0000-0003-0476-5599}{ORCID})
+\strong{Maintainer}: Damian W. Betebenner \email{dbetebenner@gmail.com} (\href{https://orcid.org/0000-0003-0476-5599}{ORCID})
 
 }
 \concept{dataimago emancipatory-ai MCP-compatible foundation-package}

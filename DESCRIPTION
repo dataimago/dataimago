@@ -1,5 +1,5 @@
 Package: dataimago
-Version: 0.0-0.2
+Version: 0.0-0.3
 Date: 2025-07-03
 Title: Ethical AI-Native Data Science Foundation Package
 Description: An R package containing the philosophical foundations, 
@@ -8,9 +8,9 @@ Description: An R package containing the philosophical foundations,
     critical theory frameworks, application blueprints, and packageSkeleton 
     functionality for creating AI-native data science applications that 
     reconcile meaning (hermeneutics) and measurement (positivism).
-Authors@R: c(person(given=c("Damian", "W."), family="Betebenner", email="dbetebenner@nciea.org", role=c("aut", "cre"), 
+Authors@R: c(person(given=c("Damian", "W."), family="Betebenner", email="dbetebenner@gmail.com", role=c("aut", "cre"), 
 		comment = c(ORCID = "0000-0003-0476-5599")))
-Maintainer: Damian W. Betebenner <dbetebenner@nciea.org>
+Maintainer: Damian W. Betebenner <dbetebenner@gmail.com>
 Depends: R (>= 4.0)
 Imports: 
     jsonlite (>= 1.9.0),

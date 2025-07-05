@@ -274,65 +274,113 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description">DESCRIPTION</a>
+  <li><a href="#package-information" id="toc-package-information" class="nav-link active" data-scroll-target="#package-information">Package Information</a>
   <ul class="collapse">
   <li><a href="#dataimago-foundation" id="toc-dataimago-foundation" class="nav-link" data-scroll-target="#dataimago-foundation">dataimago Foundation</a></li>
   </ul></li>
-  <li><a href="#convert-.rd-files-to-qmd-format-using-rd2md" id="toc-convert-.rd-files-to-qmd-format-using-rd2md" class="nav-link" data-scroll-target="#convert-.rd-files-to-qmd-format-using-rd2md">Convert .Rd Files to QMD Format using Rd2md</a>
+  <li><a href="#exported-functions" id="toc-exported-functions" class="nav-link" data-scroll-target="#exported-functions">Exported Functions</a></li>
+  <li><a href="#generate-quarto-documentation-from-r-package" id="toc-generate-quarto-documentation-from-r-package" class="nav-link" data-scroll-target="#generate-quarto-documentation-from-r-package">Generate Quarto Documentation from R Package</a>
   <ul class="collapse">
-  <li><a href="#description-1" id="toc-description-1" class="nav-link" data-scroll-target="#description-1">Description</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
+  <li><a href="#mcp-tool-integration" id="toc-mcp-tool-integration" class="nav-link" data-scroll-target="#mcp-tool-integration">MCP Tool Integration</a></li>
+  <li><a href="#philosophical-context" id="toc-philosophical-context" class="nav-link" data-scroll-target="#philosophical-context">Philosophical Context</a></li>
+  <li><a href="#seealso" id="toc-seealso" class="nav-link" data-scroll-target="#seealso">Seealso</a></li>
+  <li><a href="#concept" id="toc-concept" class="nav-link" data-scroll-target="#concept">Concept</a></li>
   <li><a href="#keyword" id="toc-keyword" class="nav-link" data-scroll-target="#keyword">Keyword</a></li>
+  <li><a href="#keyword-1" id="toc-keyword-1" class="nav-link" data-scroll-target="#keyword-1">Keyword</a></li>
+  <li><a href="#keyword-2" id="toc-keyword-2" class="nav-link" data-scroll-target="#keyword-2">Keyword</a></li>
+  <li><a href="#keyword-3" id="toc-keyword-3" class="nav-link" data-scroll-target="#keyword-3">Keyword</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
-  <li><a href="#generate-quarto-documentation-from-r-package" id="toc-generate-quarto-documentation-from-r-package" class="nav-link" data-scroll-target="#generate-quarto-documentation-from-r-package">Generate Quarto Documentation from R Package</a>
+  <li><a href="#dataimago-ethical-ai-native-data-science-foundation-package" id="toc-dataimago-ethical-ai-native-data-science-foundation-package" class="nav-link" data-scroll-target="#dataimago-ethical-ai-native-data-science-foundation-package">dataimago: Ethical AI-Native Data Science Foundation Package</a>
+  <ul class="collapse">
+  <li><a href="#description-1" id="toc-description-1" class="nav-link" data-scroll-target="#description-1">Description</a></li>
+  <li><a href="#details-1" id="toc-details-1" class="nav-link" data-scroll-target="#details-1">Details</a>
+  <ul class="collapse">
+  <li><a href="#package-philosophy" id="toc-package-philosophy" class="nav-link" data-scroll-target="#package-philosophy">Package Philosophy</a></li>
+  <li><a href="#core-components" id="toc-core-components" class="nav-link" data-scroll-target="#core-components">Core Components</a></li>
+  <li><a href="#for-ai-agents-and-mcp-integration" id="toc-for-ai-agents-and-mcp-integration" class="nav-link" data-scroll-target="#for-ai-agents-and-mcp-integration">For AI Agents and MCP Integration</a></li>
+  <li><a href="#code-as-philosophy-commitments" id="toc-code-as-philosophy-commitments" class="nav-link" data-scroll-target="#code-as-philosophy-commitments">Code-as-Philosophy Commitments</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  </ul></li>
+  <li><a href="#package-metadata" id="toc-package-metadata" class="nav-link" data-scroll-target="#package-metadata">Package Metadata</a></li>
+  <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a></li>
+  <li><a href="#philosophy-in-practice" id="toc-philosophy-in-practice" class="nav-link" data-scroll-target="#philosophy-in-practice">Philosophy in Practice</a></li>
+  <li><a href="#seealso-1" id="toc-seealso-1" class="nav-link" data-scroll-target="#seealso-1">Seealso</a></li>
+  <li><a href="#author" id="toc-author" class="nav-link" data-scroll-target="#author">Author</a></li>
+  <li><a href="#concept-1" id="toc-concept-1" class="nav-link" data-scroll-target="#concept-1">Concept</a></li>
+  <li><a href="#keyword-4" id="toc-keyword-4" class="nav-link" data-scroll-target="#keyword-4">Keyword</a></li>
+  <li><a href="#keyword-5" id="toc-keyword-5" class="nav-link" data-scroll-target="#keyword-5">Keyword</a></li>
+  <li><a href="#keyword-6" id="toc-keyword-6" class="nav-link" data-scroll-target="#keyword-6">Keyword</a></li>
+  <li><a href="#keyword-7" id="toc-keyword-7" class="nav-link" data-scroll-target="#keyword-7">Keyword</a></li>
+  </ul></li>
+  <li><a href="#internal-functions" id="toc-internal-functions" class="nav-link" data-scroll-target="#internal-functions">Internal Functions</a></li>
+  <li><a href="#add-function-documentation-sections-with-exportednon-exported-structure" id="toc-add-function-documentation-sections-with-exportednon-exported-structure" class="nav-link" data-scroll-target="#add-function-documentation-sections-with-exportednon-exported-structure">Add Function Documentation Sections with Exported/Non-exported Structure</a>
   <ul class="collapse">
   <li><a href="#description-2" id="toc-description-2" class="nav-link" data-scroll-target="#description-2">Description</a></li>
   <li><a href="#usage-1" id="toc-usage-1" class="nav-link" data-scroll-target="#usage-1">Usage</a></li>
   <li><a href="#arguments-1" id="toc-arguments-1" class="nav-link" data-scroll-target="#arguments-1">Arguments</a></li>
-  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
+  <li><a href="#keyword-8" id="toc-keyword-8" class="nav-link" data-scroll-target="#keyword-8">Keyword</a></li>
   <li><a href="#value-1" id="toc-value-1" class="nav-link" data-scroll-target="#value-1">Value</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
-  <li><a href="#extract-field-from-description-lines" id="toc-extract-field-from-description-lines" class="nav-link" data-scroll-target="#extract-field-from-description-lines">Extract Field from DESCRIPTION Lines</a>
+  <li><a href="#convert-.rd-files-to-qmd-format-using-rd2md" id="toc-convert-.rd-files-to-qmd-format-using-rd2md" class="nav-link" data-scroll-target="#convert-.rd-files-to-qmd-format-using-rd2md">Convert .Rd Files to QMD Format using Rd2md</a>
   <ul class="collapse">
   <li><a href="#description-3" id="toc-description-3" class="nav-link" data-scroll-target="#description-3">Description</a></li>
   <li><a href="#usage-2" id="toc-usage-2" class="nav-link" data-scroll-target="#usage-2">Usage</a></li>
   <li><a href="#arguments-2" id="toc-arguments-2" class="nav-link" data-scroll-target="#arguments-2">Arguments</a></li>
-  <li><a href="#keyword-1" id="toc-keyword-1" class="nav-link" data-scroll-target="#keyword-1">Keyword</a></li>
+  <li><a href="#keyword-9" id="toc-keyword-9" class="nav-link" data-scroll-target="#keyword-9">Keyword</a></li>
   <li><a href="#value-2" id="toc-value-2" class="nav-link" data-scroll-target="#value-2">Value</a></li>
   </ul></li>
-  <li><a href="#generate-api-reference-qmd-content" id="toc-generate-api-reference-qmd-content" class="nav-link" data-scroll-target="#generate-api-reference-qmd-content">Generate API Reference QMD Content</a>
+  <li><a href="#extract-field-from-description-lines" id="toc-extract-field-from-description-lines" class="nav-link" data-scroll-target="#extract-field-from-description-lines">Extract Field from DESCRIPTION Lines</a>
   <ul class="collapse">
   <li><a href="#description-4" id="toc-description-4" class="nav-link" data-scroll-target="#description-4">Description</a></li>
   <li><a href="#usage-3" id="toc-usage-3" class="nav-link" data-scroll-target="#usage-3">Usage</a></li>
   <li><a href="#arguments-3" id="toc-arguments-3" class="nav-link" data-scroll-target="#arguments-3">Arguments</a></li>
-  <li><a href="#keyword-2" id="toc-keyword-2" class="nav-link" data-scroll-target="#keyword-2">Keyword</a></li>
+  <li><a href="#keyword-10" id="toc-keyword-10" class="nav-link" data-scroll-target="#keyword-10">Keyword</a></li>
   <li><a href="#value-3" id="toc-value-3" class="nav-link" data-scroll-target="#value-3">Value</a></li>
   </ul></li>
-  <li><a href="#parse-description-file" id="toc-parse-description-file" class="nav-link" data-scroll-target="#parse-description-file">Parse DESCRIPTION File</a>
+  <li><a href="#format-description-fields-for-quarto-display" id="toc-format-description-fields-for-quarto-display" class="nav-link" data-scroll-target="#format-description-fields-for-quarto-display">Format DESCRIPTION Fields for Quarto Display</a>
   <ul class="collapse">
   <li><a href="#description-5" id="toc-description-5" class="nav-link" data-scroll-target="#description-5">Description</a></li>
   <li><a href="#usage-4" id="toc-usage-4" class="nav-link" data-scroll-target="#usage-4">Usage</a></li>
   <li><a href="#arguments-4" id="toc-arguments-4" class="nav-link" data-scroll-target="#arguments-4">Arguments</a></li>
-  <li><a href="#keyword-3" id="toc-keyword-3" class="nav-link" data-scroll-target="#keyword-3">Keyword</a></li>
+  <li><a href="#keyword-11" id="toc-keyword-11" class="nav-link" data-scroll-target="#keyword-11">Keyword</a></li>
   <li><a href="#value-4" id="toc-value-4" class="nav-link" data-scroll-target="#value-4">Value</a></li>
   </ul></li>
-  <li><a href="#post-process-markdown-to-qmd-format-with-dataimago-customizations" id="toc-post-process-markdown-to-qmd-format-with-dataimago-customizations" class="nav-link" data-scroll-target="#post-process-markdown-to-qmd-format-with-dataimago-customizations">Post-Process Markdown to QMD Format with dataimago Customizations</a>
+  <li><a href="#generate-api-reference-qmd-content" id="toc-generate-api-reference-qmd-content" class="nav-link" data-scroll-target="#generate-api-reference-qmd-content">Generate API Reference QMD Content</a>
   <ul class="collapse">
   <li><a href="#description-6" id="toc-description-6" class="nav-link" data-scroll-target="#description-6">Description</a></li>
   <li><a href="#usage-5" id="toc-usage-5" class="nav-link" data-scroll-target="#usage-5">Usage</a></li>
   <li><a href="#arguments-5" id="toc-arguments-5" class="nav-link" data-scroll-target="#arguments-5">Arguments</a></li>
-  <li><a href="#keyword-4" id="toc-keyword-4" class="nav-link" data-scroll-target="#keyword-4">Keyword</a></li>
+  <li><a href="#keyword-12" id="toc-keyword-12" class="nav-link" data-scroll-target="#keyword-12">Keyword</a></li>
   <li><a href="#value-5" id="toc-value-5" class="nav-link" data-scroll-target="#value-5">Value</a></li>
   </ul></li>
-  <li><a href="#update-dataimago-assets-in-quarto-website" id="toc-update-dataimago-assets-in-quarto-website" class="nav-link" data-scroll-target="#update-dataimago-assets-in-quarto-website">Update dataimago Assets in Quarto Website</a>
+  <li><a href="#parse-description-file" id="toc-parse-description-file" class="nav-link" data-scroll-target="#parse-description-file">Parse DESCRIPTION File</a>
   <ul class="collapse">
   <li><a href="#description-7" id="toc-description-7" class="nav-link" data-scroll-target="#description-7">Description</a></li>
   <li><a href="#usage-6" id="toc-usage-6" class="nav-link" data-scroll-target="#usage-6">Usage</a></li>
   <li><a href="#arguments-6" id="toc-arguments-6" class="nav-link" data-scroll-target="#arguments-6">Arguments</a></li>
-  <li><a href="#keyword-5" id="toc-keyword-5" class="nav-link" data-scroll-target="#keyword-5">Keyword</a></li>
+  <li><a href="#keyword-13" id="toc-keyword-13" class="nav-link" data-scroll-target="#keyword-13">Keyword</a></li>
+  <li><a href="#value-6" id="toc-value-6" class="nav-link" data-scroll-target="#value-6">Value</a></li>
+  </ul></li>
+  <li><a href="#post-process-markdown-to-qmd-format-with-dataimago-customizations" id="toc-post-process-markdown-to-qmd-format-with-dataimago-customizations" class="nav-link" data-scroll-target="#post-process-markdown-to-qmd-format-with-dataimago-customizations">Post-Process Markdown to QMD Format with dataimago Customizations</a>
+  <ul class="collapse">
+  <li><a href="#description-8" id="toc-description-8" class="nav-link" data-scroll-target="#description-8">Description</a></li>
+  <li><a href="#usage-7" id="toc-usage-7" class="nav-link" data-scroll-target="#usage-7">Usage</a></li>
+  <li><a href="#arguments-7" id="toc-arguments-7" class="nav-link" data-scroll-target="#arguments-7">Arguments</a></li>
+  <li><a href="#keyword-14" id="toc-keyword-14" class="nav-link" data-scroll-target="#keyword-14">Keyword</a></li>
+  <li><a href="#value-7" id="toc-value-7" class="nav-link" data-scroll-target="#value-7">Value</a></li>
+  </ul></li>
+  <li><a href="#update-dataimago-assets-in-quarto-website" id="toc-update-dataimago-assets-in-quarto-website" class="nav-link" data-scroll-target="#update-dataimago-assets-in-quarto-website">Update dataimago Assets in Quarto Website</a>
+  <ul class="collapse">
+  <li><a href="#description-9" id="toc-description-9" class="nav-link" data-scroll-target="#description-9">Description</a></li>
+  <li><a href="#usage-8" id="toc-usage-8" class="nav-link" data-scroll-target="#usage-8">Usage</a></li>
+  <li><a href="#arguments-8" id="toc-arguments-8" class="nav-link" data-scroll-target="#arguments-8">Arguments</a></li>
+  <li><a href="#keyword-15" id="toc-keyword-15" class="nav-link" data-scroll-target="#keyword-15">Keyword</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/dataimago/dataimago/edit/main/api_reference.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/dataimago/dataimago/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -360,47 +408,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="description" class="level1">
-<h1>DESCRIPTION</h1>
-<pre><code>Package: dataimago
-Version: 0.0-0.1
-Date: 2025-07-02
-Title: Ethical AI-Native Data Science Foundation Package
-Description: An R package containing the philosophical foundations, 
-    technical architecture, and application templates for dataimago's 
-    emancipatory data science platform. Provides versioned access to 
-    critical theory frameworks, application blueprints, and packageSkeleton 
-    functionality for creating AI-native data science applications that 
-    reconcile meaning (hermeneutics) and measurement (positivism).
-Authors@R: c(person(given=c("Damian", "W."), family="Betebenner", email="dbetebenner@nciea.org", role=c("aut", "cre"), 
-        comment = c(ORCID = "0000-0003-0476-5599")))
-Maintainer: Damian W. Betebenner &lt;dbetebenner@nciea.org&gt;
-Depends: R (&gt;= 4.0)
-Imports: 
-    jsonlite (&gt;= 1.9.0),
-    yaml (&gt;= 2.3.0),
-    fs (&gt;= 1.6.0),
-    usethis (&gt;= 2.2.0),
-    rlang (&gt;= 1.1.0),
-    crayon,
-    glue (&gt;= 1.7.0),
-    whisker (&gt;= 0.4.0),
-    Rd2md
-Suggests: 
-    knitr, 
-    rmarkdown, 
-    testthat (&gt;= 3.2.0),
-    quarto (&gt;= 1.4.0),
-    shiny (&gt;= 1.8.0),
-    plumber (&gt;= 1.2.0)
-URL: https://dataimago.github.io/dataimago/
-BugReports: https://github.com/dataimago/dataimago/issues/
-License: MIT + file LICENSE
-LazyData: Yes
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
-Config/testthat/edition: 3</code></pre>
+<section id="package-information" class="level1">
+<h1>Package Information</h1>
+<p><strong>Package</strong>: dataimago</p>
+<p><strong>Version</strong>: 0.0-0.3</p>
+<p><strong>Title</strong>: Ethical AI-Native Data Science Foundation Package</p>
+<p><strong>Description</strong>: An R package containing the philosophical foundations, technical architecture, and application templates for dataimago’s emancipatory data science platform. Provides versioned access to critical theory frameworks, application blueprints, and packageSkeleton functionality for creating AI-native data science applications that reconcile meaning (hermeneutics) and measurement (positivism).</p>
+<p><strong>Authors</strong>: c(person(given=c(“Damian”, “W.”), family=“Betebenner”, email=“dbetebenner@gmail.com”, role=c(“aut”, “cre”), comment = c(ORCID = “0000-0003-0476-5599”)))</p>
+<p><strong>Maintainer</strong>: Damian W. Betebenner <a href="mailto:dbetebenner@gmail.com" class="email">dbetebenner@gmail.com</a></p>
+<p><strong>License</strong>: MIT + file LICENSE</p>
+<p><strong>URL</strong>: https://dataimago.github.io/dataimago/</p>
+<p><strong>Bug Reports</strong>: https://github.com/dataimago/dataimago/issues/</p>
+<p><strong>Depends</strong>: R (&gt;= 4.0)</p>
+<p><strong>Imports</strong>: jsonlite (&gt;= 1.9.0), yaml (&gt;= 2.3.0), fs (&gt;= 1.6.0), usethis (&gt;= 2.2.0), rlang (&gt;= 1.1.0), crayon, glue (&gt;= 1.7.0), whisker (&gt;= 0.4.0), Rd2md</p>
+<p><strong>Suggests</strong>: knitr, rmarkdown, testthat (&gt;= 3.2.0), quarto (&gt;= 1.4.0), shiny (&gt;= 1.8.0), plumber (&gt;= 1.2.0)</p>
 <section id="dataimago-foundation" class="level2">
 <h2 class="anchored" data-anchor-id="dataimago-foundation">dataimago Foundation</h2>
 <p>This package is built on dataimago’s ethical AI framework:</p>
@@ -411,147 +432,426 @@ Config/testthat/edition: 3</code></pre>
 </ul>
 </section>
 </section>
-<section id="convert-.rd-files-to-qmd-format-using-rd2md" class="level1">
-<h1>Convert .Rd Files to QMD Format using Rd2md</h1>
-<section id="description-1" class="level2">
-<h2 class="anchored" data-anchor-id="description-1">Description</h2>
-<div class="ethical-note">
-<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
-</div>
-<p>Convert .Rd Files to QMD Format using Rd2md</p>
-</section>
-<section id="usage" class="level2">
-<h2 class="anchored" data-anchor-id="usage">Usage</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">convert_rd_files_to_qmd</span>(rd_files)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="arguments" class="level2">
-<h2 class="anchored" data-anchor-id="arguments">Arguments</h2>
-<ul>
-<li><code>rd_files</code>: Character vector of paths to .Rd files</li>
-</ul>
-</section>
-<section id="keyword" class="level2">
-<h2 class="anchored" data-anchor-id="keyword">Keyword</h2>
-<p>internal</p>
-</section>
-<section id="value" class="level2">
-<h2 class="anchored" data-anchor-id="value">Value</h2>
-<p>List containing converted documentation for each function</p>
-<hr>
-<p><em>This function is part of the dataimago ethical AI framework.</em></p>
-</section>
+<section id="exported-functions" class="level1">
+<h1>Exported Functions</h1>
+<p>The following functions are exported and available for use:</p>
 </section>
 <section id="generate-quarto-documentation-from-r-package" class="level1">
 <h1>Generate Quarto Documentation from R Package</h1>
-<section id="description-2" class="level2">
-<h2 class="anchored" data-anchor-id="description-2">Description</h2>
+<section id="description" class="level2">
+<h2 class="anchored" data-anchor-id="description">Description</h2>
 <div class="ethical-note">
 <p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
 </div>
 <p>Converts R package documentation (.Rd files) and metadata (DESCRIPTION) into Quarto-compatible .qmd files for website generation. Integrates dataimago branding and philosophical foundations.</p>
 </section>
-<section id="usage-1" class="level2">
-<h2 class="anchored" data-anchor-id="usage-1">Usage</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">package_path =</span> <span class="st">"."</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_path =</span> <span class="st">"quarto_website"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_description =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_foundation_links =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">template =</span> <span class="st">"dataimago"</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">package_path =</span> <span class="st">"."</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_path =</span> <span class="st">"quarto_website"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_description =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_foundation_links =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">template =</span> <span class="st">"dataimago"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="arguments-1" class="level2">
-<h2 class="anchored" data-anchor-id="arguments-1">Arguments</h2>
+<section id="arguments" class="level2">
+<h2 class="anchored" data-anchor-id="arguments">Arguments</h2>
 <ul>
-<li><code>package_path</code>: Character. Path to the R package root directory (default: “.”)</li>
-<li><code>output_path</code>: Character. Path to quarto website directory (default: “quarto_website”)</li>
-<li><code>include_description</code>: Logical. Include DESCRIPTION file in output (default: TRUE)</li>
-<li><code>include_foundation_links</code>: Logical. Add links to dataimago foundations (default: TRUE)</li>
-<li><code>template</code>: Character. Documentation template to use (default: “dataimago”)</li>
+<li><code>package_path</code>: Character. Path to the R package root directory. Must contain DESCRIPTION file and man/ directory with .Rd files. Default: “.” (current directory)</li>
+<li><code>output_path</code>: Character. Path to quarto website directory where .qmd files will be generated. Directory will be created if it doesn’t exist. Default: “quarto_website”</li>
+<li><code>include_description</code>: Logical. Whether to include full DESCRIPTION file content in the generated API reference. Useful for package metadata display. Default: TRUE</li>
+<li><code>include_foundation_links</code>: Logical. Whether to add automatic links to dataimago philosophical foundation documents in the generated documentation. Default: TRUE</li>
+<li><code>template</code>: Character. Documentation template to use for styling and structure. Currently supports “dataimago” template with ethical AI branding. Default: “dataimago”</li>
 </ul>
 </section>
 <section id="details" class="level2">
 <h2 class="anchored" data-anchor-id="details">Details</h2>
-<p>This function performs the following operations:</p>
+<p>This function implements dataimago’s philosophy of “code-as-philosophy” by:</p>
 <ul>
-<li>Parses the package DESCRIPTION file for metadata</li>
-<li>Converts all .Rd files in man/ to Quarto markdown format using Rd2md</li>
-<li>Generates a comprehensive api_reference.qmd file</li>
-<li>Updates dataimago design assets and branding</li>
-<li>Integrates philosophical foundation context where appropriate</li>
+<li><strong><em>Hermeneutic Integration</em></strong>: Parses the package DESCRIPTION for metadata</li>
+<li><strong><em>Technical Conversion</em></strong>: Uses Rd2md to convert .Rd files to Quarto markdown</li>
+<li><strong><em>Ethical Annotation</em></strong>: Adds philosophical context to every function via <code>post_process_md_to_qmd()</code></li>
+<li><strong><em>Foundation Linking</em></strong>: Cross-references technical docs with philosophical content</li>
+<li><strong><em>Visual Identity</em></strong>: Copies dataimago logos and applies custom CSS styling</li>
+<li><strong><em>AI Compatibility</em></strong>: Generates machine-readable annotations for MCP integration</li>
 </ul>
-<p>The generated documentation maintains the dataimago ethical framework while providing comprehensive package reference material suitable for AI-assisted development and human consumption.</p>
+<p>The generated documentation structure includes:</p>
+<ul>
+<li>YAML frontmatter with package metadata</li>
+<li>Full DESCRIPTION file content (if requested)</li>
+<li>Links to dataimago foundation documents</li>
+<li>Function documentation with ethical context boxes</li>
+<li>dataimago branding footer on each function</li>
+</ul>
+<p>For AI agents and MCP tools, this function provides structured documentation generation that embeds philosophical context into technical reference material, enabling AI systems to understand both the “what” and “why” of each function.</p>
 </section>
-<section id="value-1" class="level2">
-<h2 class="anchored" data-anchor-id="value-1">Value</h2>
-<p>Invisible. Creates/updates .qmd files in the quarto_website directory</p>
+<section id="mcp-tool-integration" class="level2">
+<h2 class="anchored" data-anchor-id="mcp-tool-integration">MCP Tool Integration</h2>
+<p>This function is designed for Model Context Protocol (MCP) integration:</p>
+<ul>
+<li><strong><em>Input Validation</em></strong>: Checks for required package structure</li>
+<li><strong><em>Structured Output</em></strong>: Generates consistent .qmd file format</li>
+<li><strong><em>Error Handling</em></strong>: Provides clear error messages for debugging</li>
+<li><strong><em>Asset Management</em></strong>: Handles file copying and directory creation</li>
+<li><strong><em>Status Reporting</em></strong>: Uses colored console output for progress tracking</li>
+</ul>
+</section>
+<section id="philosophical-context" class="level2">
+<h2 class="anchored" data-anchor-id="philosophical-context">Philosophical Context</h2>
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes. Rather than treating documentation as mere technical reference, it creates living documents that connect computational tools to their ethical foundations and societal purposes.</p>
+</section>
+<section id="seealso" class="level2">
+<h2 class="anchored" data-anchor-id="seealso">Seealso</h2>
+<p><code>[parse_description_file](parse_description_file)</code> for DESCRIPTION parsing, <code>[convert_rd_files_to_qmd](convert_rd_files_to_qmd)</code> for .Rd conversion, <code>[update_dataimago_assets](update_dataimago_assets)</code> for asset management</p>
+</section>
+<section id="concept" class="level2">
+<h2 class="anchored" data-anchor-id="concept">Concept</h2>
+<p>dataimago ethical-documentation MCP-compatible</p>
+</section>
+<section id="keyword" class="level2">
+<h2 class="anchored" data-anchor-id="keyword">Keyword</h2>
+<p>documentation</p>
+</section>
+<section id="keyword-1" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-1">Keyword</h2>
+<p>ethical-ai</p>
+</section>
+<section id="keyword-2" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-2">Keyword</h2>
+<p>generation</p>
+</section>
+<section id="keyword-3" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-3">Keyword</h2>
+<p>quarto</p>
+</section>
+<section id="value" class="level2">
+<h2 class="anchored" data-anchor-id="value">Value</h2>
+<p>Character (invisible). File path to the generated api_reference.qmd file. Side effects: Creates .qmd files in output_path directory and copies dataimago assets (logos, etc.) to assets/img/ subdirectory.</p>
 </section>
 <section id="examples" class="level2">
 <h2 class="anchored" data-anchor-id="examples">Examples</h2>
 <p><em>Examples using dataimago’s ethical AI framework:</em></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate documentation for current package</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>()</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate for specific package with custom output</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>(</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">package_path =</span> <span class="st">"/path/to/my/package"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_path =</span> <span class="st">"docs/website"</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic usage - generate documentation for current package</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate for specific package with custom output location</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">package_path =</span> <span class="st">"/path/to/my/package"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_path =</span> <span class="st">"docs/website"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate minimal documentation without foundation links</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>(</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_foundation_links =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_description =</span> <span class="cn">FALSE</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># For MCP/AI usage - capture output path</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>doc_path <span class="ot">&lt;-</span> <span class="fu">create_quarto_documentation</span>()</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Generated documentation at:"</span>, doc_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="dataimago-ethical-ai-native-data-science-foundation-package" class="level1">
+<h1>dataimago: Ethical AI-Native Data Science Foundation Package</h1>
+<section id="description-1" class="level2">
+<h2 class="anchored" data-anchor-id="description-1">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>The <code>dataimago</code> package contains the philosophical foundations, technical architecture, and application templates for dataimago’s emancipatory data science platform. It provides versioned access to critical theory frameworks, application blueprints, and packageSkeleton functionality for creating AI-native data science applications that reconcile meaning (hermeneutics) and measurement (positivism).</p>
+</section>
+<section id="details-1" class="level2">
+<h2 class="anchored" data-anchor-id="details-1">Details</h2>
+<section id="package-philosophy" class="level3">
+<h3 class="anchored" data-anchor-id="package-philosophy">Package Philosophy</h3>
+<p>dataimago represents a fundamental inversion: instead of embedding culture in AI, we <strong><em>embed AI in culture</em></strong> for emancipatory ends. This approach transforms AI from an instrument of domination into a force for human flourishing.</p>
+</section>
+<section id="core-components" class="level3">
+<h3 class="anchored" data-anchor-id="core-components">Core Components</h3>
+<section id="foundation-documents-instdataimago" class="level4">
+<h4 class="anchored" data-anchor-id="foundation-documents-instdataimago">Foundation Documents (<code>inst/dataimago/</code>)</h4>
+<ul>
+<li><strong><em>01_Foundations/</em></strong>: Mission, vision, philosophy, governance documents</li>
+<li><strong><em>02_Manifesto/</em></strong>: Critical theory content and paradigm contrasts</li>
+<li><strong><em>03_Application_Architecture/</em></strong>: Technical blueprints and best practices</li>
+<li><strong><em>04_dataimago_Content/</em></strong>: Design assets and visual identity</li>
+</ul>
+</section>
+<section id="documentation-generation" class="level4">
+<h4 class="anchored" data-anchor-id="documentation-generation">Documentation Generation</h4>
+<ul>
+<li><code>[create_quarto_documentation](create_quarto_documentation)</code>: Convert R packages to ethical AI documentation websites</li>
+<li>Automated integration of philosophical context into technical docs</li>
+<li>dataimago branding and visual identity application</li>
+<li>MCP-compatible structured outputs for AI agent integration</li>
+</ul>
+</section>
+<section id="planned-functionality" class="level4">
+<h4 class="anchored" data-anchor-id="planned-functionality">Planned Functionality</h4>
+<ul>
+<li>Foundation access functions for programmatic content retrieval</li>
+<li>Application skeleton generation with embedded ethical frameworks</li>
+<li>Flow-based performance management tools</li>
+<li>NextJS + R integration templates</li>
+</ul>
+</section>
+</section>
+<section id="for-ai-agents-and-mcp-integration" class="level3">
+<h3 class="anchored" data-anchor-id="for-ai-agents-and-mcp-integration">For AI Agents and MCP Integration</h3>
+<p>This package is explicitly designed for AI agent integration:</p>
+<section id="structured-metadata" class="level4">
+<h4 class="anchored" data-anchor-id="structured-metadata">Structured Metadata</h4>
+<ul>
+<li>Comprehensive roxygen2 documentation with philosophical context</li>
+<li>Consistent parameter naming and return value structures</li>
+<li>Machine-readable ethical annotations in generated documentation</li>
+<li>JSON-compatible outputs where appropriate</li>
+</ul>
+</section>
+<section id="ai-context-files" class="level4">
+<h4 class="anchored" data-anchor-id="ai-context-files">AI Context Files</h4>
+<ul>
+<li><code>inst/CLAUDE.md</code>: Persistent context for AI interactions</li>
+<li><code>inst/AGENT_INDEX.md</code>: Agent coordination and capabilities</li>
+<li>Foundation documents provide philosophical grounding for AI reasoning</li>
+</ul>
+</section>
+<section id="mcp-tool-compatibility" class="level4">
+<h4 class="anchored" data-anchor-id="mcp-tool-compatibility">MCP Tool Compatibility</h4>
+<p>All exported functions include:</p>
+<ul>
+<li>Detailed parameter descriptions with types and constraints</li>
+<li>Clear return value specifications</li>
+<li>Comprehensive examples showing typical usage patterns</li>
+<li>Error conditions and handling guidance</li>
+<li>Philosophical context explaining the “why” behind each function</li>
+</ul>
+</section>
+</section>
+<section id="code-as-philosophy-commitments" class="level3">
+<h3 class="anchored" data-anchor-id="code-as-philosophy-commitments">Code-as-Philosophy Commitments</h3>
+<ul>
+<li><strong><em>Hermeneutic Transparency</em></strong>: All modeling assumptions documented and interpretable</li>
+<li><strong><em>Positivistic Rigor</em></strong>: Empirical operations robust, efficient, and replicable</li>
+<li><strong><em>Ethical Reflexivity</em></strong>: Tools include affordances for users to interrogate usage</li>
+<li><strong><em>Iterative Design</em></strong>: Each commit is dialectical step toward future aspirations</li>
+</ul>
+</section>
+<section id="getting-started" class="level3">
+<h3 class="anchored" data-anchor-id="getting-started">Getting Started</h3>
+<p>Load the package and generate documentation:</p>
+<pre><code>library(dataimago)
+create_quarto_documentation()</code></pre>
+<p>Access foundation documents (planned):</p>
+<pre><code>get_foundation_document("mission")
+get_manifesto_content("critical_theory")</code></pre>
+<p>Generate applications (planned):</p>
+<pre><code>create_dataimago_app(name = "my-project", type = "nextjs")
+bootstrap_emancipatory_framework(path = "my-project")</code></pre>
+</section>
+</section>
+<section id="package-metadata" class="level2">
+<h2 class="anchored" data-anchor-id="package-metadata">Package Metadata</h2>
+<ul>
+<li><strong><em>Version</em></strong>: 0.0-0.3 (using dataimago semantic versioning)</li>
+<li><strong><em>License</em></strong>: MIT</li>
+<li><strong><em>Maintainer</em></strong>: Damian W. Betebenner <a href="mailto:dbetebenner@nciea.org">dbetebenner@nciea.org</a></li>
+<li><strong><em>Website</em></strong>: https://dataimago.github.io/dataimago/</li>
+<li><strong><em>Repository</em></strong>: https://github.com/dataimago/dataimago/</li>
+</ul>
+</section>
+<section id="citation" class="level2">
+<h2 class="anchored" data-anchor-id="citation">Citation</h2>
+<p>To cite dataimago in publications:</p>
+<pre><code>citation("dataimago")</code></pre>
+</section>
+<section id="philosophy-in-practice" class="level2">
+<h2 class="anchored" data-anchor-id="philosophy-in-practice">Philosophy in Practice</h2>
+<p>“Would this object help an AI understand, improve, or operationalize emancipatory thinking? If yes, it belongs.” - dataimago development philosophy</p>
+</section>
+<section id="seealso-1" class="level2">
+<h2 class="anchored" data-anchor-id="seealso-1">Seealso</h2>
+<p>Useful links:</p>
+<ul>
+<li><a href="https://dataimago.github.io/dataimago/">https://dataimago.github.io/dataimago/</a></li>
+<li>Report bugs at <a href="https://github.com/dataimago/dataimago/issues/">https://github.com/dataimago/dataimago/issues/</a></li>
+</ul>
+</section>
+<section id="author" class="level2">
+<h2 class="anchored" data-anchor-id="author">Author</h2>
+<p><strong><em>Maintainer</em></strong>: Damian W. Betebenner <a href="mailto:dbetebenner@gmail.com">dbetebenner@gmail.com</a> (<a href="https://orcid.org/0000-0003-0476-5599">ORCID</a>)</p>
+</section>
+<section id="concept-1" class="level2">
+<h2 class="anchored" data-anchor-id="concept-1">Concept</h2>
+<p>dataimago emancipatory-ai MCP-compatible foundation-package</p>
+</section>
+<section id="keyword-4" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-4">Keyword</h2>
+<p>critical-theory</p>
+</section>
+<section id="keyword-5" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-5">Keyword</h2>
+<p>documentation-generation</p>
+</section>
+<section id="keyword-6" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-6">Keyword</h2>
+<p>ethical-ai</p>
+</section>
+<section id="keyword-7" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-7">Keyword</h2>
+<p>package</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="internal-functions" class="level1">
+<h1>Internal Functions</h1>
+<p>The following functions are internal to the package:</p>
+</section>
+<section id="add-function-documentation-sections-with-exportednon-exported-structure" class="level1">
+<h1>Add Function Documentation Sections with Exported/Non-exported Structure</h1>
+<section id="description-2" class="level2">
+<h2 class="anchored" data-anchor-id="description-2">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Add Function Documentation Sections with Exported/Non-exported Structure</p>
+</section>
+<section id="usage-1" class="level2">
+<h2 class="anchored" data-anchor-id="usage-1">Usage</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add_function_documentation_sections</span>(rd_content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-1" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-1">Arguments</h2>
+<ul>
+<li><code>rd_content</code>: List of converted .Rd content</li>
+</ul>
+</section>
+<section id="keyword-8" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-8">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-1" class="level2">
+<h2 class="anchored" data-anchor-id="value-1">Value</h2>
+<p>Character vector with structured function documentation</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="convert-.rd-files-to-qmd-format-using-rd2md" class="level1">
+<h1>Convert .Rd Files to QMD Format using Rd2md</h1>
+<section id="description-3" class="level2">
+<h2 class="anchored" data-anchor-id="description-3">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Convert .Rd Files to QMD Format using Rd2md</p>
+</section>
+<section id="usage-2" class="level2">
+<h2 class="anchored" data-anchor-id="usage-2">Usage</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">convert_rd_files_to_qmd</span>(rd_files)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-2" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-2">Arguments</h2>
+<ul>
+<li><code>rd_files</code>: Character vector of paths to .Rd files</li>
+</ul>
+</section>
+<section id="keyword-9" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-9">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-2" class="level2">
+<h2 class="anchored" data-anchor-id="value-2">Value</h2>
+<p>List containing converted documentation for each function</p>
 <hr>
 <p><em>This function is part of the dataimago ethical AI framework.</em></p>
 </section>
 </section>
 <section id="extract-field-from-description-lines" class="level1">
 <h1>Extract Field from DESCRIPTION Lines</h1>
-<section id="description-3" class="level2">
-<h2 class="anchored" data-anchor-id="description-3">Description</h2>
+<section id="description-4" class="level2">
+<h2 class="anchored" data-anchor-id="description-4">Description</h2>
 <div class="ethical-note">
 <p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
 </div>
 <p>Extract Field from DESCRIPTION Lines</p>
 </section>
-<section id="usage-2" class="level2">
-<h2 class="anchored" data-anchor-id="usage-2">Usage</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_desc_field</span>(desc_lines, field_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="usage-3" class="level2">
+<h2 class="anchored" data-anchor-id="usage-3">Usage</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_desc_field</span>(desc_lines, field_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="arguments-2" class="level2">
-<h2 class="anchored" data-anchor-id="arguments-2">Arguments</h2>
+<section id="arguments-3" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-3">Arguments</h2>
 <ul>
 <li><code>desc_lines</code>: Character vector of DESCRIPTION file lines</li>
 <li><code>field_name</code>: Name of field to extract</li>
 </ul>
 </section>
-<section id="keyword-1" class="level2">
-<h2 class="anchored" data-anchor-id="keyword-1">Keyword</h2>
+<section id="keyword-10" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-10">Keyword</h2>
 <p>internal</p>
 </section>
-<section id="value-2" class="level2">
-<h2 class="anchored" data-anchor-id="value-2">Value</h2>
+<section id="value-3" class="level2">
+<h2 class="anchored" data-anchor-id="value-3">Value</h2>
 <p>Character string with field value or NULL if not found</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="format-description-fields-for-quarto-display" class="level1">
+<h1>Format DESCRIPTION Fields for Quarto Display</h1>
+<section id="description-5" class="level2">
+<h2 class="anchored" data-anchor-id="description-5">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Format DESCRIPTION Fields for Quarto Display</p>
+</section>
+<section id="usage-4" class="level2">
+<h2 class="anchored" data-anchor-id="usage-4">Usage</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format_description_fields</span>(desc_content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-4" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-4">Arguments</h2>
+<ul>
+<li><code>desc_content</code>: Parsed DESCRIPTION content list</li>
+</ul>
+</section>
+<section id="keyword-11" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-11">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-4" class="level2">
+<h2 class="anchored" data-anchor-id="value-4">Value</h2>
+<p>Character vector with formatted DESCRIPTION fields</p>
 <hr>
 <p><em>This function is part of the dataimago ethical AI framework.</em></p>
 </section>
 </section>
 <section id="generate-api-reference-qmd-content" class="level1">
 <h1>Generate API Reference QMD Content</h1>
-<section id="description-4" class="level2">
-<h2 class="anchored" data-anchor-id="description-4">Description</h2>
+<section id="description-6" class="level2">
+<h2 class="anchored" data-anchor-id="description-6">Description</h2>
 <div class="ethical-note">
 <p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
 </div>
 <p>Generate API Reference QMD Content</p>
 </section>
-<section id="usage-3" class="level2">
-<h2 class="anchored" data-anchor-id="usage-3">Usage</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_api_reference_qmd</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  desc_content,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  rd_content,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_description =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_foundation_links =</span> <span class="cn">TRUE</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="usage-5" class="level2">
+<h2 class="anchored" data-anchor-id="usage-5">Usage</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_api_reference_qmd</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  desc_content,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  rd_content,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_description =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_foundation_links =</span> <span class="cn">TRUE</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="arguments-3" class="level2">
-<h2 class="anchored" data-anchor-id="arguments-3">Arguments</h2>
+<section id="arguments-5" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-5">Arguments</h2>
 <ul>
 <li><code>desc_content</code>: Parsed DESCRIPTION content</li>
 <li><code>rd_content</code>: Converted .Rd content</li>
@@ -559,12 +859,12 @@ Config/testthat/edition: 3</code></pre>
 <li><code>include_foundation_links</code>: Include dataimago foundation links</li>
 </ul>
 </section>
-<section id="keyword-2" class="level2">
-<h2 class="anchored" data-anchor-id="keyword-2">Keyword</h2>
+<section id="keyword-12" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-12">Keyword</h2>
 <p>internal</p>
 </section>
-<section id="value-3" class="level2">
-<h2 class="anchored" data-anchor-id="value-3">Value</h2>
+<section id="value-5" class="level2">
+<h2 class="anchored" data-anchor-id="value-5">Value</h2>
 <p>Character vector with complete qmd content</p>
 <hr>
 <p><em>This function is part of the dataimago ethical AI framework.</em></p>
@@ -572,29 +872,29 @@ Config/testthat/edition: 3</code></pre>
 </section>
 <section id="parse-description-file" class="level1">
 <h1>Parse DESCRIPTION File</h1>
-<section id="description-5" class="level2">
-<h2 class="anchored" data-anchor-id="description-5">Description</h2>
+<section id="description-7" class="level2">
+<h2 class="anchored" data-anchor-id="description-7">Description</h2>
 <div class="ethical-note">
 <p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
 </div>
 <p>Parse DESCRIPTION File</p>
 </section>
-<section id="usage-4" class="level2">
-<h2 class="anchored" data-anchor-id="usage-4">Usage</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parse_description_file</span>(desc_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="usage-6" class="level2">
+<h2 class="anchored" data-anchor-id="usage-6">Usage</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parse_description_file</span>(desc_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="arguments-4" class="level2">
-<h2 class="anchored" data-anchor-id="arguments-4">Arguments</h2>
+<section id="arguments-6" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-6">Arguments</h2>
 <ul>
 <li><code>desc_file</code>: Path to DESCRIPTION file</li>
 </ul>
 </section>
-<section id="keyword-3" class="level2">
-<h2 class="anchored" data-anchor-id="keyword-3">Keyword</h2>
+<section id="keyword-13" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-13">Keyword</h2>
 <p>internal</p>
 </section>
-<section id="value-4" class="level2">
-<h2 class="anchored" data-anchor-id="value-4">Value</h2>
+<section id="value-6" class="level2">
+<h2 class="anchored" data-anchor-id="value-6">Value</h2>
 <p>List containing parsed DESCRIPTION fields</p>
 <hr>
 <p><em>This function is part of the dataimago ethical AI framework.</em></p>
@@ -602,30 +902,30 @@ Config/testthat/edition: 3</code></pre>
 </section>
 <section id="post-process-markdown-to-qmd-format-with-dataimago-customizations" class="level1">
 <h1>Post-Process Markdown to QMD Format with dataimago Customizations</h1>
-<section id="description-6" class="level2">
-<h2 class="anchored" data-anchor-id="description-6">Description</h2>
+<section id="description-8" class="level2">
+<h2 class="anchored" data-anchor-id="description-8">Description</h2>
 <div class="ethical-note">
 <p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
 </div>
 <p>Post-Process Markdown to QMD Format with dataimago Customizations</p>
 </section>
-<section id="usage-5" class="level2">
-<h2 class="anchored" data-anchor-id="usage-5">Usage</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">post_process_md_to_qmd</span>(md_content, func_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="usage-7" class="level2">
+<h2 class="anchored" data-anchor-id="usage-7">Usage</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">post_process_md_to_qmd</span>(md_content, func_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="arguments-5" class="level2">
-<h2 class="anchored" data-anchor-id="arguments-5">Arguments</h2>
+<section id="arguments-7" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-7">Arguments</h2>
 <ul>
 <li><code>md_content</code>: Character vector of markdown content from Rd2md</li>
 <li><code>func_name</code>: Function name for customization</li>
 </ul>
 </section>
-<section id="keyword-4" class="level2">
-<h2 class="anchored" data-anchor-id="keyword-4">Keyword</h2>
+<section id="keyword-14" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-14">Keyword</h2>
 <p>internal</p>
 </section>
-<section id="value-5" class="level2">
-<h2 class="anchored" data-anchor-id="value-5">Value</h2>
+<section id="value-7" class="level2">
+<h2 class="anchored" data-anchor-id="value-7">Value</h2>
 <p>Character vector with qmd-formatted content</p>
 <hr>
 <p><em>This function is part of the dataimago ethical AI framework.</em></p>
@@ -633,26 +933,26 @@ Config/testthat/edition: 3</code></pre>
 </section>
 <section id="update-dataimago-assets-in-quarto-website" class="level1">
 <h1>Update dataimago Assets in Quarto Website</h1>
-<section id="description-7" class="level2">
-<h2 class="anchored" data-anchor-id="description-7">Description</h2>
+<section id="description-9" class="level2">
+<h2 class="anchored" data-anchor-id="description-9">Description</h2>
 <div class="ethical-note">
 <p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
 </div>
 <p>Update dataimago Assets in Quarto Website</p>
 </section>
-<section id="usage-6" class="level2">
-<h2 class="anchored" data-anchor-id="usage-6">Usage</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">update_dataimago_assets</span>(output_path, package_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="usage-8" class="level2">
+<h2 class="anchored" data-anchor-id="usage-8">Usage</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">update_dataimago_assets</span>(output_path, package_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="arguments-6" class="level2">
-<h2 class="anchored" data-anchor-id="arguments-6">Arguments</h2>
+<section id="arguments-8" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-8">Arguments</h2>
 <ul>
 <li><code>output_path</code>: Path to quarto website directory</li>
 <li><code>package_path</code>: Path to package root</li>
 </ul>
 </section>
-<section id="keyword-5" class="level2">
-<h2 class="anchored" data-anchor-id="keyword-5">Keyword</h2>
+<section id="keyword-15" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-15">Keyword</h2>
 <p>internal</p>
 <hr>
 <p><em>This function is part of the dataimago ethical AI framework.</em></p>

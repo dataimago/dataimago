@@ -102,7 +102,7 @@
 #'
 #' @section Package Metadata:
 #' \itemize{
-#'   \item **Version**: 0.0-0.2 (using dataimago semantic versioning)
+#'   \item **Version**: 0.0-0.3 (using dataimago semantic versioning)
 #'   \item **License**: MIT
 #'   \item **Maintainer**: Damian W. Betebenner <dbetebenner@nciea.org>
 #'   \item **Website**: https://dataimago.github.io/dataimago/
