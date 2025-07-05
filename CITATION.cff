@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use the dataimago package, please cite it using these metadata."
+authors:
+- family-names: "Betebenner"
+  given-names: "Damian"
+  orcid: "https://orcid.org/0000-0003-0476-5599"
+title: "dataimago: Ethical AI-Native Data Science Foundation Package."
+version: 0.0-0.3
+doi: 10.5281/zenodo.3634024
+date-released: 2025-7-5
+url: "https://dataimago.github.io/dataimago"
