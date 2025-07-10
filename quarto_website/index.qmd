@@ -3,7 +3,7 @@ title: "dataimago: Ethical AI-Native Data Science"
 subtitle: "Reconciling meaning (hermeneutics) and measurement (positivism)"
 ---
 
-![](assets/img/ai_monogram_supreme_COLOR.png){width=200 .center}
+![](assets/img/dataimago.png){width=200 .center}
 
 ## Welcome to dataimago
 
@@ -11,7 +11,7 @@ subtitle: "Reconciling meaning (hermeneutics) and measurement (positivism)"
 
 ### 🌟 Vision
 
-To become the most transformative AI organization of the 21st century, aligning superintelligence with human emancipation, and using flow-based performance management to reshape how societies learn, heal, grow, and govern.
+To become the most transformative AI organization of the 21st century, aligning super-intelligence with human emancipation, and using flow-based performance management to reshape how societies learn, heal, grow, and govern.
 
 ### 🎯 Mission
 
@@ -19,7 +19,7 @@ To develop AI systems and analytic tools that reconcile meaning (hermeneutics) a
 
 ## Package Overview
 
-The `dataimago` R package contains the philosophical foundations, technical architecture, and application templates for dataimago's emancipatory data science platform. It provides versioned access to critical theory frameworks, application blueprints, and packageSkeleton functionality for creating AI-native data science applications.
+The **dataimago** R package contains the philosophical foundations, technical architecture, and application templates for dataimago's emancipatory data science platform. It provides versioned access to critical theory frameworks, application blueprints, and packageSkeleton functionality for creating AI-native data science applications.
 
 ### Key Features
 
@@ -41,7 +41,7 @@ library(dataimago)
 create_quarto_documentation()
 ```
 
-## Philosophy in Practice
+## Philosophy as Coding
 
 dataimago represents a fundamental inversion: instead of embedding culture in AI, we **embed AI in culture** for emancipatory ends. This approach transforms AI from an instrument of domination into a force for human flourishing.
 
