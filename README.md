@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
-![dataimago Logo](inst/dataimago/04_dataimago_Content/Design_Assets/logos/ai_monogram_supreme_COLOR.png)
+![dataimago Logo](inst/dataimago/04_dataimago_Content/Design_Assets/logos/dataimago.png)
 
 ## Overview
 
