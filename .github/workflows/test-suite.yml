@@ -61,9 +61,8 @@ jobs:
 
       - name: Test Design System Build
         run: |
+          R CMD INSTALL .
           Rscript -e "
-          devtools::load_all()
-          
           # Test workspace creation
           result <- dataimago::create_ui_workspace(force_overwrite = TRUE)
           if (!result[['success']]) quit(status = 1)
@@ -110,9 +109,8 @@ jobs:
 
       - name: Test Documentation Generation
         run: |
+          R CMD INSTALL .
           Rscript -e "
-          devtools::load_all()
-          
           # Test Quarto documentation generation
           dataimago::create_quarto_documentation(
             package_path = '.',
