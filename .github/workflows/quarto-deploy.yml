@@ -45,13 +45,13 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Build Design System
+      - name: Install Package and Build Design System
         run: |
           cd ui
           pnpm install
           cd ..
+          R CMD INSTALL .
           Rscript -e "
-          devtools::load_all()
           result <- dataimago::build_design_system(verbose = TRUE)
           if (!result[['success']]) quit(status = 1)
           "
@@ -59,7 +59,6 @@ jobs:
       - name: Generate API Documentation
         run: |
           Rscript -e "
-          devtools::load_all()
           dataimago::create_quarto_documentation(
             package_path = '.',
             output_path = 'quarto_website',
