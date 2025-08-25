@@ -32,12 +32,12 @@ ui/ directory structure with package.json, build scripts, and source files.
 +-- build.js                  # Custom build script for compilation
 +-- src/
 |   +-- tokens/
-|   |   +-- colors.json       # dataimago color palette 
+|   |   +-- colors.json       # dataimago color palette
 |   |   +-- typography.json   # Font definitions and scales
 |   |   +-- spacing.json      # Spacing scale and dimensions
 |   +-- styles/
 |       +-- base.scss         # Base styles using design tokens
-|       +-- components.scss   # UI component styles  
+|       +-- components.scss   # UI component styles
 |       +-- utilities.scss    # Utility classes
 +-- dist/                     # Build output directory (created by build process)
 }\if{html}{\out{</div>}}

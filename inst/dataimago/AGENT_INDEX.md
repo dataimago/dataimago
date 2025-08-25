@@ -4,8 +4,8 @@ This index provides AI agents with structured navigation and dependency mapping 
 
 ## Repository Overview
 
-**Primary Philosophy**: Embedding AI in culture for emancipatory ends (not embedding culture in AI)  
-**Core Mission**: Emancipation through AI superalignment  
+**Primary Philosophy**: Embedding AI in culture for emancipatory ends (not embedding culture in AI)
+**Core Mission**: Emancipation through AI superalignment
 **Founding Influence**: Frankfurt School critical theory applied to contemporary AI development
 
 ## Directory Structure

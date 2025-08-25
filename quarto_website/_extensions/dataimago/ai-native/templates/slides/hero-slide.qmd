@@ -12,12 +12,12 @@
         <a class="logo-wrap" href="#" aria-label="{{< meta dataimago.package-name >}} package">
           <img class="logo" src="{{< meta dataimago.logo >}}" alt="{{< meta dataimago.package-name >}} logo"/>
         </a>
-        
+
         <!-- Optional: Add package metadata display -->
         <div class="package-meta" data-dataimago-animate="fade-up">
           <h1>{{< meta dataimago.package-name >}}</h1>
           <p class="package-tagline">{{< meta description >}}</p>
-          
+
           <!-- Optional: Add action buttons -->
           <div class="meta-actions">
             <a href="#installation" class="btn btn-primary">Get Started</a>
@@ -35,10 +35,10 @@
         {{< content-item title="{{< meta dataimago.slides.hero.title >}}" >}}
         {{< meta dataimago.slides.hero.description >}}
         {{< /content-item >}}
-        
+
         <!-- Add your content items here -->
         <!-- Each content-item will be automatically scrollable -->
-        
+
       {{< /hero-scroller >}}
     </div>
   </div>

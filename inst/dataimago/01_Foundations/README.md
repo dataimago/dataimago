@@ -11,7 +11,7 @@ This directory contains foundational documents that define dataimago's core iden
 ## Core Documents
 
 - **mission.md** - dataimago's mission statement and core activities
-- **vision.md** - Long-term vision and societal transformation goals  
+- **vision.md** - Long-term vision and societal transformation goals
 - **philosophy.md** - Philosophical foundations and ethical framework
 - **challenge.md** - Framing superalignment as the defining challenge of our time
 - **governance.md** - Multi-dimensional governance structure for emancipatory AI development
@@ -22,7 +22,7 @@ This directory contains foundational documents that define dataimago's core iden
 ```
 01_Foundations/
 ├── mission.md
-├── vision.md  
+├── vision.md
 ├── philosophy.md
 ├── challenge.md
 ├── governance.md
@@ -50,7 +50,7 @@ These documents establish dataimago as an AI-native company founded to address s
 The philosophical foundation draws from the Frankfurt School, postmodern critical theory, and contemporary AI alignment discourse to create systems that reconcile meaning (hermeneutics) and measurement (positivism) in service of human emancipation. Key themes include:
 
 - **Superalignment by design**: Intentional, emergent, and embedded alignment rather than default optimization
-- **Cultural embedding**: Placing AI within culture for transformative rather than replicative purposes  
+- **Cultural embedding**: Placing AI within culture for transformative rather than replicative purposes
 - **Democratic governance**: Multi-dimensional oversight ensuring emancipatory rather than dominating outcomes
 - **Critical consciousness**: Reflexive monitoring and participatory accountability mechanisms
 

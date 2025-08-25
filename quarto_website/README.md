@@ -16,7 +16,7 @@ This directory contains the source files for the dataimago project website, buil
   - `foundations/philosophy.qmd` - Theoretical frameworks
   - `manifesto/critical_theory_manifesto.qmd` - Critical theory positioning
 
-### Enhanced Features  
+### Enhanced Features
 - **AI-Native Extension** - Custom Quarto extension providing ethical AI styling
 - **Design System Integration** - CSS assets automatically built from `ui/` workspace
 - **Accessibility Compliance** - WCAG AA standards with reduced motion support
@@ -81,7 +81,7 @@ Several files are automatically updated by R functions:
 Pages requiring human editing:
 - Homepage content and messaging
 - Foundation document pages (mission, philosophy)
-- Manifesto and positioning content  
+- Manifesto and positioning content
 - Custom page layouts and navigation
 
 ## \U0001F680 Development Workflow
@@ -151,11 +151,11 @@ project:
 website:
   title: "dataimago"
   description: "Ethical AI-Native Data Science Foundation"
-  
+
 format:
   html:
     theme: dataimago/ai-native
-    css: 
+    css:
       - _extensions/dataimago/ai-native/assets/css/dataimago.min.css
     include-after-body:
       - _extensions/dataimago/ai-native/assets/js/accessibility.js
@@ -209,7 +209,7 @@ create_quarto_documentation(
 
 ### Machine-Readable Content
 - **Structured metadata** in page frontmatter
-- **Semantic HTML** with proper heading hierarchy  
+- **Semantic HTML** with proper heading hierarchy
 - **Export formats** for programmatic content access
 - **JSON-LD** structured data for search engines and AI agents
 

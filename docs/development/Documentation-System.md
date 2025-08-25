@@ -12,7 +12,7 @@ dataimago maintains documentation that serves both:
 ### Ethical AI Integration
 Every function includes:
 - **Technical documentation** - Parameters, return values, examples
-- **Philosophical context** - Why the function exists and its ethical implications  
+- **Philosophical context** - Why the function exists and its ethical implications
 - **MCP compatibility** - Structured for AI agent consumption
 - **Cross-references** - Links to foundation documents and related functions
 
@@ -45,7 +45,7 @@ Every function includes:
 
 ### Web Output Features
 - **Ethical AI annotations** on every function
-- **Cross-references** to philosophical foundations  
+- **Cross-references** to philosophical foundations
 - **Visual consistency** with dataimago design system
 - **Accessibility compliance** (WCAG AA)
 - **Mobile responsiveness** for all devices

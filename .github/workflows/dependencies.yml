@@ -25,11 +25,11 @@ jobs:
           Rscript -e "
           # Install tools for checking dependencies
           if (!require('pak', quietly = TRUE)) install.packages('pak')
-          
+
           # Check for outdated packages
           deps <- pak::local_deps()
           outdated <- pak::pkg_status(deps[['ref']])
-          
+
           if (nrow(outdated) > 0) {
             cat('Outdated R dependencies found:\n')
             print(outdated)
@@ -55,7 +55,7 @@ jobs:
         run: |
           cd ui
           pnpm outdated || true
-          
+
           # Check for security vulnerabilities
           pnpm audit --audit-level moderate
 
@@ -92,7 +92,7 @@ jobs:
         run: |
           cd ui
           pnpm update
-          
+
           # Check if changes were made
           if git diff --quiet package.json pnpm-lock.yaml; then
             echo "No Node.js dependency updates available"
@@ -111,18 +111,18 @@ jobs:
           title: "🔄 Automated dependency updates"
           body: |
             ## Automated Dependency Updates
-            
+
             This PR updates Node.js dependencies in the design system workspace.
-            
+
             ### Changes
             - Updated `ui/package.json` and `ui/pnpm-lock.yaml`
             - All updates passed security audit
-            
+
             ### Testing
             - [ ] Design system builds successfully
             - [ ] R CMD check passes
             - [ ] Website renders correctly
-            
+
             **Note**: This is an automated PR. Please review changes before merging.
           branch: chore/update-dependencies
           delete-branch: true

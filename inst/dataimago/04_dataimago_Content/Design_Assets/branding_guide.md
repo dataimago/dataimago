@@ -10,7 +10,7 @@ dataimago's visual identity must embody the tension at the heart of our mission:
 
 Our visual language should reflect:
 - **Intellectual rigor** without elitism
-- **Critical consciousness** without pessimism  
+- **Critical consciousness** without pessimism
 - **Technological sophistication** without techno-utopianism
 - **Emancipatory vision** without naive optimism
 
@@ -37,9 +37,9 @@ The dataimago visual identity now centers on **typographic synthesis** through c
 ### 1. AI Monogram (`ai_monogram_supreme_*.svg`)
 **Concept:** Superimposed 'a' and 'i' letters forming unified symbol
 **Implementation:** Futura italic provides geometric precision for seamless overlap
-**Symbolism:** 
+**Symbolism:**
 - **'a'** = human **agency**
-- **'i'** = artificial **intelligence** 
+- **'i'** = artificial **intelligence**
 - **Overlap** = genuine **collaboration** and synthesis
 
 **Applications:**
@@ -51,7 +51,7 @@ The dataimago visual identity now centers on **typographic synthesis** through c
 ### 2. Dataimago Wordmark (`dataimago_supreme_*.svg`)
 **Concept:** Full company name with integrated 'ai' character overlap
 **Implementation:** Maintains readable word while emphasizing philosophical core
-**Symbolism:** 
+**Symbolism:**
 - Complete company identity
 - Embedded philosophical principle
 - Professional presentation with deeper meaning
@@ -161,7 +161,7 @@ The existing red serves as a starting point but should be reconsidered for datai
 - Reference visual traditions of serious academic work
 - Maintain credibility through thoughtful design choices
 
-### Policy/Government Audience  
+### Policy/Government Audience
 - Professional, trustworthy presentation
 - Clear hierarchy and information design
 - Authoritative but not intimidating
@@ -224,7 +224,7 @@ Drawing from traditions of critical art and design, dataimago's visual language 
 - Presentation frameworks
 - Digital document templates
 
-### Print Applications  
+### Print Applications
 - Academic paper formats
 - Policy brief templates
 - Business collateral

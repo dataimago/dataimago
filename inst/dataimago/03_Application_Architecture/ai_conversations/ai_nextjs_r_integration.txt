@@ -1,6 +1,6 @@
 FOUNDER:
 
-Before we go into details, one aspect of this architecture I'd like to discuss with you has to do with whether this data-science application framework can ultimately go on to support rapid and nearly automated development of such tools. As these tools proliferate, they themselves become tools for AI to manipulate, creating an eco-system allowing for higher order interactions with AI systems as we attempt to align super-intelligence with emancipatory outcomes. 
+Before we go into details, one aspect of this architecture I'd like to discuss with you has to do with whether this data-science application framework can ultimately go on to support rapid and nearly automated development of such tools. As these tools proliferate, they themselves become tools for AI to manipulate, creating an eco-system allowing for higher order interactions with AI systems as we attempt to align super-intelligence with emancipatory outcomes.
 
 ChatGPT:
 

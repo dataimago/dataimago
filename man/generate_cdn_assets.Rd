@@ -40,7 +40,7 @@ tagged and released on GitHub:
 \strong{SRI (Subresource Integrity) Hashes:}
 Each CSS file gets a SHA-384 hash for security:
 
-\if{html}{\out{<div class="sourceCode html">}}\preformatted{<link rel="stylesheet" 
+\if{html}{\out{<div class="sourceCode html">}}\preformatted{<link rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/.../dataimago.min.css"
       integrity="sha384-..."
       crossorigin="anonymous">

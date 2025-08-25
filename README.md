@@ -91,7 +91,7 @@ if (result$success) {
 
 **Quarto Extension (Recommended):**
 ```yaml
-# _quarto.yml  
+# _quarto.yml
 format:
   html:
     theme: dataimago/ai-native
@@ -119,7 +119,7 @@ module.exports = {
 ```r
 # Access philosophical foundations (planned functionality)
 # get_foundation_document("mission")
-# get_foundation_document("philosophy") 
+# get_foundation_document("philosophy")
 # get_manifesto_content("critical_theory")
 ```
 
@@ -174,7 +174,7 @@ dataimago represents a fundamental inversion: instead of embedding culture in AI
 ### Code-as-Philosophy Commitments
 
 - **Hermeneutic Transparency**: All modeling assumptions documented and interpretable
-- **Positivistic Rigor**: Empirical operations robust, efficient, and replicable  
+- **Positivistic Rigor**: Empirical operations robust, efficient, and replicable
 - **Ethical Reflexivity**: Tools include affordances for users to interrogate usage
 - **Iterative Design**: Each commit is dialectical step toward future aspirations
 
@@ -201,7 +201,7 @@ This package is designed for seamless integration with AI agents and Model Conte
   "description": "Generate ethical AI documentation from R package",
   "parameters": {
     "package_path": "Path to R package (default: current directory)",
-    "output_path": "Output directory for generated website", 
+    "output_path": "Output directory for generated website",
     "include_foundation_links": "Include links to dataimago foundations"
   }
 }
@@ -211,7 +211,7 @@ This package is designed for seamless integration with AI agents and Model Conte
 
 ### \u2705 Phase 1: Foundation (COMPLETE)
 - Package structure and metadata
-- Foundation document organization  
+- Foundation document organization
 - Content curation via `.Rbuildignore`
 - MIT licensing and proper attribution
 
@@ -235,7 +235,7 @@ This package is designed for seamless integration with AI agents and Model Conte
 
 ### \U0001F504 Phase 5: Foundation Access Functions (PLANNED)
 - `get_foundation_document()` - Programmatic access to philosophical content
-- `create_dataimago_app()` - Generate application skeletons  
+- `create_dataimago_app()` - Generate application skeletons
 - `bootstrap_emancipatory_framework()` - Initialize projects with ethical foundations
 
 ## Contributing

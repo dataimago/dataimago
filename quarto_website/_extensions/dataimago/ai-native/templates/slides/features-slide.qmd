@@ -10,7 +10,7 @@
       <h2>{{< meta dataimago.slides.features.title >}}</h2>
       <p class="lead">{{< meta dataimago.slides.features.description >}}</p>
     </div>
-    
+
     <div class="strip">
       {{< feature-box title="Core Features" icon="⚙️" animate="fade-up" >}}
       - List your main package features here
@@ -18,14 +18,14 @@
       - Use bullet points for easy scanning
       - Focus on user benefits, not implementation details
       {{< /feature-box >}}
-      
+
       {{< feature-box title="Integration" icon="🔗" animate="fade-up" >}}
       - Web framework compatibility (Next.js, React, Vue)
       - JSON/API export capabilities
       - Docker and serverless deployment ready
       - CI/CD pipeline integration
       {{< /feature-box >}}
-      
+
       {{< feature-box title="AI-Native Design" icon="🤖" animate="fade-up" >}}
       - Structured metadata for machine consumption
       - Ethical framework (MiCP) integration
@@ -33,7 +33,7 @@
       - Cross-platform data serialization
       {{< /feature-box >}}
     </div>
-    
+
     <!-- Optional: Additional feature sections -->
     <div class="row mt-5">
       <div class="col-md-6" data-dataimago-animate="fade-left">
@@ -45,7 +45,7 @@
           <li>Error handling and validation</li>
         </ul>
       </div>
-      
+
       <div class="col-md-6" data-dataimago-animate="fade-right">
         <h3>Developer Experience</h3>
         <ul>

@@ -13,7 +13,7 @@ This directory contains comprehensive GitHub Actions workflows for the dataimago
   - Automated dependency management
   - Build artifact caching
 
-### 2. **quarto-deploy.yml** - Website Deployment  
+### 2. **quarto-deploy.yml** - Website Deployment
 - **Triggers**: Push to main, manual dispatch
 - **Features**:
   - Automated API documentation generation
@@ -22,7 +22,7 @@ This directory contains comprehensive GitHub Actions workflows for the dataimago
   - GitHub Pages deployment
 
 ### 3. **release-cdn.yml** - CDN Release Automation
-- **Triggers**: Git tags (v*.*.*), manual dispatch  
+- **Triggers**: Git tags (v*.*.*), manual dispatch
 - **Features**:
   - Versioned CDN asset generation
   - SRI hash computation for security
@@ -52,14 +52,14 @@ This directory contains comprehensive GitHub Actions workflows for the dataimago
 2. **Create PR to main** → Full test suite + cross-platform checks
 3. **Merge to main** → Website deployment + CDN preparation
 
-### Release Workflow  
+### Release Workflow
 1. **Create git tag** (`v1.0.0`) → Triggers CDN release automation
 2. **Assets built and published** → jsDelivr CDN, GitHub releases
 3. **Documentation updated** → Website reflects new version
 
 ### Manual Operations
 - **Workflow dispatch** available on all workflows
-- **Emergency deployments** via manual triggers  
+- **Emergency deployments** via manual triggers
 - **Dependency updates** can be triggered manually
 
 ## 📦 CDN Distribution
@@ -90,7 +90,7 @@ format:
 ### Required Secrets
 - `GITHUB_TOKEN` (automatic, for repository access)
 
-### Required Permissions  
+### Required Permissions
 - **Contents**: write (for releases)
 - **Pages**: write (for GitHub Pages)
 - **ID token**: write (for Pages deployment)
@@ -104,12 +104,12 @@ Recommended settings for `main` branch:
 
 ## 🎯 Benefits
 
-✅ **Automated Quality Assurance** - Every commit tested across platforms  
-✅ **Zero-Touch Releases** - Tag creation triggers full CDN deployment  
-✅ **Documentation Sync** - Website always reflects current package state  
-✅ **Security Monitoring** - Automatic vulnerability detection  
-✅ **Dependency Management** - Proactive updates via automated PRs  
-✅ **Multi-Platform Support** - Windows, macOS, Linux testing  
-✅ **CDN Distribution** - Global asset delivery via jsDelivr  
+✅ **Automated Quality Assurance** - Every commit tested across platforms
+✅ **Zero-Touch Releases** - Tag creation triggers full CDN deployment
+✅ **Documentation Sync** - Website always reflects current package state
+✅ **Security Monitoring** - Automatic vulnerability detection
+✅ **Dependency Management** - Proactive updates via automated PRs
+✅ **Multi-Platform Support** - Windows, macOS, Linux testing
+✅ **CDN Distribution** - Global asset delivery via jsDelivr
 
 This CI/CD setup embodies dataimago's principle of **R as source of truth** while leveraging best practices for modern package distribution and deployment automation.

@@ -9,10 +9,10 @@ contributes:
     html:
       # Main format definition
       dataimago-ai-native-html:
-        theme: 
+        theme:
           light: [cosmo, assets/css/ai-native-light.scss]
           dark: [cosmo, assets/css/ai-native-dark.scss]
-        css: 
+        css:
           - assets/css/lenis-integration.scss
           - assets/css/components.scss
         js:
@@ -20,13 +20,13 @@ contributes:
           - assets/js/slide-navigation.js
           - assets/js/hero-scroller.js
           - assets/js/accessibility.js
-        
+
         # Default page layout optimized for AI-native content
         page-layout: full
         toc: false
         number-sections: false
         smooth-scroll: false  # We use Lenis instead
-        
+
         # Enhanced metadata for AI consumption
         include-in-header: |
           <meta name="dataimago:ai-native" content="true">
@@ -34,11 +34,11 @@ contributes:
           <meta name="generator" content="Quarto dataimago-ai-native extension">
           <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.8/dist/lenis.css">
           <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,600" rel="stylesheet" type="text/css">
-        
+
         # JavaScript dependencies
         include-after-body: |
           <script src="https://unpkg.com/lenis@1.3.8/dist/lenis.min.js"></script>
-          
+
   shortcodes:
     - shortcodes/slide-container.lua
     - shortcodes/hero-scroller.lua
@@ -60,22 +60,22 @@ config-schema:
         type: string
         description: "Name of the R package"
         default: "MyPackage"
-      
+
       logo:
         type: string
         description: "Path to package logo image"
         default: "assets/img/logo.png"
-      
+
       primary-color:
         type: string
         description: "Primary brand color (CSS color value)"
         default: "#83838f"
-      
+
       accent-color:
         type: string
         description: "Accent color for highlights and interactions"
         default: "#ff69b4"
-      
+
       slides:
         type: object
         properties:
@@ -88,21 +88,21 @@ config-schema:
               content-items:
                 type: integer
                 default: 6
-          
+
           features:
             type: object
             properties:
               cards:
                 type: integer
                 default: 3
-          
+
           technical:
             type: object
             properties:
               include-micp:
                 type: boolean
                 default: true
-      
+
       lenis:
         type: object
         properties:
@@ -115,7 +115,7 @@ config-schema:
           keyboard-nav:
             type: boolean
             default: true
-      
+
       ai-native:
         type: object
         properties:
@@ -140,7 +140,7 @@ install:
 
     # Or add to existing project
     quarto add dataimago/dataimago-ai-native
-    
+
     # Create new project with extension
     quarto create project website my-package --with dataimago-ai-native
 

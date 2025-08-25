@@ -13,19 +13,19 @@ NULL
 #' Generate Quarto Documentation from R Package
 #'
 #' Converts R package documentation (.Rd files) and metadata (DESCRIPTION)
-#' into Quarto-compatible .qmd files for website generation. Integrates 
+#' into Quarto-compatible .qmd files for website generation. Integrates
 #' dataimago branding and philosophical foundations.
 #'
-#' @param package_path Character. Path to the R package root directory. 
+#' @param package_path Character. Path to the R package root directory.
 #'   Must contain DESCRIPTION file and man/ directory with .Rd files.
 #'   Default: "." (current directory)
-#' @param output_path Character. Path to quarto website directory where .qmd files 
+#' @param output_path Character. Path to quarto website directory where .qmd files
 #'   will be generated. Directory will be created if it doesn't exist.
 #'   Default: "quarto_website"
-#' @param include_description Logical. Whether to include full DESCRIPTION file 
+#' @param include_description Logical. Whether to include full DESCRIPTION file
 #'   content in the generated API reference. Useful for package metadata display.
 #'   Default: TRUE
-#' @param include_foundation_links Logical. Whether to add automatic links to 
+#' @param include_foundation_links Logical. Whether to add automatic links to
 #'   dataimago philosophical foundation documents in the generated documentation.
 #'   Default: TRUE
 #' @param template Character. Documentation template to use for styling and structure.
@@ -33,7 +33,7 @@ NULL
 #'   Default: "dataimago"
 #'
 #' @return Character (invisible). File path to the generated api_reference.qmd file.
-#'   Side effects: Creates .qmd files in output_path directory and copies 
+#'   Side effects: Creates .qmd files in output_path directory and copies
 #'   dataimago assets (logos, etc.) to assets/img/ subdirectory.
 #'
 #' @details
@@ -41,7 +41,7 @@ NULL
 #' \itemize{
 #'   \item **Hermeneutic Integration**: Parses the package DESCRIPTION for metadata
 #'   \item **Technical Conversion**: Uses Rd2md to convert .Rd files to Quarto markdown
-#'   \item **Ethical Annotation**: Adds philosophical context to every function via 
+#'   \item **Ethical Annotation**: Adds philosophical context to every function via
 #'     \code{post_process_md_to_qmd()}
 #'   \item **Foundation Linking**: Cross-references technical docs with philosophical content
 #'   \item **Visual Identity**: Copies dataimago logos and applies custom CSS styling
@@ -57,7 +57,7 @@ NULL
 #'   \item dataimago branding footer on each function
 #' }
 #'
-#' For AI agents and MCP tools, this function provides structured documentation 
+#' For AI agents and MCP tools, this function provides structured documentation
 #' generation that embeds philosophical context into technical reference material,
 #' enabling AI systems to understand both the "what" and "why" of each function.
 #'
@@ -72,34 +72,34 @@ NULL
 #' }
 #'
 #' @section Philosophical Context:
-#' This function embodies dataimago's principle of embedding AI within culture for 
-#' emancipatory purposes. Rather than treating documentation as mere technical 
-#' reference, it creates living documents that connect computational tools to 
+#' This function embodies dataimago's principle of embedding AI within culture for
+#' emancipatory purposes. Rather than treating documentation as mere technical
+#' reference, it creates living documents that connect computational tools to
 #' their ethical foundations and societal purposes.
 #'
 #' @examples
 #' \dontrun{
 #' # Basic usage - generate documentation for current package
 #' create_quarto_documentation()
-#' 
+#'
 #' # Generate for specific package with custom output location
 #' create_quarto_documentation(
 #'   package_path = "/path/to/my/package",
 #'   output_path = "docs/website"
 #' )
-#' 
+#'
 #' # Generate minimal documentation without foundation links
 #' create_quarto_documentation(
 #'   include_foundation_links = FALSE,
 #'   include_description = FALSE
 #' )
-#' 
+#'
 #' # For MCP/AI usage - capture output path
 #' doc_path <- create_quarto_documentation()
 #' cat("Generated documentation at:", doc_path)
 #' }
 #'
-#' @seealso 
+#' @seealso
 #' \code{\link{parse_description_file}} for DESCRIPTION parsing,
 #' \code{\link{convert_rd_files_to_qmd}} for .Rd conversion,
 #' \code{\link{update_dataimago_assets}} for asset management
@@ -107,22 +107,22 @@ NULL
 #' @keywords documentation generation quarto ethical-ai
 #' @concept dataimago ethical-documentation MCP-compatible
 #' @export
-create_quarto_documentation <- function(package_path = ".", 
+create_quarto_documentation <- function(package_path = ".",
                                        output_path = "quarto_website",
                                        include_description = TRUE,
                                        include_foundation_links = TRUE,
                                        template = "dataimago") {
-  
+
   # Validate inputs
   if (!dir.exists(package_path)) {
     stop("Package path does not exist: ", package_path)
   }
-  
+
   desc_file <- file.path(package_path, "DESCRIPTION")
   if (!file.exists(desc_file)) {
     stop("DESCRIPTION file not found in package_path: ", package_path)
   }
-  
+
   man_dir <- file.path(package_path, "man")
   if (!dir.exists(man_dir)) {
     warning("man/ directory not found. No .Rd files to process.")
@@ -130,18 +130,18 @@ create_quarto_documentation <- function(package_path = ".",
   } else {
     rd_files <- list.files(man_dir, pattern = "\\.Rd$", full.names = TRUE)
   }
-  
+
   # Create output directory if it doesn't exist
   if (!dir.exists(output_path)) {
     dir.create(output_path, recursive = TRUE)
   }
-  
+
   # Parse DESCRIPTION file
   desc_content <- parse_description_file(desc_file)
-  
+
   # Convert .Rd files to qmd format using Rd2md
   rd_content <- convert_rd_files_to_qmd(rd_files)
-  
+
   # Generate api_reference.qmd
   api_reference_content <- generate_api_reference_qmd(
     desc_content = desc_content,
@@ -149,33 +149,33 @@ create_quarto_documentation <- function(package_path = ".",
     include_description = include_description,
     include_foundation_links = include_foundation_links
   )
-  
+
   # Write api_reference.qmd
   api_file <- file.path(output_path, "api_reference.qmd")
   writeLines(api_reference_content, api_file)
-  
+
   # Update dataimago assets if template is dataimago
   if (template == "dataimago") {
     update_dataimago_assets(output_path, package_path)
   }
-  
+
   cat(crayon::green("\u2713 Quarto documentation generated successfully\n"))
   cat(crayon::silver("  API reference: "), api_file, "\n")
-  
+
   invisible(api_file)
 }
 
 #' Parse DESCRIPTION File
-#' 
+#'
 #' @param desc_file Path to DESCRIPTION file
 #' @return List containing parsed DESCRIPTION fields
 #' @keywords internal
 parse_description_file <- function(desc_file) {
   desc_lines <- readLines(desc_file)
-  
+
   # Parse key fields
   desc_content <- list()
-  
+
   # Extract basic fields
   desc_content$package <- extract_desc_field(desc_lines, "Package")
   desc_content$version <- extract_desc_field(desc_lines, "Version")
@@ -189,15 +189,15 @@ parse_description_file <- function(desc_file) {
   desc_content$depends <- extract_desc_field(desc_lines, "Depends")
   desc_content$imports <- extract_desc_field(desc_lines, "Imports")
   desc_content$suggests <- extract_desc_field(desc_lines, "Suggests")
-  
+
   # Format for display
   desc_content$full_text <- paste(desc_lines, collapse = "\n")
-  
+
   return(desc_content)
 }
 
 #' Extract Field from DESCRIPTION Lines
-#' 
+#'
 #' @param desc_lines Character vector of DESCRIPTION file lines
 #' @param field_name Name of field to extract
 #' @return Character string with field value or NULL if not found
@@ -205,14 +205,14 @@ parse_description_file <- function(desc_file) {
 extract_desc_field <- function(desc_lines, field_name) {
   field_pattern <- paste0("^", field_name, ":\\s*")
   field_line_idx <- grep(field_pattern, desc_lines)
-  
+
   if (length(field_line_idx) == 0) {
     return(NULL)
   }
-  
+
   # Get the field value and any continuation lines
   field_value <- sub(field_pattern, "", desc_lines[field_line_idx])
-  
+
   # Check for continuation lines (starting with whitespace)
   if (field_line_idx < length(desc_lines)) {
     continuation_lines <- c()
@@ -223,17 +223,17 @@ extract_desc_field <- function(desc_lines, field_name) {
         break
       }
     }
-    
+
     if (length(continuation_lines) > 0) {
       field_value <- paste(c(field_value, continuation_lines), collapse = " ")
     }
   }
-  
+
   return(trimws(field_value))
 }
 
 #' Convert .Rd Files to QMD Format using Rd2md
-#' 
+#'
 #' @param rd_files Character vector of paths to .Rd files
 #' @return List containing converted documentation for each function
 #' @keywords internal
@@ -241,46 +241,46 @@ convert_rd_files_to_qmd <- function(rd_files) {
   if (length(rd_files) == 0) {
     return(list())
   }
-  
+
   rd_content <- list()
-  
+
   for (rd_file in rd_files) {
     # Extract function name from filename
     func_name <- tools::file_path_sans_ext(basename(rd_file))
-    
+
     # Use Rd2md to convert .Rd to markdown (using new as_markdown function)
     md_content <- Rd2md::as_markdown(Rd2md::read_rdfile(rd_file))
-    
+
     # Post-process markdown to qmd format with dataimago customizations
     qmd_content <- post_process_md_to_qmd(md_content, func_name)
-    
+
     rd_content[[func_name]] <- qmd_content
   }
-  
+
   return(rd_content)
 }
 
 
 #' Post-Process Markdown to QMD Format with dataimago Customizations
-#' 
+#'
 #' @param md_content Character vector of markdown content from Rd2md
 #' @param func_name Function name for customization
 #' @return Character vector with qmd-formatted content
 #' @keywords internal
 post_process_md_to_qmd <- function(md_content, func_name) {
-  
+
   # Split content into lines if it's a single string
   if (length(md_content) == 1) {
     md_lines <- unlist(strsplit(md_content, "\n"))
   } else {
     md_lines <- md_content
   }
-  
+
   qmd_lines <- c()
-  
+
   for (i in seq_along(md_lines)) {
     line <- md_lines[i]
-    
+
     # Customize specific sections for dataimago
     if (grepl("^# ", line)) {
       # Convert main title to include backticks around function name
@@ -312,30 +312,30 @@ post_process_md_to_qmd <- function(md_content, func_name) {
       qmd_lines <- c(qmd_lines, line)
     }
   }
-  
+
   # Add dataimago footer to function documentation
   qmd_lines <- c(qmd_lines, "")
   qmd_lines <- c(qmd_lines, "---")
   qmd_lines <- c(qmd_lines, "")
   qmd_lines <- c(qmd_lines, "*This function is part of the dataimago ethical AI framework.*")
   qmd_lines <- c(qmd_lines, "")
-  
+
   return(qmd_lines)
 }
 
 #' Generate API Reference QMD Content
-#' 
+#'
 #' @param desc_content Parsed DESCRIPTION content
 #' @param rd_content Converted .Rd content
 #' @param include_description Include DESCRIPTION section
 #' @param include_foundation_links Include dataimago foundation links
 #' @return Character vector with complete qmd content
 #' @keywords internal
-generate_api_reference_qmd <- function(desc_content, rd_content, 
+generate_api_reference_qmd <- function(desc_content, rd_content,
                                       include_description = TRUE,
                                       include_foundation_links = TRUE) {
   qmd_content <- c()
-  
+
   # Add YAML frontmatter
   qmd_content <- c(qmd_content, "---")
   qmd_content <- c(qmd_content, paste0("title: \"", desc_content$package, " API Reference\""))
@@ -347,7 +347,7 @@ generate_api_reference_qmd <- function(desc_content, rd_content,
   qmd_content <- c(qmd_content, "    toc-depth: 3")
   qmd_content <- c(qmd_content, "---")
   qmd_content <- c(qmd_content, "")
-  
+
   # Add DESCRIPTION section if requested
   if (include_description && !is.null(desc_content$full_text)) {
     qmd_content <- c(qmd_content, "# Package Information")
@@ -355,7 +355,7 @@ generate_api_reference_qmd <- function(desc_content, rd_content,
     qmd_content <- c(qmd_content, format_description_fields(desc_content))
     qmd_content <- c(qmd_content, "")
   }
-  
+
   # Add foundation links if requested
   if (include_foundation_links) {
     qmd_content <- c(qmd_content, "## dataimago Foundation")
@@ -367,26 +367,26 @@ generate_api_reference_qmd <- function(desc_content, rd_content,
     qmd_content <- c(qmd_content, "- [Critical Theory Manifesto](../manifesto/critical_theory_manifesto.html)")
     qmd_content <- c(qmd_content, "")
   }
-  
+
   # Add function documentation sections
   qmd_content <- c(qmd_content, add_function_documentation_sections(rd_content))
-  
+
   return(qmd_content)
 }
 
 #' Update dataimago Assets in Quarto Website
-#' 
+#'
 #' @param output_path Path to quarto website directory
 #' @param package_path Path to package root
 #' @keywords internal
 update_dataimago_assets <- function(output_path, package_path) {
-  
+
   # Create assets directory structure
   assets_dir <- file.path(output_path, "assets")
   img_dir <- file.path(assets_dir, "img")
   css_dir <- file.path(assets_dir, "css")
   js_dir <- file.path(assets_dir, "js")
-  
+
   if (!dir.exists(img_dir)) {
     dir.create(img_dir, recursive = TRUE)
   }
@@ -396,29 +396,29 @@ update_dataimago_assets <- function(output_path, package_path) {
   if (!dir.exists(js_dir)) {
     dir.create(js_dir, recursive = TRUE)
   }
-  
+
   # Copy dataimago logos from inst/
   inst_dir <- file.path(package_path, "inst", "dataimago", "04_dataimago_Content", "Design_Assets", "logos")
-  
+
   if (dir.exists(inst_dir)) {
     png_files <- list.files(inst_dir, pattern = "\\.png$", full.names = TRUE)
-    
+
     for (png_file in png_files) {
       file.copy(png_file, img_dir, overwrite = TRUE)
     }
-    
+
     cat(crayon::silver("  Copied"), length(png_files), "logo files to assets/img/\n")
   }
-  
+
   # Ensure dataimago/ai-native Quarto extension is available
   extensions_dir <- file.path(output_path, "_extensions", "dataimago", "ai-native")
   if (dir.exists(extensions_dir)) {
     cat(crayon::silver("  Found dataimago/ai-native Quarto extension\n"))
-    
+
     # Copy extension assets to main assets directory for broader accessibility
     ext_css_dir <- file.path(extensions_dir, "assets", "css")
     ext_js_dir <- file.path(extensions_dir, "assets", "js")
-    
+
     if (dir.exists(ext_css_dir)) {
       css_files <- list.files(ext_css_dir, pattern = "\\.(scss|css)$", full.names = TRUE)
       for (css_file in css_files) {
@@ -426,7 +426,7 @@ update_dataimago_assets <- function(output_path, package_path) {
       }
       cat(crayon::silver("  Copied"), length(css_files), "extension CSS/SCSS files\n")
     }
-    
+
     if (dir.exists(ext_js_dir)) {
       js_files <- list.files(ext_js_dir, pattern = "\\.js$", full.names = TRUE)
       for (js_file in js_files) {
@@ -437,19 +437,19 @@ update_dataimago_assets <- function(output_path, package_path) {
   } else {
     cat(crayon::yellow("  Warning: dataimago/ai-native extension not found\n"))
   }
-  
+
   invisible(TRUE)
 }
 
 #' Format DESCRIPTION Fields for Quarto Display
-#' 
+#'
 #' @param desc_content Parsed DESCRIPTION content list
 #' @return Character vector with formatted DESCRIPTION fields
 #' @keywords internal
 format_description_fields <- function(desc_content) {
-  
+
   formatted_lines <- c()
-  
+
   # Define field display order and labels
   field_order <- list(
     list(field = "package", label = "Package"),
@@ -465,73 +465,73 @@ format_description_fields <- function(desc_content) {
     list(field = "imports", label = "Imports"),
     list(field = "suggests", label = "Suggests")
   )
-  
+
   # Format each field that exists
   for (field_info in field_order) {
     field_value <- desc_content[[field_info$field]]
-    
+
     if (!is.null(field_value) && field_value != "") {
       # Format as bold label followed by content
       formatted_lines <- c(formatted_lines, paste0("**", field_info$label, "**: ", field_value))
       formatted_lines <- c(formatted_lines, "")
     }
   }
-  
+
   return(formatted_lines)
 }
 
 #' Add Function Documentation Sections with Exported/Non-exported Structure
-#' 
+#'
 #' @param rd_content List of converted .Rd content
 #' @return Character vector with structured function documentation
 #' @keywords internal
 add_function_documentation_sections <- function(rd_content) {
-  
+
   if (length(rd_content) == 0) {
     return(character(0))
   }
-  
+
   section_lines <- c()
-  
+
   # Separate exported and non-exported functions
   # For now, we'll use a simple heuristic: functions with @keywords internal are non-exported
   exported_functions <- c()
   internal_functions <- c()
-  
+
   for (func_name in names(rd_content)) {
     # Check if function content contains "keyword.*internal" pattern
     func_content <- paste(rd_content[[func_name]], collapse = "\n")
-    
+
     if (grepl("keyword.*internal", func_content, ignore.case = TRUE)) {
       internal_functions <- c(internal_functions, func_name)
     } else {
       exported_functions <- c(exported_functions, func_name)
     }
   }
-  
+
   # Add exported functions section
   if (length(exported_functions) > 0) {
     section_lines <- c(section_lines, "# Exported Functions")
     section_lines <- c(section_lines, "")
     section_lines <- c(section_lines, "The following functions are exported and available for use:")
     section_lines <- c(section_lines, "")
-    
+
     for (func_name in exported_functions) {
       section_lines <- c(section_lines, rd_content[[func_name]])
     }
   }
-  
+
   # Add internal functions section
   if (length(internal_functions) > 0) {
     section_lines <- c(section_lines, "# Internal Functions")
     section_lines <- c(section_lines, "")
     section_lines <- c(section_lines, "The following functions are internal to the package:")
     section_lines <- c(section_lines, "")
-    
+
     for (func_name in internal_functions) {
       section_lines <- c(section_lines, rd_content[[func_name]])
     }
   }
-  
+
   return(section_lines)
 }

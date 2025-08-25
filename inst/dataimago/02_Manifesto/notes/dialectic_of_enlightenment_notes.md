@@ -62,7 +62,7 @@ Horkheimer and Adorno argue that Enlightenment reason, originally intended to li
 3. **Instrumental Reason** → **New Mythology** (blind faith in calculation)
 4. **New Mythology** → **Domination** (humans become objects of manipulation)
 
-**Application to AI**: 
+**Application to AI**:
 - AI was developed to augment human intelligence (liberation)
 - AI systems increasingly replace human judgment (instrumentalization)
 - AI decisions become unquestionable oracles (new mythology)

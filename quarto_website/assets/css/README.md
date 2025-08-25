@@ -36,7 +36,7 @@ This comprehensive SCSS file includes:
 #### **Advanced Navbar System**
 - **Dynamic Background**: Smooth color transitions on scroll
 - **Logo Integration**: Hover effects with color switching
-- **Responsive Dropdown Menus**: 
+- **Responsive Dropdown Menus**:
   - Rounded corners with subtle shadows
   - Animated caret rotation (up ↔ down)
   - Inset hover effects with multi-layer shadows
@@ -58,7 +58,7 @@ This comprehensive SCSS file includes:
 
 The documents page maintains its own dedicated stylesheet for:
 - **Document Cards**: Grid layout with hover animations
-- **Typography**: Document-specific heading and text styling  
+- **Typography**: Document-specific heading and text styling
 - **Interactive Elements**: Buttons, tags, and action components
 - **Responsive Design**: Mobile-optimized layouts
 
@@ -83,7 +83,7 @@ hover: #000;
 ### Advanced Shadow Effects
 ```scss
 // Multi-layer inset shadows for dropdown items
-box-shadow: inset 0 2px 4px rgba(222, 222, 220, 0.8), 
+box-shadow: inset 0 2px 4px rgba(222, 222, 220, 0.8),
             inset 0 1px 2px rgba(222, 222, 220, 0.8),
             inset 0 -1px 2px rgba(222, 222, 220, 0.8),
             inset 0 -2px 4px rgba(222, 222, 220, 0.8);
@@ -103,7 +103,7 @@ The CSS works in conjunction with JavaScript for:
 assets/css/
 ├── website-custom.scss  (527 lines - MAIN STYLESHEET)
 │   ├── SCSS Variables & Defaults
-│   ├── Body & Layout Styling  
+│   ├── Body & Layout Styling
 │   ├── Advanced Navbar System
 │   ├── Dropdown Menu Animations
 │   ├── Link & Typography Styling
@@ -160,7 +160,7 @@ build_design_system(verbose = TRUE)
 
 ### Benefits of New System
 1. **R-First**: No Node.js knowledge required
-2. **Multi-Platform**: Same tokens → Quarto + Next.js + R Shiny  
+2. **Multi-Platform**: Same tokens → Quarto + Next.js + R Shiny
 3. **Accessibility**: WCAG AA compliance built-in
 4. **Versioned**: CDN distribution with SRI hashes
 5. **Ethical**: Reduced motion and high contrast support
@@ -173,11 +173,11 @@ build_design_system(verbose = TRUE)
 theme:
   - cosmo
   - ./assets/css/website-custom.scss
-css: 
+css:
   - ./assets/css/documents.css
 ```
 
 ### JavaScript Dependencies
 - `scroll.js` - Navbar shrinking and dropdown management
 - `jquery` - DOM manipulation and event handling
-- Bootstrap classes - Dropdown state management (.show, .open) 
+- Bootstrap classes - Dropdown state management (.show, .open)

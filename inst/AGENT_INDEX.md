@@ -12,7 +12,7 @@ This document provides a structured index of AI agent capabilities and interacti
 
 #### `create_quarto_documentation()`
 - **Purpose**: Generate ethical AI documentation from R package structure
-- **Input Schema**: 
+- **Input Schema**:
   ```json
   {
     "package_path": "string (directory path)",
@@ -40,7 +40,7 @@ This document provides a structured index of AI agent capabilities and interacti
 ### Primary Directories
 ```
 inst/dataimago/01_Foundations/     # Core philosophical documents
-inst/dataimago/02_Manifesto/       # Critical theory frameworks  
+inst/dataimago/02_Manifesto/       # Critical theory frameworks
 inst/dataimago/03_Application_Architecture/  # Technical blueprints
 inst/dataimago/04_dataimago_Content/         # Design assets and branding
 inst/CLAUDE.md                     # Primary AI context file

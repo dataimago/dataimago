@@ -1,6 +1,6 @@
 Founder:
 
-I would like you to discuss the connections between Foucault, especially his writing in The Order of Things and its connection to the four levels of simulacra that Jean Baudrillard discussed in Simulacra and Simulation. Please expound upon historical and contemporary examples drawn from politics and science (e.g., AI) to illustrate these what these philosophers propose. 
+I would like you to discuss the connections between Foucault, especially his writing in The Order of Things and its connection to the four levels of simulacra that Jean Baudrillard discussed in Simulacra and Simulation. Please expound upon historical and contemporary examples drawn from politics and science (e.g., AI) to illustrate these what these philosophers propose.
 
 ChatGPT:
 
@@ -8,9 +8,9 @@ The connection between Michel Foucault’s The Order of Things and Jean Baudrill
 
 Founder:
 
-Yes, I would like to expand this with regard to education. In particular, I would like you to discuss how education has transformed through history from an institution/process for the few to one subsuming all. If there are ways to include the historical writings of authors like Bowles and Gintis, that would be great. 
+Yes, I would like to expand this with regard to education. In particular, I would like you to discuss how education has transformed through history from an institution/process for the few to one subsuming all. If there are ways to include the historical writings of authors like Bowles and Gintis, that would be great.
 
-Foucault wrote about education and it would be good if you could include both Foucault's thoughts on this as well as thinkers like Deleuze as terms like personalized education become tractable with current AI assisted technology. 
+Foucault wrote about education and it would be good if you could include both Foucault's thoughts on this as well as thinkers like Deleuze as terms like personalized education become tractable with current AI assisted technology.
 
 
 ChatGPT:
@@ -30,12 +30,12 @@ Founder:
 For this research:
 
 1. The intended audience is highly educated public often overlapping with academic. Expounding upon policy implications if worthwhile making policy makers potential readers of the thinking.
-2. I'm particularly interested currently the US education system but would like to consider first world/modernized education, in general. Historically, you will likely have to draw on education in Europe and other parts of the world. 
-3. Both historical and contemporary, illustrating the different orders/levels that Foucault and Baudrillard reference. 
-4. If you have contemporary specific examples of AI that help illustrate these deeper levels that would be fantastic. 
-5. Diagrams or info-graphics are always helpful, particularly with regard to the time-line of change that I am envisioning. 
+2. I'm particularly interested currently the US education system but would like to consider first world/modernized education, in general. Historically, you will likely have to draw on education in Europe and other parts of the world.
+3. Both historical and contemporary, illustrating the different orders/levels that Foucault and Baudrillard reference.
+4. If you have contemporary specific examples of AI that help illustrate these deeper levels that would be fantastic.
+5. Diagrams or info-graphics are always helpful, particularly with regard to the time-line of change that I am envisioning.
 
-Please pull in all relevant research on this building upon the foundation that Foucault and Baudrillard are discussing. You are a world-class expert philosopher and historian on these topics. Please put all of your capabilities to work to put forward a clear, deep, and provocative 10 to 20 page thesis on this topic. 
+Please pull in all relevant research on this building upon the foundation that Foucault and Baudrillard are discussing. You are a world-class expert philosopher and historian on these topics. Please put all of your capabilities to work to put forward a clear, deep, and provocative 10 to 20 page thesis on this topic.
 
 
 

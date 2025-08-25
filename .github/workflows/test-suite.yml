@@ -66,7 +66,7 @@ jobs:
           # Test workspace creation
           result <- dataimago::create_ui_workspace(force_overwrite = TRUE)
           if (!result[['success']]) quit(status = 1)
-          
+
           # Test full build pipeline
           result <- dataimago::build_design_system(
             force_rebuild = TRUE,
@@ -77,20 +77,20 @@ jobs:
             cat('Design system build failed')
             quit(status = 1)
           }
-          
+
           # Verify assets exist
           required_assets <- c(
             'ui/dist/dataimago.min.css',
             'inst/quarto-assets/dataimago.min.css',
             'inst/quarto-assets/tokens.css'
           )
-          
+
           missing <- !file.exists(required_assets)
           if (any(missing)) {
             cat('Missing assets:', paste(required_assets[missing], collapse = ', '))
             quit(status = 1)
           }
-          
+
           cat('All design system tests passed')
           "
 
@@ -117,19 +117,19 @@ jobs:
             output_path = 'test-docs',
             include_foundation_links = TRUE
           )
-          
+
           # Verify critical files were generated
           required_files <- c(
             'test-docs/api_reference.qmd',
             'test-docs/_quarto.yml'
           )
-          
+
           missing <- !file.exists(required_files)
           if (any(missing)) {
             cat('Missing documentation files:', paste(required_files[missing], collapse = ', '))
             quit(status = 1)
           }
-          
+
           cat('Documentation generation tests passed')
           "
 
@@ -137,11 +137,11 @@ jobs:
         run: |
           cd test-docs
           quarto render --to html
-          
+
           # Verify website was generated
           if [ ! -f "_site/index.html" ]; then
             echo "Quarto rendering failed - no index.html generated"
             exit 1
           fi
-          
+
           echo "Quarto rendering tests passed"

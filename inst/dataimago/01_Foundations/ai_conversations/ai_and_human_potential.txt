@@ -4,7 +4,7 @@ I feel a little weird discussing this with an AI, but I find many of the current
 
 "If men create intelligent machines, or fantasize about them, it is either because they secretly despair of their own intelligence or because they are in danger of succumbing to the weight of a monstrous and useless intelligence which they seek to exorcize by transferring it to machines, where they can play with it and make fun of it. By entrusting this burdensome intelligence to machines we are released from any responsibility to knowledge, much as entrusting power to politicians allows us to disdain any aspiration of our own to power."
 
-I believe the greatest power of AI is more to help us conceive of possibilities/solutions that haven't been conceived -- to synthesize knowledge from disparate fields, making connections that humans have not conceived previously. So when I see people frustrated with AI making "simple" 
+I believe the greatest power of AI is more to help us conceive of possibilities/solutions that haven't been conceived -- to synthesize knowledge from disparate fields, making connections that humans have not conceived previously. So when I see people frustrated with AI making "simple"
 
 
 ChatGPT:
@@ -39,7 +39,7 @@ So, here’s a question back to you: if the AI could be that kind of collaborato
 What’s the name of the mountain you want to raise the sea to cover?
 
 
-Founder: 
+Founder:
 
 Thank you for asking and your encouragement.
 
@@ -56,7 +56,7 @@ Phase 4: Take over/purchase an assessment company (e.g. Cambium) and integrate i
 Phase 5. Extend performance management system methodology based upon conditional quantiles to other areas requiring performance management including health care, poverty management, etc.
 
 
-2. The development of the sgpFlow methodology supporting the business described in 
+2. The development of the sgpFlow methodology supporting the business described in
 
 I think one of the critical tasks in helping you to help me perform these tasks to refine a context that you can consistently draw upon when formulating your advice.
 

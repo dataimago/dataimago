@@ -8,7 +8,7 @@ Superalignment is the defining challenge of our time. At dataimago, we invert th
 
 This inversion is core to dataimago's approach. We believe that the ethical potential of AI lies not in replicating existing cultural patterns, but in placing AI within the service of cultural transformation. Because superalignment is not intrinsic to AI but emerges from its social embedding, emancipation can only occur through the integration of AI into the living processes of culture. Our philosophy centers human meaning-making, agency, and dignity at every step of the technological design process.
 
-Our goal is not to embed culture in ai, but to embed ai in culture for the emancipation of humanity. 
+Our goal is not to embed culture in ai, but to embed ai in culture for the emancipation of humanity.
 
 ## Primary Philosophical Influences
 
@@ -154,7 +154,7 @@ Our governance philosophy reflects the belief that **superalignment is not an ou
 
 ### Democratic Accountability
 - **Participatory design processes** that center affected communities
-- **Transparent decision-making** that can be understood and challenged  
+- **Transparent decision-making** that can be understood and challenged
 - **Multiple oversight mechanisms** including ethics assemblies and community panels
 - **Constitutional protocols** that evolve with organizational growth
 

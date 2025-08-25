@@ -7,7 +7,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12 col-lg-10 offset-lg-1">
-      
+
       <!-- Technical Overview -->
       <div data-dataimago-animate="fade-up">
         <h2>Technical Implementation</h2>
@@ -17,14 +17,14 @@
       <!-- Installation Section -->
       <div data-dataimago-animate="fade-up">
         <h3>Installation</h3>
-        
+
         ```r
         # Install from CRAN (when available)
         install.packages("{{< meta dataimago.package-name >}}")
-        
+
         # Install development version from GitHub
         devtools::install_github("{{< meta repo-owner >}}/{{< meta dataimago.package-name >}}")
-        
+
         # Load the package
         library({{< meta dataimago.package-name >}})
         ```
@@ -33,15 +33,15 @@
       <!-- Quick Start -->
       <div data-dataimago-animate="fade-up">
         <h3>Quick Start</h3>
-        
+
         ```r
         # Basic usage example
         result <- main_function(data = your_data)
-        
+
         # View results
         print(result)
         summary(result)
-        
+
         # Export for web applications
         export_json(result, "output/data.json")
         ```
@@ -71,7 +71,7 @@
       <div data-dataimago-animate="fade-up">
         <h3>API Reference</h3>
         <p>Comprehensive function documentation with examples:</p>
-        
+
         <div class="api-functions">
           <div class="function-signature">
             <code>main_function(data, options = list())</code>
@@ -84,7 +84,7 @@
             <strong>Returns:</strong> Processed results object
           </div>
         </div>
-        
+
         <p><a href="api_reference.html" class="btn btn-outline-primary">View Full API Documentation</a></p>
       </div>
 
@@ -94,14 +94,14 @@
       <!-- Web Integration -->
       <div data-dataimago-animate="fade-up">
         <h3>Web Framework Integration</h3>
-        
+
         <div class="row">
           <div class="col-md-6">
             <h4>Next.js Integration</h4>
             ```typescript
             // Import generated JSON data
             import packageData from './public/data/package-meta.json';
-            
+
             export default function PackagePage() {
               return (
                 <div>
@@ -112,7 +112,7 @@
             }
             ```
           </div>
-          
+
           <div class="col-md-6">
             <h4>R Package Export</h4>
             ```r
@@ -123,8 +123,8 @@
                 functions = get_function_list(),
                 version = packageVersion("{{< meta dataimago.package-name >}}")
               )
-              
-              jsonlite::write_json(meta, 
+
+              jsonlite::write_json(meta,
                 file.path(output_dir, "package-meta.json"))
             }
             ```
@@ -157,7 +157,7 @@
         <div class="dataimago-integration-cta">
           <h3>Contributing to the Dataimago Ecosystem</h3>
           <p>Join us in building the infrastructure of a future that values not only precision, but meaning.</p>
-          
+
           <div class="row text-left">
             <div class="col-md-4">
               <h5>🤝 Contribute</h5>

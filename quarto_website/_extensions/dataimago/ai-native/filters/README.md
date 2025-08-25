@@ -129,7 +129,7 @@ ai_native_metadata:
   configuration = { /* dataimago config */ }
 }
 
--- Functions export  
+-- Functions export
 {
   functions = [
     {
@@ -149,7 +149,7 @@ ai_native_metadata:
 ### Output Files
 Generated files are created in structured format:
 - `public/data/package-metadata.json`
-- `public/data/functions.json` 
+- `public/data/functions.json`
 - `public/data/technical-documentation.json`
 
 ## 🧪 Filter Development
@@ -196,11 +196,11 @@ function enhance_metadata(meta)
   if not meta.dataimago then
     meta.dataimago = {}
   end
-  
+
   -- Merge with defaults
   local defaults = { /* default values */ }
   meta.dataimago = merge_tables(defaults, meta.dataimago)
-  
+
   return meta
 end
 ```
@@ -213,11 +213,11 @@ Filters can generate CSS based on document metadata:
 ```lua
 function generate_css_variables(meta)
   local vars = {}
-  
+
   if meta.dataimago.primary_color then
     table.insert(vars, "--dataimago-primary: " .. meta.dataimago.primary_color)
   end
-  
+
   return table.concat(vars, ";\n")
 end
 ```
@@ -246,7 +246,7 @@ Filters can analyze document content to extract function information:
 ```lua
 function extract_functions(blocks)
   local functions = {}
-  
+
   for _, block in pairs(blocks) do
     if block.t == "CodeBlock" and block.classes:includes("r") then
       -- Parse R code for function definitions
@@ -256,7 +256,7 @@ function extract_functions(blocks)
       end
     end
   end
-  
+
   return functions
 end
 ```
@@ -267,14 +267,14 @@ Extract documentation patterns:
 ```lua
 function extract_documentation(blocks)
   local docs = {}
-  
+
   -- Look for documentation patterns
   for i, block in pairs(blocks) do
     if is_function_documentation(block, blocks[i+1]) then
       table.insert(docs, parse_documentation(block, blocks[i+1]))
     end
   end
-  
+
   return docs
 end
 ```
@@ -285,7 +285,7 @@ end
 ```lua
 function generate_api_endpoints(meta)
   local package_name = stringify(meta.dataimago.package_name)
-  
+
   return {
     base_url = "/api/" .. package_name:lower(),
     endpoints = {

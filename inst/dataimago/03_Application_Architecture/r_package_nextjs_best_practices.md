@@ -126,11 +126,11 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Depends: R (>= 4.0.0)
-Imports: 
+Imports:
     jsonlite,
     data.table,
     DT
-Suggests: 
+Suggests:
     testthat,
     knitr,
     rmarkdown,
@@ -151,8 +151,8 @@ NextJSCompatible: TRUE
 ### 1. Consistent Function Signatures
 ```r
 # Good: Consistent, predictable signature
-analyze_data <- function(data, 
-                        method = "default", 
+analyze_data <- function(data,
+                        method = "default",
                         options = list(),
                         output_format = "json") {
   # Implementation
@@ -169,7 +169,7 @@ analyze_data <- function(x, m, opts, fmt = "j") {
 # Good: Structured return with metadata
 analyze_data <- function(data, method = "default") {
   result <- perform_analysis(data, method)
-  
+
   list(
     data = result,
     metadata = list(
@@ -196,18 +196,18 @@ analyze_data <- function(data, method = "default") {
   if (!is.data.frame(data)) {
     stop("Input 'data' must be a data.frame. Received: ", class(data)[1])
   }
-  
+
   if (!method %in% c("default", "alternative")) {
     stop("Invalid method '", method, "'. Must be one of: default, alternative")
   }
-  
+
   # Perform analysis with error handling
   tryCatch({
     result <- perform_analysis(data, method)
     validate_result(result)
     return(structure_result(result, method))
   }, error = function(e) {
-    stop("Analysis failed: ", e$message, 
+    stop("Analysis failed: ", e$message,
          "\nMethod: ", method,
          "\nData dimensions: ", paste(dim(data), collapse = "x"))
   })
@@ -249,10 +249,10 @@ export_for_web <- function(result) {
 #' Results are structured for web application consumption and AI assistance.
 #'
 #' @param data A data.frame containing the data to analyze
-#' @param method Character string specifying the analysis method. 
+#' @param method Character string specifying the analysis method.
 #'   Options: "default", "alternative"
 #' @param options List of additional options for the analysis
-#' @param output_format Character string specifying output format. 
+#' @param output_format Character string specifying output format.
 #'   Options: "json", "list", "dataframe"
 #'
 #' @return A structured list containing:
@@ -265,17 +265,17 @@ export_for_web <- function(result) {
 #' @examples
 #' # Basic usage
 #' result <- analyze_data(mtcars, method = "default")
-#' 
+#'
 #' # With custom options
-#' result <- analyze_data(mtcars, 
+#' result <- analyze_data(mtcars,
 #'                       method = "alternative",
 #'                       options = list(iterations = 1000))
 #'
 #' @export
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom data.table data.table
-analyze_data <- function(data, 
-                        method = "default", 
+analyze_data <- function(data,
+                        method = "default",
                         options = list(),
                         output_format = "json") {
   # Implementation
@@ -288,7 +288,7 @@ Create comprehensive vignettes that demonstrate:
 ```yaml
 ---
 title: "Getting Started with packageName"
-format: 
+format:
   html:
     code-fold: true
     code-summary: "Show code"
@@ -312,23 +312,23 @@ execute:
 # Include interactive examples that work in both R and web contexts
 demo_analysis <- function() {
   cat("Running interactive demo...\n")
-  
+
   # Use built-in data
   data <- mtcars
-  
+
   # Show analysis steps
   cat("Step 1: Basic analysis\n")
   result1 <- analyze_data(data, method = "default")
   print(summary(result1))
-  
+
   cat("Step 2: Advanced analysis\n")
   result2 <- analyze_data(data, method = "alternative")
   print(summary(result2))
-  
+
   cat("Step 3: Export for web\n")
   web_result <- export_for_web(result2)
   cat("JSON size:", nchar(to_json(web_result)), "characters\n")
-  
+
   invisible(list(basic = result1, advanced = result2, web = web_result))
 }
 ```
@@ -342,27 +342,27 @@ demo_analysis <- function() {
 # tests/testthat/test-analyze-data.R
 test_that("analyze_data handles basic input correctly", {
   result <- analyze_data(mtcars, method = "default")
-  
+
   expect_type(result, "list")
   expect_named(result, c("data", "metadata", "schema"))
   expect_equal(result$metadata$method, "default")
 })
 
 test_that("analyze_data validates input types", {
-  expect_error(analyze_data("not_a_dataframe"), 
+  expect_error(analyze_data("not_a_dataframe"),
                "Input 'data' must be a data.frame")
-  
-  expect_error(analyze_data(mtcars, method = "invalid"), 
+
+  expect_error(analyze_data(mtcars, method = "invalid"),
                "Invalid method")
 })
 
 test_that("analyze_data produces JSON-serializable output", {
   result <- analyze_data(mtcars, method = "default")
   json_result <- to_json(result)
-  
+
   expect_type(json_result, "character")
   expect_gt(nchar(json_result), 0)
-  
+
   # Test round-trip
   restored <- from_json(json_result)
   expect_equal(names(restored), names(result))
@@ -376,7 +376,7 @@ test_that("package integrates with web frameworks", {
   # Test API-style calls
   result <- analyze_data(mtcars, output_format = "json")
   web_result <- export_for_web(result)
-  
+
   # Verify web compatibility
   expect_true(is.list(web_result))
   expect_true(all(sapply(web_result, function(x) {
@@ -388,7 +388,7 @@ test_that("AI tool integration works", {
   # Test tool schema validation
   schema_path <- system.file("tools", "tools.json", package = "packageName")
   expect_true(file.exists(schema_path))
-  
+
   tools <- jsonlite::fromJSON(schema_path)
   expect_true("tools" %in% names(tools))
   expect_gt(length(tools$tools), 0)
@@ -406,13 +406,13 @@ process_large_data <- function(data) {
   if (!data.table::is.data.table(data)) {
     data <- data.table::as.data.table(data)
   }
-  
+
   # Efficient operations
   result <- data[, .(
     mean_value = mean(value, na.rm = TRUE),
     count = .N
   ), by = group]
-  
+
   return(result)
 }
 
@@ -420,11 +420,11 @@ process_large_data <- function(data) {
 optimize_memory <- function(data) {
   # Convert to appropriate types
   data <- as.data.frame(data)
-  
+
   # Optimize character columns
   char_cols <- sapply(data, is.character)
   data[char_cols] <- lapply(data[char_cols], as.factor)
-  
+
   return(data)
 }
 ```
@@ -451,19 +451,19 @@ analyze_with_cache <- function(data, method = "default", cache_dir = NULL) {
   if (!is.null(cache_dir)) {
     cache_key <- digest::digest(list(data, method))
     cache_file <- file.path(cache_dir, paste0(cache_key, ".rds"))
-    
+
     if (file.exists(cache_file)) {
       return(readRDS(cache_file))
     }
   }
-  
+
   result <- analyze_data(data, method = method)
-  
+
   if (!is.null(cache_dir)) {
     dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
     saveRDS(result, cache_file)
   }
-  
+
   return(result)
 }
 ```
@@ -477,7 +477,7 @@ analyze_with_cache <- function(data, method = "default", cache_dir = NULL) {
 # Provide function metadata for AI consumption
 get_function_info <- function(func_name) {
   func <- get(func_name)
-  
+
   list(
     name = func_name,
     formals = formals(func),
@@ -490,10 +490,10 @@ get_function_info <- function(func_name) {
 # Export all function information
 export_function_metadata <- function() {
   exported_functions <- ls("package:packageName")
-  
+
   metadata <- lapply(exported_functions, get_function_info)
   names(metadata) <- exported_functions
-  
+
   return(metadata)
 }
 ```
@@ -505,10 +505,10 @@ ai_analyze <- function(data_json, method = "default", options_json = "{}") {
   # Convert JSON inputs
   data <- from_json(data_json)
   options <- from_json(options_json)
-  
+
   # Perform analysis
   result <- analyze_data(data, method = method, options = options)
-  
+
   # Return JSON
   return(to_json(result))
 }
@@ -529,7 +529,7 @@ safe_analyze <- function(...) {
 # Register package as AI tool
 register_ai_tools <- function() {
   tools_file <- system.file("tools", "tools.json", package = "packageName")
-  
+
   if (file.exists(tools_file)) {
     tools <- jsonlite::fromJSON(tools_file)
     message("Registered ", length(tools$tools), " AI tools from packageName")
@@ -560,11 +560,11 @@ register_ai_tools <- function() {
 check_dependencies <- function() {
   required_packages <- c("jsonlite", "data.table")
   missing <- required_packages[!require(required_packages, character.only = TRUE)]
-  
+
   if (length(missing) > 0) {
     stop("Missing required packages: ", paste(missing, collapse = ", "))
   }
-  
+
   return(TRUE)
 }
 ```
@@ -577,12 +577,12 @@ check_system_requirements <- function() {
   if (getRversion() < "4.0.0") {
     stop("R version 4.0.0 or higher required")
   }
-  
+
   # Check for Node.js if needed
   if (Sys.which("node") == "") {
     warning("Node.js not found. Web integration may not work.")
   }
-  
+
   return(TRUE)
 }
 ```
@@ -592,7 +592,7 @@ check_system_requirements <- function() {
 # Package configuration
 get_package_config <- function() {
   config_file <- system.file("config", "package.json", package = "packageName")
-  
+
   if (file.exists(config_file)) {
     return(jsonlite::fromJSON(config_file))
   } else {

@@ -57,15 +57,15 @@ Use your full capabilities. Be generative, reflective, dialectical, and bold.
 
 This repository contains high-level documents and digital assets that define dataimago’s identity, intention, and philosophy.
 
-- `01_Foundations/` — mission, vision, values, and core philosophical commitments  
-- `02_Manifesto/` — framing documents that contrast dataimago with dominant paradigms (e.g., Palantir)  
-- `03_Application_Architecture/` — comprehensive application development strategy and technical blueprints  
-- `04_Reference_Content/` — consolidated design assets, visual frameworks, and reference materials  
+- `01_Foundations/` — mission, vision, values, and core philosophical commitments
+- `02_Manifesto/` — framing documents that contrast dataimago with dominant paradigms (e.g., Palantir)
+- `03_Application_Architecture/` — comprehensive application development strategy and technical blueprints
+- `04_Reference_Content/` — consolidated design assets, visual frameworks, and reference materials
 
 Each major folder may contain:
-- `notes/` for informal thinking  
-- `ai_conversations/` for relevant chat logs and iterative drafts  
-- `drafts/` for pre-public documents in development  
+- `notes/` for informal thinking
+- `ai_conversations/` for relevant chat logs and iterative drafts
+- `drafts/` for pre-public documents in development
 
 ---
 

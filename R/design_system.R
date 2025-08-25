@@ -8,37 +8,37 @@
 NULL
 
 #' Build Design System Assets
-#' 
+#'
 #' Master function that orchestrates the entire CSS compilation and distribution pipeline.
 #' This function wraps Node.js tooling (pnpm/npm) in R to maintain R-first development workflow.
 #'
 #' @param force_rebuild Logical. Force rebuild even if assets appear up-to-date. Default: FALSE
-#' @param include_sri Logical. Generate SRI hashes for CDN distribution. Default: TRUE  
+#' @param include_sri Logical. Generate SRI hashes for CDN distribution. Default: TRUE
 #' @param update_extension Logical. Update Quarto extension with compiled assets. Default: TRUE
 #' @param verbose Logical. Print detailed progress information. Default: TRUE
 #'
 #' @details
 #' This function implements dataimago's R-first philosophy by wrapping Node.js build tools
 #' in well-documented R functions. The build process includes:
-#' 
+#'
 #' **System Requirements:**
 #' - Node.js 18+ and pnpm installed globally
 #' - Write permissions to package directories
 #' - OpenSSL for SRI hash generation (usually pre-installed on macOS/Linux)
-#' 
+#'
 #' **Build Process:**
 #' 1. **Node.js Dependency Check**: Verifies pnpm is available via `which pnpm`
 #' 2. **Dependency Installation**: Runs `pnpm install` in ui/ directory to install Style Dictionary, Sass, etc.
 #' 3. **SCSS Compilation**: Executes `pnpm run build` to convert design tokens and SCSS to minified CSS
 #' 4. **Asset Distribution**: Copies built `dataimago.min.css` to multiple locations:
 #'    - `quarto_website/_extensions/dataimago/ai-native/assets/css/` for Quarto extension distribution
-#'    - `inst/quarto-assets/` for R package CDN distribution  
+#'    - `inst/quarto-assets/` for R package CDN distribution
 #'    - `quarto_website/assets/css/` for local website development
 #' 5. **SRI Hash Generation**: Uses `openssl dgst -sha384 -binary | openssl base64 -A` for subresource integrity
 #' 6. **Build Manifest**: Creates JSON metadata with paths, versions, checksums, and build timestamp
 #'
 #' **Design Token Philosophy:**
-#' The ui/ workspace uses Style Dictionary to convert semantic design tokens (color.json, 
+#' The ui/ workspace uses Style Dictionary to convert semantic design tokens (color.json,
 #' typography.json, spacing.json) into CSS custom properties. This ensures design consistency
 #' across Quarto websites, R Shiny apps, and future Next.js applications while maintaining
 #' the ethical AI principles embedded in dataimago's visual identity.
@@ -51,7 +51,7 @@ NULL
 #'
 #' @return List containing build results:
 #'   - success: Logical indicating overall build success
-#'   - assets: Character vector of generated asset paths  
+#'   - assets: Character vector of generated asset paths
 #'   - sri_hashes: Named list of SRI hashes for each CSS file
 #'   - build_time: POSIXct timestamp of build completion
 #'   - metadata: List containing build configuration and system information
@@ -75,7 +75,7 @@ NULL
 #' \dontrun{
 #' # Basic build - compile all assets
 #' result <- build_design_system()
-#' 
+#'
 #' # Check if build succeeded
 #' if (result$success) {
 #'   cat("Success: Built assets:", paste(result$assets, collapse = ", "), "\n")
@@ -83,22 +83,22 @@ NULL
 #' } else {
 #'   cat("ERROR: Build failed:", paste(result$errors, collapse = "; "), "\n")
 #' }
-#' 
+#'
 #' # Force rebuild with verbose output (useful for debugging)
 #' result <- build_design_system(force_rebuild = TRUE, verbose = TRUE)
-#' 
+#'
 #' # Build for CDN distribution only (skip local copying)
 #' result <- build_design_system(
-#'   include_sri = TRUE, 
+#'   include_sri = TRUE,
 #'   update_extension = FALSE,
 #'   verbose = FALSE
 #' )
-#' 
+#'
 #' # Inspect build metadata
 #' str(result$metadata)
 #' }
 #'
-#' @seealso 
+#' @seealso
 #' \code{\link{update_quarto_extension}} for extension asset management,
 #' \code{\link{generate_cdn_assets}} for CDN preparation,
 #' \code{\link{create_ui_workspace}} for UI workspace initialization
@@ -106,39 +106,39 @@ NULL
 #' @keywords design-system css build-tools ethical-ai
 #' @concept dataimago r-first-development MCP-compatible
 #' @export
-build_design_system <- function(force_rebuild = FALSE, 
+build_design_system <- function(force_rebuild = FALSE,
                                include_sri = TRUE,
-                               update_extension = TRUE, 
+                               update_extension = TRUE,
                                verbose = TRUE) {
-  
+
   start_time <- Sys.time()
   errors <- character(0)
   assets <- character(0)
   sri_hashes <- list()
-  
+
   if (verbose) {
     ui_info("Building dataimago design system assets...")
   }
-  
+
   # 1. Validate prerequisites
   ui_dir <- "ui"
   if (!dir_exists(ui_dir)) {
     errors <- c(errors, glue("ui/ directory not found. Run create_ui_workspace() first."))
-    return(list(success = FALSE, errors = errors, assets = assets, 
+    return(list(success = FALSE, errors = errors, assets = assets,
                 sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
   }
-  
+
   # Check for pnpm (preferred) or npm
   pnpm_available <- FALSE
   npm_available <- FALSE
-  
+
   tryCatch({
     pnpm_result <- processx::run("which", "pnpm", error_on_status = FALSE)
     pnpm_available <- pnpm_result$status == 0
   }, error = function(e) {
     pnpm_available <- FALSE
   })
-  
+
   if (!pnpm_available) {
     tryCatch({
       npm_result <- processx::run("which", "npm", error_on_status = FALSE)
@@ -147,23 +147,23 @@ build_design_system <- function(force_rebuild = FALSE,
       npm_available <- FALSE
     })
   }
-  
+
   if (!pnpm_available && !npm_available) {
     errors <- c(errors, "Neither pnpm nor npm found. Please install Node.js and pnpm/npm globally.")
     return(list(success = FALSE, errors = errors, assets = assets,
                 sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
   }
-  
+
   package_manager <- ifelse(pnpm_available, "pnpm", "npm")
   if (verbose) {
     ui_info(glue("Using {package_manager} for Node.js dependencies"))
   }
-  
+
   # 2. Install Node.js dependencies
   if (verbose) {
     ui_info("Installing Node.js dependencies...")
   }
-  
+
   tryCatch({
     install_result <- processx::run(
       package_manager, "install",
@@ -171,7 +171,7 @@ build_design_system <- function(force_rebuild = FALSE,
       stdout_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL,
       stderr_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL
     )
-    
+
     if (install_result$status != 0) {
       errors <- c(errors, glue("{package_manager} install failed with status {install_result$status}"))
       return(list(success = FALSE, errors = errors, assets = assets,
@@ -182,12 +182,12 @@ build_design_system <- function(force_rebuild = FALSE,
     return(list(success = FALSE, errors = errors, assets = assets,
                 sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
   })
-  
+
   # 3. Run build process
   if (verbose) {
     ui_info("Compiling SCSS and design tokens...")
   }
-  
+
   tryCatch({
     build_result <- processx::run(
       package_manager, c("run", "build"),
@@ -195,7 +195,7 @@ build_design_system <- function(force_rebuild = FALSE,
       stdout_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL,
       stderr_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL
     )
-    
+
     if (build_result$status != 0) {
       errors <- c(errors, glue("{package_manager} run build failed with status {build_result$status}"))
       return(list(success = FALSE, errors = errors, assets = assets,
@@ -206,32 +206,32 @@ build_design_system <- function(force_rebuild = FALSE,
     return(list(success = FALSE, errors = errors, assets = assets,
                 sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
   })
-  
+
   # 4. Verify build output
   dist_dir <- file.path(ui_dir, "dist")
   main_css <- file.path(dist_dir, "dataimago.min.css")
-  
+
   if (!file_exists(main_css)) {
     errors <- c(errors, "Build completed but dataimago.min.css not found in ui/dist/")
     return(list(success = FALSE, errors = errors, assets = assets,
                 sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
   }
-  
+
   assets <- c(assets, main_css)
-  
+
   # 5. Generate SRI hashes if requested
   if (include_sri) {
     if (verbose) {
       ui_info("Generating SRI hashes for CDN security...")
     }
-    
+
     for (asset in assets) {
       if (file_exists(asset)) {
         tryCatch({
           # Use openssl to generate SHA384 hash for SRI
           hash_result <- processx::run("openssl", c("dgst", "-sha384", "-binary", asset))
           if (hash_result$status == 0) {
-            base64_result <- processx::run("openssl", c("base64", "-A"), 
+            base64_result <- processx::run("openssl", c("base64", "-A"),
                                          input = hash_result$stdout_raw)
             if (base64_result$status == 0) {
               sri_hash <- paste0("sha384-", base64_result$stdout)
@@ -249,19 +249,19 @@ build_design_system <- function(force_rebuild = FALSE,
       }
     }
   }
-  
+
   # 6. Update Quarto extension if requested
   if (update_extension) {
     if (verbose) {
       ui_info("Updating Quarto extension assets...")
     }
-    
+
     extension_result <- update_quarto_extension(verbose = verbose)
     if (!extension_result$success) {
       errors <- c(errors, extension_result$errors)
     }
   }
-  
+
   # 7. Generate CDN assets
   cdn_result <- generate_cdn_assets(verbose = verbose)
   if (!cdn_result$success) {
@@ -269,7 +269,7 @@ build_design_system <- function(force_rebuild = FALSE,
   } else {
     assets <- c(assets, cdn_result$assets)
   }
-  
+
   # 8. Create build metadata
   build_time <- Sys.time()
   metadata <- list(
@@ -284,10 +284,10 @@ build_design_system <- function(force_rebuild = FALSE,
     assets_generated = length(assets),
     sri_hashes_generated = length(sri_hashes)
   )
-  
+
   # 9. Final status
   success <- length(errors) == 0
-  
+
   if (verbose) {
     if (success) {
       ui_done(glue("Design system build completed successfully in {round(metadata$duration_seconds, 2)}s"))
@@ -300,7 +300,7 @@ build_design_system <- function(force_rebuild = FALSE,
       }
     }
   }
-  
+
   return(list(
     success = success,
     assets = assets,
@@ -312,7 +312,7 @@ build_design_system <- function(force_rebuild = FALSE,
 }
 
 #' Create UI Workspace for Design System
-#' 
+#'
 #' Sets up the Node.js workspace structure and configuration files needed for
 #' CSS compilation and design token processing. This function creates the complete
 #' ui/ directory structure with package.json, build scripts, and source files.
@@ -328,16 +328,16 @@ build_design_system <- function(force_rebuild = FALSE,
 #' +-- build.js                  # Custom build script for compilation
 #' +-- src/
 #' |   +-- tokens/
-#' |   |   +-- colors.json       # dataimago color palette 
+#' |   |   +-- colors.json       # dataimago color palette
 #' |   |   +-- typography.json   # Font definitions and scales
 #' |   |   +-- spacing.json      # Spacing scale and dimensions
 #' |   +-- styles/
 #' |       +-- base.scss         # Base styles using design tokens
-#' |       +-- components.scss   # UI component styles  
+#' |       +-- components.scss   # UI component styles
 #' |       +-- utilities.scss    # Utility classes
 #' +-- dist/                     # Build output directory (created by build process)
 #' ```
-#' 
+#'
 #' **Design Token Philosophy:**
 #' The design tokens follow dataimago's ethical AI principles:
 #' - **Semantic Naming**: Colors like `primary`, `accent`, `ethical-highlight`
@@ -360,10 +360,10 @@ build_design_system <- function(force_rebuild = FALSE,
 #' \dontrun{
 #' # Create new ui workspace
 #' result <- create_ui_workspace()
-#' 
+#'
 #' # Force recreate existing workspace
 #' result <- create_ui_workspace(force_overwrite = TRUE)
-#' 
+#'
 #' # Check what was created
 #' if (result$success) {
 #'   cat("Created files:", paste(result$created_files, collapse = "\n  "))
@@ -372,15 +372,15 @@ build_design_system <- function(force_rebuild = FALSE,
 #'
 #' @export
 create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
-  
+
   ui_dir <- "ui"
   created_files <- character(0)
   errors <- character(0)
-  
+
   if (verbose) {
     ui_info("Creating UI workspace for design system...")
   }
-  
+
   # Check if ui/ directory exists
   if (dir_exists(ui_dir)) {
     if (!force_overwrite) {
@@ -393,13 +393,13 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       unlink(ui_dir, recursive = TRUE)
     }
   }
-  
+
   # Create directory structure
   tryCatch({
     dir_create(file.path(ui_dir, "src", "tokens"))
     dir_create(file.path(ui_dir, "src", "styles"))
     dir_create(file.path(ui_dir, "dist"))  # Will be populated by build
-    
+
     if (verbose) {
       ui_info("Created directory structure")
     }
@@ -407,7 +407,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     errors <- c(errors, glue("Error creating directories: {e$message}"))
     return(list(success = FALSE, created_files = created_files, errors = errors))
   })
-  
+
   # Create package.json
   package_json <- list(
     name = "@dataimago/design-system",
@@ -423,17 +423,17 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     keywords = c("dataimago", "design-system", "css", "ethical-ai"),
     devDependencies = list(
       "style-dictionary" = "^4.0.0",
-      "sass" = "^1.69.0", 
+      "sass" = "^1.69.0",
       "postcss" = "^8.4.0",
       "autoprefixer" = "^10.4.0",
       "cssnano" = "^6.0.0",
       "postcss-cli" = "^11.0.0"
     )
   )
-  
+
   package_json_file <- file.path(ui_dir, "package.json")
   tryCatch({
-    writeLines(jsonlite::toJSON(package_json, pretty = TRUE, auto_unbox = TRUE), 
+    writeLines(jsonlite::toJSON(package_json, pretty = TRUE, auto_unbox = TRUE),
                package_json_file)
     created_files <- c(created_files, package_json_file)
     if (verbose) {
@@ -442,13 +442,13 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
   }, error = function(e) {
     errors <- c(errors, glue("Error creating package.json: {e$message}"))
   })
-  
+
   # Create design tokens - colors.json
   colors_tokens <- list(
     color = list(
       brand = list(
         primary = list(value = "#2C3E50", description = "dataimago primary brand color"),
-        secondary = list(value = "#34495E", description = "dataimago secondary brand color"), 
+        secondary = list(value = "#34495E", description = "dataimago secondary brand color"),
         accent = list(value = "#3498DB", description = "dataimago accent color for highlights"),
         ethical = list(value = "#E74C3C", description = "Ethical AI emphasis color")
       ),
@@ -475,17 +475,17 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       )
     )
   )
-  
+
   colors_file <- file.path(ui_dir, "src", "tokens", "colors.json")
   tryCatch({
-    writeLines(jsonlite::toJSON(colors_tokens, pretty = TRUE, auto_unbox = TRUE), 
+    writeLines(jsonlite::toJSON(colors_tokens, pretty = TRUE, auto_unbox = TRUE),
                colors_file)
     created_files <- c(created_files, colors_file)
   }, error = function(e) {
     errors <- c(errors, glue("Error creating colors.json: {e$message}"))
   })
-  
-  # Create design tokens - typography.json  
+
+  # Create design tokens - typography.json
   typography_tokens <- list(
     font = list(
       family = list(
@@ -496,7 +496,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       size = list(
         xs = list(value = "0.75rem"),
         sm = list(value = "0.875rem"),
-        base = list(value = "1rem"), 
+        base = list(value = "1rem"),
         lg = list(value = "1.125rem"),
         xl = list(value = "1.25rem"),
         "2xl" = list(value = "1.5rem"),
@@ -516,21 +516,21 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       )
     )
   )
-  
+
   typography_file <- file.path(ui_dir, "src", "tokens", "typography.json")
   tryCatch({
-    writeLines(jsonlite::toJSON(typography_tokens, pretty = TRUE, auto_unbox = TRUE), 
+    writeLines(jsonlite::toJSON(typography_tokens, pretty = TRUE, auto_unbox = TRUE),
                typography_file)
     created_files <- c(created_files, typography_file)
   }, error = function(e) {
     errors <- c(errors, glue("Error creating typography.json: {e$message}"))
   })
-  
+
   # Create design tokens - spacing.json
   spacing_tokens <- list(
     spacing = list(
       xs = list(value = "0.25rem"),
-      sm = list(value = "0.5rem"), 
+      sm = list(value = "0.5rem"),
       md = list(value = "1rem"),
       lg = list(value = "1.5rem"),
       xl = list(value = "2rem"),
@@ -551,18 +551,18 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       xl = list(value = "0 20px 25px -5px rgb(0 0 0 / 0.1)")
     )
   )
-  
+
   spacing_file <- file.path(ui_dir, "src", "tokens", "spacing.json")
   tryCatch({
-    writeLines(jsonlite::toJSON(spacing_tokens, pretty = TRUE, auto_unbox = TRUE), 
+    writeLines(jsonlite::toJSON(spacing_tokens, pretty = TRUE, auto_unbox = TRUE),
                spacing_file)
     created_files <- c(created_files, spacing_file)
   }, error = function(e) {
     errors <- c(errors, glue("Error creating spacing.json: {e$message}"))
   })
-  
+
   success <- length(errors) == 0
-  
+
   if (verbose) {
     if (success) {
       ui_done(glue("UI workspace created successfully"))
@@ -575,7 +575,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       }
     }
   }
-  
+
   return(list(
     success = success,
     created_files = created_files,
@@ -584,7 +584,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 }
 
 #' Update Quarto Extension Assets
-#' 
+#'
 #' Copies compiled CSS and other assets from ui/dist/ into the Quarto extension structure.
 #' Maintains proper extension.yml configuration and ensures asset linking works correctly.
 #'
@@ -592,24 +592,24 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 #'
 #' @details
 #' This function performs the following operations:
-#' 
+#'
 #' 1. **Validates Extension Structure**: Checks that `quarto_website/_extensions/dataimago/ai-native/` exists
 #' 2. **Copies Main CSS**: Copies `ui/dist/dataimago.min.css` to extension assets
 #' 3. **Updates Asset References**: Ensures extension.yml references the correct CSS files
 #' 4. **Preserves Extension Config**: Maintains existing Lua filters, shortcodes, etc.
-#' 
+#'
 #' **Extension Asset Mapping:**
 #' - `ui/dist/dataimago.min.css` -> `quarto_website/_extensions/dataimago/ai-native/assets/css/dataimago.min.css`
 #' - `ui/dist/tokens.css` -> `quarto_website/_extensions/dataimago/ai-native/assets/css/tokens.css` (if exists)
 #' - Source maps and development files are excluded from extension distribution
-#' 
+#'
 #' **File Operations:**
 #' All file copying uses R's `fs::file_copy()` with overwrite protection and atomic operations
 #' to prevent corrupted assets during development. The function will not overwrite extension
 #' configuration files (like _extension.yml) unless they become corrupted.
 #'
 #' @return List containing update results:
-#'   - success: Logical indicating update success  
+#'   - success: Logical indicating update success
 #'   - updated_files: Character vector of files updated in extension
 #'   - errors: Character vector of any error messages
 #'
@@ -618,7 +618,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 #' # Update extension after building CSS
 #' build_design_system()
 #' result <- update_quarto_extension()
-#' 
+#'
 #' # Check what was updated
 #' if (result$success) {
 #'   cat("Updated files:", paste(result$updated_files, collapse = "\n  "))
@@ -627,28 +627,28 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 #'
 #' @export
 update_quarto_extension <- function(verbose = TRUE) {
-  
+
   updated_files <- character(0)
   errors <- character(0)
-  
+
   if (verbose) {
     ui_info("Updating Quarto extension assets...")
   }
-  
+
   # Validate source files exist
   main_css <- "ui/dist/dataimago.min.css"
   if (!file_exists(main_css)) {
     errors <- c(errors, "dataimago.min.css not found in ui/dist/. Run build_design_system() first.")
     return(list(success = FALSE, updated_files = updated_files, errors = errors))
   }
-  
+
   # Validate extension directory exists
   extension_dir <- "quarto_website/_extensions/dataimago/ai-native"
   if (!dir_exists(extension_dir)) {
     errors <- c(errors, "Quarto extension directory not found. Extension structure may be corrupted.")
     return(list(success = FALSE, updated_files = updated_files, errors = errors))
   }
-  
+
   # Create extension assets directory if needed
   extension_css_dir <- file.path(extension_dir, "assets", "css")
   if (!dir_exists(extension_css_dir)) {
@@ -657,20 +657,20 @@ update_quarto_extension <- function(verbose = TRUE) {
       ui_info("Created extension assets/css directory")
     }
   }
-  
+
   # Copy main CSS file
   tryCatch({
     target_css <- file.path(extension_css_dir, "dataimago.min.css")
     file_copy(main_css, target_css, overwrite = TRUE)
     updated_files <- c(updated_files, target_css)
-    
+
     if (verbose) {
       ui_info(glue("Copied dataimago.min.css to extension"))
     }
   }, error = function(e) {
     errors <- c(errors, glue("Error copying main CSS: {e$message}"))
   })
-  
+
   # Copy tokens file if it exists
   tokens_css <- "ui/dist/tokens.css"
   if (file_exists(tokens_css)) {
@@ -678,7 +678,7 @@ update_quarto_extension <- function(verbose = TRUE) {
       target_tokens <- file.path(extension_css_dir, "tokens.css")
       file_copy(tokens_css, target_tokens, overwrite = TRUE)
       updated_files <- c(updated_files, target_tokens)
-      
+
       if (verbose) {
         ui_info("Copied tokens.css to extension")
       }
@@ -686,7 +686,7 @@ update_quarto_extension <- function(verbose = TRUE) {
       errors <- c(errors, glue("Error copying tokens CSS: {e$message}"))
     })
   }
-  
+
   # Copy any additional built assets
   dist_dir <- "ui/dist"
   if (dir_exists(dist_dir)) {
@@ -699,7 +699,7 @@ update_quarto_extension <- function(verbose = TRUE) {
           target_file <- file.path(extension_css_dir, filename)
           file_copy(dist_file, target_file, overwrite = TRUE)
           updated_files <- c(updated_files, target_file)
-          
+
           if (verbose) {
             ui_info(glue("Copied {filename} to extension"))
           }
@@ -711,9 +711,9 @@ update_quarto_extension <- function(verbose = TRUE) {
       }
     }
   }
-  
+
   success <- length(errors) == 0
-  
+
   if (verbose) {
     if (success) {
       ui_done(glue("Quarto extension updated successfully"))
@@ -725,7 +725,7 @@ update_quarto_extension <- function(verbose = TRUE) {
       }
     }
   }
-  
+
   return(list(
     success = success,
     updated_files = updated_files,
@@ -742,28 +742,28 @@ update_quarto_extension <- function(verbose = TRUE) {
 #'
 #' @details
 #' This function creates CDN-ready assets by:
-#' 
+#'
 #' 1. **Copying Built Assets**: Moves `ui/dist/*.css` to `inst/quarto-assets/`
 #' 2. **Generating Metadata**: Creates manifest.json with build info and SRI hashes
 #' 3. **Creating Usage Examples**: Generates HTML snippets showing CDN usage
 #' 4. **Validating File Integrity**: Ensures all copied files are complete and uncorrupted
-#' 
+#'
 #' **CDN Distribution Strategy:**
 #' Files in `inst/quarto-assets/` become available via jsDelivr once the package is
 #' tagged and released on GitHub:
 #' ```
 #' https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css
 #' ```
-#' 
+#'
 #' **SRI (Subresource Integrity) Hashes:**
 #' Each CSS file gets a SHA-384 hash for security:
 #' ```html
-#' <link rel="stylesheet" 
+#' <link rel="stylesheet"
 #'       href="https://cdn.jsdelivr.net/gh/.../dataimago.min.css"
 #'       integrity="sha384-..."
 #'       crossorigin="anonymous">
 #' ```
-#' 
+#'
 #' **Generated Files:**
 #' - `inst/quarto-assets/dataimago.min.css` - Main compiled CSS
 #' - `inst/quarto-assets/tokens.css` - CSS custom properties (if built)
@@ -777,14 +777,14 @@ update_quarto_extension <- function(verbose = TRUE) {
 #'
 #' @export
 generate_cdn_assets <- function(verbose = TRUE) {
-  
+
   assets <- character(0)
   errors <- character(0)
-  
+
   if (verbose) {
     ui_info("Preparing CDN distribution assets...")
   }
-  
+
   # Create inst/quarto-assets directory
   cdn_dir <- "inst/quarto-assets"
   if (!dir_exists(cdn_dir)) {
@@ -793,14 +793,14 @@ generate_cdn_assets <- function(verbose = TRUE) {
       ui_info("Created inst/quarto-assets directory")
     }
   }
-  
+
   # Copy built assets from ui/dist/
   dist_dir <- "ui/dist"
   if (!dir_exists(dist_dir)) {
     errors <- c(errors, "ui/dist/ directory not found. Run build_design_system() first.")
     return(list(success = FALSE, assets = assets, errors = errors))
   }
-  
+
   # Copy CSS files
   css_files <- dir_ls(dist_dir, type = "file", glob = "*.css")
   for (css_file in css_files) {
@@ -808,7 +808,7 @@ generate_cdn_assets <- function(verbose = TRUE) {
       target_file <- file.path(cdn_dir, basename(css_file))
       file_copy(css_file, target_file, overwrite = TRUE)
       assets <- c(assets, target_file)
-      
+
       if (verbose) {
         ui_info(glue("Copied {basename(css_file)} to CDN assets"))
       }
@@ -816,9 +816,9 @@ generate_cdn_assets <- function(verbose = TRUE) {
       errors <- c(errors, glue("Error copying {basename(css_file)}: {e$message}"))
     })
   }
-  
+
   success <- length(errors) == 0
-  
+
   if (verbose) {
     if (success) {
       ui_done(glue("CDN assets prepared successfully"))
@@ -830,7 +830,7 @@ generate_cdn_assets <- function(verbose = TRUE) {
       }
     }
   }
-  
+
   return(list(
     success = success,
     assets = assets,

@@ -43,23 +43,23 @@ dataimago:
         {{< content-item title="AI-Native R Package Development" >}}
         Your package represents a new paradigm in R package creation, designed specifically for integration with AI-native applications and modern web frameworks. Built with the dataimago philosophy of semantic computing and ethical AI practices.
         {{< /content-item >}}
-        
+
         {{< content-item title="Modular & Composable Architecture" >}}
         Each function is designed to be declarative, testable, and narratively aligned. Our approach ensures that R packages serve as computational modules in larger semantic platforms, perfect for Next.js-based data science applications.
         {{< /content-item >}}
-        
+
         {{< content-item title="Ethical Design Framework" >}}
         Includes MiCP (Mission Context Protocol) support for embedding ethical considerations directly into your code. Document values, constraints, and target audiences to guide future AI agents and human collaborators.
         {{< /content-item >}}
-        
+
         {{< content-item title="Professional Documentation" >}}
         Quarto-powered website generation with sophisticated theming, smooth scrolling experiences, and comprehensive API documentation. Built for both human understanding and machine consumption.
         {{< /content-item >}}
-        
+
         {{< content-item title="Modern DevOps Integration" >}}
         Complete CI/CD pipeline with automated testing, type checking, and deployment workflows. Docker-ready and serverless-compatible for scalable production deployments.
         {{< /content-item >}}
-        
+
         {{< content-item title="Cross-Platform Compatibility" >}}
         Seamlessly integrates with web frameworks via JSON exports, API endpoints, and structured metadata. Perfect for embedding R computational power into modern web applications and AI systems.
         {{< /content-item >}}
@@ -75,12 +75,12 @@ dataimago:
     <div class="strip">
       {{< feature-box title="What's inside" icon="📦" animate="fade-up" >}}
       - R package skeleton w/ {data.table}‑friendly setup
-      - Quarto website & article templates  
+      - Quarto website & article templates
       - CI hooks for checks & site deploy
       - MiCP ethical framework integration
       - JSON export utilities for web apps
       {{< /feature-box >}}
-      
+
       {{< feature-box title="Why it works" icon="⚡" animate="fade-up" >}}
       - Minimal surface area, maximal clarity
       - Accessible typography & contrast
@@ -88,7 +88,7 @@ dataimago:
       - AI-native design principles
       - Semantic computing foundation
       {{< /feature-box >}}
-      
+
       {{< feature-box title="Get started" icon="🚀" animate="fade-up" >}}
       1. Fork or use as a template
       2. Search/replace `HelloWorld`
@@ -105,7 +105,7 @@ dataimago:
 <div class="container-fluid">
   <div class="row">
     <div class="col-12 col-lg-10 offset-lg-1">
-      
+
       <div data-dataimago-animate="fade-up">
         <h2>Technical Implementation & Integration</h2>
         <p class="lead">Professional R package development designed for the AI-native era.</p>
@@ -123,7 +123,7 @@ dataimago:
           {{< /feature-box >}}
         </div>
       </div>
-      
+
       <div class="row">
         <div class="col-md-6">
           {{< feature-box title="🎨 Theme Consistency" animate="fade-up" >}}

@@ -64,12 +64,12 @@ jobs:
           mkdir -p release-assets
           cp -r inst/quarto-assets/* release-assets/
           cp ui/dist/tailwind-preset.js release-assets/
-          
+
           # Create integrity file for SRI hashes
           echo "# dataimago CDN Assets - Subresource Integrity Hashes" > release-assets/INTEGRITY.md
           echo "Generated: $(date -u)" >> release-assets/INTEGRITY.md
           echo "" >> release-assets/INTEGRITY.md
-          
+
           # Add file hashes
           cd release-assets
           for file in *.css *.js; do
@@ -82,7 +82,7 @@ jobs:
             fi
           done
           cd ..
-          
+
           # Create archive
           tar -czf dataimago-cdn-${GITHUB_REF#refs/tags/}.tar.gz -C release-assets .
 
@@ -90,15 +90,15 @@ jobs:
         run: |
           cat > release-notes.md << 'EOF'
           # dataimago Design System Release ${GITHUB_REF#refs/tags/}
-          
+
           ## 📦 CDN Assets
-          
+
           **jsDelivr URLs:**
           ```
           https://cdn.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/dataimago.min.css
           https://cdn.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/tokens.css
           ```
-          
+
           **Quarto Integration:**
           ```yaml
           format:
@@ -106,7 +106,7 @@ jobs:
               css:
                 - https://cdn.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/dataimago.min.css
           ```
-          
+
           **Next.js Integration:**
           ```js
           // Download and use tailwind-preset.js
@@ -114,19 +114,19 @@ jobs:
             presets: [require('./dataimago-tailwind-preset.js')]
           };
           ```
-          
+
           ## 🔐 Security
-          
+
           All assets include SHA-384 integrity hashes. See `INTEGRITY.md` in the release archive for complete hash listing.
-          
+
           ## 🎨 Features
-          
+
           - WCAG AA accessibility compliance
-          - Reduced motion preference support  
+          - Reduced motion preference support
           - High contrast mode compatibility
           - Semantic color system with ethical AI principles
           EOF
-          
+
           # Add build metadata if available
           if [ -f build-metadata.json ]; then
             echo "" >> release-notes.md

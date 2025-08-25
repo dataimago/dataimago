@@ -47,7 +47,7 @@ npx style-dictionary build
 ```
 Converts JSON tokens \u2192 CSS custom properties in `dist/tokens.css`
 
-### 2. SCSS Compilation  
+### 2. SCSS Compilation
 ```bash
 npx sass src/main.scss:dist/dataimago.css
 ```
@@ -93,7 +93,7 @@ build_design_system(verbose = TRUE)
 Assets are automatically distributed to:
 
 1. **Quarto Extension**: `_extensions/dataimago/ai-native/assets/css/`
-2. **CDN Distribution**: `inst/quarto-assets/` (jsDelivr-compatible) 
+2. **CDN Distribution**: `inst/quarto-assets/` (jsDelivr-compatible)
 3. **Local Development**: `ui/dist/` (with source maps)
 
 ## \U0001F3A8 Customization
@@ -104,7 +104,7 @@ Edit JSON files in `src/tokens/`:
 {
   "color": {
     "brand": {
-      "primary": { 
+      "primary": {
         "value": "#2C3E50",
         "description": "dataimago primary brand color"
       }
@@ -139,14 +139,14 @@ The design system includes comprehensive accessibility enhancements:
 - **Skip links** - Keyboard navigation assistance
 - **ARIA live regions** - Dynamic content announcements
 
-### Motor Accessibility  
+### Motor Accessibility
 - **Large click targets** - Minimum 44px touch targets
 - **Keyboard navigation** - Full keyboard accessibility
 - **Focus indicators** - Enhanced focus visibility
 
 ### Visual Accessibility
 - **High contrast mode** - Alternative color schemes
-- **Reduced motion** - Respects user motion preferences  
+- **Reduced motion** - Respects user motion preferences
 - **Color blind friendly** - Text and icon indicators
 
 ## \U0001F527 Dependencies

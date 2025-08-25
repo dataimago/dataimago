@@ -83,7 +83,7 @@ dataimago:
   logo: "assets/img/logo.png"        # Logo path
   primary-color: "#83838f"           # Brand colors
   accent-color: "#ff69b4"
-  
+
   slides:                            # Slide configuration
     hero:
       title: "AI-Native R Package"
@@ -92,12 +92,12 @@ dataimago:
       cards: 3
     technical:
       include-micp: true
-      
+
   lenis:                             # Smooth scrolling
     duration: 1.8
-    easing: "custom" 
+    easing: "custom"
     keyboard-nav: true
-    
+
   ai-native:                         # AI integration
     json-export: true
     api-endpoints: true
@@ -229,11 +229,11 @@ quarto render templates/slides/hero-slide.qmd
 # Generate template with package data
 create_dataimago_site <- function(package_name, output_dir = ".") {
   template_path <- system.file("templates", "index.qmd", package = "dataimago")
-  
+
   # Customize template with package information
   template_content <- readLines(template_path)
   template_content <- gsub("{{PACKAGE_NAME}}", package_name, template_content)
-  
+
   writeLines(template_content, file.path(output_dir, "index.qmd"))
 }
 ```

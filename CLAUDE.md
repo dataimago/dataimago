@@ -70,18 +70,18 @@ build_design_system()      # Compile design tokens + SCSS → CSS
 
 **Distribution Channels**:
 - **Quarto Extension**: `quarto_website/_extensions/dataimago/ai-native/`
-- **CDN Distribution**: `inst/quarto-assets/` (jsDelivr-compatible)  
+- **CDN Distribution**: `inst/quarto-assets/` (jsDelivr-compatible)
 - **Next.js Integration**: `ui/dist/tailwind-preset.js`
 
 ### 5. **File System Standards**
 ```
 dataimago/
-├── R/                      # Core functions 
+├── R/                      # Core functions
 │   ├── documentation_utils.R # Documentation generation
 │   └── design_system.R     # R-first CSS build pipeline
 ├── ui/                     # Node.js design system workspace (source of truth)
 │   ├── src/tokens/         # Design tokens (JSON)
-│   ├── src/styles/         # SCSS source files  
+│   ├── src/styles/         # SCSS source files
 │   └── dist/              # Built CSS assets
 ├── inst/
 │   ├── dataimago/          # Complete foundation documents
@@ -169,7 +169,7 @@ This R package is an instantiation of critical theory in code:
 ### Separation of Concerns
 - **`ui/`**: Source of truth for design system (development workspace)
 - **`inst/dataimago/`**: Foundation documents and philosophical content
-- **`quarto_website/`**: Website generation and Quarto extensions  
+- **`quarto_website/`**: Website generation and Quarto extensions
 - **`docs/development/`**: Developer-specific documentation (excluded from builds)
 - **`R/`**: Function orchestration and R-native interfaces
 
@@ -197,7 +197,7 @@ This R package is an instantiation of critical theory in code:
 
 ### Ethical Checkpoints
 - Every function includes ethical context
-- Documentation generation respects philosophical foundations  
+- Documentation generation respects philosophical foundations
 - Asset management preserves visual identity integrity
 - Version control tracks both technical and ethical evolution
 
@@ -205,10 +205,10 @@ This R package is an instantiation of critical theory in code:
 
 ## \U0001F4D0 Development Workflow
 
-1. **Use `usethis` to scaffold** development properly \u2705 
+1. **Use `usethis` to scaffold** development properly \u2705
 2. **Use `testthat`** from the start \u2705
 3. **Use `quarto` for documentation** \u2705 (via `create_quarto_documentation()`)
-4. **Use `Rd2md` for .Rd conversion** \u2705 
+4. **Use `Rd2md` for .Rd conversion** \u2705
 5. **Use `.Rbuildignore` for content curation** \u2705
 6. **R-First Design System** \u2705 (via `build_design_system()`)
 7. **Unicode compliance** \u2705 (proper escape sequences throughout)
@@ -225,7 +225,7 @@ This R package is an instantiation of critical theory in code:
 - Content curation via `.Rbuildignore`
 - MIT licensing and proper attribution
 
-### Phase 2: Documentation Generation \u2705 COMPLETE  
+### Phase 2: Documentation Generation \u2705 COMPLETE
 - `create_quarto_documentation()` function
 - Rd2md integration for .Rd → .qmd conversion
 - Philosophical context injection
@@ -233,7 +233,7 @@ This R package is an instantiation of critical theory in code:
 
 ### Phase 3: R-First Design System \u2705 COMPLETE
 - `create_ui_workspace()` - Node.js workspace setup
-- `build_design_system()` - CSS compilation pipeline  
+- `build_design_system()` - CSS compilation pipeline
 - `update_quarto_extension()` - Extension asset management
 - `generate_cdn_assets()` - Multi-platform distribution
 - Unicode-compliant documentation with proper escape sequences

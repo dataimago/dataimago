@@ -12,19 +12,19 @@ Our governance model reflects the belief that **superalignment is not an outcome
 
 Our governance structure is grounded in the following principles:
 
-1. **Emancipatory Purpose**  
+1. **Emancipatory Purpose**
    All governance decisions must be in service of our mission: to use AI to expand freedom, dignity, and flourishing for all.
 
-2. **Plurality of Perspectives**  
+2. **Plurality of Perspectives**
    We institutionalize access for a diverse range of cultural, ethical, disciplinary, and geographic voices to shape direction and critique assumptions.
 
-3. **Reflexivity**  
+3. **Reflexivity**
    Governance is never complete. Our structures must be reviewable, revisable, and responsive to new conditions and insights.
 
-4. **Transparency**  
+4. **Transparency**
    Decision-making processes—especially those impacting product design, AI deployment, or partnerships—must be publicly documented and justifiable.
 
-5. **Embeddedness**  
+5. **Embeddedness**
    Governance must be culturally aware, socially situated, and structured to include stakeholder voices from communities most affected by AI.
 
 ---
@@ -67,13 +67,13 @@ A standing internal and external team tasked with:
 
 ## Dynamic Governance Practices
 
-- **Constitutional Protocols**  
+- **Constitutional Protocols**
   A living document governs how rules are made, revised, and who participates. This evolves with organizational growth.
 
-- **Alignment Drift Detection**  
+- **Alignment Drift Detection**
   Embedded systems of feedback and early-warning indicators for when internal goals or technologies begin to diverge from mission.
 
-- **Narrative Accountability**  
+- **Narrative Accountability**
   All major decisions must be accompanied by a narrative justification detailing how they serve emancipation and alignment—reviewable by the public.
 
 ---

@@ -1,6 +1,6 @@
 # 🚀 Dataimago AI-Native Website Extension
 
-> **Professional Quarto extension for AI-native R package websites**  
+> **Professional Quarto extension for AI-native R package websites**
 > Featuring Lenis smooth scrolling, slide-based navigation, and ethical framework integration
 
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/dataimago/dataimago-ai-native)
@@ -14,7 +14,7 @@
 The **dataimago-ai-native** extension transforms traditional R package documentation into sophisticated, modern websites designed for the AI-native era. Built on the philosophical foundation of **semantic computing** and **ethical AI practices**, this extension provides:
 
 - **🌊 Smooth scrolling experiences** powered by Lenis
-- **📱 Slide-based narrative structure** for engaging content presentation  
+- **📱 Slide-based narrative structure** for engaging content presentation
 - **♿ Accessibility-first design** with keyboard navigation and reduced motion support
 - **🤖 AI-native architecture** with JSON exports and structured metadata
 - **🌍 Ethical framework integration** via MiCP (Mission Context Protocol)
@@ -56,23 +56,23 @@ format:
       logo: "assets/img/my-logo.png"
       primary-color: "#your-color"
       accent-color: "#your-accent"
-      
+
       # Slide Configuration
       slides:
         hero:
           title: "AI-Native Package"
           content-items: 6
-        features: 
+        features:
           cards: 3
         technical:
           include-micp: true
-      
+
       # Smooth Scrolling Settings
       lenis:
         duration: 1.8
         easing: "custom"
         keyboard-nav: true
-        
+
       # AI-Native Features
       ai-native:
         json-export: true
@@ -95,7 +95,7 @@ format: dataimago-ai-native-html
     {{< content-item title="Feature 1" >}}
     Your content here...
     {{< /content-item >}}
-    
+
     {{< content-item title="Feature 2" >}}
     More content...
     {{< /content-item >}}
@@ -132,7 +132,7 @@ format: dataimago-ai-native-html
 - **Accessibility compliant** with reduced motion support
 - **Keyboard navigation** (Arrow keys, Page Up/Down, Home/End)
 
-### 📱 Slide-Based Architecture  
+### 📱 Slide-Based Architecture
 - **Narrative flow** through content with visual indicators
 - **Full-screen sections** for immersive documentation
 - **Smooth transitions** between conceptual areas
@@ -164,7 +164,7 @@ The extension follows a modular architecture:
 dataimago-ai-native/
 ├── _extension.yml           # Core configuration
 ├── assets/
-│   ├── css/                # Theme and component styles  
+│   ├── css/                # Theme and component styles
 │   ├── js/                 # Interactive functionality
 │   └── img/                # Default assets
 ├── templates/              # Page templates
@@ -188,7 +188,7 @@ Override default colors via CSS custom properties:
 ### Content Templates
 Customize slide templates in `templates/slides/`:
 - `hero-slide.qmd` - Landing section template
-- `features-slide.qmd` - Feature showcase template  
+- `features-slide.qmd` - Feature showcase template
 - `technical-slide.qmd` - Technical documentation template
 
 ### Smooth Scrolling Settings
@@ -234,9 +234,9 @@ export_package_meta <- function(output_dir = "public/data") {
     ethics = read_micp_config(),
     api_endpoints = get_api_documentation()
   )
-  
+
   jsonlite::write_json(
-    meta, 
+    meta,
     file.path(output_dir, "package-meta.json"),
     pretty = TRUE
   )
@@ -246,7 +246,7 @@ export_package_meta <- function(output_dir = "public/data") {
 ## 🚀 Benefits for the Dataimago Ecosystem
 
 1. **Consistency** - Every dataimago package gets professional presentation
-2. **Efficiency** - No need to recreate complex integrations for each package  
+2. **Efficiency** - No need to recreate complex integrations for each package
 3. **Maintainability** - Updates benefit all packages simultaneously
 4. **AI-Native** - Built-in support for intelligent agent consumption
 5. **Ethical** - Embedded frameworks for responsible AI development
@@ -283,7 +283,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-> **"You are coding the infrastructure of a future that values not only precision, but meaning."**  
+> **"You are coding the infrastructure of a future that values not only precision, but meaning."**
 > — dataimago philosophy
 
 🚀 **Ready to transform your R package documentation into an AI-native experience?**

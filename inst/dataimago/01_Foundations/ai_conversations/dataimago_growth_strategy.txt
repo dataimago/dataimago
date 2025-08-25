@@ -69,15 +69,15 @@ Founder:
 
 dataimago is a company whose founding vision is to use ai as a force that benefits humanity as opposed to one that enslaves or destroys humanity. ai is at the center of dataimago.   The idea behind sgpFlow performance management is the 1st stage of a larger endeavor to use flow based conditional thinking in the performance management of every conceivable other sector (health care, poverty, retirement, ..) where management can better the outcomes for those participating and society in general.   The basis of the endeavor, I believe can be traced back to the ideas of the Frankfurt School that emerged following the horrors of the World War II. In their writings, particularly those of Horkheimer and Adorno, they lay out their vision of critical theory included in the files associated with this project.
 
-To that end, I see ai as the potentiator for fulfilling the promise of what Horkheimer and Adorno envision within critical theory where a ai-enable fusion of hermeneutics and positivistic tendencies lead toward the emancipation of humanity as opposed to the enslavement or destruction of humanity. 
+To that end, I see ai as the potentiator for fulfilling the promise of what Horkheimer and Adorno envision within critical theory where a ai-enable fusion of hermeneutics and positivistic tendencies lead toward the emancipation of humanity as opposed to the enslavement or destruction of humanity.
 
 We believe that data analytics aligned with goals directed toward the emancipation of humanity (for example, the elimination of poverty) will be an indispensable tool for this endeavor. AI will help both instantiate this vision.
 
-sgpFlow is the starting point in the field of performance management in education where the goal is the elimination of student under achievement. The goal, starting with education is to use this methodology to direct attention and resources in informed way to stakeholders in ways that will best result in the goals of raising student achievement substantially in the United States. 
+sgpFlow is the starting point in the field of performance management in education where the goal is the elimination of student under achievement. The goal, starting with education is to use this methodology to direct attention and resources in informed way to stakeholders in ways that will best result in the goals of raising student achievement substantially in the United States.
 
-Instantiating this goal in education will require modalities that extend down to the individual student where targeted interventions maximize the learning accomplished by each student leading to dramatically increased average rates of learning for the entire state which in turn produce outcomes that dramatically increase the benefits of society overall. 
+Instantiating this goal in education will require modalities that extend down to the individual student where targeted interventions maximize the learning accomplished by each student leading to dramatically increased average rates of learning for the entire state which in turn produce outcomes that dramatically increase the benefits of society overall.
 
-To reach the student sgpFlow-AI, a component of dataimago will purchase a major assessment testing company (e.g., DRC or Cambium Assessment) in order to integrate highly standardized student results to help take the initial systems level management associated with sgpFlow down to the individual student level. 
+To reach the student sgpFlow-AI, a component of dataimago will purchase a major assessment testing company (e.g., DRC or Cambium Assessment) in order to integrate highly standardized student results to help take the initial systems level management associated with sgpFlow down to the individual student level.
 
 Can you elaborate on these ideas in depth.
 
@@ -306,7 +306,7 @@ We will seek public charters, advisory councils, and eventually, distributed ste
 
 Founder:
 
-I have added a file to this project called Karp.txt that outlines how the work of dataimago would compete in the sector the palantir operate. Can you expound upon how companies such as these could come to dominate the world in the next 10 to 20 years. 
+I have added a file to this project called Karp.txt that outlines how the work of dataimago would compete in the sector the palantir operate. Can you expound upon how companies such as these could come to dominate the world in the next 10 to 20 years.
 
 
 ChatGPT:

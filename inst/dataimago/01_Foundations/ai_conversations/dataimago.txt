@@ -12,7 +12,7 @@ dataimago exists beyond profit to benefit humanity, ideally leading to the emanc
 
 * What is the essential need in the world that only dataimago, with its specific approach, can address?
 
-The essential need is the world is the reduction of human suffering replaced by the increase in human satisfaction, happiness, fulfillment, etc. dataimago is the only company capable of utilizing AI to provide necessary reconciliation of hermeneutics (meaning) and 
+The essential need is the world is the reduction of human suffering replaced by the increase in human satisfaction, happiness, fulfillment, etc. dataimago is the only company capable of utilizing AI to provide necessary reconciliation of hermeneutics (meaning) and
 positivism (empirical science) in service of emancipatory goals detailed by Horkheimer and Adorno
 
 * What would be lost if dataimago didn’t exist?
@@ -25,20 +25,20 @@ If dataimago didn't exist, the chances for AI being used for malign purposes lik
 
 * What are your non-negotiable values when using data and AI?
 
-Non-negotiable values are the commitment to AI as the path toward our solution. AI will both invent the solutions necessary to lead to emancipation as well as be the power behind those solutions as they are implemented. Finding a solution that supports data sovereignty 
+Non-negotiable values are the commitment to AI as the path toward our solution. AI will both invent the solutions necessary to lead to emancipation as well as be the power behind those solutions as they are implemented. Finding a solution that supports data sovereignty
 is a necessity. These currently intractible problems will become tractible as AI scales to super-human intelligence.
 
 
 * How does dataimago prevent itself from becoming another form of instrumental domination?
 
-This is a critical question and one that mankind has not found an answer to for hundred of years. Often, despite avowalls by those 
-inventing tools that they are not designed as tools of domination, they often become such as they take on a life of their own. AI 
+This is a critical question and one that mankind has not found an answer to for hundred of years. Often, despite avowalls by those
+inventing tools that they are not designed as tools of domination, they often become such as they take on a life of their own. AI
 will help find a solution that reverses this trend as well as a mechanism by which to test whether the tools being developed are becoming
-what a tool of instrumental domination. 
+what a tool of instrumental domination.
 
 * What ethical trade-offs are you *never* willing to make?
 
-I'm not sure. Perhaps we can dig into this further as this is developed. 
+I'm not sure. Perhaps we can dig into this further as this is developed.
 
 ---
 
@@ -46,7 +46,7 @@ I'm not sure. Perhaps we can dig into this further as this is developed.
 
 * What does dataimago do on a day-to-day basis to fulfill its purpose? (e.g., building flow-based models, offering AI interfaces, running policy simulations?)
 
-On a day-to-day basis, dataimago is an ai company who goal is to go from conceptualization of an emancipatory path forward to the production of a performance management systems that fulfills that path when put into practice. 
+On a day-to-day basis, dataimago is an ai company who goal is to go from conceptualization of an emancipatory path forward to the production of a performance management systems that fulfills that path when put into practice.
 
 
 * Who are the *primary users* or *beneficiaries* of dataimago’s tools and insights? Eventually, these tools become omnipresent in the live of people throughout society as ai helps direct the dynamic flow of individuals in ways that are do not lead to instrumental domination (e.g., telling an individual what they need to become to help society.)
@@ -56,7 +56,7 @@ Users can be everyone from parents to policy makers.
 
 * What differentiates dataimago’s “products” from those of a traditional education analytics or AI company?
 
-The products are not retrospective in nature but depict both retro-spective AND prospective views, trying to modulate behavior to maximize the benefits based upon prospective views. 
+The products are not retrospective in nature but depict both retro-spective AND prospective views, trying to modulate behavior to maximize the benefits based upon prospective views.
 
 
 ---
@@ -65,12 +65,12 @@ The products are not retrospective in nature but depict both retro-spective AND 
 
 * Who is *served* by dataimago’s work? (students, teachers, policymakers, society at large?)
 
-dataimago's work serves everyone. Taking sgpFlow as an example, From an individual student report and ai-interface that goes to a 
-parent, to teacher level ai interfaces that support their individualized instructional practices, to principal level ai-interfaces that 
-support performance management at the school level, to district level administrative ai-interfaces that support performance management at the district level to state level administrative ai-interfaces that support performance management and inform policity making at the state level. 
+dataimago's work serves everyone. Taking sgpFlow as an example, From an individual student report and ai-interface that goes to a
+parent, to teacher level ai interfaces that support their individualized instructional practices, to principal level ai-interfaces that
+support performance management at the school level, to district level administrative ai-interfaces that support performance management at the district level to state level administrative ai-interfaces that support performance management and inform policity making at the state level.
 
-Extending to other areas including healthcare and, for example, performance management of different components of the criminal justice system, the reality is the same: To instantiate through performance management the outcomes associated with emancipation, all people are 
-potentially served by dataimago's work.  
+Extending to other areas including healthcare and, for example, performance management of different components of the criminal justice system, the reality is the same: To instantiate through performance management the outcomes associated with emancipation, all people are
+potentially served by dataimago's work.
 
 
 * Who is *empowered* by dataimago’s analytics? Who is protected?
@@ -79,7 +79,7 @@ Ultimately, and most importantly, AI is informed by dataimago's analytics. It is
 
 * How are the voices of students, marginalized communities, or frontline professionals incorporated into your design and governance?
 
-These questions have been debated and researched for decades if not centuries. As of the present, it is not clear that an adequate answer to the question and it is likely tied up with the use of positivistic ways of thinking about the world to manage through control and standardization as detailed in the philosophy of Michel Foucault. 
+These questions have been debated and researched for decades if not centuries. As of the present, it is not clear that an adequate answer to the question and it is likely tied up with the use of positivistic ways of thinking about the world to manage through control and standardization as detailed in the philosophy of Michel Foucault.
 
 ---
 
@@ -89,8 +89,8 @@ These questions have been debated and researched for decades if not centuries. A
 
 Education is the first instantiation of a general methodology built on two foundational ideas:
 
-1. AI is a tranformative tool in the history of humanity and it will be a co-creator of that history going forward. AI transforms process potentially disrupting enlightment philosophy that places intelligable human understanding at the center of thought with something where AI mediated thought 
-2. Conditional, flow-based thinking is the manner in which performance management must be directed to move beyond the disciplinary socieites of Foucault to a utopian version of the societies of control put forward by Deleuze. That is, control for good (emancipation) as opposed to control for bad (seizing power and weath). 
+1. AI is a tranformative tool in the history of humanity and it will be a co-creator of that history going forward. AI transforms process potentially disrupting enlightment philosophy that places intelligable human understanding at the center of thought with something where AI mediated thought
+2. Conditional, flow-based thinking is the manner in which performance management must be directed to move beyond the disciplinary socieites of Foucault to a utopian version of the societies of control put forward by Deleuze. That is, control for good (emancipation) as opposed to control for bad (seizing power and weath).
 
 
 * What fields are “in scope” for future performance management systems? Are there any you’d explicitly avoid?
@@ -100,7 +100,7 @@ Currently fields in scope following education include criminal justice system pe
 
 * What do you want dataimago to be *famous for*?
 
-dataimago will be famous for transforming the world through the beneficial use of AI. In a way, dataimago will be an instantiation of super-alignment. 
+dataimago will be famous for transforming the world through the beneficial use of AI. In a way, dataimago will be an instantiation of super-alignment.
 
 
 
@@ -115,13 +115,13 @@ dataimago will be famous for transforming the world through the beneficial use o
 
 * What role does AI play in accelerating or deepening this change?
 
-AI provides the essential bridge between hermeneutic and positivistic forces allowing for personzliazation necessary for hermeneutic understanding while also being intimately cognizant of the positivistic necessities associated with fulfilling some emancipatory potential. 
+AI provides the essential bridge between hermeneutic and positivistic forces allowing for personzliazation necessary for hermeneutic understanding while also being intimately cognizant of the positivistic necessities associated with fulfilling some emancipatory potential.
 
 
 * What does “emancipation” mean concretely in education, health care, or economics?
 
 
-Defining emancipation is not something that one individual gets to decide. Its definition is necessarily contested and will change to some extent over time. The plan ultimately would be to have an assist in a mechanism in which the definition of this central topic (or description of its attributes) can be both constituted and adapted in ways that try and maximize consensus. 
+Defining emancipation is not something that one individual gets to decide. Its definition is necessarily contested and will change to some extent over time. The plan ultimately would be to have an assist in a mechanism in which the definition of this central topic (or description of its attributes) can be both constituted and adapted in ways that try and maximize consensus.
 
 
 ---
@@ -130,18 +130,18 @@ Defining emancipation is not something that one individual gets to decide. Its d
 
 * Is dataimago fundamentally a *public service* company (even if privately owned)?
 
-I believe so, but am not well versed in issues related to companies and would like you to assist. 
+I believe so, but am not well versed in issues related to companies and would like you to assist.
 
 * What responsibility does it bear to democratic publics?
 
 
-This is a good question and one that I again will ask AI to help inform. 
+This is a good question and one that I again will ask AI to help inform.
 
 
 * What does a **public-facing accountability** model for dataimago look like?
 
 
-This is a good question and one that I again will ask AI to help inform and stand up policies and structures to support. 
+This is a good question and one that I again will ask AI to help inform and stand up policies and structures to support.
 
 ---
 
@@ -151,18 +151,18 @@ This is a good question and one that I again will ask AI to help inform and stan
 
 
 In one year sgpFlow, the sole subsidiary (or sub-component) of dataimago will be working with 1 or 2 states to begin implementation of sgpFlow performance management. Following standing up the initial analytics, we will be developing sgpFlow-ai that will become the prototype interface for the use of sgpFlow analytics to produce unheard of results in the increase in rates of learning of students leading to large and substantial increases in student achievement of students. Following these initial, revolutionary results, sgpFlow will scale to more than 50% of other states and also begin fulfilling plans to integrate student level.
- 
 
-In 5 years the sgpFlow subsidiary of dataimago will have scaled to almost all states providing individualized instruction coupled with performance management solutions to states. With approximately 50 million students in the United States, building such an integrated solution could potentially be worth $1,000/year per student leading to potential annual revenues of $50 billion based solely upon education. 
 
-In 5 years dataimago will include civilytics as the performance management subsidiary associated with standing upon flow based performance management systems associated with civil society. 
+In 5 years the sgpFlow subsidiary of dataimago will have scaled to almost all states providing individualized instruction coupled with performance management solutions to states. With approximately 50 million students in the United States, building such an integrated solution could potentially be worth $1,000/year per student leading to potential annual revenues of $50 billion based solely upon education.
 
-In 5 years dataimago will include a performance management subsidiary associated with health care management including all of its subcomponents. 
+In 5 years dataimago will include civilytics as the performance management subsidiary associated with standing upon flow based performance management systems associated with civil society.
+
+In 5 years dataimago will include a performance management subsidiary associated with health care management including all of its subcomponents.
 
 
 * When historians write about dataimago 50 years from now, what will they say it contributed to humanity?
 
-If dataimago fulfills its potential, historians will write that dataimago became the instantiation of super-alignment allowing for the conceptualization and creation of an ai-based society that seeks to enhance humanity. 
+If dataimago fulfills its potential, historians will write that dataimago became the instantiation of super-alignment allowing for the conceptualization and creation of an ai-based society that seeks to enhance humanity.
 
 ---
 

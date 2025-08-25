@@ -113,7 +113,7 @@ result <- build_design_system(force_rebuild = TRUE, verbose = TRUE)
 
 # Build for CDN distribution only (skip local copying)
 result <- build_design_system(
-  include_sri = TRUE, 
+  include_sri = TRUE,
   update_extension = FALSE,
   verbose = FALSE
 )

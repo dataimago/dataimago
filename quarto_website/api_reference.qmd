@@ -186,7 +186,7 @@ result <- build_design_system(force_rebuild = TRUE, verbose = TRUE)
 
 # Build for CDN distribution only (skip local copying)
 result <- build_design_system(
-  include_sri = TRUE, 
+  include_sri = TRUE,
   update_extension = FALSE,
   verbose = FALSE
 )
@@ -381,12 +381,12 @@ ui/
 +-- build.js                  # Custom build script for compilation
 +-- src/
 |   +-- tokens/
-|   |   +-- colors.json       # dataimago color palette 
+|   |   +-- colors.json       # dataimago color palette
 |   |   +-- typography.json   # Font definitions and scales
 |   |   +-- spacing.json      # Spacing scale and dimensions
 |   +-- styles/
 |       +-- base.scss         # Base styles using design tokens
-|       +-- components.scss   # UI component styles  
+|       +-- components.scss   # UI component styles
 |       +-- utilities.scss    # Utility classes
 +-- dist/                     # Build output directory (created by build process)
 ```
@@ -639,7 +639,7 @@ https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/d
 ***SRI (Subresource Integrity) Hashes:***Each CSS file gets a SHA-384 hash for security:
 
 ```
-<link rel="stylesheet" 
+<link rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/.../dataimago.min.css"
       integrity="sha384-..."
       crossorigin="anonymous">

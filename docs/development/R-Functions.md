@@ -49,7 +49,7 @@ All functions follow consistent patterns:
 
 Functions are designed for Model Context Protocol (MCP) integration:
 - **Deterministic outputs** for AI reasoning
-- **Machine-readable metadata** in return values  
+- **Machine-readable metadata** in return values
 - **Clear success/failure indicators** for automated workflows
 - **Contextual error messages** for debugging assistance
 
@@ -95,7 +95,7 @@ philosophical_context <- doc_result$foundation_links
 
 This module requires several R packages:
 - **Core**: `fs`, `processx`, `jsonlite`, `digest`, `usethis`
-- **Documentation**: `Rd2md`, `tools`, `crayon`, `glue` 
+- **Documentation**: `Rd2md`, `tools`, `crayon`, `glue`
 - **Optional**: `quarto` (for website rendering)
 
 And Node.js tools (managed automatically):

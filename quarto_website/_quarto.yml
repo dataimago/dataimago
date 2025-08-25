@@ -14,7 +14,7 @@ execute:
 extensions:
   - dataimago/ai-native
 
-# Define your package documentation  
+# Define your package documentation
 references:
   - type: r
     title: "Function Reference"
@@ -28,7 +28,7 @@ website:
   favicon: /assets/img/ai_monogram_supreme_favicon.png
   repo-actions: [edit, issue]
   page-navigation: true
-  
+
   navbar:
     title: "dataimago"
     logo: /assets/img/ai_monogram_supreme_bg_BW.png
@@ -87,7 +87,7 @@ format:
     theme:
       light: [cosmo, assets/css/website-light.scss]
       dark: [cosmo, assets/css/website-dark.scss]
-    css: 
+    css:
       - assets/css/dataimago.scss
       - assets/css/styles.css
       - assets/css/documents.css

@@ -71,7 +71,7 @@ Our visual frameworks follow principles derived from critical theory and accessi
 
 ### Color Palette
 - **Red (#CC4125)**: Critical consciousness, revolutionary energy
-- **Blue (#2E86AB)**: Democratic participation, analytical thinking  
+- **Blue (#2E86AB)**: Democratic participation, analytical thinking
 - **Purple (#A23B72)**: Synthesis, hermeneutic understanding
 - **Orange (#F18F01)**: Transformation, human agency
 - **Green (#4CAF50)**: Growth, emancipation, flourishing

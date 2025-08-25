@@ -58,13 +58,13 @@ class DataimagoModule {
   constructor() {
     this.init();
   }
-  
+
   init() {
     // Initialization logic
   }
-  
+
   // Public API methods
-  
+
   destroy() {
     // Cleanup logic
   }

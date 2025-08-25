@@ -2,18 +2,18 @@ Package: dataimago
 Version: 0.0-0.3
 Date: 2025-07-5
 Title: Ethical AI-Native Data Science Foundation Package
-Description: An R package containing the philosophical foundations, 
-    technical architecture, and application templates for dataimago's 
-    emancipatory data science platform. Provides versioned access to 
-    critical theory frameworks, application blueprints, and packageSkeleton 
-    functionality for creating AI-native data science applications that 
+Description: An R package containing the philosophical foundations,
+    technical architecture, and application templates for dataimago's
+    emancipatory data science platform. Provides versioned access to
+    critical theory frameworks, application blueprints, and packageSkeleton
+    functionality for creating AI-native data science applications that
     reconcile meaning (hermeneutics) and measurement (positivism).
 Author: Damian W. Betebenner [aut, cre] (<https://orcid.org/0000-0003-0476-5599>)
-Authors@R: c(person(given=c("Damian", "W."), family="Betebenner", email="dbetebenner@gmail.com", role=c("aut", "cre"), 
+Authors@R: c(person(given=c("Damian", "W."), family="Betebenner", email="dbetebenner@gmail.com", role=c("aut", "cre"),
 		comment = c(ORCID = "0000-0003-0476-5599")))
 Maintainer: Damian W. Betebenner <dbetebenner@gmail.com>
 Depends: R (>= 4.0)
-Imports: 
+Imports:
     jsonlite (>= 1.9.0),
     yaml (>= 2.3.0),
     fs (>= 1.6.0),
@@ -26,9 +26,9 @@ Imports:
     tools,
     processx (>= 3.8.0),
     digest (>= 0.6.0)
-Suggests: 
-    knitr, 
-    rmarkdown, 
+Suggests:
+    knitr,
+    rmarkdown,
     testthat (>= 3.2.0),
     quarto (>= 1.4.0),
     shiny (>= 1.8.0),

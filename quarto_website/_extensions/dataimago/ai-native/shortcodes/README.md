@@ -34,9 +34,9 @@ Content goes here...
 
 **Generated HTML:**
 ```html
-<section class="dataimago-slide lenis-slide dataimago-slide-hero" 
-         data-slide-type="hero" 
-         role="region" 
+<section class="dataimago-slide lenis-slide dataimago-slide-hero"
+         data-slide-type="hero"
+         role="region"
          aria-label="Landing Section">
   <!-- Content -->
 </section>
@@ -55,7 +55,7 @@ Creates smooth-scrolling hero content areas (carousel replacement).
 
 **Parameters:**
 - `height`: Custom height (default: 60vh)
-- `class`: Additional CSS classes  
+- `class`: Additional CSS classes
 - `id`: Custom container ID
 - `indicator`: Show scroll progress indicator (default: true)
 
@@ -141,14 +141,14 @@ All shortcodes follow a consistent pattern:
 function Shortcode_name(args, kwargs, content)
   -- Get parameters
   local param1 = pandoc.utils.stringify(args[1] or kwargs.param1 or "default")
-  
+
   -- Process content
   local processed_content = pandoc.read(content, "markdown").blocks
-  
+
   -- Generate HTML
   local html_start = "<div class='component'>"
   local html_end = "</div>"
-  
+
   -- Return structured blocks
   return {
     pandoc.RawBlock("html", html_start),

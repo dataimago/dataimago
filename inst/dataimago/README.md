@@ -5,7 +5,7 @@
 
 ---
 
-A repository containing foundational framing documents related to dataimago. 
+A repository containing foundational framing documents related to dataimago.
 
 ## Repository Structure
 
