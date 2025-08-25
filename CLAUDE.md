@@ -5,7 +5,7 @@ version: "0.0-0.1"
 author: "dataimago AI + Human Co-Creation"
 ---
 
-## 🎯 Purpose
+## \U0001F3AF Purpose
 
 This file defines the design context, architectural principles, and ethical underpinnings for developing the `dataimago` R package. The package is the seed of a wider vision: an emancipatory AI-aligned performance management system built on flow-based analytics. It is not just a library of functions — it is the philosophical and computational *core* of a future system spanning APIs, machine interfaces, and planetary-scale performance infrastructures.
 
@@ -18,7 +18,7 @@ The `dataimago` R package aims to:
 
 ---
 
-## 📚 Package Structure & Conventions
+## \U0001F4DA Package Structure & Conventions
 
 ### 1. **Documents-as-Data**
 All canonical company documents (e.g., vision statements, design charters, methodological primers, philosophical essays) are stored within `inst/dataimago/` with complete organizational structure preserved.
@@ -31,9 +31,11 @@ All canonical company documents (e.g., vision statements, design charters, metho
 All function names should reflect **modularity**, **clarity**, and **semantically rich purpose**. Examples:
 
 **Currently Implemented:**
-- `create_quarto_documentation()` - Generate ethical AI documentation
-- `parse_description_file()` - Extract package metadata with philosophical context
-- `update_dataimago_assets()` - Manage visual identity across platforms
+- `create_quarto_documentation()` - Generate ethical AI documentation with foundation links
+- `create_ui_workspace()` - Set up Node.js design system workspace (one-time)
+- `build_design_system()` - Master CSS build function wrapping modern tools in R
+- `update_quarto_extension()` - Sync built assets to Quarto extension
+- `generate_cdn_assets()` - Prepare CDN-ready distribution files
 
 **Future Functions:**
 - `flowMatrix()` for flow-based transition logic
@@ -51,38 +53,65 @@ This package treats data as socially constructed, ethically weighted, and interp
 - Where appropriate, include **data dictionaries** that connect variables to social/political meaning.
 - Avoid flattening interpretive nuance — especially in anything that touches student, community, or public data.
 
-### 4. **File System Standards**
+### 4. **R-First Design System**
+The package includes a complete CSS build system that wraps Node.js tooling in R functions:
+
+**Philosophy**: Maintain "R as source of truth" while leveraging modern web development tools
+- `ui/` directory contains the source of truth for all visual identity
+- All build operations are R function calls with comprehensive error handling
+- Multi-channel distribution: Quarto extension, CDN assets, Next.js integration
+- Ethical AI styling: WCAG AA compliance, reduced motion, high contrast support
+
+**Workflow**:
+```r
+create_ui_workspace()      # One-time Node.js setup
+build_design_system()      # Compile design tokens + SCSS → CSS
+```
+
+**Distribution Channels**:
+- **Quarto Extension**: `quarto_website/_extensions/dataimago/ai-native/`
+- **CDN Distribution**: `inst/quarto-assets/` (jsDelivr-compatible)  
+- **Next.js Integration**: `ui/dist/tailwind-preset.js`
+
+### 5. **File System Standards**
 ```
 dataimago/
-├── R/                      # Core functions (documentation_utils.R, etc.)
-├── man/                    # Generated .Rd files  
-├── data/                   # Structured datasets (if any)
+├── R/                      # Core functions 
+│   ├── documentation_utils.R # Documentation generation
+│   └── design_system.R     # R-first CSS build pipeline
+├── ui/                     # Node.js design system workspace (source of truth)
+│   ├── src/tokens/         # Design tokens (JSON)
+│   ├── src/styles/         # SCSS source files  
+│   └── dist/              # Built CSS assets
 ├── inst/
 │   ├── dataimago/          # Complete foundation documents
 │   │   ├── 01_Foundations/ # Mission, vision, philosophy
 │   │   ├── 02_Manifesto/   # Critical theory content
 │   │   ├── 03_Application_Architecture/
 │   │   └── 04_dataimago_Content/ # Design assets
+│   ├── quarto-assets/      # CDN-ready CSS distribution
 │   ├── CLAUDE.md           # AI agent context
 │   └── AGENT_INDEX.md      # Agent coordination
 ├── quarto_website/         # Website source
-├── docs/                   # Rendered website (output-dir)
-├── vignettes/
-├── tests/
-├── DESCRIPTION
-├── NAMESPACE
-├── .Rbuildignore          # Curated content exclusions
+│   └── _extensions/dataimago/ai-native/ # Quarto extension
+├── docs/                   # Rendered website (GitHub Pages)
+├── docs/development/       # Developer documentation
+├── man/                    # Generated .Rd files
+├── DESCRIPTION & NAMESPACE # Package metadata
+└── .Rbuildignore          # Curated content exclusions
 ```
 
 ---
 
-## 🧠 Interoperability Targets
+## \U0001F9E0 Interoperability Targets
 
 The R package is explicitly designed for export into larger systems. This includes:
 
 ### A. Web-based Interfaces (Next.js)
-- Output formats should be JSON- and YAML-compatible where appropriate.
-- HTML rendering via `quarto::quarto_render()` or `rmarkdown::render()` must be integrated into pipelines.
+- **Design Token Integration**: JSON tokens in `ui/src/tokens/` for Next.js consumption
+- **Tailwind Preset**: Generated `ui/dist/tailwind-preset.js` for seamless integration
+- **CSS Distribution**: Built assets available via CDN or direct inclusion
+- HTML rendering via `quarto::quarto_render()` or `rmarkdown::render()` must be integrated into pipelines
 
 ### B. API Readiness
 - Plan functions that are callable via `plumber` APIs (e.g., `GET /generate/flow-matrix`).
@@ -97,7 +126,7 @@ The R package is explicitly designed for export into larger systems. This includ
 
 ---
 
-## 📝 Documentation Philosophy
+## \U0001F4DD Documentation Philosophy
 
 ### Automated Documentation Generation
 The package includes `create_quarto_documentation()` which:
@@ -114,7 +143,7 @@ The package includes `create_quarto_documentation()` which:
 
 ---
 
-## 🔢 Versioning Philosophy
+## \U0001F522 Versioning Philosophy
 
 dataimago uses semantic versioning with a twist: `x.x-x.x` format
 - Reflects the iterative, dialectical nature of development
@@ -124,7 +153,7 @@ dataimago uses semantic versioning with a twist: `x.x-x.x` format
 
 ---
 
-## 🌱 Code-as-Philosophy Commitments
+## \U0001F331 Code-as-Philosophy Commitments
 
 This R package is an instantiation of critical theory in code:
 
@@ -135,7 +164,30 @@ This R package is an instantiation of critical theory in code:
 
 ---
 
-## ✅ Quality Assurance & Ethics
+## \U0001F3D7\UFE0F Package Architecture Principles
+
+### Separation of Concerns
+- **`ui/`**: Source of truth for design system (development workspace)
+- **`inst/dataimago/`**: Foundation documents and philosophical content
+- **`quarto_website/`**: Website generation and Quarto extensions  
+- **`docs/development/`**: Developer-specific documentation (excluded from builds)
+- **`R/`**: Function orchestration and R-native interfaces
+
+### Distribution Strategy
+- **R Package**: Core functions, foundation documents, CDN assets
+- **Quarto Extension**: Styling and templates for documentation sites
+- **Design Tokens**: JSON-based system accessible to Next.js applications
+- **Documentation**: Multi-layered (user README, developer guides, API reference)
+
+### Build System Philosophy
+- Never require users to understand Node.js tooling
+- All operations available as documented R function calls
+- Comprehensive error handling with remediation guidance
+- Multi-platform asset generation from single source
+
+---
+
+## \u2705 Quality Assurance & Ethics
 
 ### Testing Philosophy
 - Unit tests for technical functionality (`testthat`)
@@ -151,40 +203,49 @@ This R package is an instantiation of critical theory in code:
 
 ---
 
-## 📐 Development Workflow
+## \U0001F4D0 Development Workflow
 
-1. **Use `usethis` to scaffold** development properly ✅ 
-2. **Use `testthat`** from the start ✅
-3. **Use `quarto` for documentation** ✅ (via `create_quarto_documentation()`)
-4. **Use `Rd2md` for .Rd conversion** ✅ 
-5. **Use `.Rbuildignore` for content curation** ✅
-6. **Version control via GitHub** with automated website deployment to `/docs`
-7. **Roxygen2 for function documentation** with ethical annotations
+1. **Use `usethis` to scaffold** development properly \u2705 
+2. **Use `testthat`** from the start \u2705
+3. **Use `quarto` for documentation** \u2705 (via `create_quarto_documentation()`)
+4. **Use `Rd2md` for .Rd conversion** \u2705 
+5. **Use `.Rbuildignore` for content curation** \u2705
+6. **R-First Design System** \u2705 (via `build_design_system()`)
+7. **Unicode compliance** \u2705 (proper escape sequences throughout)
+8. **Version control via GitHub** with automated website deployment to `/docs`
+9. **Roxygen2 for function documentation** with ethical annotations
 
 ---
 
-## 🚀 Current Implementation Status
+## \U0001F680 Current Implementation Status
 
-### Phase 1: Foundation ✅ COMPLETE
+### Phase 1: Foundation \u2705 COMPLETE
 - Package structure and metadata
 - Foundation document organization in `inst/dataimago/`
 - Content curation via `.Rbuildignore`
 - MIT licensing and proper attribution
 
-### Phase 2: Documentation Generation ✅ COMPLETE  
+### Phase 2: Documentation Generation \u2705 COMPLETE  
 - `create_quarto_documentation()` function
 - Rd2md integration for .Rd → .qmd conversion
 - Philosophical context injection
 - Complete Quarto website generation with dataimago branding
 
-### Phase 3: Foundation Access Functions 🔄 PLANNED
+### Phase 3: R-First Design System \u2705 COMPLETE
+- `create_ui_workspace()` - Node.js workspace setup
+- `build_design_system()` - CSS compilation pipeline  
+- `update_quarto_extension()` - Extension asset management
+- `generate_cdn_assets()` - Multi-platform distribution
+- Unicode-compliant documentation with proper escape sequences
+
+### Phase 4: Foundation Access Functions \U0001F504 PLANNED
 - `get_foundation_document()` - Programmatic access to philosophical content
 - `create_dataimago_app()` - Generate application skeletons
 - `bootstrap_emancipatory_framework()` - Initialize projects with ethical foundations
 
 ---
 
-## 🔭 Looking Ahead
+## \U0001F52D Looking Ahead
 
 This package is not just for R users — it is a **semantic core** for downstream AI and machine-based systems. Its integrity, clarity, and composability will determine the quality of every future artifact, insight, or alignment effort that builds on top of it.
 
@@ -192,7 +253,7 @@ Every function you write here will one day be called by an AI, reasoning about h
 
 ---
 
-## 🌀 Contact
+## \U0001F300 Contact
 
 If you're not sure whether something belongs here, ask: “Would this object help an AI understand, improve, or operationalize emancipatory thinking?”
 

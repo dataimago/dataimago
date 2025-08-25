@@ -1,3 +1,15 @@
+#' @importFrom fs dir_exists dir_create file_copy path
+#' @importFrom glue glue
+#' @importFrom jsonlite toJSON fromJSON
+#' @importFrom rlang .data
+#' @importFrom usethis ui_done ui_info ui_warn
+#' @importFrom whisker whisker.render
+#' @importFrom yaml read_yaml write_yaml
+#' @importFrom crayon green silver yellow
+#' @importFrom tools file_path_sans_ext
+#' @importFrom Rd2md as_markdown read_rdfile
+NULL
+
 #' Generate Quarto Documentation from R Package
 #'
 #' Converts R package documentation (.Rd files) and metadata (DESCRIPTION)
@@ -372,9 +384,17 @@ update_dataimago_assets <- function(output_path, package_path) {
   # Create assets directory structure
   assets_dir <- file.path(output_path, "assets")
   img_dir <- file.path(assets_dir, "img")
+  css_dir <- file.path(assets_dir, "css")
+  js_dir <- file.path(assets_dir, "js")
   
   if (!dir.exists(img_dir)) {
     dir.create(img_dir, recursive = TRUE)
+  }
+  if (!dir.exists(css_dir)) {
+    dir.create(css_dir, recursive = TRUE)
+  }
+  if (!dir.exists(js_dir)) {
+    dir.create(js_dir, recursive = TRUE)
   }
   
   # Copy dataimago logos from inst/
@@ -388,6 +408,34 @@ update_dataimago_assets <- function(output_path, package_path) {
     }
     
     cat(crayon::silver("  Copied"), length(png_files), "logo files to assets/img/\n")
+  }
+  
+  # Ensure dataimago/ai-native Quarto extension is available
+  extensions_dir <- file.path(output_path, "_extensions", "dataimago", "ai-native")
+  if (dir.exists(extensions_dir)) {
+    cat(crayon::silver("  Found dataimago/ai-native Quarto extension\n"))
+    
+    # Copy extension assets to main assets directory for broader accessibility
+    ext_css_dir <- file.path(extensions_dir, "assets", "css")
+    ext_js_dir <- file.path(extensions_dir, "assets", "js")
+    
+    if (dir.exists(ext_css_dir)) {
+      css_files <- list.files(ext_css_dir, pattern = "\\.(scss|css)$", full.names = TRUE)
+      for (css_file in css_files) {
+        file.copy(css_file, css_dir, overwrite = TRUE)
+      }
+      cat(crayon::silver("  Copied"), length(css_files), "extension CSS/SCSS files\n")
+    }
+    
+    if (dir.exists(ext_js_dir)) {
+      js_files <- list.files(ext_js_dir, pattern = "\\.js$", full.names = TRUE)
+      for (js_file in js_files) {
+        file.copy(js_file, js_dir, overwrite = TRUE)
+      }
+      cat(crayon::silver("  Copied"), length(js_files), "extension JS files\n")
+    }
+  } else {
+    cat(crayon::yellow("  Warning: dataimago/ai-native extension not found\n"))
   }
   
   invisible(TRUE)

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SVG Parallax Clouds (Pure CSS)</title>
+<style>
+  :root {
+    --sky-a: #69a7d1;
+    --sky-b: #bfe3ff;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: linear-gradient(180deg, var(--sky-a), var(--sky-b));
+    overflow: hidden;
+  }
+  svg#sky {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+  }
+
+  /* Parallax layers */
+  .layer { opacity: 0.85 }
+  .back  { opacity: 0.55 }
+  .mid   { opacity: 0.72 }
+  .front { opacity: 0.9  }
+
+  /* Horizontal drift (clouds); each <use.cloud> slides from left->right */
+  .cloud {
+    transform: translateX(-30vw) scale(var(--scale,1));
+    animation: drift var(--speed, 80s) linear infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes drift {
+    to { transform: translateX(130vw) scale(var(--scale,1)); }
+  }
+
+  /* Gentle vertical bob on a wrapper <g> so it composes with drift */
+  .bob {
+    animation: bob var(--bob, 7s) ease-in-out infinite alternate;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes bob {
+    from { transform: translateY(calc(var(--y, 0px) - 6px)); }
+    to   { transform: translateY(calc(var(--y, 0px) + 6px)); }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cloud, .bob {
+      animation: none !important;
+      transform: translateX(0) translateY(0) scale(1);
+    }
+  }
+</style>
+
+<svg id="sky" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animated sky with drifting clouds">
+  <defs>
+    <!-- Soft sky gradient background (optional if you use CSS page background) -->
+    <linearGradient id="skyGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%"  stop-color="#69a7d1"/>
+      <stop offset="100%" stop-color="#bfe3ff"/>
+    </linearGradient>
+
+    <!-- Fluffy filter inspired by Beauhaus: feTurbulence + feDisplacementMap -->
+    <filter id="fluff" x="-10%" y="-10%" width="120%" height="120%">
+      <!-- Noise field that slowly breathes -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="2" result="noise">
+        <animate attributeName="baseFrequency" values="0.009;0.013;0.009" dur="120s" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="22">
+        <animate attributeName="scale" values="14;22;14" dur="120s" repeatCount="indefinite"/>
+      </feDisplacementMap>
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+
+    <!-- A reusable cloud glyph: overlapping circles + a rounded base -->
+    <symbol id="puff" viewBox="0 0 220 110">
+      <g filter="url(#fluff)" fill="white">
+        <circle cx="70"  cy="60" r="34"/>
+        <circle cx="105" cy="45" r="30"/>
+        <circle cx="140" cy="62" r="36"/>
+        <rect x="50" y="68" width="120" height="28" rx="14"/>
+      </g>
+    </symbol>
+  </defs>
+
+  <!-- Optional: draw sky with SVG gradient (comment out if using CSS bg) -->
+  <!-- <rect width="100%" height="100%" fill="url(#skyGrad)"/> -->
+
+  <!-- BACK LAYER: biggest, faintest, slowest -->
+  <g class="layer back">
+    <g class="bob" style="--y:60px;  --bob:9s;  --delay:-4s">
+      <use href="#puff" class="cloud" style="--scale:2.1; --speed:160s; --delay:-20s" x="0"   y="70"/>
+    </g>
+    <g class="bob" style="--y:120px; --bob:8s;  --delay:-12s">
+      <use href="#puff" class="cloud" style="--scale:1.8; --speed:150s; --delay:-40s" x="-200" y="140"/>
+    </g>
+    <g class="bob" style="--y:180px; --bob:10s; --delay:-22s">
+      <use href="#puff" class="cloud" style="--scale:2.4; --speed:170s; --delay:-60s" x="-400" y="210"/>
+    </g>
+  </g>
+
+  <!-- MID LAYER -->
+  <g class="layer mid">
+    <g class="bob" style="--y:240px; --bob:7s; --delay:-6s">
+      <use href="#puff" class="cloud" style="--scale:1.5; --speed:120s; --delay:-18s" x="-150" y="260"/>
+    </g>
+    <g class="bob" style="--y:300px; --bob:6.5s; --delay:-10s">
+      <use href="#puff" class="cloud" style="--scale:1.6; --speed:110s; --delay:-28s" x="-350" y="320"/>
+    </g>
+    <g class="bob" style="--y:360px; --bob:7.5s; --delay:-16s">
+      <use href="#puff" class="cloud" style="--scale:1.3; --speed:115s; --delay:-36s" x="-600" y="380"/>
+    </g>
+  </g>
+
+  <!-- FRONT LAYER: smaller, sharper, fastest -->
+  <g class="layer front">
+    <g class="bob" style="--y:430px; --bob:6s; --delay:-3s">
+      <use href="#puff" class="cloud" style="--scale:1.1; --speed:85s; --delay:-10s" x="-250" y="440"/>
+    </g>
+    <g class="bob" style="--y:490px; --bob:5.5s; --delay:-8s">
+      <use href="#puff" class="cloud" style="--scale:1.0; --speed:75s; --delay:-20s" x="-450" y="500"/>
+    </g>
+    <g class="bob" style="--y:560px; --bob:6.2s; --delay:-12s">
+      <use href="#puff" class="cloud" style="--scale:0.9; --speed:70s; --delay:-30s" x="-700" y="560"/>
+    </g>
+  </g>
+</svg>
+</html>
+

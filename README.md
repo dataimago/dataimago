@@ -22,19 +22,25 @@ To develop AI systems and analytic tools that reconcile meaning (hermeneutics) a
 
 ## Key Features
 
-### 📚 Foundation Documents
+### \U0001F4DA Foundation Documents
 - **Philosophical Framework**: Built on Frankfurt School critical theory and modern alignment discourse
 - **Mission & Vision**: Core purpose and societal transformation goals
 - **Governance**: Multi-dimensional governance structure for emancipatory AI development
 - **Manifesto**: Contrasts with dominant paradigms (e.g., Palantir critique)
 
-### 🛠️ Documentation Generation
+### \U0001F6E0\UFE0F Documentation Generation
 - **`create_quarto_documentation()`**: Convert R package documentation to Quarto websites
 - **Ethical AI Annotations**: Every function includes philosophical context
 - **Foundation Links**: Automatic cross-referencing to philosophical documents
 - **dataimago Branding**: Custom styling and visual identity integration
 
-### 🏗️ Application Architecture
+### \U0001F3A8 R-First Design System
+- **`create_ui_workspace()`**: Set up Node.js workspace for CSS compilation
+- **`build_design_system()`**: Master build function wrapping modern CSS tools in R
+- **Multi-Channel Distribution**: Quarto extension, CDN assets, and Next.js integration
+- **Ethical AI Styling**: WCAG AA compliance with reduced motion and high contrast support
+
+### \U0001F3D7\UFE0F Application Architecture
 - **NextJS + R Integration**: Best practices and templates
 - **Emancipatory Metrics**: Flow-based performance management frameworks
 - **API Readiness**: Structured outputs for web interfaces and AI agents
@@ -64,6 +70,49 @@ create_quarto_documentation()
 # quarto render
 ```
 
+### Build Design System
+
+```r
+# One-time setup of Node.js workspace
+create_ui_workspace()
+
+# Compile CSS assets for all distribution channels
+result <- build_design_system(verbose = TRUE)
+
+# Check build results
+if (result$success) {
+  cat("\u2705 Generated:", length(result$assets), "assets")
+  cat("\U0001F510 SRI hashes:", length(result$sri_hashes))
+}
+```
+
+### Deploy Design System
+
+**Quarto Extension (Recommended):**
+```yaml
+# _quarto.yml  
+format:
+  html:
+    theme: dataimago/ai-native
+```
+
+**CDN Distribution:**
+```yaml
+# _quarto.yml
+format:
+  html:
+    css:
+      - https://cdn.jsdelivr.net/gh/dataimago/dataimago@main/inst/quarto-assets/dataimago.min.css
+```
+
+**Next.js Integration:**
+```js
+// tailwind.config.js
+module.exports = {
+  presets: [require('./ui/dist/tailwind-preset.js')]
+};
+```
+
 ### Access Foundation Documents
 
 ```r
@@ -86,13 +135,21 @@ create_quarto_documentation()
 ```
 dataimago/
 ├── R/                          # Core functions
-│   └── documentation_utils.R   # Documentation generation
+│   ├── documentation_utils.R   # Documentation generation
+│   └── design_system.R         # R-first CSS build pipeline
+├── ui/                         # Node.js design system workspace
+│   ├── src/
+│   │   ├── tokens/             # Design tokens (JSON)
+│   │   └── styles/             # SCSS source files
+│   └── dist/                   # Built CSS assets
+├── quarto_website/_extensions/dataimago/ai-native/ # Quarto extension
 ├── inst/
 │   ├── dataimago/              # Complete foundation documents
 │   │   ├── 01_Foundations/     # Mission, vision, philosophy
 │   │   ├── 02_Manifesto/       # Critical theory content
 │   │   ├── 03_Application_Architecture/
 │   │   └── 04_dataimago_Content/ # Design assets
+│   ├── quarto-assets/          # CDN-ready assets
 │   ├── CLAUDE.md               # AI agent context
 │   └── AGENT_INDEX.md          # Agent coordination
 ├── quarto_website/             # Website source
@@ -106,6 +163,7 @@ dataimago/
 - **Package Website**: [https://dataimago.github.io/dataimago/](https://dataimago.github.io/dataimago/)
 - **API Reference**: Complete function documentation with ethical context
 - **Foundation Documents**: Philosophical frameworks and architectural blueprints
+- **Design System Guide**: Detailed implementation notes in `docs/development/`
 - **Vignettes**: Long-form tutorials and conceptual guides
 
 ## Philosophy in Practice
@@ -150,19 +208,25 @@ This package is designed for seamless integration with AI agents and Model Conte
 
 ## Development Status
 
-### ✅ Phase 1: Foundation (COMPLETE)
+### \u2705 Phase 1: Foundation (COMPLETE)
 - Package structure and metadata
 - Foundation document organization  
 - Content curation via `.Rbuildignore`
 - MIT licensing and proper attribution
 
-### ✅ Phase 2: Documentation Generation (COMPLETE)
+### \u2705 Phase 2: Documentation Generation (COMPLETE)
 - `create_quarto_documentation()` function
 - Rd2md integration for .Rd → .qmd conversion
 - Philosophical context injection
 - Complete Quarto website generation
 
-### 🔄 Phase 3: Foundation Access Functions (PLANNED)
+### \u2705 Phase 3: R-First Design System (COMPLETE)
+- `create_ui_workspace()` - Node.js workspace setup
+- `build_design_system()` - CSS compilation pipeline
+- `update_quarto_extension()` - Extension asset management
+- `generate_cdn_assets()` - Multi-platform distribution
+
+### \U0001F504 Phase 4: Foundation Access Functions (PLANNED)
 - `get_foundation_document()` - Programmatic access to philosophical content
 - `create_dataimago_app()` - Generate application skeletons  
 - `bootstrap_emancipatory_framework()` - Initialize projects with ethical foundations

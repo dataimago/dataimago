@@ -1,0 +1,155 @@
+title: "Dataimago AI-Native Website Extension"
+author: "dataimago AI + Human Co-Creation"
+version: "1.0.0"
+description: "Professional Quarto extension for AI-native R package websites with Lenis smooth scrolling, slide-based navigation, and ethical framework integration."
+quarto-required: ">=1.3.0"
+
+contributes:
+  formats:
+    html:
+      # Main format definition
+      dataimago-ai-native-html:
+        theme: 
+          light: [cosmo, assets/css/ai-native-light.scss]
+          dark: [cosmo, assets/css/ai-native-dark.scss]
+        css: 
+          - assets/css/lenis-integration.scss
+          - assets/css/components.scss
+        js:
+          - assets/js/lenis-integration.js
+          - assets/js/slide-navigation.js
+          - assets/js/hero-scroller.js
+          - assets/js/accessibility.js
+        
+        # Default page layout optimized for AI-native content
+        page-layout: full
+        toc: false
+        number-sections: false
+        smooth-scroll: false  # We use Lenis instead
+        
+        # Enhanced metadata for AI consumption
+        include-in-header: |
+          <meta name="dataimago:ai-native" content="true">
+          <meta name="dataimago:extension-version" content="1.0.0">
+          <meta name="generator" content="Quarto dataimago-ai-native extension">
+          <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.8/dist/lenis.css">
+          <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,600" rel="stylesheet" type="text/css">
+        
+        # JavaScript dependencies
+        include-after-body: |
+          <script src="https://unpkg.com/lenis@1.3.8/dist/lenis.min.js"></script>
+          
+  shortcodes:
+    - shortcodes/slide-container.lua
+    - shortcodes/hero-scroller.lua
+    - shortcodes/content-item.lua
+    - shortcodes/feature-box.lua
+    - shortcodes/micp-display.lua
+    - shortcodes/json-export.lua
+
+  filters:
+    - filters/ai-native-meta.lua
+    - filters/json-export.lua
+
+# Extension configuration schema
+config-schema:
+  dataimago:
+    type: object
+    properties:
+      package-name:
+        type: string
+        description: "Name of the R package"
+        default: "MyPackage"
+      
+      logo:
+        type: string
+        description: "Path to package logo image"
+        default: "assets/img/logo.png"
+      
+      primary-color:
+        type: string
+        description: "Primary brand color (CSS color value)"
+        default: "#83838f"
+      
+      accent-color:
+        type: string
+        description: "Accent color for highlights and interactions"
+        default: "#ff69b4"
+      
+      slides:
+        type: object
+        properties:
+          hero:
+            type: object
+            properties:
+              title:
+                type: string
+                default: "AI-Native R Package"
+              content-items:
+                type: integer
+                default: 6
+          
+          features:
+            type: object
+            properties:
+              cards:
+                type: integer
+                default: 3
+          
+          technical:
+            type: object
+            properties:
+              include-micp:
+                type: boolean
+                default: true
+      
+      lenis:
+        type: object
+        properties:
+          duration:
+            type: number
+            default: 1.8
+          easing:
+            type: string
+            default: "custom"
+          keyboard-nav:
+            type: boolean
+            default: true
+      
+      ai-native:
+        type: object
+        properties:
+          json-export:
+            type: boolean
+            default: true
+          api-endpoints:
+            type: boolean
+            default: true
+          micp-integration:
+            type: boolean
+            default: true
+          semantic-metadata:
+            type: boolean
+            default: true
+
+# Installation and setup instructions are embedded for tooling
+install:
+  instructions: |
+    # Install the dataimago-ai-native extension
+    quarto use extension dataimago/dataimago-ai-native
+
+    # Or add to existing project
+    quarto add dataimago/dataimago-ai-native
+    
+    # Create new project with extension
+    quarto create project website my-package --with dataimago-ai-native
+
+# Version compatibility and dependencies
+dependencies:
+  quarto: ">=1.3.0"
+  external:
+    - name: "Lenis"
+      version: "1.3.8"
+      url: "https://github.com/darkroomengineering/lenis"
+      description: "Smooth scroll library"
+

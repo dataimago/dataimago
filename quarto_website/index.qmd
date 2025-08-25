@@ -9,11 +9,11 @@ subtitle: "Reconciling meaning (hermeneutics) and measurement (positivism)"
 
 **dataimago** is an AI-native company founded to realize a deeply ethical, future-oriented vision for how artificial intelligence can support human flourishing.
 
-### 🌟 Vision
+### \U0001F31F Vision
 
 To become the most transformative AI organization of the 21st century, aligning super-intelligence with human emancipation, and using flow-based performance management to reshape how societies learn, heal, grow, and govern.
 
-### 🎯 Mission
+### \U0001F3AF Mission
 
 To develop AI systems and analytic tools that reconcile meaning (hermeneutics) and measurement (positivism) in ways that reduce human suffering and enable agency at all levels of society—from individuals to high level policy makers.
 

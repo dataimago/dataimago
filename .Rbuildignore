@@ -1,3 +1,6 @@
+# Exclude CITATION.cff
+^CITATION\.cff$
+
 # Exclude CLAUDE.md
 ^CLAUDE\.md$
 
@@ -31,6 +34,39 @@
 # Exclude quarto generated files
 ^quarto_website/_site$
 ^quarto_website/\.quarto
+
+# Exclude Node.js artifacts but include built CSS
+^ui/node_modules$
+^ui/package-lock\.json$
+^ui/pnpm-lock\.yaml$
+^ui/\.npmrc$
+
+# Exclude any Node.js artifacts at package root (should not exist)
+^package-lock\.json$
+^yarn\.lock$
+^pnpm-lock\.yaml$
+^node_modules$
+^\.npmrc$
+
+# Exclude any Quarto extensions at package root (should only be in quarto_website/)
+^_extensions$
+
+# Exclude README files in R/ and man/ directories (not allowed in R packages)
+^R/README\.md$
+^man/README\.md$
+
+# Exclude development documentation
+^docs/development$
+
+# Exclude empty standard R package directories
+^data/?$
+^tests/?$
+^vignettes/?$
+
+# Exclude empty quarto extension directories (if they exist)  
+^quarto_website/_extensions/dataimago/ai-native/docs$
+^quarto_website/_extensions/dataimago/ai-native/examples$
+^quarto_website/_extensions/dataimago/ai-native/assets/img$
 
 # Exclude large binary files
 .*\.pdf$

@@ -1,0 +1,87 @@
+<svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .data {
+        font-family: 'Futura';
+        font-style: italic;
+        font-weight: bold;
+        font-size: 400px;
+      }
+
+      .imago {
+        font-family: 'Futura';
+        font-style: italic;
+        font-weight: bold;
+        font-size: 400px;
+      }
+
+      .background {
+        fill: white;
+      }
+    </style>
+  </defs>
+
+  <!-- Transparent Background (optional for clarity) -->
+  <rect class="background" width="100%" height="100%" rx="5" ry="5" />
+
+  <!-- Animated "a" -->
+  <text x="105" y="360" class="data">
+    <animate attributeName="fill"
+         values="
+           rgba(0, 0, 0, 0.1);
+           rgba(0, 0, 0, 0.3);
+           rgba(0, 0, 0, 0.6);
+           rgba(0, 0, 0, 0.9);
+           rgb(0, 0, 0);
+           rgb(0, 0, 0);
+           rgb(0, 0, 0);
+           rgb(0, 0, 0);
+           rgba(0, 0, 0, 0.9);
+           rgba(0, 0, 0, 0.6);
+           rgba(0, 0, 0, 0.3);
+           rgba(0, 0, 0, 0.1);
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+         "
+         dur="6s"
+         repeatCount="indefinite" />
+    a
+  </text>
+
+    <!-- Animated "i" -->
+  <text x="242.5" y="360" class="imago">
+    <animate attributeName="fill"
+         values="
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+           rgba(0, 0, 0, 0);
+           rgba(25, 33, 50, 0.1);
+           rgba(50, 74, 118, 0.3);
+           rgba(75, 111, 177, 0.6);
+           rgba(90, 134, 217, 0.9);
+           rgb(100, 149, 237);
+           rgb(70, 180, 180);
+           rgb(86, 174, 87);
+           rgb(200, 200, 60);
+           rgb(255, 150, 79);
+           rgb(198, 0, 0);
+           rgba(209, 51, 51, 0.9);
+           rgba(221, 102, 102, 0.6);
+           rgba(233, 153, 153, 0.3);
+           rgba(244, 204, 204, 0.1);
+           rgba(255, 255, 255, 0);
+           rgba(255, 255, 255, 0);
+         "
+         dur="6s"
+         repeatCount="indefinite" />
+    i
+  </text>
+
+</svg>

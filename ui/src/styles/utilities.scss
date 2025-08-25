@@ -1,0 +1,41 @@
+// dataimago Utility Classes
+// Atomic utility classes for rapid development
+
+// Spacing utilities
+.di-m-0 { margin: 0; }
+.di-m-xs { margin: var(--spacing-xs); }
+.di-m-sm { margin: var(--spacing-sm); }
+.di-m-md { margin: var(--spacing-md); }
+.di-m-lg { margin: var(--spacing-lg); }
+.di-m-xl { margin: var(--spacing-xl); }
+
+.di-p-0 { padding: 0; }
+.di-p-xs { padding: var(--spacing-xs); }
+.di-p-sm { padding: var(--spacing-sm); }
+.di-p-md { padding: var(--spacing-md); }
+.di-p-lg { padding: var(--spacing-lg); }
+.di-p-xl { padding: var(--spacing-xl); }
+
+// Display utilities
+.di-block { display: block; }
+.di-inline { display: inline; }
+.di-flex { display: flex; }
+.di-hidden { display: none; }
+
+// Flexbox utilities
+.di-justify-center { justify-content: center; }
+.di-items-center { align-items: center; }
+.di-flex-col { flex-direction: column; }
+
+// Text utilities
+.di-text-center { text-align: center; }
+.di-text-left { text-align: left; }
+.di-text-right { text-align: right; }
+
+.di-text-primary { color: var(--color-text-primary); }
+.di-text-secondary { color: var(--color-text-secondary); }
+.di-text-muted { color: var(--color-text-muted); }
+
+// Background utilities
+.di-bg-page { background-color: var(--color-background-page); }
+.di-bg-surface { background-color: var(--color-background-surface); }

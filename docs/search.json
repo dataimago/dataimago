@@ -1056,66 +1056,6 @@
     ]
   },
   {
-    "objectID": "index.html#welcome-to-dataimago",
-    "href": "index.html#welcome-to-dataimago",
-    "title": "dataimago: Ethical AI-Native Data Science",
-    "section": "Welcome to dataimago",
-    "text": "Welcome to dataimago\ndataimago is an AI-native company founded to realize a deeply ethical, future-oriented vision for how artificial intelligence can support human flourishing.\n\n🌟 Vision\nTo become the most transformative AI organization of the 21st century, aligning super-intelligence with human emancipation, and using flow-based performance management to reshape how societies learn, heal, grow, and govern.\n\n\n🎯 Mission\nTo develop AI systems and analytic tools that reconcile meaning (hermeneutics) and measurement (positivism) in ways that reduce human suffering and enable agency at all levels of society—from individuals to high level policy makers.",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago: Ethical AI-Native Data Science"
-    ]
-  },
-  {
-    "objectID": "index.html#package-overview",
-    "href": "index.html#package-overview",
-    "title": "dataimago: Ethical AI-Native Data Science",
-    "section": "Package Overview",
-    "text": "Package Overview\nThe dataimago R package contains the philosophical foundations, technical architecture, and application templates for dataimago’s emancipatory data science platform. It provides versioned access to critical theory frameworks, application blueprints, and packageSkeleton functionality for creating AI-native data science applications.\n\nKey Features\n\nEthical AI Framework: Built on Frankfurt School critical theory and modern alignment discourse\nApplication Templates: Scaffolding for NextJS + R integration, Shiny dashboards, and research packages\nDocumentation Generation: Convert R package documentation to Quarto websites with philosophical context\nFoundation Access: Programmatic access to mission, vision, philosophy, and governance documents",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago: Ethical AI-Native Data Science"
-    ]
-  },
-  {
-    "objectID": "index.html#getting-started",
-    "href": "index.html#getting-started",
-    "title": "dataimago: Ethical AI-Native Data Science",
-    "section": "Getting Started",
-    "text": "Getting Started\n# Install the package (when available)\n# devtools::install_github(\"dataimago/dataimago\")\n\n# Load the package\nlibrary(dataimago)\n\n# Generate documentation for your package\ncreate_quarto_documentation()",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago: Ethical AI-Native Data Science"
-    ]
-  },
-  {
-    "objectID": "index.html#philosophy-as-coding",
-    "href": "index.html#philosophy-as-coding",
-    "title": "dataimago: Ethical AI-Native Data Science",
-    "section": "Philosophy as Coding",
-    "text": "Philosophy as Coding\ndataimago represents a fundamental inversion: instead of embedding culture in AI, we embed AI in culture for emancipatory ends. This approach transforms AI from an instrument of domination into a force for human flourishing.",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago: Ethical AI-Native Data Science"
-    ]
-  },
-  {
-    "objectID": "index.html#learn-more",
-    "href": "index.html#learn-more",
-    "title": "dataimago: Ethical AI-Native Data Science",
-    "section": "Learn More",
-    "text": "Learn More\n\nAPI Reference - Complete function documentation\nMission & Vision - Core purpose and goals\nPhilosophy - Ethical framework and principles\nCritical Theory Manifesto - Theoretical foundation",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago: Ethical AI-Native Data Science"
-    ]
-  },
-  {
     "objectID": "foundations/mission.html",
     "href": "foundations/mission.html",
     "title": "Mission Statement",
@@ -1209,6 +1149,66 @@
       "Home",
       "Foundation",
       "Mission Statement"
+    ]
+  },
+  {
+    "objectID": "index.html#welcome-to-dataimago",
+    "href": "index.html#welcome-to-dataimago",
+    "title": "dataimago: Ethical AI-Native Data Science",
+    "section": "Welcome to dataimago",
+    "text": "Welcome to dataimago\ndataimago is an AI-native company founded to realize a deeply ethical, future-oriented vision for how artificial intelligence can support human flourishing.\n\n001F31F Vision\nTo become the most transformative AI organization of the 21st century, aligning super-intelligence with human emancipation, and using flow-based performance management to reshape how societies learn, heal, grow, and govern.\n\n\n001F3AF Mission\nTo develop AI systems and analytic tools that reconcile meaning (hermeneutics) and measurement (positivism) in ways that reduce human suffering and enable agency at all levels of society—from individuals to high level policy makers.",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago: Ethical AI-Native Data Science"
+    ]
+  },
+  {
+    "objectID": "index.html#package-overview",
+    "href": "index.html#package-overview",
+    "title": "dataimago: Ethical AI-Native Data Science",
+    "section": "Package Overview",
+    "text": "Package Overview\nThe dataimago R package contains the philosophical foundations, technical architecture, and application templates for dataimago’s emancipatory data science platform. It provides versioned access to critical theory frameworks, application blueprints, and packageSkeleton functionality for creating AI-native data science applications.\n\nKey Features\n\nEthical AI Framework: Built on Frankfurt School critical theory and modern alignment discourse\nApplication Templates: Scaffolding for NextJS + R integration, Shiny dashboards, and research packages\nDocumentation Generation: Convert R package documentation to Quarto websites with philosophical context\nFoundation Access: Programmatic access to mission, vision, philosophy, and governance documents",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago: Ethical AI-Native Data Science"
+    ]
+  },
+  {
+    "objectID": "index.html#getting-started",
+    "href": "index.html#getting-started",
+    "title": "dataimago: Ethical AI-Native Data Science",
+    "section": "Getting Started",
+    "text": "Getting Started\n# Install the package (when available)\n# devtools::install_github(\"dataimago/dataimago\")\n\n# Load the package\nlibrary(dataimago)\n\n# Generate documentation for your package\ncreate_quarto_documentation()",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago: Ethical AI-Native Data Science"
+    ]
+  },
+  {
+    "objectID": "index.html#philosophy-as-coding",
+    "href": "index.html#philosophy-as-coding",
+    "title": "dataimago: Ethical AI-Native Data Science",
+    "section": "Philosophy as Coding",
+    "text": "Philosophy as Coding\ndataimago represents a fundamental inversion: instead of embedding culture in AI, we embed AI in culture for emancipatory ends. This approach transforms AI from an instrument of domination into a force for human flourishing.",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago: Ethical AI-Native Data Science"
+    ]
+  },
+  {
+    "objectID": "index.html#learn-more",
+    "href": "index.html#learn-more",
+    "title": "dataimago: Ethical AI-Native Data Science",
+    "section": "Learn More",
+    "text": "Learn More\n\nAPI Reference - Complete function documentation\nMission & Vision - Core purpose and goals\nPhilosophy - Ethical framework and principles\nCritical Theory Manifesto - Theoretical foundation",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago: Ethical AI-Native Data Science"
     ]
   }
 ]

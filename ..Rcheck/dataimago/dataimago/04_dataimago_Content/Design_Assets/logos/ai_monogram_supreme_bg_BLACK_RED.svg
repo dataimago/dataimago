@@ -1,0 +1,33 @@
+<svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .data {
+        font-family: 'Futura';
+        font-style: italic;
+        font-weight: bold;
+        fill: red;
+        font-size: 400px;
+      }
+      .imago {
+        font-family: 'Futura';
+        font-style: italic;
+        font-weight: bold;
+        fill: red;
+        font-size: 380px;
+      }
+      .background {
+        fill: black;
+      }
+    </style>
+  </defs>
+
+  <!-- Rounded Red Background -->
+  <rect class="background" width="100%" height="100%" rx="40" ry="40" />
+
+  <!-- "Imago" text -->
+  <text x="245.5" y="355" class="imago">i</text>
+
+  <!-- "Data" text -->
+  <text x="105" y="360" class="data">a</text>
+
+</svg>

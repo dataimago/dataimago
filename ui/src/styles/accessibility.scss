@@ -1,0 +1,60 @@
+// dataimago Accessibility Enhancements
+// Ethical AI framework prioritizes universal accessibility
+
+// Screen reader only content
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// Enhanced focus indicators
+*:focus {
+  outline: 2px solid var(--color-border-focus) !important;
+  outline-offset: 2px !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+// Large click targets (minimum 44px as per WCAG)
+.di-button,
+button,
+[role="button"],
+a {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Reduced motion preferences
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  :root {
+    --color-brand-primary: #000000;
+    --color-brand-accent: #0000FF;
+    --color-text-primary: #000000;
+    --color-text-inverse: #FFFFFF;
+    --color-background-page: #FFFFFF;
+    --color-background-surface: #F0F0F0;
+    --color-border-default: #000000;
+    --color-border-focus: #FF0000;
+  }
+}

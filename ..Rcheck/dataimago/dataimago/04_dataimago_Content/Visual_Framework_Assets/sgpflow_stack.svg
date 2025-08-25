@@ -1,0 +1,98 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: 'Futura', sans-serif; font-style: italic; font-weight: bold; font-size: 24px; fill: #333; }
+      .layer-title { font-family: 'Futura', sans-serif; font-style: italic; font-weight: bold; font-size: 16px; fill: white; }
+      .component-text { font-family: 'Futura', sans-serif; font-size: 12px; fill: white; }
+      .description { font-family: 'Futura', sans-serif; font-size: 10px; fill: #666; }
+      .ai-layer { fill: #2E86AB; stroke: #1E5A78; stroke-width: 2; }
+      .analytics-layer { fill: #A23B72; stroke: #7A2B55; stroke-width: 2; }
+      .data-layer { fill: #F18F01; stroke: #C07001; stroke-width: 2; }
+      .interface-layer { fill: #C73E1D; stroke: #9A2E15; stroke-width: 2; }
+      .arrow { fill: none; stroke: #333; stroke-width: 2; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" class="title">sgpFlow Technical Architecture</text>
+  <text x="400" y="50" text-anchor="middle" class="description">Emancipatory AI for Educational Performance Management</text>
+
+  <!-- AI Intelligence Layer -->
+  <rect x="50" y="80" width="700" height="80" rx="10" class="ai-layer"/>
+  <text x="60" y="105" class="layer-title">AI Intelligence Layer</text>
+  <text x="60" y="125" class="component-text">• Hermeneutic-Positivistic Synthesis Engine</text>
+  <text x="60" y="140" class="component-text">• Flow-Based Predictive Models</text>
+  <text x="60" y="155" class="component-text">• Critical Consciousness Monitoring</text>
+  <text x="400" y="125" class="component-text">• Dialectical Decision Support</text>
+  <text x="400" y="140" class="component-text">• Democratic Accountability Protocols</text>
+  <text x="400" y="155" class="component-text">• Anti-Domination Safeguards</text>
+
+  <!-- Performance Analytics Layer -->
+  <rect x="50" y="180" width="700" height="80" rx="10" class="analytics-layer"/>
+  <text x="60" y="205" class="layer-title">Performance Analytics Layer</text>
+  <text x="60" y="225" class="component-text">• Student Growth Trajectory Modeling</text>
+  <text x="60" y="240" class="component-text">• Teacher Effectiveness Analysis</text>
+  <text x="60" y="255" class="component-text">• School Performance Metrics</text>
+  <text x="400" y="225" class="component-text">• District-Level Optimization</text>
+  <text x="400" y="240" class="component-text">• Policy Impact Assessment</text>
+  <text x="400" y="255" class="component-text">• Equity and Access Analytics</text>
+
+  <!-- Data Integration Layer -->
+  <rect x="50" y="280" width="700" height="80" rx="10" class="data-layer"/>
+  <text x="60" y="305" class="layer-title">Data Integration Layer</text>
+  <text x="60" y="325" class="component-text">• Multi-Source Data Fusion</text>
+  <text x="60" y="340" class="component-text">• Real-Time Data Processing</text>
+  <text x="60" y="355" class="component-text">• Privacy-Preserving Analytics</text>
+  <text x="400" y="325" class="component-text">• Contextual Data Enrichment</text>
+  <text x="400" y="340" class="component-text">• Data Sovereignty Protocols</text>
+  <text x="400" y="355" class="component-text">• Interpretive Context Preservation</text>
+
+  <!-- Interface Layer -->
+  <rect x="50" y="380" width="700" height="120" rx="10" class="interface-layer"/>
+  <text x="60" y="405" class="layer-title">Multi-Level Interface Layer</text>
+  
+  <!-- Student/Parent Interface -->
+  <rect x="70" y="420" width="120" height="60" rx="5" fill="rgba(255,255,255,0.2)"/>
+  <text x="130" y="440" text-anchor="middle" class="component-text">Student/Parent</text>
+  <text x="130" y="455" text-anchor="middle" class="component-text">Interface</text>
+  <text x="130" y="470" text-anchor="middle" class="component-text">Personal Growth</text>
+
+  <!-- Teacher Interface -->
+  <rect x="210" y="420" width="120" height="60" rx="5" fill="rgba(255,255,255,0.2)"/>
+  <text x="270" y="440" text-anchor="middle" class="component-text">Teacher</text>
+  <text x="270" y="455" text-anchor="middle" class="component-text">Interface</text>
+  <text x="270" y="470" text-anchor="middle" class="component-text">Instructional AI</text>
+
+  <!-- Principal Interface -->
+  <rect x="350" y="420" width="120" height="60" rx="5" fill="rgba(255,255,255,0.2)"/>
+  <text x="410" y="440" text-anchor="middle" class="component-text">Principal</text>
+  <text x="410" y="455" text-anchor="middle" class="component-text">Interface</text>
+  <text x="410" y="470" text-anchor="middle" class="component-text">School Mgmt</text>
+
+  <!-- District Interface -->
+  <rect x="490" y="420" width="120" height="60" rx="5" fill="rgba(255,255,255,0.2)"/>
+  <text x="550" y="440" text-anchor="middle" class="component-text">District</text>
+  <text x="550" y="455" text-anchor="middle" class="component-text">Interface</text>
+  <text x="550" y="470" text-anchor="middle" class="component-text">System Ops</text>
+
+  <!-- State Interface -->
+  <rect x="630" y="420" width="120" height="60" rx="5" fill="rgba(255,255,255,0.2)"/>
+  <text x="690" y="440" text-anchor="middle" class="component-text">State Policy</text>
+  <text x="690" y="455" text-anchor="middle" class="component-text">Interface</text>
+  <text x="690" y="470" text-anchor="middle" class="component-text">Governance</text>
+
+  <!-- Flow Arrows -->
+  <path d="M 400 160 L 400 180" class="arrow"/>
+  <path d="M 400 260 L 400 280" class="arrow"/>
+  <path d="M 400 360 L 400 380" class="arrow"/>
+
+  <!-- Key Principles -->
+  <text x="50" y="530" class="description" font-weight="bold">Key Principles:</text>
+  <text x="50" y="545" class="description">• Prospective vs. Retrospective: Focus on growth trajectories, not static measurements</text>
+  <text x="50" y="560" class="description">• Democratic Participation: Multi-stakeholder input on AI objectives and constraints</text>
+  <text x="50" y="575" class="description">• Emancipatory Purpose: Expand human agency rather than replace human judgment</text>
+  <text x="50" y="590" class="description">• Critical Consciousness: Continuous monitoring for instrumental domination patterns</text>
+</svg>

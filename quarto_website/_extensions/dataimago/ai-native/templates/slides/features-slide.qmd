@@ -1,0 +1,61 @@
+---
+# Features Slide Template for Dataimago AI-Native Extension
+# This template creates a features showcase slide with customizable cards
+---
+
+{{< slide-container type="features" >}}
+<div class="highlights">
+  <div class="container-fluid">
+    <div class="text-center mb-5" data-dataimago-animate="fade-up">
+      <h2>{{< meta dataimago.slides.features.title >}}</h2>
+      <p class="lead">{{< meta dataimago.slides.features.description >}}</p>
+    </div>
+    
+    <div class="strip">
+      {{< feature-box title="Core Features" icon="⚙️" animate="fade-up" >}}
+      - List your main package features here
+      - Each feature should be concise and clear
+      - Use bullet points for easy scanning
+      - Focus on user benefits, not implementation details
+      {{< /feature-box >}}
+      
+      {{< feature-box title="Integration" icon="🔗" animate="fade-up" >}}
+      - Web framework compatibility (Next.js, React, Vue)
+      - JSON/API export capabilities
+      - Docker and serverless deployment ready
+      - CI/CD pipeline integration
+      {{< /feature-box >}}
+      
+      {{< feature-box title="AI-Native Design" icon="🤖" animate="fade-up" >}}
+      - Structured metadata for machine consumption
+      - Ethical framework (MiCP) integration
+      - Semantic markup for intelligent agents
+      - Cross-platform data serialization
+      {{< /feature-box >}}
+    </div>
+    
+    <!-- Optional: Additional feature sections -->
+    <div class="row mt-5">
+      <div class="col-md-6" data-dataimago-animate="fade-left">
+        <h3>Technical Excellence</h3>
+        <ul>
+          <li>Comprehensive test coverage with testthat</li>
+          <li>Professional documentation with roxygen2</li>
+          <li>Performance optimization and caching</li>
+          <li>Error handling and validation</li>
+        </ul>
+      </div>
+      
+      <div class="col-md-6" data-dataimago-animate="fade-right">
+        <h3>Developer Experience</h3>
+        <ul>
+          <li>Clear API design and function naming</li>
+          <li>Rich examples and vignettes</li>
+          <li>IDE integration and autocompletion</li>
+          <li>Community support and contributions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{{< /slide-container >}}

@@ -1,0 +1,183 @@
+---
+# Technical Slide Template for Dataimago AI-Native Extension
+# This template creates a technical documentation and implementation slide
+---
+
+{{< slide-container type="technical" >}}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-lg-10 offset-lg-1">
+      
+      <!-- Technical Overview -->
+      <div data-dataimago-animate="fade-up">
+        <h2>Technical Implementation</h2>
+        <p class="lead">Comprehensive documentation for developers and integrators.</p>
+      </div>
+
+      <!-- Installation Section -->
+      <div data-dataimago-animate="fade-up">
+        <h3>Installation</h3>
+        
+        ```r
+        # Install from CRAN (when available)
+        install.packages("{{< meta dataimago.package-name >}}")
+        
+        # Install development version from GitHub
+        devtools::install_github("{{< meta repo-owner >}}/{{< meta dataimago.package-name >}}")
+        
+        # Load the package
+        library({{< meta dataimago.package-name >}})
+        ```
+      </div>
+
+      <!-- Quick Start -->
+      <div data-dataimago-animate="fade-up">
+        <h3>Quick Start</h3>
+        
+        ```r
+        # Basic usage example
+        result <- main_function(data = your_data)
+        
+        # View results
+        print(result)
+        summary(result)
+        
+        # Export for web applications
+        export_json(result, "output/data.json")
+        ```
+      </div>
+
+      <!-- Architecture -->
+      <div class="row">
+        <div class="col-md-6">
+          {{< feature-box title="🏗️ Architecture" animate="fade-up" >}}
+          - **Modular design**: Each function serves a specific purpose
+          - **Dependency management**: Minimal external dependencies
+          - **Error handling**: Comprehensive validation and error messages
+          - **Performance**: Optimized for large datasets and real-time use
+          {{< /feature-box >}}
+        </div>
+        <div class="col-md-6">
+          {{< feature-box title="🔧 Configuration" animate="fade-up" >}}
+          - **Environment variables**: Flexible configuration options
+          - **Config files**: YAML-based configuration support
+          - **Runtime options**: Dynamic parameter adjustment
+          - **Logging**: Structured logging for debugging and monitoring
+          {{< /feature-box >}}
+        </div>
+      </div>
+
+      <!-- API Documentation -->
+      <div data-dataimago-animate="fade-up">
+        <h3>API Reference</h3>
+        <p>Comprehensive function documentation with examples:</p>
+        
+        <div class="api-functions">
+          <div class="function-signature">
+            <code>main_function(data, options = list())</code>
+          </div>
+          <div class="function-description">
+            Primary function for data processing and analysis.
+            <br>
+            <strong>Parameters:</strong> data (data.frame), options (list)
+            <br>
+            <strong>Returns:</strong> Processed results object
+          </div>
+        </div>
+        
+        <p><a href="api_reference.html" class="btn btn-outline-primary">View Full API Documentation</a></p>
+      </div>
+
+      <!-- MiCP Integration (if enabled) -->
+      {{< micp-display ethics="inst/micp/ethics.yaml" >}}
+
+      <!-- Web Integration -->
+      <div data-dataimago-animate="fade-up">
+        <h3>Web Framework Integration</h3>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <h4>Next.js Integration</h4>
+            ```typescript
+            // Import generated JSON data
+            import packageData from './public/data/package-meta.json';
+            
+            export default function PackagePage() {
+              return (
+                <div>
+                  <h1>{packageData.name}</h1>
+                  <p>{packageData.description}</p>
+                </div>
+              );
+            }
+            ```
+          </div>
+          
+          <div class="col-md-6">
+            <h4>R Package Export</h4>
+            ```r
+            # Export package metadata for web use
+            export_package_meta <- function(output_dir = "public/data") {
+              meta <- list(
+                name = "{{< meta dataimago.package-name >}}",
+                functions = get_function_list(),
+                version = packageVersion("{{< meta dataimago.package-name >}}")
+              )
+              
+              jsonlite::write_json(meta, 
+                file.path(output_dir, "package-meta.json"))
+            }
+            ```
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance & Testing -->
+      <div class="row">
+        <div class="col-md-6">
+          {{< feature-box title="🚀 Performance" animate="fade-up" >}}
+          - **Benchmarking**: Comprehensive performance testing
+          - **Memory optimization**: Efficient memory usage patterns
+          - **Parallel processing**: Multi-core computation support
+          - **Caching**: Smart caching for repeated operations
+          {{< /feature-box >}}
+        </div>
+        <div class="col-md-6">
+          {{< feature-box title="🧪 Testing" animate="fade-up" >}}
+          - **Unit tests**: 95%+ test coverage with testthat
+          - **Integration tests**: End-to-end workflow validation
+          - **Performance tests**: Benchmarking and regression testing
+          - **Continuous integration**: Automated testing on multiple R versions
+          {{< /feature-box >}}
+        </div>
+      </div>
+
+      <!-- Contributing & Support -->
+      <div data-dataimago-animate="scale">
+        <div class="dataimago-integration-cta">
+          <h3>Contributing to the Dataimago Ecosystem</h3>
+          <p>Join us in building the infrastructure of a future that values not only precision, but meaning.</p>
+          
+          <div class="row text-left">
+            <div class="col-md-4">
+              <h5>🤝 Contribute</h5>
+              <p>Submit issues, features, and pull requests on GitHub.</p>
+            </div>
+            <div class="col-md-4">
+              <h5>📚 Document</h5>
+              <p>Improve documentation and examples for the community.</p>
+            </div>
+            <div class="col-md-4">
+              <h5>🌍 Ethical AI</h5>
+              <p>Help establish ethical standards for computational research.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{{< /slide-container >}}
+
+{{< json-export data="technical-documentation" >}}

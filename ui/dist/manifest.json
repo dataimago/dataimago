@@ -1,0 +1,11 @@
+{
+  "name": "dataimago Design System",
+  "version": "0.1.0",
+  "buildTime": "2025-08-25T19:04:40.385Z",
+  "assets": {
+    "tokens.css": "CSS custom properties from design tokens",
+    "dataimago.css": "Expanded CSS for development",
+    "dataimago.min.css": "Minified CSS for production",
+    "tailwind-preset.js": "Tailwind CSS preset for Next.js integration"
+  }
+}

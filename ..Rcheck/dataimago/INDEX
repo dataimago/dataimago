@@ -1,0 +1,6 @@
+build_design_system                          Build Design System Assets
+create_quarto_documentation                  Generate Quarto Documentation from R Package
+create_ui_workspace                          Create UI Workspace for Design System
+dataimago-package                            dataimago: Ethical AI-Native Data Science Foundation Package
+generate_cdn_assets                          Generate CDN Distribution Assets
+update_quarto_extension                      Update Quarto Extension Assets

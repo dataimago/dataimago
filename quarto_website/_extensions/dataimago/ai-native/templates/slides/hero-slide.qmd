@@ -1,0 +1,46 @@
+---
+# Hero Slide Template for Dataimago AI-Native Extension
+# This template creates the main landing slide with logo and hero scroller
+---
+
+{{< slide-container type="hero" >}}
+<div class="hero-section">
+  <div class="grid">
+    <!-- Logo Column (left side) -->
+    <div class="g-col-12 g-col-md-4 logo-column">
+      <div class="logo-container" data-dataimago-animate="fade-right">
+        <a class="logo-wrap" href="#" aria-label="{{< meta dataimago.package-name >}} package">
+          <img class="logo" src="{{< meta dataimago.logo >}}" alt="{{< meta dataimago.package-name >}} logo"/>
+        </a>
+        
+        <!-- Optional: Add package metadata display -->
+        <div class="package-meta" data-dataimago-animate="fade-up">
+          <h1>{{< meta dataimago.package-name >}}</h1>
+          <p class="package-tagline">{{< meta description >}}</p>
+          
+          <!-- Optional: Add action buttons -->
+          <div class="meta-actions">
+            <a href="#installation" class="btn btn-primary">Get Started</a>
+            <a href="{{< meta repo-url >}}" class="btn btn-outline-secondary" target="_blank">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Column (right side) -->
+    <div class="g-col-12 g-col-md-8 g-start-md-5" aria-label="Package overview">
+      {{< hero-scroller >}}
+        {{< content-item title="{{< meta dataimago.slides.hero.title >}}" >}}
+        {{< meta dataimago.slides.hero.description >}}
+        {{< /content-item >}}
+        
+        <!-- Add your content items here -->
+        <!-- Each content-item will be automatically scrollable -->
+        
+      {{< /hero-scroller >}}
+    </div>
+  </div>
+</div>
+{{< /slide-container >}}
