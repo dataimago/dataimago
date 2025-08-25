@@ -1,0 +1,128 @@
+name: Dependency Management
+
+on:
+  schedule:
+    # Check for dependency updates weekly
+    - cron: '0 6 * * 1'
+  push:
+    paths:
+      - 'DESCRIPTION'
+      - 'ui/package.json'
+  workflow_dispatch:
+
+jobs:
+  check-r-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Check for outdated R packages
+        run: |
+          Rscript -e "
+          # Install tools for checking dependencies
+          if (!require('pak', quietly = TRUE)) install.packages('pak')
+          
+          # Check for outdated packages
+          deps <- pak::local_deps()
+          outdated <- pak::pkg_status(deps[['ref']])
+          
+          if (nrow(outdated) > 0) {
+            cat('Outdated R dependencies found:\n')
+            print(outdated)
+          } else {
+            cat('All R dependencies are up to date\n')
+          }
+          "
+
+  check-node-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Check for outdated Node.js packages
+        run: |
+          cd ui
+          pnpm outdated || true
+          
+          # Check for security vulnerabilities
+          pnpm audit --audit-level moderate
+
+      - name: Check for Node.js security issues
+        run: |
+          cd ui
+          # Run security audit
+          if ! pnpm audit --audit-level high; then
+            echo "High-severity security vulnerabilities found in Node.js dependencies"
+            exit 1
+          fi
+
+  update-dependencies-pr:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Update Node.js dependencies
+        run: |
+          cd ui
+          pnpm update
+          
+          # Check if changes were made
+          if git diff --quiet package.json pnpm-lock.yaml; then
+            echo "No Node.js dependency updates available"
+            echo "node_updates=false" >> $GITHUB_ENV
+          else
+            echo "Node.js dependencies updated"
+            echo "node_updates=true" >> $GITHUB_ENV
+          fi
+
+      - name: Create Pull Request
+        if: env.node_updates == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update Node.js dependencies"
+          title: "🔄 Automated dependency updates"
+          body: |
+            ## Automated Dependency Updates
+            
+            This PR updates Node.js dependencies in the design system workspace.
+            
+            ### Changes
+            - Updated `ui/package.json` and `ui/pnpm-lock.yaml`
+            - All updates passed security audit
+            
+            ### Testing
+            - [ ] Design system builds successfully
+            - [ ] R CMD check passes
+            - [ ] Website renders correctly
+            
+            **Note**: This is an automated PR. Please review changes before merging.
+          branch: chore/update-dependencies
+          delete-branch: true

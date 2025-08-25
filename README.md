@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/dataimago/dataimago/workflows/R-CMD-check/badge.svg)](https://github.com/dataimago/dataimago/actions)
+[![Deploy Quarto Website](https://github.com/dataimago/dataimago/workflows/Deploy%20Quarto%20Website/badge.svg)](https://github.com/dataimago/dataimago/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/dataimago)](https://CRAN.R-project.org/package=dataimago)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
@@ -226,7 +227,13 @@ This package is designed for seamless integration with AI agents and Model Conte
 - `update_quarto_extension()` - Extension asset management
 - `generate_cdn_assets()` - Multi-platform distribution
 
-### \U0001F504 Phase 4: Foundation Access Functions (PLANNED)
+### \u2705 Phase 4: CI/CD Automation (COMPLETE)
+- **Multi-platform testing**: R CMD check across Windows, macOS, Linux
+- **Automated CDN releases**: jsDelivr distribution via git tags
+- **Website deployment**: GitHub Pages with Quarto rendering
+- **Dependency monitoring**: Security scanning and update automation
+
+### \U0001F504 Phase 5: Foundation Access Functions (PLANNED)
 - `get_foundation_document()` - Programmatic access to philosophical content
 - `create_dataimago_app()` - Generate application skeletons  
 - `bootstrap_emancipatory_framework()` - Initialize projects with ethical foundations

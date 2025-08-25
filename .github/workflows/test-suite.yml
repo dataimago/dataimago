@@ -1,0 +1,149 @@
+name: Comprehensive Test Suite
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::lintr, any::styler
+
+      - name: Lint R Code
+        run: |
+          Rscript -e "
+          lints <- lintr::lint_package()
+          if (length(lints) > 0) {
+            print(lints)
+            quit(status = 1)
+          }
+          "
+
+      - name: Check Code Style
+        run: |
+          Rscript -e "
+          changed <- styler::style_pkg()
+          if (any(changed)) {
+            cat('Code style issues found. Run styler::style_pkg() locally.\n')
+            quit(status = 1)
+          }
+          "
+
+  test-design-system:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Test Design System Build
+        run: |
+          Rscript -e "
+          devtools::load_all()
+          
+          # Test workspace creation
+          result <- dataimago::create_ui_workspace(force_overwrite = TRUE)
+          if (!result[['success']]) quit(status = 1)
+          
+          # Test full build pipeline
+          result <- dataimago::build_design_system(
+            force_rebuild = TRUE,
+            include_sri = TRUE,
+            verbose = TRUE
+          )
+          if (!result[['success']]) {
+            cat('Design system build failed')
+            quit(status = 1)
+          }
+          
+          # Verify assets exist
+          required_assets <- c(
+            'ui/dist/dataimago.min.css',
+            'inst/quarto-assets/dataimago.min.css',
+            'inst/quarto-assets/tokens.css'
+          )
+          
+          missing <- !file.exists(required_assets)
+          if (any(missing)) {
+            cat('Missing assets:', paste(required_assets[missing], collapse = ', '))
+            quit(status = 1)
+          }
+          
+          cat('All design system tests passed')
+          "
+
+  test-documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: Test Documentation Generation
+        run: |
+          Rscript -e "
+          devtools::load_all()
+          
+          # Test Quarto documentation generation
+          dataimago::create_quarto_documentation(
+            package_path = '.',
+            output_path = 'test-docs',
+            include_foundation_links = TRUE
+          )
+          
+          # Verify critical files were generated
+          required_files <- c(
+            'test-docs/api_reference.qmd',
+            'test-docs/_quarto.yml'
+          )
+          
+          missing <- !file.exists(required_files)
+          if (any(missing)) {
+            cat('Missing documentation files:', paste(required_files[missing], collapse = ', '))
+            quit(status = 1)
+          }
+          
+          cat('Documentation generation tests passed')
+          "
+
+      - name: Test Quarto Rendering
+        run: |
+          cd test-docs
+          quarto render --to html
+          
+          # Verify website was generated
+          if [ ! -f "_site/index.html" ]; then
+            echo "Quarto rendering failed - no index.html generated"
+            exit 1
+          fi
+          
+          echo "Quarto rendering tests passed"

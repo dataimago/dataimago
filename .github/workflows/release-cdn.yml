@@ -1,0 +1,156 @@
+name: Release CDN Assets
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., v0.1.0)'
+        required: true
+        default: 'v0.1.0'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      - name: Setup R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Build Design System with SRI Hashes
+        run: |
+          cd ui
+          pnpm install
+          cd ..
+          Rscript -e "
+          devtools::load_all()
+          result <- dataimago::build_design_system(
+            force_rebuild = TRUE,
+            include_sri = TRUE,
+            verbose = TRUE
+          )
+          if (!result[['success']]) {
+            cat('Build failed:', paste(result[['errors']], collapse = '; '))
+            quit(status = 1)
+          }
+          # Save build metadata for release notes
+          jsonlite::write_json(result[['metadata']], 'build-metadata.json', pretty = TRUE)
+          "
+
+      - name: Create Release Archive
+        run: |
+          # Create versioned CDN package
+          mkdir -p release-assets
+          cp -r inst/quarto-assets/* release-assets/
+          cp ui/dist/tailwind-preset.js release-assets/
+          
+          # Create integrity file for SRI hashes
+          echo "# dataimago CDN Assets - Subresource Integrity Hashes" > release-assets/INTEGRITY.md
+          echo "Generated: $(date -u)" >> release-assets/INTEGRITY.md
+          echo "" >> release-assets/INTEGRITY.md
+          
+          # Add file hashes
+          cd release-assets
+          for file in *.css *.js; do
+            if [ -f "$file" ]; then
+              hash=$(openssl dgst -sha384 -binary "$file" | openssl base64 -A)
+              size=$(wc -c < "$file" | tr -d ' ')
+              echo "- **$file** ($size bytes)" >> INTEGRITY.md
+              echo "  \`sha384-$hash\`" >> INTEGRITY.md
+              echo "" >> INTEGRITY.md
+            fi
+          done
+          cd ..
+          
+          # Create archive
+          tar -czf dataimago-cdn-${GITHUB_REF#refs/tags/}.tar.gz -C release-assets .
+
+      - name: Generate Release Notes
+        run: |
+          cat > release-notes.md << 'EOF'
+          # dataimago Design System Release ${GITHUB_REF#refs/tags/}
+          
+          ## 📦 CDN Assets
+          
+          **jsDelivr URLs:**
+          ```
+          https://cdn.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/dataimago.min.css
+          https://cdn.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/tokens.css
+          ```
+          
+          **Quarto Integration:**
+          ```yaml
+          format:
+            html:
+              css:
+                - https://cdn.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/dataimago.min.css
+          ```
+          
+          **Next.js Integration:**
+          ```js
+          // Download and use tailwind-preset.js
+          module.exports = {
+            presets: [require('./dataimago-tailwind-preset.js')]
+          };
+          ```
+          
+          ## 🔐 Security
+          
+          All assets include SHA-384 integrity hashes. See `INTEGRITY.md` in the release archive for complete hash listing.
+          
+          ## 🎨 Features
+          
+          - WCAG AA accessibility compliance
+          - Reduced motion preference support  
+          - High contrast mode compatibility
+          - Semantic color system with ethical AI principles
+          EOF
+          
+          # Add build metadata if available
+          if [ -f build-metadata.json ]; then
+            echo "" >> release-notes.md
+            echo "## 🏗️ Build Information" >> release-notes.md
+            echo '```json' >> release-notes.md
+            cat build-metadata.json >> release-notes.md
+            echo '```' >> release-notes.md
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: release-notes.md
+          files: |
+            dataimago-cdn-${{ github.ref_name }}.tar.gz
+            release-assets/INTEGRITY.md
+          draft: false
+          prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trigger jsDelivr Cache Purge
+        run: |
+          # Purge jsDelivr cache for new release
+          curl -X POST "https://purge.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/dataimago.min.css"
+          curl -X POST "https://purge.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/tokens.css"
+          echo "jsDelivr cache purged for version ${GITHUB_REF#refs/tags/}"

@@ -1,0 +1,89 @@
+name: Deploy Quarto Website
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'quarto_website/**'
+      - 'man/**'
+      - 'R/**'
+      - 'ui/**'
+      - 'inst/dataimago/**'
+  workflow_dispatch:
+
+jobs:
+  deploy-website:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: pre-release
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      - name: Setup R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: Setup Node.js for Design System
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Build Design System
+        run: |
+          cd ui
+          pnpm install
+          cd ..
+          Rscript -e "
+          devtools::load_all()
+          result <- dataimago::build_design_system(verbose = TRUE)
+          if (!result[['success']]) quit(status = 1)
+          "
+
+      - name: Generate API Documentation
+        run: |
+          Rscript -e "
+          devtools::load_all()
+          dataimago::create_quarto_documentation(
+            package_path = '.',
+            output_path = 'quarto_website',
+            include_foundation_links = TRUE
+          )
+          "
+
+      - name: Render Quarto Website
+        run: |
+          cd quarto_website
+          quarto render --output-dir ../docs
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy-pages:
+    needs: deploy-website
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

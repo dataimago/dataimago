@@ -1,0 +1,115 @@
+# dataimago GitHub Actions CI/CD
+
+This directory contains comprehensive GitHub Actions workflows for the dataimago R package, providing automated testing, building, and deployment across multiple platforms.
+
+## 🔄 Workflows Overview
+
+### 1. **R-CMD-check.yml** - Core Package Testing
+- **Triggers**: Push to main/develop, PRs, weekly schedule
+- **Platforms**: macOS, Windows, Ubuntu (multiple R versions)
+- **Features**:
+  - Cross-platform R CMD check
+  - Node.js design system integration
+  - Automated dependency management
+  - Build artifact caching
+
+### 2. **quarto-deploy.yml** - Website Deployment  
+- **Triggers**: Push to main, manual dispatch
+- **Features**:
+  - Automated API documentation generation
+  - Design system asset compilation
+  - Quarto website rendering
+  - GitHub Pages deployment
+
+### 3. **release-cdn.yml** - CDN Release Automation
+- **Triggers**: Git tags (v*.*.*), manual dispatch  
+- **Features**:
+  - Versioned CDN asset generation
+  - SRI hash computation for security
+  - jsDelivr cache purging
+  - GitHub release creation with assets
+
+### 4. **test-suite.yml** - Comprehensive Testing
+- **Triggers**: Push, pull requests
+- **Features**:
+  - R code linting and style checks
+  - Design system build validation
+  - Documentation generation testing
+  - Quarto rendering verification
+
+### 5. **dependencies.yml** - Dependency Management
+- **Triggers**: Weekly schedule, dependency file changes
+- **Features**:
+  - R and Node.js dependency monitoring
+  - Security vulnerability scanning
+  - Automated update PRs
+  - Outdated package reporting
+
+## 🚀 Usage Workflows
+
+### Development Workflow
+1. **Push to develop branch** → Triggers comprehensive testing
+2. **Create PR to main** → Full test suite + cross-platform checks
+3. **Merge to main** → Website deployment + CDN preparation
+
+### Release Workflow  
+1. **Create git tag** (`v1.0.0`) → Triggers CDN release automation
+2. **Assets built and published** → jsDelivr CDN, GitHub releases
+3. **Documentation updated** → Website reflects new version
+
+### Manual Operations
+- **Workflow dispatch** available on all workflows
+- **Emergency deployments** via manual triggers  
+- **Dependency updates** can be triggered manually
+
+## 📦 CDN Distribution
+
+### jsDelivr URLs (Auto-generated)
+```
+https://cdn.jsdelivr.net/gh/dataimago/dataimago@v{VERSION}/inst/quarto-assets/dataimago.min.css
+https://cdn.jsdelivr.net/gh/dataimago/dataimago@v{VERSION}/inst/quarto-assets/tokens.css
+```
+
+### Quarto Integration
+```yaml
+format:
+  html:
+    css:
+      - https://cdn.jsdelivr.net/gh/dataimago/dataimago@latest/inst/quarto-assets/dataimago.min.css
+```
+
+## 🔐 Security Features
+
+- **SRI hashes** automatically generated for all CSS assets
+- **Dependency vulnerability scanning** for both R and Node.js
+- **Security audit failures** block releases
+- **Integrity verification** included in release notes
+
+## 🔧 Configuration
+
+### Required Secrets
+- `GITHUB_TOKEN` (automatic, for repository access)
+
+### Required Permissions  
+- **Contents**: write (for releases)
+- **Pages**: write (for GitHub Pages)
+- **ID token**: write (for Pages deployment)
+
+### Branch Protection
+Recommended settings for `main` branch:
+- Require PR reviews
+- Require status checks: "R-CMD-check", "test-suite"
+- Require up-to-date branches
+- Include administrators in restrictions
+
+## 🎯 Benefits
+
+✅ **Automated Quality Assurance** - Every commit tested across platforms  
+✅ **Zero-Touch Releases** - Tag creation triggers full CDN deployment  
+✅ **Documentation Sync** - Website always reflects current package state  
+✅ **Security Monitoring** - Automatic vulnerability detection  
+✅ **Dependency Management** - Proactive updates via automated PRs  
+✅ **Multi-Platform Support** - Windows, macOS, Linux testing  
+✅ **CDN Distribution** - Global asset delivery via jsDelivr  
+
+This CI/CD setup embodies dataimago's principle of **R as source of truth** while leveraging best practices for modern package distribution and deployment automation.
