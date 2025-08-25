@@ -30,7 +30,7 @@ format:
 
 **Depends**: R (>= 4.0)
 
-**Imports**: jsonlite (>= 1.9.0), yaml (>= 2.3.0), fs (>= 1.6.0), usethis (>= 2.2.0), rlang (>= 1.1.0), crayon, glue (>= 1.7.0), whisker (>= 0.4.0), Rd2md
+**Imports**: jsonlite (>= 1.9.0), yaml (>= 2.3.0), fs (>= 1.6.0), usethis (>= 2.2.0), rlang (>= 1.1.0), crayon, glue (>= 1.7.0), whisker (>= 0.4.0), Rd2md, tools, processx (>= 3.8.0), digest (>= 0.6.0)
 
 **Suggests**: knitr, rmarkdown, testthat (>= 3.2.0), quarto (>= 1.4.0), shiny (>= 1.8.0), plumber (>= 1.2.0)
 
@@ -46,6 +46,159 @@ This package is built on dataimago's ethical AI framework:
 # Exported Functions
 
 The following functions are exported and available for use:
+
+# Build Design System Assets
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Master function that orchestrates the entire CSS compilation and distribution pipeline.
+This function wraps Node.js tooling (pnpm/npm) in R to maintain R-first development workflow.
+
+## Usage
+
+```r
+build_design_system(
+  force_rebuild = FALSE,
+  include_sri = TRUE,
+  update_extension = TRUE,
+  verbose = TRUE
+)
+```
+
+## Arguments
+
+* `force_rebuild`: Logical. Force rebuild even if assets appear up-to-date. Default: FALSE
+* `include_sri`: Logical. Generate SRI hashes for CDN distribution. Default: TRUE
+* `update_extension`: Logical. Update Quarto extension with compiled assets. Default: TRUE
+* `verbose`: Logical. Print detailed progress information. Default: TRUE
+
+## Details
+
+This function implements dataimago's R-first philosophy by wrapping Node.js build tools
+in well-documented R functions. The build process includes:
+***System Requirements:***
+
+* Node.js 18+ and pnpm installed globally
+* Write permissions to package directories
+* OpenSSL for SRI hash generation (usually pre-installed on macOS/Linux)
+
+***Build Process:***
+
+1. ***Node.js Dependency Check***: Verifies pnpm is available via `which pnpm`
+1. ***Dependency Installation***: Runs `pnpm install` in ui/ directory to install Style Dictionary, Sass, etc.
+1. ***SCSS Compilation***: Executes `pnpm run build` to convert design tokens and SCSS to minified CSS
+1. ***Asset Distribution***: Copies built `dataimago.min.css` to multiple locations:
+* `quarto_website/_extensions/dataimago/ai-native/assets/css/` for Quarto extension distribution
+* `inst/quarto-assets/` for R package CDN distribution
+* `quarto_website/assets/css/` for local website development
+1. ***SRI Hash Generation***: Uses `openssl dgst -sha384 -binary | openssl base64 -A` for subresource integrity
+1. ***Build Manifest***: Creates JSON metadata with paths, versions, checksums, and build timestamp
+
+***Design Token Philosophy:***The ui/ workspace uses Style Dictionary to convert semantic design tokens (color.json,
+typography.json, spacing.json) into CSS custom properties. This ensures design consistency
+across Quarto websites, R Shiny apps, and future Next.js applications while maintaining
+the ethical AI principles embedded in dataimago's visual identity.
+***Error Handling:***
+
+* Validates Node.js/pnpm availability before attempting build
+* Checks for required ui/ directory structure
+* Provides clear error messages with suggested remediation
+* Rolls back partial builds on failure
+
+## MCP Tool Integration
+
+This function is designed for Model Context Protocol (MCP) integration, providing
+structured output that AI agents can parse and reason about:
+
+* ***Deterministic Output***: Same inputs always produce same outputs
+* ***Machine Readable***: JSON-compatible result structure
+* ***Error Context***: Detailed error messages for debugging
+* ***Build Metadata***: Complete provenance information for reproducibility
+
+## Philosophical Context
+
+This function embodies dataimago's principle of "R as source of truth" while embracing
+modern web development practices. Rather than forcing R developers to learn Node.js
+toolchains, it wraps industry-standard CSS preprocessing in familiar R function calls
+with comprehensive documentation of every system interaction.
+
+## Seealso
+
+`[update_quarto_extension](update_quarto_extension)` for extension asset management,
+`[generate_cdn_assets](generate_cdn_assets)` for CDN preparation,
+`[create_ui_workspace](create_ui_workspace)` for UI workspace initialization
+
+## Concept
+
+dataimago r-first-development MCP-compatible
+
+## Keyword
+
+build-tools
+
+## Keyword
+
+css
+
+## Keyword
+
+design-system
+
+## Keyword
+
+ethical-ai
+
+## Value
+
+List containing build results:
+
+* success: Logical indicating overall build success
+* assets: Character vector of generated asset paths
+* sri_hashes: Named list of SRI hashes for each CSS file
+* build_time: POSIXct timestamp of build completion
+* metadata: List containing build configuration and system information
+* errors: Character vector of any error messages (empty if successful)
+
+## Examples
+
+_Examples using dataimago's ethical AI framework:_
+
+
+```r
+# Basic build - compile all assets
+result <- build_design_system()
+
+# Check if build succeeded
+if (result$success) {
+  cat("Success: Built assets:", paste(result$assets, collapse = ", "), "\n")
+  cat("SRI hashes:", length(result$sri_hashes), "generated\n")
+} else {
+  cat("ERROR: Build failed:", paste(result$errors, collapse = "; "), "\n")
+}
+
+# Force rebuild with verbose output (useful for debugging)
+result <- build_design_system(force_rebuild = TRUE, verbose = TRUE)
+
+# Build for CDN distribution only (skip local copying)
+result <- build_design_system(
+  include_sri = TRUE, 
+  update_extension = FALSE,
+  verbose = FALSE
+)
+
+# Inspect build metadata
+str(result$metadata)
+```
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
 
 # Generate Quarto Documentation from R Package
 
@@ -187,6 +340,95 @@ create_quarto_documentation(
 # For MCP/AI usage - capture output path
 doc_path <- create_quarto_documentation()
 cat("Generated documentation at:", doc_path)
+```
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Create UI Workspace for Design System
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Sets up the Node.js workspace structure and configuration files needed for
+CSS compilation and design token processing. This function creates the complete
+ui/ directory structure with package.json, build scripts, and source files.
+
+## Usage
+
+```r
+create_ui_workspace(force_overwrite = FALSE, verbose = TRUE)
+```
+
+## Arguments
+
+* `force_overwrite`: Logical. Overwrite existing ui/ directory if it exists. Default: FALSE
+* `verbose`: Logical. Print detailed progress information. Default: TRUE
+
+## Details
+
+***Created Directory Structure:***
+
+```
+ui/
++-- package.json              # Node.js dependencies (Style Dictionary, Sass, etc.)
++-- build.js                  # Custom build script for compilation
++-- src/
+|   +-- tokens/
+|   |   +-- colors.json       # dataimago color palette 
+|   |   +-- typography.json   # Font definitions and scales
+|   |   +-- spacing.json      # Spacing scale and dimensions
+|   +-- styles/
+|       +-- base.scss         # Base styles using design tokens
+|       +-- components.scss   # UI component styles  
+|       +-- utilities.scss    # Utility classes
++-- dist/                     # Build output directory (created by build process)
+```
+
+***Design Token Philosophy:***The design tokens follow dataimago's ethical AI principles:
+
+* ***Semantic Naming***: Colors like `primary`, `accent`, `ethical-highlight`
+* ***Accessibility First***: WCAG AA contrast ratios and reduced motion support
+* ***Cultural Sensitivity***: Avoid culturally-biased color assumptions
+* ***Future-Proof***: JSON structure enables multiple output formats
+
+***Build Tool Configuration:***
+
+* ***Style Dictionary***: Converts design tokens to CSS custom properties
+* ***Sass/SCSS***: Compiles component styles with token integration
+* ***PostCSS***: Adds vendor prefixes and optimizations
+* ***CSSnano***: Minification for production distribution
+
+## Value
+
+List containing setup results:
+
+* success: Logical indicating setup success
+* created_files: Character vector of files created
+* errors: Character vector of any error messages
+
+## Examples
+
+_Examples using dataimago's ethical AI framework:_
+
+
+```r
+# Create new ui workspace
+result <- create_ui_workspace()
+
+# Force recreate existing workspace
+result <- create_ui_workspace(force_overwrite = TRUE)
+
+# Check what was created
+if (result$success) {
+  cat("Created files:", paste(result$created_files, collapse = "\n  "))
+}
 ```
 
 
@@ -350,6 +592,143 @@ ethical-ai
 ## Keyword
 
 package
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Generate CDN Distribution Assets
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Prepares assets for CDN distribution with versioning, SRI hashes, and metadata.
+Creates jsDelivr-compatible structure in inst/quarto-assets/ for R package distribution.
+
+## Usage
+
+```r
+generate_cdn_assets(verbose = TRUE)
+```
+
+## Arguments
+
+* `verbose`: Logical. Print detailed progress information. Default: TRUE
+
+## Details
+
+This function creates CDN-ready assets by:
+
+1. ***Copying Built Assets***: Moves `ui/dist/*.css` to `inst/quarto-assets/`
+1. ***Generating Metadata***: Creates manifest.json with build info and SRI hashes
+1. ***Creating Usage Examples***: Generates HTML snippets showing CDN usage
+1. ***Validating File Integrity***: Ensures all copied files are complete and uncorrupted
+
+***CDN Distribution Strategy:***Files in `inst/quarto-assets/` become available via jsDelivr once the package is
+tagged and released on GitHub:
+
+```
+https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css
+```
+
+***SRI (Subresource Integrity) Hashes:***Each CSS file gets a SHA-384 hash for security:
+
+```
+<link rel="stylesheet" 
+      href="https://cdn.jsdelivr.net/gh/.../dataimago.min.css"
+      integrity="sha384-..."
+      crossorigin="anonymous">
+```
+
+***Generated Files:***
+
+* `inst/quarto-assets/dataimago.min.css` - Main compiled CSS
+* `inst/quarto-assets/tokens.css` - CSS custom properties (if built)
+* `inst/quarto-assets/manifest.json` - Build metadata and SRI hashes
+* `inst/quarto-assets/README.md` - Usage instructions and examples
+
+## Value
+
+List containing CDN preparation results:
+
+* success: Logical indicating preparation success
+* assets: Character vector of CDN-ready asset paths
+* errors: Character vector of any error messages
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Update Quarto Extension Assets
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Copies compiled CSS and other assets from ui/dist/ into the Quarto extension structure.
+Maintains proper extension.yml configuration and ensures asset linking works correctly.
+
+## Usage
+
+```r
+update_quarto_extension(verbose = TRUE)
+```
+
+## Arguments
+
+* `verbose`: Logical. Print detailed progress information. Default: TRUE
+
+## Details
+
+This function performs the following operations:
+
+1. ***Validates Extension Structure***: Checks that `quarto_website/_extensions/dataimago/ai-native/` exists
+1. ***Copies Main CSS***: Copies `ui/dist/dataimago.min.css` to extension assets
+1. ***Updates Asset References***: Ensures extension.yml references the correct CSS files
+1. ***Preserves Extension Config***: Maintains existing Lua filters, shortcodes, etc.
+
+***Extension Asset Mapping:***
+
+* `ui/dist/dataimago.min.css` -> `quarto_website/_extensions/dataimago/ai-native/assets/css/dataimago.min.css`
+* `ui/dist/tokens.css` -> `quarto_website/_extensions/dataimago/ai-native/assets/css/tokens.css` (if exists)
+* Source maps and development files are excluded from extension distribution
+
+***File Operations:***All file copying uses R's `fs::file_copy()` with overwrite protection and atomic operations
+to prevent corrupted assets during development. The function will not overwrite extension
+configuration files (like _extension.yml) unless they become corrupted.
+
+## Value
+
+List containing update results:
+
+* success: Logical indicating update success
+* updated_files: Character vector of files updated in extension
+* errors: Character vector of any error messages
+
+## Examples
+
+_Examples using dataimago's ethical AI framework:_
+
+
+```r
+# Update extension after building CSS
+build_design_system()
+result <- update_quarto_extension()
+
+# Check what was updated
+if (result$success) {
+  cat("Updated files:", paste(result$updated_files, collapse = "\n  "))
+}
+```
 
 
 ---

@@ -1,0 +1,274 @@
+/*
+ * Dataimago AI-Native Extension - Lenis Integration Styles
+ * Core smooth scrolling and slide-based navigation styles
+ * Compatible with both light and dark themes
+ */
+
+/* ——— Lenis Core Integration ——— */
+html.lenis, 
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+/* ——— CSS Custom Properties for Theming ——— */
+:root {
+    /* Dataimago brand colors - can be overridden by theme */
+    --dataimago-primary: #83838f;
+    --dataimago-accent: #ff69b4;
+    --dataimago-bg: var(--quarto-bg, #ffffff);
+    --dataimago-text: var(--quarto-color, #000000);
+    --dataimago-border: var(--quarto-border-color, #dee2e6);
+    
+    /* Animation settings */
+    --dataimago-transition: 0.3s ease;
+    --dataimago-slide-duration: 1.8s;
+    
+    /* Spacing system */
+    --dataimago-space-xs: 0.5rem;
+    --dataimago-space-sm: 1rem;
+    --dataimago-space-md: 1.5rem;
+    --dataimago-space-lg: 3rem;
+    --dataimago-space-xl: 6rem;
+}
+
+/* ——— Full-Page Slide System ——— */
+.dataimago-slide {
+    min-height: 100vh;
+    padding: 0;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+}
+
+.dataimago-slide:first-child {
+    padding-top: 0;
+}
+
+/* ——— Slide Navigation Indicators ——— */
+.dataimago-slide-nav {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    pointer-events: all;
+}
+
+.dataimago-slide-indicators {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--dataimago-space-sm);
+}
+
+.dataimago-slide-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid rgba(131, 131, 143, 0.4);
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--dataimago-transition);
+    position: relative;
+    padding: 0;
+}
+
+.dataimago-slide-indicator::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--dataimago-primary);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform var(--dataimago-transition);
+}
+
+.dataimago-slide-indicator:hover {
+    border-color: var(--dataimago-text);
+    transform: scale(1.2);
+}
+
+.dataimago-slide-indicator.active {
+    border-color: var(--dataimago-primary);
+}
+
+.dataimago-slide-indicator.active::before {
+    transform: scale(1);
+}
+
+/* ——— Hero Content Scroller (Carousel Replacement) ——— */
+.dataimago-hero-scroller {
+    height: 60vh;
+    position: relative;
+    background: var(--dataimago-bg);
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    border: 1px solid var(--dataimago-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.dataimago-scroller-content {
+    padding: var(--dataimago-space-lg);
+    height: auto;
+    min-height: 200%;
+}
+
+.dataimago-content-item {
+    margin-bottom: var(--dataimago-space-lg);
+    padding: var(--dataimago-space-lg);
+    border-radius: 0.5rem;
+    background: rgba(131, 131, 143, 0.05);
+    border: 1px solid var(--dataimago-border);
+    transition: all var(--dataimago-transition);
+}
+
+.dataimago-content-item:hover {
+    background: rgba(131, 131, 143, 0.1);
+    border-color: var(--dataimago-primary);
+    transform: translateY(-2px);
+}
+
+.dataimago-content-item h3 {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    color: var(--dataimago-text);
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+}
+
+.dataimago-content-item p {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    line-height: 1.6;
+    color: var(--dataimago-text);
+    margin: 0;
+    opacity: 0.8;
+}
+
+/* Hero scroll indicator */
+.dataimago-scroll-indicator {
+    position: absolute;
+    right: 0.5rem;
+    top: 1rem;
+    bottom: 1rem;
+    width: 3px;
+    background: var(--dataimago-border);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.dataimago-scroll-progress {
+    width: 100%;
+    background: linear-gradient(to bottom, var(--dataimago-primary), var(--dataimago-accent));
+    border-radius: 2px;
+    transition: height 0.1s ease;
+    height: 0%;
+}
+
+/* ——— Slide Animations ——— */
+[data-dataimago-animate] {
+    will-change: transform, opacity;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Fade animations */
+[data-dataimago-animate="fade-up"] {
+    transform: translateY(30px);
+    opacity: 0;
+}
+
+[data-dataimago-animate="fade-down"] {
+    transform: translateY(-30px);
+    opacity: 0;
+}
+
+[data-dataimago-animate="fade-left"] {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+[data-dataimago-animate="fade-right"] {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+[data-dataimago-animate="scale"] {
+    transform: scale(0.95);
+    opacity: 0;
+}
+
+/* Activated animations */
+[data-dataimago-animate].dataimago-animate-active {
+    opacity: 1;
+    transform: translate(0) scale(1);
+}
+
+/* ——— Responsive Design ——— */
+@media (max-width: 768px) {
+    .dataimago-slide-nav {
+        right: 1rem;
+    }
+    
+    .dataimago-slide-indicators {
+        gap: 0.75rem;
+    }
+    
+    .dataimago-slide-indicator {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .dataimago-hero-scroller {
+        height: 50vh;
+    }
+    
+    .dataimago-content-item {
+        margin-bottom: var(--dataimago-space-md);
+        padding: var(--dataimago-space-md);
+    }
+    
+    .dataimago-scroller-content {
+        padding: var(--dataimago-space-md);
+    }
+}
+
+/* ——— Motion Sensitivity ——— */
+@media (prefers-reduced-motion: reduce) {
+    .dataimago-slide-nav,
+    .dataimago-slide-indicator,
+    .dataimago-content-item,
+    [data-dataimago-animate] {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .dataimago-slide {
+        scroll-snap-align: none;
+    }
+}
+
+/* ——— Performance Optimizations ——— */
+.dataimago-slide {
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 100vh;
+}
+
+.dataimago-hero-scroller {
+    contain: layout style paint;
+    transform: translateZ(0);
+}
+
+.dataimago-scroller-content {
+    will-change: transform;
+}

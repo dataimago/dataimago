@@ -1,7 +1,7 @@
-// Paths for logos
-const greyLogo = './assets/img/ai_monogram_supreme_bg_BW.png';
-const lightModeColorLogo = './assets/img/ai_monogram_supreme_bg_BLACK_WHITE.png';  // Black bg, white AI
-const darkModeColorLogo = './assets/img/ai_monogram_supreme_bg_WHITE_BLACK.png';   // White bg, black AI
+// Paths for logos (using absolute paths to work from all subdirectories)
+const greyLogo = '/assets/img/ai_monogram_supreme_bg_BW.png';
+const lightModeColorLogo = '/assets/img/ai_monogram_supreme_bg_BLACK_WHITE.png';  // Black bg, white AI
+const darkModeColorLogo = '/assets/img/ai_monogram_supreme_bg_WHITE_BLACK.png';   // White bg, black AI
 
 // URL configurations
 const defaultLogoHref = 'https://dataimago.github.io/HelloWorld/';  // Default URL for logo/title

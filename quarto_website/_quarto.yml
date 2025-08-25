@@ -25,13 +25,13 @@ website:
   repo-url: "https://github.com/dataimago/dataimago"
   title: "dataimago: Ethical AI-Native Data Science Foundation Package"
   description: "An emancipatory AI-aligned performance management system built on flow-based analytics and critical theory principles"
-  favicon: assets/img/ai_monogram_supreme_favicon.png
+  favicon: /assets/img/ai_monogram_supreme_favicon.png
   repo-actions: [edit, issue]
   page-navigation: true
   
   navbar:
     title: "dataimago"
-    logo: assets/img/ai_monogram_supreme_bg_BW.png
+    logo: /assets/img/ai_monogram_supreme_bg_BW.png
     logo-alt: "dataimago AI-Native Data Science"
     logo-href: "https://dataimago.github.io/dataimago/"
     title-href: "https://dataimago.github.io/dataimago/"
@@ -76,10 +76,10 @@ website:
           - manifesto/dataimago_vs_palantir.qmd
 
 metadata:
-  image: assets/img/ai_monogram_supreme_COLOR.png  # must be a valid URL or relative path
+  image: /assets/img/ai_monogram_supreme_COLOR.png  # must be a valid URL or relative path
   open-graph: true
   twitter-card:
-    image: assets/img/ai_monogram_supreme_COLOR.png
+    image: /assets/img/ai_monogram_supreme_COLOR.png
     card-style: summary_large_image
 
 format:

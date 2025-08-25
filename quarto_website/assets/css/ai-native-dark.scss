@@ -1,43 +1,38 @@
 /*-- scss:defaults --*/
 $h2-font-size:          1.6rem !default;
 $headings-font-weight:  500 !default;
-$body-bg: rgb(237, 237, 235) !default;
+$body-bg: rgb(20, 20, 16) !default;
 $btn-code-copy-color: #7c7c7c !default;
-$btn-code-copy-color-active: #000 !default;
+$btn-code-copy-color-active: rgb(237, 237, 235) !default;
 
 /*-- scss:rules --*/
 
 /* SCSS variables for logo paths */
-$logo-grey-path: url('/assets/img/ai_monogram_supreme_bg_BW.png');
-$logo-color-path: url('/assets/img/ai_monogram_supreme_bg_BLACK_WHITE.png');
+$logo-grey-path: url('./assets/img/ai_monogram_supreme_bg_BW.png');
+$logo-color-path: url('./assets/img/ai_monogram_supreme_bg_WHITE_BLACK.png');
 
 /* Body background transition on scroll ------------------ */
 body {
-    background-color: rgb(237, 237, 235);
+    background-color: rgb(20, 20, 16);
     transition: background-color 0.35s ease;
+    //color: #ffffff;
 }
 
 body.shrink {
-    background-color: rgb(237, 237, 238);
+    background-color: rgb(20, 20, 22); 
 }
 
 /* For shrinking navbar ------------------ */
 
  .navbar {
-   // background-image: linear-gradient(to bottom, #EFECEF 0%, #EAE6EA 100%);
-   // border-color: transparent;
-    background-color: rgb(237, 237, 235);
-    border-color: rgb(237, 237, 235);
-   // border-bottom: 1px solid #ffa73b;
-   // -webkit-box-shadow: 0 3px 12px 0px #ffa73b;
-   // box-shadow: 0 2px 8px 0px rgba(0, 0, 0, 0.1);
+    background-color: rgb(20, 20, 16);
+    border-color: rgb(20, 20, 16);
     min-height: 50px;
     transition: all 0.35s ease; 
  }
 
  .navbar.shrink {
-    // background-image: linear-gradient(to bottom, #EFECF3 0%, #EAE6ED 100%);
-    background-color: rgb(237, 237, 238);
+    background-color: rgb(20, 20, 22);
     min-height: 0;
     padding: 0 0;
     background-size: 32px auto;
@@ -54,11 +49,11 @@ body.shrink {
     background-repeat: no-repeat;
     background-position: 15px center;
     transition-duration: 0.25s;
-    color: #7c7c7c; /* Default light mode color */
+    color: #83838f; /* Dark mode secondary color */
  }
 
  .navbar-title:hover {
-    color: black;
+    color: rgb(237, 237, 235); /* White on hover in dark mode */
  }
 
  .navbar-title.shrink {
@@ -96,29 +91,29 @@ body.shrink {
  .navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon {
     width: 28px;
     height: 30px;
-    color: #7c7c7c;
+    color: #83838f;
     opacity: 1
 }
 
  .navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon:hover {
-    color: magenta;
+    color: #ff69b4; /* Keep the magenta hover effect */
     transition: all 0.35s ease-in-out;
 }
 
 .navbar-dark .navbar-nav .nav-link.active {
-    color: #000;
+    color: rgb(237, 237, 235);
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {
-    color: #000;
+    color: rgb(237, 237, 235);
 }
 
 .menu-text {
-    color: #7C7C7C
+    color: #83838f
 }
 
 .menu-text:hover {
-    color: #000
+    color: rgb(237, 237, 235);
 }
 
 /* Navbar link hover effect with left-to-right line animation */
@@ -127,7 +122,7 @@ body.shrink {
     transition: color 0.3s ease;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    color: #7c7c7c; /* Default light mode color */
+    color: #83838f; /* Dark mode secondary color */
 }
 
 .navbar-nav .nav-link::after {
@@ -138,13 +133,13 @@ body.shrink {
     right: 0.5rem;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, black 0%, #7c7c7c 100%);
+    background: linear-gradient(90deg, rgb(237, 237, 235) 0%, #83838f 100%);
     transition: width 0.4s ease;
     transform-origin: left;
 }
 
 .navbar-nav .nav-link:hover {
-    color: #000; /* Black on hover in light mode */
+    color: rgb(237, 237, 235); /* White on hover in dark mode */
 }
 
 .navbar-nav .nav-link:hover::after {
@@ -156,7 +151,7 @@ body.shrink {
     position: relative;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    color: #7c7c7c; /* Default light mode color */
+    color: #83838f; /* Dark mode secondary color */
 }
 
 .navbar-nav .nav-item.dropdown .nav-link::after {
@@ -167,13 +162,13 @@ body.shrink {
     right: 0.5rem;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, black 0%, #7c7c7c 100%);
+    background: linear-gradient(90deg, rgb(237, 237, 235) 0%, #83838f 100%);
     transition: width 0.4s ease;
     transform-origin: left;
 }
 
 .navbar-nav .nav-item.dropdown .nav-link:hover {
-    color: #000; /* Black on hover in light mode */
+    color: rgb(237, 237, 235); /* White on hover in dark mode */
 }
 
 .navbar-nav .nav-item.dropdown .nav-link:hover::after {
@@ -212,7 +207,7 @@ body.shrink {
     margin-right: 0;
     font-size: 0.8em;
     transition: transform 0.3s ease;
-    color: #7c7c7c;
+    color: #83838f;
 }
 
 /* Rotation and styling when dropdown is open - targeting the correct Bootstrap classes */
@@ -221,53 +216,53 @@ body.shrink {
 /* Bootstrap 3 style */
 .navbar-nav li.dropdown.open .nav-link::before {
     transform: rotate(180deg);
-    color: #000;
+    color: rgb(237, 237, 235);
 }
 
 .navbar-nav li.dropdown.open .nav-link {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
 }
 
 /* Bootstrap 4/5 style */
 .navbar-nav li.dropdown.show .nav-link::before {
     transform: rotate(180deg);
-    color: #000;
+    color: rgb(237, 237, 235);
 }
 
 .navbar-nav li.dropdown.show .nav-link {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
 }
 
 /* Alternative targeting using aria-expanded attribute */
 .navbar-nav .dropdown .nav-link[aria-expanded="true"]::before {
     transform: rotate(180deg);
-    color: #000;
+    color: rgb(237, 237, 235);
 }
 
 .navbar-nav .dropdown .nav-link[aria-expanded="true"] {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
 }
 
 /* Targeting via parent with show class */
 .navbar-nav .show > .nav-link::before {
     transform: rotate(180deg);
-    color: #000;
+    color: rgb(237, 237, 235);
 }
 
 .navbar-nav .show > .nav-link {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
 }
 
 /* Quarto specific targeting */
 .navbar-nav .nav-item.dropdown.show .nav-link::before,
 .navbar-nav .nav-item.dropdown.open .nav-link::before {
     transform: rotate(180deg);
-    color: #000;
+    color: rgb(237, 237, 235);
 }
 
 .navbar-nav .nav-item.dropdown.show .nav-link,
 .navbar-nav .nav-item.dropdown.open .nav-link {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
 }
 
 /* Dropdown menu styling - rounded corners */
@@ -277,9 +272,9 @@ body.shrink {
         border-radius: 7px;
         padding-top: 7px;
         padding-bottom: 7px;
-        background-color: rgb(225, 225, 223);
-        box-shadow: 0 3px 6px 0px rgba(220, 220, 218, 0.9);
-        border-color: rgb(210, 210, 208);
+        background-color: rgb(28, 28, 30);
+        box-shadow: 0 3px 6px 0px rgba(33, 33, 35, 0.9);
+        border-color: rgb(47, 47, 49);
         border-width: 1px;
     }
 }
@@ -287,12 +282,12 @@ body.shrink {
 /* Dropdown menu item hover styling */
 .navbar-nav .dropdown-menu > li > a:hover,
 .navbar-nav .dropdown-menu > li > a:focus {
-    background-color: rgb(237, 237, 235) !important;
-    color: #000;
-    box-shadow: inset 0 2px 4px rgba(220, 220, 218, 0.8), 
-                inset 0 1px 2px rgba(220, 220, 218, 0.8),
-                inset 0 -1px 2px rgba(220, 220, 218, 0.8),
-                inset 0 -2px 4px rgba(220, 220, 218, 0.8) !important;
+    background-color: rgb(18, 18, 20) !important;
+    color: rgb(237, 237, 235);
+    box-shadow: inset 0 2px 4px rgba(33, 33, 35, 0.8), 
+                inset 0 1px 2px rgba(33, 33, 35, 0.8),
+                inset 0 -1px 2px rgba(33, 33, 35, 0.8),
+                inset 0 -2px 4px rgba(33, 33, 35, 0.8) !important;
     transition: all 0.2s ease;
 }
 
@@ -302,6 +297,7 @@ body.shrink {
     text-decoration: none !important;
     transition: all 0.2s ease;
     box-shadow: none;
+    color: #83838f;
 }
 
 .navbar-nav .dropdown-menu a:hover,
@@ -309,6 +305,7 @@ body.shrink {
 .navbar-nav .dropdown-menu a:focus,
 .navbar-nav .dropdown-menu > li > a:focus {
     text-decoration: none !important;
+    color: rgb(237, 237, 235);
 }
 
 /* Target the Bluesky icon using the icon attribute */
@@ -319,13 +316,13 @@ iconify-icon[icon="fa6-brands:bluesky"]:hover {
 
 /* Target the Information icon in the footer using the icon attribute */
 iconify-icon[icon="bi:info-square-fill"]:hover {
-   color: #000;  /* Change to black on hover */
+   color: rgb(237, 237, 235);  /* Change to white on hover */
    transition: color 0.3s ease;  /* Smooth transition */
 }
 
 /* Target the GitHub icon in the footer using the icon attribute */
 iconify-icon[icon="jam:github-square"]:hover {
-   color: #000;  /* Change to black on hover */
+   color: rgb(237, 237, 235);  /* Change to white on hover */
    transition: color 0.3s ease;  /* Smooth transition */
 }
 
@@ -337,13 +334,13 @@ iconify-icon[icon="jam:github-square"] {
 /* Move the anchor icon close to the section header text */
 .anchorjs-link {
     font-size: 0.8em;          /* Adjust the icon's font size */
-    color: #7C7C7C;               /* Optional: set icon color */
+    color: #83838f;               /* Dark mode secondary color */
     text-decoration: none !important;
     transition: color 0.3s ease;
 }
 
 .anchorjs-link:hover {
-   color: #000;
+   color: rgb(237, 237, 235);
    text-decoration: none !important;
 }
 
@@ -353,9 +350,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-section-number {
-   color: #000;
+   color: rgb(237, 237, 235);
 }
-
 
 /* Logo Section */
 .logo-section {
@@ -377,14 +373,14 @@ h1, h2, h3, h4, h5, h6 {
 .description-section h1 {
   font-size: 2.2rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: #d3d3d0; /* Light version of #333 */
   font-family: "Poppins", sans-serif;
 }
 
 .description-section p {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #555;
+  color: #aaa; /* Light version of #555 */
   margin-bottom: 0.8rem;
 }
 
@@ -396,77 +392,75 @@ h1, h2, h3, h4, h5, h6 {
 /* On this page sidebar styling */
 /* Table of contents (TOC) link colors */
 .sidebar nav[role="doc-toc"] ul li a {
-    color: #7c7c7c !important;
+    color: #83838f !important;
     text-decoration: none !important;
 }
 
 .sidebar nav[role="doc-toc"] ul li a:hover {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
     text-decoration: none !important;
 }
 
 .sidebar nav[role="doc-toc"] ul li a.active {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
     font-weight: 500;
     text-decoration: none !important;
 }
 
 .sidebar nav[role="doc-toc"] ul > li > a.active,
 .sidebar nav[role="doc-toc"] ul > li > ul > li > a.active {
-    border-left: 1.5px solid rgb(18, 18, 16);
+    border-left: 1.5px solid rgb(237, 237, 235);
+}
+
+.sidebar nav[role="doc-toc"] > ul a {
+    border-left: 1px solid rgb(20, 20, 16);
 }
 
 /* Alternative selectors for different Quarto versions */
 .toc-active {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
     font-weight: 500;
     text-decoration: none !important;
 }
 
 #TOC .nav-link {
-    color: #7c7c7c !important;
+    color: #83838f !important;
     text-decoration: none !important;
 }
 
 #TOC .nav-link:hover,
 #TOC .nav-link.active {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
     text-decoration: none !important;
 }
 
 /* Page navigation sidebar */
 .page-navigation .nav-link {
-    color: #7c7c7c !important;
+    color: #83838f !important;
     text-decoration: none !important;
 }
 
 .page-navigation .nav-link:hover,
 .page-navigation .nav-link.active {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
     text-decoration: none !important;
 }
 
 /* Source code block styling */
 div.sourceCode {
-    background-color: rgb(225, 225, 223) !important;
-    border: 1px solid rgb(220, 220, 218) !important;
+    background-color: rgb(35, 35, 32) !important;
+    border: 1px solid rgb(40, 40, 37) !important;
 }
 
 .code-copy-button {
     margin-top: 8px !important;
 }
 
-
-
-/* Ensure the grid container has proper height */
+/* ——— Grid layout basics (no old hover effects) ——— */
 .grid {
     min-height: 60vh;
-    align-items: stretch; /* Make all grid items same height */
+    align-items: stretch;
 }
-
-
-
-
 
 /* Hyperlink styling for consistency */
 /* Main content area links */
@@ -476,7 +470,7 @@ main a,
 article a,
 .main a,
 #quarto-content a {
-    color: #7c7c7c !important;
+    color: #83838f !important;
     text-decoration: underline;
     transition: color 0.3s ease;
 }
@@ -487,19 +481,19 @@ main a:hover,
 article a:hover,
 .main a:hover,
 #quarto-content a:hover {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
     text-decoration: underline;
 }
 
 /* General fallback for all links not in navbar or sidebar */
 a:not(.nav-link):not(.navbar-brand):not(.dropdown-toggle):not([role="doc-toc"] a) {
-    color: #7c7c7c !important;
+    color: #83838f !important;
     text-decoration: underline;
     transition: color 0.3s ease;
 }
 
 a:not(.nav-link):not(.navbar-brand):not(.dropdown-toggle):not([role="doc-toc"] a):hover {
-    color: #000 !important;
+    color: rgb(237, 237, 235) !important;
     text-decoration: underline;
 }
 
@@ -508,14 +502,14 @@ a:not(.nav-link):not(.navbar-brand):not(.dropdown-toggle):not([role="doc-toc"] a
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: rgb(237, 237, 235);
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
     margin-top: 1.5em;
     margin-bottom: 0.5em;
-    color: #333;
+    color: rgb(237, 237, 235);
 }
 
 h1 {
@@ -532,19 +526,21 @@ h3 {
 
 /* Enhanced code styling */
 pre {
-    background-color: rgb(225, 225, 223);
-    border: 1px solid rgb(220, 220, 218);
+    background-color: rgb(35, 35, 32) !important;
+    border: 1px solid rgb(40, 40, 37) !important;
     border-radius: 0.375rem;
     padding: 1rem;
     overflow-x: auto;
+    color: rgb(237, 237, 235);
 }
 
 /* General code styling for code blocks */
 code {
-    background-color: rgb(225, 225, 223);
+    background-color: rgb(35, 35, 32) !important;
     padding: 0.2em 0.4em;
     border-radius: 0.25rem;
     font-size: 0.875em;
+    color: rgb(237, 237, 235);
 }
 
 /* Specific styling for inline code (single backticks) - higher specificity */
@@ -557,20 +553,20 @@ h3 code:not(.sourceCode),
 h4 code:not(.sourceCode),
 h5 code:not(.sourceCode),
 h6 code:not(.sourceCode) {
-    background-color: rgb(225, 225, 223) !important;
+    background-color: rgb(35, 35, 32) !important; /* Darker background for dark theme */
     padding: 0.2em 0.2em !important;
     border-radius: 0.25rem !important;
     font-size: 0.875em !important;
-    border: 1px solid rgb(220, 220, 218) !important;
-    color: #cf2976 !important; /* Pink/purple code color for dark theme */
+    border: 1px solid rgb(40, 40, 37) !important; /* Dark border */
+    color: #ff79c6 !important; /* Pink/purple code color for dark theme */
 }
 
 /* Enhanced blockquotes */
 blockquote {
-    border-left: 4px solid #7c7c7c;
+    border-left: 4px solid #83838f; /* Dark version of #7c7c7c */
     padding-left: 1rem;
     margin-left: 0;
-    color: #6c757d;
+    color: #938a82; /* Dark version of #6c757d */ 
     font-style: italic;
 }
 
@@ -626,16 +622,16 @@ blockquote {
     height: 100%;
 }
 
-/* ——— Enhanced Vertical Carousel System ——— */
+/* ——— Enhanced Vertical Carousel System - Dark Theme ——— */
 .content-carousel {
     height: 60vh;
     position: relative;
-    background: rgb(225, 225, 223);
+    background: rgb(20, 20, 16);
     border-radius: 1rem;
     backdrop-filter: blur(10px);
     overflow: hidden;
-    border: 0px solid rgba(220, 220, 218, 0.3);
-    box-shadow: 0 8px 32px rgba(124, 124, 124, 0.1);
+    border: 1px solid rgba(40, 40, 37, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .vertical-carousel {
@@ -646,13 +642,13 @@ blockquote {
     --carousel-duration: 0.6s;
 }
 
-/* ——— Carousel Viewport & Track ——— */
+/* ——— Carousel Viewport & Track - Dark Theme ——— */
 .carousel-viewport {
     flex: 1;
     position: relative;
     overflow: hidden;
-    border-radius: 1rem;
-    background: rgb(234, 234, 232);
+    border-radius: 0rem;
+    background: rgb(20, 20, 16);
 }
 
 .carousel-track {
@@ -692,7 +688,7 @@ blockquote {
 .slide-title {
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 600;
-    color: #343a40;
+    color: #e8eaf6;
     margin-bottom: 1.25rem;
     line-height: 1.25;
     letter-spacing: -0.02em;
@@ -701,12 +697,12 @@ blockquote {
 .slide-description {
     font-size: clamp(1rem, 2vw, 1.125rem);
     line-height: 1.6;
-    color: #495057;
+    color: #b8bcc0;
     margin: 0;
     opacity: 0.9;
 }
 
-/* ——— Enhanced Navigation ——— */
+/* ——— Enhanced Navigation - Dark Theme ——— */
 .carousel-nav {
     position: absolute;
     right: 0.5rem;
@@ -718,15 +714,15 @@ blockquote {
     align-items: center;
     gap: 1.25rem;
     padding: 0rem;
-    background: rgb(234, 234, 232);
+    background: rgb(20, 20, 16);
     border-radius: 1rem;
 }
 
-/* Navigation Buttons */
+/* Navigation Buttons - Dark Theme */
 .nav-btn {
     width: 0rem;
-    border: 0px solid rgba(124, 124, 124, 0.2);
-    background: rgb(225, 225, 223);
+    border: 0px solid rgba(131, 131, 143, 0.3);
+    background: rgb(20, 20, 16);
     border-radius: 0.75rem;
     display: flex;
     align-items: center;
@@ -734,7 +730,7 @@ blockquote {
     cursor: pointer;
     transition: all 0.3s var(--carousel-easing);
     font-size: 1.1rem;
-    color: #495057;
+    color: #7C7C7C;
     position: relative;
     overflow: hidden;
 }
@@ -743,7 +739,7 @@ blockquote {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(124, 124, 124, 0.1), rgba(124, 124, 124, 0.05));
+    background: linear-gradient(135deg, rgba(131, 131, 143, 0.2), rgba(131, 131, 143, 0.1));
     opacity: 0;
     transition: opacity 0.3s var(--carousel-easing);
 }
@@ -753,15 +749,15 @@ blockquote {
 }
 
 .nav-btn:hover:not(:disabled) {
-    border-color: rgba(124, 124, 124, 0.4);
-    color: rgb(20, 20, 16);
+    border-color: rgba(131, 131, 143, 0.5);
+    color: rgb(237, 237, 235);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(124, 124, 124, 0.2);
+    box-shadow: 0 4px 12px rgba(131, 131, 143, 0.2);
 }
 
 .nav-btn:active:not(:disabled) {
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(124, 124, 124, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .nav-btn:disabled {
@@ -777,7 +773,7 @@ blockquote {
     z-index: 1;
 }
 
-/* Indicator Dots */
+/* Indicator Dots - Dark Theme */
 .nav-indicators {
     display: flex;
     flex-direction: column;
@@ -788,7 +784,7 @@ blockquote {
 .nav-dot {
     width: 0.875rem;
     height: 0.875rem;
-    border: 2px solid rgba(124, 124, 124, 0.3);
+    border: 2px solid rgba(131, 131, 143, 0.4);
     background: transparent;
     border-radius: 50%;
     cursor: pointer;
@@ -801,40 +797,40 @@ blockquote {
     content: '';
     position: absolute;
     inset: 2px;
-    background: #7c7c7c;
+    background: #83838f;
     border-radius: 50%;
     transform: scale(0);
     transition: transform 0.3s var(--carousel-easing);
 }
 
 .nav-dot:hover {
-    border-color: rgb(20, 20, 16);
+    border-color: rgb(220, 220, 216);
     transform: scale(1.1);
 }
 
 .nav-dot.active {
-    border-color: #7c7c7c;
+    border-color: #83838f;
 }
 
 .nav-dot.active::before {
     transform: scale(1);
 }
 
-/* ——— Progress Indicator ——— */
+/* ——— Progress Indicator - Dark Theme ——— */
 .carousel-progress {
     position: absolute;
     left: 0;
     bottom: 0;
     right: 0;
     height: 3px;
-    background: rgba(220, 220, 218, 0.5);
+    background: rgba(40, 40, 37, 0.6);
     border-radius: 0 0 1rem 1rem;
     overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #7c7c7c, #a8a8a8);
+    background: linear-gradient(90deg, #83838f, #a8a8b0);
     width: 16.666%; /* 1/6 for 6 slides */
     transition: transform var(--carousel-duration) var(--carousel-easing);
     transform: translateX(0);
@@ -1012,7 +1008,7 @@ blockquote {
 :root { --hero-a: color-mix(in oklab, var(--quarto-bg) 92%, var(--quarto-accent)); --hero-b: var(--quarto-bg); }
 [data-bs-theme="dark"] { --hero-a: color-mix(in oklab, var(--quarto-bg) 88%, var(--quarto-accent)); }
 
-/* ——— Lenis Integration Styles - Light Theme ——— */
+/* ——— Lenis Integration Styles - Dark Theme ——— */
 
 /* Lenis smooth scroll container */
 html.lenis, 
@@ -1064,7 +1060,7 @@ html.lenis body {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 2px solid rgba(124, 124, 124, 0.4);
+    border: 2px solid rgba(131, 131, 143, 0.4);
     background: transparent;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1076,19 +1072,19 @@ html.lenis body {
     content: '';
     position: absolute;
     inset: 2px;
-    background: #7c7c7c;
+    background: #83838f;
     border-radius: 50%;
     transform: scale(0);
     transition: transform 0.3s ease;
 }
 
 .slide-indicator:hover {
-    border-color: rgb(20, 20, 16);
+    border-color: rgb(237, 237, 235);
     transform: scale(1.2);
 }
 
 .slide-indicator.active {
-    border-color: #7c7c7c;
+    border-color: #83838f;
 }
 
 .slide-indicator.active::before {
@@ -1099,7 +1095,7 @@ html.lenis body {
 .hero-content-scroller {
     height: 60vh;
     position: relative;
-    background: rgb(230, 230, 228);
+    background: rgb(20, 20, 16);
     border-radius: 1rem;
     backdrop-filter: blur(10px);
     overflow: hidden;
@@ -1109,28 +1105,28 @@ html.lenis body {
     padding: 2rem;
     height: auto;
     min-height: 200%;
-    background: rgb(237, 237, 235);
+    background: rgb(20, 20, 16);
 }
 
 .content-item {
     margin-bottom: 3rem;
     padding: 2rem;
     border-radius: 0.5rem;
-    background: rgba(220, 220, 218, 0.3);
-    border: 1px solid rgba(124, 124, 124, 0.2);
+    background: rgba(40, 40, 37, 0.3);
+    border: 1px solid rgba(131, 131, 143, 0.2);
     transition: all 0.3s ease;
 }
 
 .content-item:hover {
-    background: rgba(220, 220, 218, 0.5);
-    border-color: rgba(124, 124, 124, 0.3);
+    background: rgba(40, 40, 37, 0.5);
+    border-color: rgba(131, 131, 143, 0.3);
     transform: translateY(-2px);
 }
 
 .content-item h3 {
     font-size: clamp(1.25rem, 2.5vw, 1.5rem);
     font-weight: 600;
-    color: #343a40;
+    color: #e8eaf6;
     margin-bottom: 0.75rem;
     line-height: 1.25;
 }
@@ -1138,7 +1134,7 @@ html.lenis body {
 .content-item p {
     font-size: clamp(0.9rem, 2vw, 1rem);
     line-height: 1.6;
-    color: #495057;
+    color: #b8bcc0;
     margin: 0;
     opacity: 0.9;
 }
@@ -1150,14 +1146,14 @@ html.lenis body {
     top: 1rem;
     bottom: 1rem;
     width: 3px;
-    background: rgba(124, 124, 124, 0.2);
+    background: rgba(131, 131, 143, 0.2);
     border-radius: 2px;
     overflow: hidden;
 }
 
 .scroll-progress {
     width: 100%;
-    background: linear-gradient(to bottom, #7c7c7c, #a8a8a8);
+    background: linear-gradient(to bottom, #83838f, #a8a8b0);
     border-radius: 2px;
     transition: height 0.1s ease;
     height: 0%;
@@ -1200,12 +1196,12 @@ html.lenis body {
 }
 
 .slide-secondary {
-    background: rgb(230, 230, 228);
+    background: rgb(25, 25, 21);
     padding: clamp(3rem, 6vw, 6rem) 0;
 }
 
 .slide-content {
-    background: rgb(240, 240, 238);
+    background: rgb(30, 30, 26);
     padding: clamp(3rem, 6vw, 6rem) 0;
 }
 
@@ -1235,7 +1231,6 @@ html.lenis body {
     
     .scroller-content {
         padding: 1.5rem;
-        background: rgb(227, 227, 225);
     }
 }
 

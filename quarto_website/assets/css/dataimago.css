@@ -1,0 +1,334 @@
+@import '../dist/tokens.css';
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--font-lineHeight-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-background-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  background-color: var(--color-background-page);
+  color: var(--color-text-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--font-lineHeight-tight);
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-primary);
+}
+
+h1 {
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--spacing-lg);
+}
+
+h2 {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--spacing-lg);
+}
+
+h3 {
+  font-size: var(--font-size-2xl);
+}
+
+h4 {
+  font-size: var(--font-size-xl);
+}
+
+h5 {
+  font-size: var(--font-size-lg);
+}
+
+h6 {
+  font-size: var(--font-size-base);
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  line-height: var(--font-lineHeight-normal);
+}
+
+a {
+  color: var(--color-brand-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-brand-primary);
+  text-decoration-thickness: 2px;
+}
+
+a:focus {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+code {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+  padding: 0.1em 0.3em;
+  background-color: var(--color-background-surface);
+  border-radius: var(--radius-sm);
+  color: var(--color-brand-accent);
+}
+
+pre {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin-bottom: var(--spacing-md);
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.di-card {
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.di-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.di-card-title {
+  margin: 0;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+}
+
+.di-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-background-surface);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 2.5rem;
+  font-family: inherit;
+}
+
+.di-button:hover {
+  background: var(--color-brand-accent);
+  color: var(--color-text-inverse);
+  border-color: var(--color-brand-accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+
+.di-button:focus {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.di-button-primary {
+  background: var(--color-brand-primary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-brand-primary);
+}
+
+.di-button-primary:hover {
+  background: var(--color-brand-accent);
+  border-color: var(--color-brand-accent);
+}
+
+.di-m-0 {
+  margin: 0;
+}
+
+.di-m-xs {
+  margin: var(--spacing-xs);
+}
+
+.di-m-sm {
+  margin: var(--spacing-sm);
+}
+
+.di-m-md {
+  margin: var(--spacing-md);
+}
+
+.di-m-lg {
+  margin: var(--spacing-lg);
+}
+
+.di-m-xl {
+  margin: var(--spacing-xl);
+}
+
+.di-p-0 {
+  padding: 0;
+}
+
+.di-p-xs {
+  padding: var(--spacing-xs);
+}
+
+.di-p-sm {
+  padding: var(--spacing-sm);
+}
+
+.di-p-md {
+  padding: var(--spacing-md);
+}
+
+.di-p-lg {
+  padding: var(--spacing-lg);
+}
+
+.di-p-xl {
+  padding: var(--spacing-xl);
+}
+
+.di-block {
+  display: block;
+}
+
+.di-inline {
+  display: inline;
+}
+
+.di-flex {
+  display: flex;
+}
+
+.di-hidden {
+  display: none;
+}
+
+.di-justify-center {
+  justify-content: center;
+}
+
+.di-items-center {
+  align-items: center;
+}
+
+.di-flex-col {
+  flex-direction: column;
+}
+
+.di-text-center {
+  text-align: center;
+}
+
+.di-text-left {
+  text-align: left;
+}
+
+.di-text-right {
+  text-align: right;
+}
+
+.di-text-primary {
+  color: var(--color-text-primary);
+}
+
+.di-text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.di-text-muted {
+  color: var(--color-text-muted);
+}
+
+.di-bg-page {
+  background-color: var(--color-background-page);
+}
+
+.di-bg-surface {
+  background-color: var(--color-background-surface);
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+*:focus {
+  outline: 2px solid var(--color-border-focus) !important;
+  outline-offset: 2px !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.di-button,
+button,
+[role=button],
+a {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (prefers-contrast: high) {
+  :root {
+    --color-brand-primary: #000000;
+    --color-brand-accent: #0000FF;
+    --color-text-primary: #000000;
+    --color-text-inverse: #FFFFFF;
+    --color-background-page: #FFFFFF;
+    --color-background-surface: #F0F0F0;
+    --color-border-default: #000000;
+    --color-border-focus: #FF0000;
+  }
+}
+
+/*# sourceMappingURL=dataimago.css.map */

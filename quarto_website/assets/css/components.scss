@@ -1,0 +1,285 @@
+/*
+ * Dataimago AI-Native Extension - Reusable Components
+ * Styled components for feature boxes, MiCP displays, and other UI elements
+ */
+
+/* ——— Feature Boxes ——— */
+.dataimago-feature-box {
+    background: var(--dataimago-bg);
+    border: 1px solid var(--dataimago-border);
+    border-radius: 0.75rem;
+    padding: var(--dataimago-space-lg);
+    margin-bottom: var(--dataimago-space-md);
+    transition: all var(--dataimago-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.dataimago-feature-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border-color: var(--dataimago-primary);
+}
+
+.dataimago-feature-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--dataimago-primary), var(--dataimago-accent));
+    opacity: 0;
+    transition: opacity var(--dataimago-transition);
+}
+
+.dataimago-feature-box:hover::before {
+    opacity: 1;
+}
+
+.dataimago-feature-box h3,
+.dataimago-feature-box h4 {
+    color: var(--dataimago-text);
+    margin-top: 0;
+    margin-bottom: var(--dataimago-space-sm);
+}
+
+.dataimago-feature-box .feature-icon {
+    font-size: 2rem;
+    margin-bottom: var(--dataimago-space-sm);
+    display: block;
+}
+
+/* ——— MiCP (Mission Context Protocol) Display ——— */
+.dataimago-micp-container {
+    background: linear-gradient(135deg, var(--dataimago-bg) 0%, rgba(131, 131, 143, 0.05) 100%);
+    border: 1px solid var(--dataimago-border);
+    border-radius: 1rem;
+    padding: var(--dataimago-space-xl);
+    margin: var(--dataimago-space-xl) 0;
+    position: relative;
+}
+
+.dataimago-micp-container::before {
+    content: '🌍';
+    position: absolute;
+    top: var(--dataimago-space-md);
+    right: var(--dataimago-space-md);
+    font-size: 1.5rem;
+    opacity: 0.6;
+}
+
+.dataimago-micp-header {
+    margin-bottom: var(--dataimago-space-lg);
+    text-align: center;
+}
+
+.dataimago-micp-header h3 {
+    color: var(--dataimago-primary);
+    margin-bottom: var(--dataimago-space-xs);
+}
+
+.dataimago-micp-header p {
+    opacity: 0.8;
+    font-style: italic;
+}
+
+.dataimago-micp-section {
+    margin-bottom: var(--dataimago-space-lg);
+}
+
+.dataimago-micp-section h4 {
+    color: var(--dataimago-text);
+    margin-bottom: var(--dataimago-space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--dataimago-space-xs);
+}
+
+.dataimago-micp-section h4::before {
+    content: attr(data-icon);
+    font-size: 1.2em;
+}
+
+.dataimago-micp-rules {
+    list-style: none;
+    padding: 0;
+}
+
+.dataimago-micp-rules li {
+    padding: var(--dataimago-space-xs) var(--dataimago-space-sm);
+    margin-bottom: var(--dataimago-space-xs);
+    border-radius: 0.5rem;
+    border-left: 3px solid;
+    position: relative;
+    padding-left: 2rem;
+}
+
+.dataimago-micp-rules li::before {
+    position: absolute;
+    left: var(--dataimago-space-sm);
+    font-weight: bold;
+}
+
+.dataimago-micp-rules .must {
+    border-left-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.dataimago-micp-rules .must::before {
+    content: '✓';
+    color: #10b981;
+}
+
+.dataimago-micp-rules .must-not {
+    border-left-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.dataimago-micp-rules .must-not::before {
+    content: '✗';
+    color: #ef4444;
+}
+
+.dataimago-micp-rules .can {
+    border-left-color: var(--dataimago-primary);
+    background: rgba(131, 131, 143, 0.1);
+}
+
+.dataimago-micp-rules .can::before {
+    content: '◦';
+    color: var(--dataimago-primary);
+}
+
+/* ——— JSON Export Display ——— */
+.dataimago-json-export {
+    background: var(--quarto-code-bg, #f8f9fa);
+    border: 1px solid var(--dataimago-border);
+    border-radius: 0.5rem;
+    padding: var(--dataimago-space-md);
+    margin: var(--dataimago-space-md) 0;
+    position: relative;
+}
+
+.dataimago-json-export::before {
+    content: '{ }';
+    position: absolute;
+    top: var(--dataimago-space-xs);
+    right: var(--dataimago-space-xs);
+    font-family: monospace;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    color: var(--dataimago-primary);
+}
+
+.dataimago-json-export pre {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* ——— Slide-Specific Containers ——— */
+.dataimago-slide-hero {
+    background: linear-gradient(180deg, var(--dataimago-bg) 0%, rgba(131, 131, 143, 0.02) 100%);
+    position: relative;
+}
+
+.dataimago-slide-features {
+    background: rgba(131, 131, 143, 0.02);
+    padding: clamp(3rem, 6vw, 6rem) 0;
+}
+
+.dataimago-slide-technical {
+    background: rgba(131, 131, 143, 0.05);
+    padding: clamp(3rem, 6vw, 6rem) 0;
+}
+
+/* ——— Grid Systems ——— */
+.dataimago-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--dataimago-space-lg);
+    margin: var(--dataimago-space-xl) 0;
+}
+
+.dataimago-content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--dataimago-space-md);
+}
+
+/* ——— Integration CTA ——— */
+.dataimago-integration-cta {
+    background: linear-gradient(135deg, var(--dataimago-bg) 0%, rgba(131, 131, 143, 0.05) 100%);
+    border-radius: 1rem;
+    padding: var(--dataimago-space-xl);
+    text-align: center;
+    margin: var(--dataimago-space-xl) 0;
+    border: 1px solid var(--dataimago-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.dataimago-integration-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(131, 131, 143, 0.1), transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.dataimago-integration-cta h3 {
+    color: var(--dataimago-primary);
+    margin-bottom: var(--dataimago-space-sm);
+}
+
+/* ——— Accessibility Enhancements ——— */
+.dataimago-skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--dataimago-primary);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 0 0 4px 4px;
+    z-index: 9999;
+    transition: top 0.3s;
+}
+
+.dataimago-skip-link:focus {
+    top: 0;
+}
+
+/* Focus indicators */
+.dataimago-slide-indicator:focus,
+.dataimago-feature-box:focus-within {
+    outline: 2px solid var(--dataimago-primary);
+    outline-offset: 2px;
+}
+
+/* ——— Print Styles ——— */
+@media print {
+    .dataimago-slide-nav,
+    .dataimago-scroll-indicator {
+        display: none !important;
+    }
+    
+    .dataimago-slide {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .dataimago-hero-scroller {
+        height: auto !important;
+        overflow: visible !important;
+    }
+}
