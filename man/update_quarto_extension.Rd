@@ -61,8 +61,10 @@ result <- update_quarto_extension()
 
 # Check what was updated
 if (result$success) {
-  cat("Updated files:",
-      paste(result$updated_files, collapse = "\n  "))
+  cat(
+    "Updated files:",
+    paste(result$updated_files, collapse = "\n  ")
+  )
 }
 }
 
