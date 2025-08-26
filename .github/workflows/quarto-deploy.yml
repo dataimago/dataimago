@@ -47,7 +47,6 @@ jobs:
 
       - name: Install Package and Build Design System
         run: |
-          cd dataimago
           R CMD INSTALL .
           Rscript -e "
           # Create UI workspace first
@@ -61,7 +60,6 @@ jobs:
 
       - name: Generate API Documentation
         run: |
-          cd dataimago
           Rscript -e "
           dataimago::create_quarto_documentation(
             package_path = '.',
