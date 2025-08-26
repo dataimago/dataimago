@@ -25,6 +25,90 @@ To develop AI systems and analytic tools that reconcile meaning (hermeneutics) a
 
 The dataimago R package is designed as a **multi-layered foundation** for emancipatory AI development. Understanding the architecture is crucial for effective development and maintenance.
 
+> 📋 **See [ARCHITECTURE.md](ARCHITECTURE.md) for comprehensive Mermaid diagrams** that visualize the complete system architecture, build processes, and philosophical integration patterns.
+
+### System Overview
+
+```mermaid
+graph TB
+    %% Main Package Architecture Overview
+    subgraph "R Package Core"
+        RP[dataimago Package]
+        RF[R Functions]
+        RF --> DOC[documentation_utils.R]
+        RF --> DS[design_system.R]
+        RF --> PKG[dataimago-package.R]
+    end
+
+    subgraph "Foundation Layer"
+        INST[inst/ Directory]
+        INST --> FOUND[dataimago/ Foundations]
+        INST --> CDN[quarto-assets/ CDN]
+        FOUND --> PHIL[Philosophy & Mission]
+        FOUND --> ARCH[Architecture Blueprints]
+        FOUND --> ASSETS[Design Assets]
+    end
+
+    subgraph "Design System"
+        UI[ui/ Node.js Workspace]
+        UI --> TOKENS[src/tokens/ JSON]
+        UI --> SCSS[src/styles/ SCSS]
+        UI --> DIST[dist/ Built Assets]
+        
+        TOKENS --> SD[Style Dictionary]
+        SCSS --> SASS[Sass Compiler]
+        SD --> PROPS[CSS Custom Properties]
+        SASS --> CSS[Compiled CSS]
+        CSS --> POST[PostCSS Optimization]
+        POST --> DIST
+    end
+
+    subgraph "Distribution Channels"
+        DIST --> CDN
+        DIST --> EXT[_extensions/ Quarto]
+        DIST --> NEXT[Next.js Integration]
+    end
+
+    subgraph "Documentation System"
+        DOC --> QMD[Quarto Website]
+        QMD --> API[API Reference]
+        QMD --> FOUNDATIONS[Foundation Docs]
+        QMD --> GUIDES[Development Guides]
+    end
+
+    subgraph "CI/CD Pipeline"
+        GH[GitHub Actions]
+        GH --> TEST[Multi-platform Testing]
+        GH --> BUILD[Automated Builds]
+        GH --> DEPLOY[Website Deployment]
+        GH --> RELEASE[CDN Releases]
+    end
+
+    %% Connections
+    RP --> INST
+    RP --> UI
+    RF --> QMD
+    DS --> UI
+    CDN --> JSDELIVR[jsDelivr CDN]
+    EXT --> QUARTO[External Quarto Sites]
+    NEXT --> APPS[Next.js Applications]
+
+    %% Styling
+    classDef rCore fill:#3498db,stroke:#2c3e50,stroke-width:2px,color:#fff
+    classDef foundation fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+    classDef designSystem fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    classDef distribution fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#fff
+    classDef documentation fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    classDef cicd fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+
+    class RP,RF,DOC,DS,PKG rCore
+    class INST,FOUND,PHIL,ARCH,ASSETS foundation
+    class UI,TOKENS,SCSS,DIST,SD,SASS,PROPS,CSS,POST designSystem
+    class CDN,EXT,NEXT,JSDELIVR,QUARTO,APPS distribution
+    class QMD,API,FOUNDATIONS,GUIDES documentation
+    class GH,TEST,BUILD,DEPLOY,RELEASE cicd
+```
+
 ### Directory Structure
 ```
 dataimago/
@@ -52,10 +136,91 @@ dataimago/
 
 The package uses a sophisticated build system that maintains "R as source of truth" while leveraging modern web tooling:
 
-```
-Design Tokens (JSON) → Style Dictionary → CSS Custom Properties
-SCSS Source Files   → Sass Compiler  → Compiled CSS
-Compiled CSS       → PostCSS        → Minified + Optimized CSS
+```mermaid
+flowchart TD
+    %% Design System Build Process
+    START([Developer Initiates Build])
+    
+    subgraph "Input Sources"
+        TOKENS[Design Tokens<br/>ui/src/tokens/*.json]
+        SCSS[SCSS Styles<br/>ui/src/styles/*.scss]
+        CONFIG[Build Configuration<br/>package.json, build.js]
+    end
+
+    subgraph "R Interface"
+        WORKSPACE[create_ui_workspace<br/>Sets up Node.js environment]
+        BUILD[build_design_system<br/>Orchestrates entire pipeline]
+        DETECT{Sophisticated<br/>system exists?}
+    end
+
+    subgraph "Node.js Processing Pipeline"
+        SD[Style Dictionary<br/>Token Processing]
+        SASS_COMP[Sass Compiler<br/>SCSS → CSS]
+        POSTCSS[PostCSS Pipeline<br/>Optimization]
+        
+        SD --> CUSTOM_PROPS[CSS Custom Properties]
+        SASS_COMP --> COMPILED_CSS[Compiled CSS]
+        POSTCSS --> MINIFIED[Minified CSS]
+    end
+
+    subgraph "Output Destinations"
+        DIST[ui/dist/<br/>Development Assets]
+        CDN_ASSETS[inst/quarto-assets/<br/>CDN Distribution]
+        QUARTO_EXT[_extensions/<br/>Quarto Extension]
+        NEXT_PRESET[tailwind-preset.js<br/>Next.js Integration]
+    end
+
+    subgraph "Distribution Channels"
+        JSDELIVR[jsDelivr CDN<br/>External Projects]
+        QUARTO_SITES[Quarto Websites<br/>Extension Usage]
+        NEXTJS_APPS[Next.js Apps<br/>Preset Integration]
+        R_PACKAGE[R Package<br/>system.file access]
+    end
+
+    %% Flow connections
+    START --> BUILD
+    BUILD --> DETECT
+    DETECT -->|Yes| EXISTING[Use Existing System]
+    DETECT -->|No| WORKSPACE
+    WORKSPACE --> CREATE_MINIMAL[Create Minimal Fallback]
+    EXISTING --> TOKENS
+    CREATE_MINIMAL --> TOKENS
+    
+    TOKENS --> SD
+    SCSS --> SASS_COMP
+    CONFIG --> SD
+    CONFIG --> SASS_COMP
+    
+    CUSTOM_PROPS --> POSTCSS
+    COMPILED_CSS --> POSTCSS
+    
+    MINIFIED --> DIST
+    DIST --> CDN_ASSETS
+    DIST --> QUARTO_EXT
+    DIST --> NEXT_PRESET
+    
+    CDN_ASSETS --> JSDELIVR
+    CDN_ASSETS --> R_PACKAGE
+    QUARTO_EXT --> QUARTO_SITES
+    NEXT_PRESET --> NEXTJS_APPS
+
+    %% Decision flows
+    DETECT -->|Force Rebuild| WORKSPACE
+
+    %% Styling
+    classDef input fill:#3498db,stroke:#2c3e50,stroke-width:2px,color:#fff
+    classDef rInterface fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+    classDef processing fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    classDef output fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#fff
+    classDef distribution fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    classDef decision fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+
+    class TOKENS,SCSS,CONFIG input
+    class WORKSPACE,BUILD,EXISTING,CREATE_MINIMAL rInterface
+    class SD,SASS_COMP,POSTCSS,CUSTOM_PROPS,COMPILED_CSS,MINIFIED processing
+    class DIST,CDN_ASSETS,QUARTO_EXT,NEXT_PRESET output
+    class JSDELIVR,QUARTO_SITES,NEXTJS_APPS,R_PACKAGE distribution
+    class DETECT decision
 ```
 
 **Distribution Channels:**
@@ -304,6 +469,14 @@ This package embodies ethical AI development principles. Contributions should:
 2. **Include Ethical Context**: New functions require philosophical documentation
 3. **Maintain Transparency**: Implementation assumptions must be documented
 4. **Test Thoroughly**: Both technical functionality and philosophical consistency
+
+### Code Style
+
+The package uses a configured linter (`.lintr`) with these standards:
+- **Line Length**: 140 characters (accommodates comprehensive documentation)
+- **Object Names**: Up to 40 characters (descriptive function names encouraged)
+- **Standard R Style**: Consistent spacing, indentation, and naming conventions
+- **Documentation Focus**: Optimized for packages with extensive ethical context
 
 ## License
 

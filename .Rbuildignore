@@ -16,6 +16,7 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$
+^\.lintr$
 
 # Exclude sections from original numbered directories to be included in inst/
 # 01_Foundations

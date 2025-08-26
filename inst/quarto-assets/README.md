@@ -4,6 +4,8 @@
 
 This directory contains **CDN-ready CSS assets** that enable external projects to directly link to dataimago design system files via jsDelivr CDN. These files are **critical infrastructure** for the dataimago ecosystem.
 
+> 📋 **See [../../ARCHITECTURE.md](../../ARCHITECTURE.md) for visual diagrams** showing how these CDN assets fit into the complete dataimago distribution system.
+
 ## ⚠️ CRITICAL WARNING
 
 **NEVER DELETE THIS DIRECTORY OR ITS CONTENTS**
@@ -57,6 +59,95 @@ if (file.exists(css_path)) {
 ## 🔄 How These Files Are Generated
 
 These files are **automatically generated** by the design system build process:
+
+### CDN Distribution Flow
+
+```mermaid
+graph TB
+    %% CDN Distribution Flow
+    subgraph "Build System Output"
+        BUILD[build_design_system]
+        BUILD --> UI_DIST[ui/dist/<br/>Built Assets]
+        UI_DIST --> DEV_CSS[dataimago.css<br/>6.1KB Unminified]
+        UI_DIST --> PROD_CSS[dataimago.min.css<br/>6.1KB Minified]
+        UI_DIST --> TOKENS[tokens.css<br/>1.8KB Variables]
+    end
+
+    subgraph "CDN Preparation"
+        CDN_DIR[inst/quarto-assets/<br/>CDN Directory]
+        SRI[SRI Hash Generation<br/>Security Verification]
+        COPY[File Copy Process<br/>ui/dist → inst/quarto-assets]
+    end
+
+    subgraph "External Access Methods"
+        JSDELIVR[jsDelivr CDN<br/>cdn.jsdelivr.net]
+        R_ACCESS[R system.file<br/>Programmatic Access]
+        DIRECT[Direct File Access<br/>Package Installation]
+    end
+
+    subgraph "Integration Examples"
+        HTML[HTML Link Tags<br/>External Websites]
+        QUARTO[Quarto _quarto.yml<br/>CSS Configuration]
+        R_CODE[R Code<br/>Package Functions]
+    end
+
+    subgraph "Usage Patterns"
+        PROD_USE[Production Sites<br/>Minified + SRI]
+        DEV_USE[Development<br/>Unminified + Comments]
+        TOKEN_USE[Custom Styling<br/>Variables Only]
+    end
+
+    subgraph "Security & Reliability"
+        VERSIONING[Git Tag Versioning<br/>@v0.1.0 References]
+        INTEGRITY[Subresource Integrity<br/>sha384- Hashes]
+        FALLBACK[Local Fallbacks<br/>CDN Failure Protection]
+    end
+
+    %% Flow connections
+    DEV_CSS --> COPY
+    PROD_CSS --> COPY
+    TOKENS --> COPY
+    COPY --> CDN_DIR
+    
+    CDN_DIR --> SRI
+    SRI --> JSDELIVR
+    CDN_DIR --> R_ACCESS
+    CDN_DIR --> DIRECT
+    
+    JSDELIVR --> HTML
+    R_ACCESS --> R_CODE
+    DIRECT --> QUARTO
+    
+    HTML --> PROD_USE
+    HTML --> DEV_USE
+    QUARTO --> TOKEN_USE
+    R_CODE --> DEV_USE
+    
+    JSDELIVR --> VERSIONING
+    VERSIONING --> INTEGRITY
+    INTEGRITY --> FALLBACK
+
+    %% Critical path highlighting
+    BUILD --> CDN_DIR
+    CDN_DIR --> JSDELIVR
+
+    %% Styling
+    classDef build fill:#3498db,stroke:#2c3e50,stroke-width:2px,color:#fff
+    classDef cdn fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+    classDef access fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    classDef integration fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#fff
+    classDef usage fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    classDef security fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+
+    class BUILD,UI_DIST,DEV_CSS,PROD_CSS,TOKENS build
+    class CDN_DIR,SRI,COPY cdn
+    class JSDELIVR,R_ACCESS,DIRECT access
+    class HTML,QUARTO,R_CODE integration
+    class PROD_USE,DEV_USE,TOKEN_USE usage
+    class VERSIONING,INTEGRITY,FALLBACK security
+```
+
+### Build Process Details
 
 ```r
 library(dataimago)

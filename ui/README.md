@@ -2,6 +2,8 @@
 
 This directory contains the Node.js workspace for compiling the dataimago ethical AI design system. It's controlled entirely through R functions in `R/design_system.R`, maintaining the "R as source of truth" philosophy.
 
+> 📋 **See [../ARCHITECTURE.md](../ARCHITECTURE.md) for comprehensive system diagrams** that show how this UI workspace integrates with the broader dataimago package architecture.
+
 ## \U0001F3D7\UFE0F Architecture
 
 ### Directory Structure
