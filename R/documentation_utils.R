@@ -19,18 +19,18 @@ NULL
 #' @param package_path Character. Path to the R package root directory.
 #'   Must contain DESCRIPTION file and man/ directory with .Rd files.
 #'   Default: "." (current directory)
-#' @param output_path Character. Path to quarto website directory where .qmd files
-#'   will be generated. Directory will be created if it doesn't exist.
-#'   Default: "quarto_website"
+#' @param output_path Character. Path to quarto website directory where
+#'   .qmd files will be generated. Directory will be created if it
+#'   doesn't exist. Default: "quarto_website"
 #' @param include_description Logical. Whether to include full DESCRIPTION file
 #'   content in the generated API reference. Useful for package metadata display.
 #'   Default: TRUE
 #' @param include_foundation_links Logical. Whether to add automatic links to
 #'   dataimago philosophical foundation documents in the generated documentation.
 #'   Default: TRUE
-#' @param template Character. Documentation template to use for styling and structure.
-#'   Currently supports "dataimago" template with ethical AI branding.
-#'   Default: "dataimago"
+#' @param template Character. Documentation template to use for styling and
+#'   structure.  Currently supports "dataimago" template with ethical
+#'   AI branding.  Default: "dataimago"
 #'
 #' @return Character (invisible). File path to the generated api_reference.qmd file.
 #'   Side effects: Creates .qmd files and _quarto.yml in output_path directory
@@ -645,4 +645,4 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
   }
 
   yml_content
-}
+} ### END OF generate_quarto_yml

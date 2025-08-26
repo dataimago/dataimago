@@ -484,8 +484,10 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       ),
       background = list(
         page = list(value = "#FFFFFF", description = "Main page background"),
-        surface = list(value = "#F8F9FA", description = "Card and surface backgrounds"),
-        overlay = list(value = "#000000", description = "Modal overlay background")
+        surface = list(value = "#F8F9FA",
+                       description = "Card and surface backgrounds"),
+        overlay = list(value = "#000000",
+                       description = "Modal overlay background")
       ),
       border = list(
         default = list(value = "#E9ECEF", description = "Default border color"),
@@ -496,7 +498,8 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 
   colors_file <- file.path(ui_dir, "src", "tokens", "colors.json")
   tryCatch({
-    writeLines(jsonlite::toJSON(colors_tokens, pretty = TRUE, auto_unbox = TRUE),
+    writeLines(jsonlite::toJSON(colors_tokens, pretty = TRUE,
+                                auto_unbox = TRUE),
                colors_file)
     created_files <- c(created_files, colors_file)
   }, error = function(e) {
@@ -507,8 +510,10 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
   typography_tokens <- list(
     font = list(
       family = list(
-        sans = list(value = "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"),
-        mono = list(value = "JetBrains Mono, SF Mono, Monaco, Inconsolata, monospace"),
+        sans = list(value = paste0("Inter, system-ui, -apple-system, ",
+                                    "Segoe UI, Roboto, sans-serif")),
+        mono = list(value = paste0("JetBrains Mono, SF Mono, Monaco, ",
+                                    "Inconsolata, monospace")),
         display = list(value = "Inter, system-ui, sans-serif")
       ),
       size = list(
@@ -535,7 +540,8 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     )
   )
 
-  typography_file <- file.path(ui_dir, "src", "tokens", "typography.json")
+  typography_file <- file.path(ui_dir, "src", "tokens",
+                                "typography.json")
   tryCatch({
     writeLines(jsonlite::toJSON(typography_tokens, pretty = TRUE, auto_unbox = TRUE),
                typography_file)
@@ -566,7 +572,8 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       sm = list(value = "0 1px 2px 0 rgb(0 0 0 / 0.05)"),
       md = list(value = "0 4px 6px -1px rgb(0 0 0 / 0.1)"),
       lg = list(value = "0 10px 15px -3px rgb(0 0 0 / 0.1)"),
-      xl = list(value = "0 20px 25px -5px rgb(0 0 0 / 0.1)")
+      xl = list(value = paste0("0 20px 25px -5px ",
+                                "rgb(0 0 0 / 0.1)"))
     )
   )
 
@@ -575,10 +582,10 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     writeLines(jsonlite::toJSON(spacing_tokens, pretty = TRUE, auto_unbox = TRUE),
                spacing_file)
     created_files <- c(created_files, spacing_file)
-    }, error = function(e) {
+  }, error = function(e) {
     errors <- c(errors, glue("Error creating spacing.json: {e$message}"))
   })
-  
+
   # Create build.js script
   build_js_content <- c(
     "#!/usr/bin/env node",
@@ -661,20 +668,20 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     "    buildTime: new Date().toISOString()",
     "  };",
     "  ",
-    "  fs.writeFileSync(path.join(distDir, 'manifest.json'), JSON.stringify(manifest, null, 2));",
+    "  fs.writeFileSync(path.join(distDir, 'manifest.json'),",
+    "                    JSON.stringify(manifest, null, 2));",
     "  ",
     "  console.log('\\u2713 Build completed successfully');",
     "  console.log('  Generated files:');",
-    "  console.log('    - dataimago.min.css');", 
+    "  console.log('    - dataimago.min.css');",
     "  console.log('    - tokens.css');",
     "  console.log('    - manifest.json');",
-    "  ",
+    "",
     "} catch (error) {",
     "  console.error('Build failed:', error.message);",
     "  process.exit(1);",
     "}"
   )
-  
   build_js_file <- file.path(ui_dir, "build.js")
   tryCatch({
     writeLines(build_js_content, build_js_file)
@@ -710,27 +717,38 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 
 #' Update Quarto Extension Assets
 #'
-#' Copies compiled CSS and other assets from ui/dist/ into the Quarto extension structure.
-#' Maintains proper extension.yml configuration and ensures asset linking works correctly.
+#' Copies compiled CSS and other assets from ui/dist/ into the Quarto
+#' extension structure.
+#' Maintains proper extension.yml configuration and ensures asset linking
+#' works correctly.
 #'
 #' @param verbose Logical. Print detailed progress information. Default: TRUE
 #'
 #' @details
 #' This function performs the following operations:
 #'
-#' 1. **Validates Extension Structure**: Checks that `quarto_website/_extensions/dataimago/ai-native/` exists
-#' 2. **Copies Main CSS**: Copies `ui/dist/dataimago.min.css` to extension assets
-#' 3. **Updates Asset References**: Ensures extension.yml references the correct CSS files
-#' 4. **Preserves Extension Config**: Maintains existing Lua filters, shortcodes, etc.
+#' 1. **Validates Extension Structure**: Checks that
+#'    `quarto_website/_extensions/dataimago/ai-native/` exists
+#' 2. **Copies Main CSS**: Copies `ui/dist/dataimago.min.css` to
+#'    extension assets
+#' 3. **Updates Asset References**: Ensures extension.yml references the
+#'    correct CSS files
+#' 4. **Preserves Extension Config**: Maintains existing Lua filters,
+#'    shortcodes, etc.
 #'
 #' **Extension Asset Mapping:**
-#' - `ui/dist/dataimago.min.css` -> `quarto_website/_extensions/dataimago/ai-native/assets/css/dataimago.min.css`
-#' - `ui/dist/tokens.css` -> `quarto_website/_extensions/dataimago/ai-native/assets/css/tokens.css` (if exists)
-#' - Source maps and development files are excluded from extension distribution
+#' - `ui/dist/dataimago.min.css` ->
+#'   `quarto_website/_extensions/dataimago/ai-native/assets/css/dataimago.min.css`
+#' - `ui/dist/tokens.css` ->
+#'   `quarto_website/_extensions/dataimago/ai-native/assets/css/tokens.css` (if exists)
+#' - Source maps and development files are excluded from extension
+#'   distribution
 #'
 #' **File Operations:**
-#' All file copying uses R's `fs::file_copy()` with overwrite protection and atomic operations
-#' to prevent corrupted assets during development. The function will not overwrite extension
+#' All file copying uses R's `fs::file_copy()` with overwrite protection
+#' and atomic operations
+#' to prevent corrupted assets during development. The function will not
+#' overwrite extension
 #' configuration files (like _extension.yml) unless they become corrupted.
 #'
 #' @return List containing update results:
@@ -746,7 +764,8 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 #'
 #' # Check what was updated
 #' if (result$success) {
-#'   cat("Updated files:", paste(result$updated_files, collapse = "\n  "))
+#'   cat("Updated files:",
+#'       paste(result$updated_files, collapse = "\n  "))
 #' }
 #' }
 #'
@@ -841,8 +860,10 @@ update_quarto_extension <- function(verbose = TRUE) {
 
   if (verbose) {
     if (success) {
-      ui_done(glue("Quarto extension updated successfully"))
-      ui_info(glue("   Updated {length(updated_files)} asset files"))
+      ui_done(glue("Quarto extension updated ",
+                    "successfully"))
+      ui_info(glue("   Updated {length(updated_files)} ",
+                    "asset files"))
     } else {
       ui_oops("Extension update failed")
       for (error in errors) {
@@ -860,8 +881,10 @@ update_quarto_extension <- function(verbose = TRUE) {
 
 #' Generate CDN Distribution Assets
 #'
-#' Prepares assets for CDN distribution with versioning, SRI hashes, and metadata.
-#' Creates jsDelivr-compatible structure in inst/quarto-assets/ for R package distribution.
+#' Prepares assets for CDN distribution with versioning, SRI hashes,
+#' and metadata.
+#' Creates jsDelivr-compatible structure in inst/quarto-assets/ for
+#' R package distribution.
 #'
 #' @param verbose Logical. Print detailed progress information. Default: TRUE
 #'
@@ -915,7 +938,8 @@ generate_cdn_assets <- function(verbose = TRUE) {
   if (!dir_exists(cdn_dir)) {
     dir_create(cdn_dir)
     if (verbose) {
-      ui_info("Created inst/quarto-assets directory")
+      ui_info(paste0("Created inst/quarto-assets ",
+                      "directory"))
     }
   }
 
