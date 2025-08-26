@@ -114,9 +114,9 @@ NULL
 #' @export
 create_quarto_documentation <- function(package_path = ".",
                                         output_path = "quarto_website",
-                                       include_description = TRUE,
-                                       include_foundation_links = TRUE,
-                                       template = "dataimago") {
+                                        include_description = TRUE,
+                                        include_foundation_links = TRUE,
+                                        template = "dataimago") {
 
   # Validate inputs
   if (!dir.exists(package_path)) {
@@ -313,9 +313,9 @@ post_process_md_to_qmd <- function(md_content, func_name) {
       qmd_lines <- c(qmd_lines, line)
       qmd_lines <- c(qmd_lines, "")
       qmd_lines <- c(qmd_lines, "::: {.ethical-note}")
-              qmd_lines <- c(qmd_lines,
-          paste0("This function embodies dataimago's principle of embedding ",
-                 "AI within culture for emancipatory purposes."))
+      qmd_lines <- c(qmd_lines,
+                     paste0("This function embodies dataimago's principle of embedding ",
+                            "AI within culture for emancipatory purposes."))
       qmd_lines <- c(qmd_lines, ":::")
       qmd_lines <- c(qmd_lines, "")
     } else if (grepl("^## Examples", line)) {
@@ -336,7 +336,7 @@ post_process_md_to_qmd <- function(md_content, func_name) {
   qmd_lines <- c(qmd_lines, "---")
   qmd_lines <- c(qmd_lines, "")
   qmd_lines <- c(qmd_lines,
-    "*This function is part of the dataimago ethical AI framework.*")
+                 "*This function is part of the dataimago ethical AI framework.*")
   qmd_lines <- c(qmd_lines, "")
 
   qmd_lines
@@ -358,10 +358,10 @@ generate_api_reference_qmd <- function(desc_content, rd_content,
   # Add YAML frontmatter
   qmd_content <- c(qmd_content, "---")
   qmd_content <- c(qmd_content,
-    paste0("title: \"", desc_content$package, " API Reference\""))
+                   paste0("title: \"", desc_content$package, " API Reference\""))
   qmd_content <- c(qmd_content, "subtitle: \"dataimago Ethical AI Framework\"")
   qmd_content <- c(qmd_content,
-    paste0("version: \"", desc_content$version, "\""))
+                   paste0("version: \"", desc_content$version, "\""))
   qmd_content <- c(qmd_content, "format:")
   qmd_content <- c(qmd_content, "  html:")
   qmd_content <- c(qmd_content, "    toc: true")
@@ -382,12 +382,12 @@ generate_api_reference_qmd <- function(desc_content, rd_content,
     qmd_content <- c(qmd_content, "## dataimago Foundation")
     qmd_content <- c(qmd_content, "")
     qmd_content <- c(qmd_content,
-      "This package is built on dataimago's ethical AI framework:")
+                     "This package is built on dataimago's ethical AI framework:")
     qmd_content <- c(qmd_content, "")
     qmd_content <- c(qmd_content, "- [Mission & Vision](../foundations/mission.html)")
     qmd_content <- c(qmd_content, "- [Philosophy](../foundations/philosophy.html)")
     qmd_content <- c(qmd_content,
-      "- [Critical Theory Manifesto](../manifesto/critical_theory_manifesto.html)")
+                     "- [Critical Theory Manifesto](../manifesto/critical_theory_manifesto.html)")
     qmd_content <- c(qmd_content, "")
   }
 
@@ -501,7 +501,7 @@ format_description_fields <- function(desc_content) {
     if (!is.null(field_value) && field_value != "") {
       # Format as bold label followed by content
       formatted_lines <- c(formatted_lines,
-        paste0("**", field_info$label, "**: ", field_value))
+                           paste0("**", field_info$label, "**: ", field_value))
       formatted_lines <- c(formatted_lines, "")
     }
   }
@@ -544,7 +544,7 @@ add_function_docs_sections <- function(rd_content) {
     section_lines <- c(section_lines, "# Exported Functions")
     section_lines <- c(section_lines, "")
     section_lines <- c(section_lines,
-      "The following functions are exported and available for use:")
+                       "The following functions are exported and available for use:")
     section_lines <- c(section_lines, "")
 
     for (func_name in exported_functions) {
@@ -557,7 +557,7 @@ add_function_docs_sections <- function(rd_content) {
     section_lines <- c(section_lines, "# Internal Functions")
     section_lines <- c(section_lines, "")
     section_lines <- c(section_lines,
-      "The following functions are internal to the package:")
+                       "The following functions are internal to the package:")
     section_lines <- c(section_lines, "")
 
     for (func_name in internal_functions) {
@@ -635,7 +635,7 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
   yml_content <- c(yml_content, "    toc-depth: 3")
   yml_content <- c(yml_content, "    code-copy: true")
   yml_content <- c(yml_content, "    code-overflow: wrap")
-  
+
   # Add dataimago-specific configuration if using dataimago template
   if (template == "dataimago") {
     yml_content <- c(yml_content, "")
@@ -645,4 +645,4 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
   }
 
   yml_content
-} ### END OF generate_quarto_yml
+}

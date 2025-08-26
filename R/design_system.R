@@ -385,17 +385,17 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
   if (dir_exists(ui_dir)) {
     # Check if this is a sophisticated build system (has real source files)
     has_sophisticated_system <- file.exists(file.path(ui_dir, "src", "styles")) &&
-                               file.exists(file.path(ui_dir, "src", "tokens")) &&
-                               file.exists(file.path(ui_dir, "build.js"))
-    
+      file.exists(file.path(ui_dir, "src", "tokens")) &&
+      file.exists(file.path(ui_dir, "build.js"))
+
     if (has_sophisticated_system && !force_overwrite) {
       if (verbose) {
         ui_info("Found existing sophisticated UI build system - preserving it")
         ui_info("  Use force_overwrite = TRUE to replace with minimal system")
       }
       # Return success without creating anything new - the sophisticated system is already there
-      return(list(success = TRUE, created_files = character(0), 
-                  errors = character(0), 
+      return(list(success = TRUE, created_files = character(0),
+                  errors = character(0),
                   note = "Preserved existing sophisticated UI build system"))
     } else if (!force_overwrite) {
       errors <- c(errors, "ui/ directory already exists. Use force_overwrite = TRUE to recreate.")
@@ -423,7 +423,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     }
   }, error = function(e) {
     errors <- c(errors, glue("Error creating directories: {e$message}"))
-    return(list(success = FALSE, created_files = created_files, errors = errors))
+    list(success = FALSE, created_files = created_files, errors = errors)
   })
 
   # Create package.json
@@ -861,9 +861,9 @@ update_quarto_extension <- function(verbose = TRUE) {
   if (verbose) {
     if (success) {
       ui_done(glue("Quarto extension updated ",
-                    "successfully"))
+                   "successfully"))
       ui_info(glue("   Updated {length(updated_files)} ",
-                    "asset files"))
+                   "asset files"))
     } else {
       ui_oops("Extension update failed")
       for (error in errors) {
@@ -939,7 +939,7 @@ generate_cdn_assets <- function(verbose = TRUE) {
     dir_create(cdn_dir)
     if (verbose) {
       ui_info(paste0("Created inst/quarto-assets ",
-                      "directory"))
+                     "directory"))
     }
   }
 
