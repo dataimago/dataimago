@@ -33,7 +33,7 @@ NULL
 #'   Default: "dataimago"
 #'
 #' @return Character (invisible). File path to the generated api_reference.qmd file.
-#'   Side effects: Creates .qmd files in output_path directory and copies
+#'   Side effects: Creates .qmd files and _quarto.yml in output_path directory and copies 
 #'   dataimago assets (logos, etc.) to assets/img/ subdirectory.
 #'
 #' @details
@@ -50,7 +50,8 @@ NULL
 #'
 #' The generated documentation structure includes:
 #' \itemize{
-#'   \item YAML frontmatter with package metadata
+#'   \item `_quarto.yml` configuration file for website project setup
+#'   \item `api_reference.qmd` with YAML frontmatter and package metadata
 #'   \item Full DESCRIPTION file content (if requested)
 #'   \item Links to dataimago foundation documents
 #'   \item Function documentation with ethical context boxes
@@ -154,6 +155,11 @@ create_quarto_documentation <- function(package_path = ".",
   api_file <- file.path(output_path, "api_reference.qmd")
   writeLines(api_reference_content, api_file)
 
+  # Generate and write _quarto.yml
+  quarto_yml_content <- generate_quarto_yml(desc_content, template)
+  quarto_yml_file <- file.path(output_path, "_quarto.yml")
+  writeLines(quarto_yml_content, quarto_yml_file)
+
   # Update dataimago assets if template is dataimago
   if (template == "dataimago") {
     update_dataimago_assets(output_path, package_path)
@@ -161,6 +167,7 @@ create_quarto_documentation <- function(package_path = ".",
 
   cat(crayon::green("\u2713 Quarto documentation generated successfully\n"))
   cat(crayon::silver("  API reference: "), api_file, "\n")
+  cat(crayon::silver("  Quarto config: "), quarto_yml_file, "\n")
 
   invisible(api_file)
 }
@@ -534,4 +541,78 @@ add_function_documentation_sections <- function(rd_content) {
   }
 
   return(section_lines)
+}
+
+#' Generate _quarto.yml Configuration File
+#' 
+#' @param desc_content Parsed DESCRIPTION content
+#' @param template Template type (currently supports "dataimago")
+#' @return Character vector with _quarto.yml content
+#' @keywords internal
+generate_quarto_yml <- function(desc_content, template = "dataimago") {
+  
+  yml_content <- c()
+  
+  # Basic project configuration
+  yml_content <- c(yml_content, "project:")
+  yml_content <- c(yml_content, "  type: website")
+  yml_content <- c(yml_content, paste0("  title: \"", desc_content$package, ": ", desc_content$title, "\""))
+  yml_content <- c(yml_content, "")
+  
+  # Execution settings
+  yml_content <- c(yml_content, "execute:")
+  yml_content <- c(yml_content, "  freeze: auto")
+  yml_content <- c(yml_content, "")
+  
+  # Website configuration
+  yml_content <- c(yml_content, "website:")
+  if (!is.null(desc_content$url)) {
+    yml_content <- c(yml_content, paste0("  site-url: \"", desc_content$url, "\""))
+  }
+  yml_content <- c(yml_content, paste0("  title: \"", desc_content$package, ": ", desc_content$title, "\""))
+  if (!is.null(desc_content$description)) {
+    yml_content <- c(yml_content, paste0("  description: \"", desc_content$description, "\""))
+  }
+  yml_content <- c(yml_content, "  page-navigation: true")
+  yml_content <- c(yml_content, "")
+  
+  # Navbar configuration
+  yml_content <- c(yml_content, "  navbar:")
+  yml_content <- c(yml_content, paste0("    title: \"", desc_content$package, "\""))
+  yml_content <- c(yml_content, "    left:")
+  yml_content <- c(yml_content, "      - href: index.qmd")
+  yml_content <- c(yml_content, "        text: Home")
+  yml_content <- c(yml_content, "      - href: api_reference.qmd")
+  yml_content <- c(yml_content, "        text: API Reference")
+  yml_content <- c(yml_content, "")
+  
+  # Sidebar configuration
+  yml_content <- c(yml_content, "  sidebar:")
+  yml_content <- c(yml_content, "    style: \"docked\"")
+  yml_content <- c(yml_content, "    search: true")
+  yml_content <- c(yml_content, "    contents:")
+  yml_content <- c(yml_content, "      - section: \"Getting Started\"")
+  yml_content <- c(yml_content, "        contents:")
+  yml_content <- c(yml_content, "          - index.qmd")
+  yml_content <- c(yml_content, "          - api_reference.qmd")
+  yml_content <- c(yml_content, "")
+  
+  # Format configuration
+  yml_content <- c(yml_content, "format:")
+  yml_content <- c(yml_content, "  html:")
+  yml_content <- c(yml_content, "    theme: cosmo")
+  yml_content <- c(yml_content, "    toc: true")
+  yml_content <- c(yml_content, "    toc-depth: 3")
+  yml_content <- c(yml_content, "    code-copy: true")
+  yml_content <- c(yml_content, "    code-overflow: wrap")
+  
+  # Add dataimago-specific configuration if using dataimago template
+  if (template == "dataimago") {
+    yml_content <- c(yml_content, "")
+    yml_content <- c(yml_content, "# dataimago extensions")
+    yml_content <- c(yml_content, "extensions:")
+    yml_content <- c(yml_content, "  - dataimago/ai-native")
+  }
+  
+  return(yml_content)
 }
