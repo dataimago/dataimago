@@ -2,7 +2,7 @@
 #' @importFrom glue glue
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom rlang .data
-# Internal UI functions to replace usethis dependency  
+# Internal UI functions to replace usethis dependency
 #' @importFrom crayon blue green yellow
 ui_info <- function(x) cat(crayon::blue(paste0("\u2139", " ", x, "\n")))
 ui_done <- function(x) cat(crayon::green(paste0("\u2713", " ", x, "\n")))
