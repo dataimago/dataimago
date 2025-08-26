@@ -17,9 +17,9 @@ create_quarto_documentation(
 Must contain DESCRIPTION file and man/ directory with .Rd files.
 Default: "." (current directory)}
 
-\item{output_path}{Character. Path to quarto website directory where .qmd files
-will be generated. Directory will be created if it doesn't exist.
-Default: "quarto_website"}
+\item{output_path}{Character. Path to quarto website directory where
+.qmd files will be generated. Directory will be created if it
+doesn't exist. Default: "quarto_website"}
 
 \item{include_description}{Logical. Whether to include full DESCRIPTION file
 content in the generated API reference. Useful for package metadata display.
@@ -29,14 +29,14 @@ Default: TRUE}
 dataimago philosophical foundation documents in the generated documentation.
 Default: TRUE}
 
-\item{template}{Character. Documentation template to use for styling and structure.
-Currently supports "dataimago" template with ethical AI branding.
-Default: "dataimago"}
+\item{template}{Character. Documentation template to use for styling and
+structure.  Currently supports "dataimago" template with ethical
+AI branding.  Default: "dataimago"}
 }
 \value{
 Character (invisible). File path to the generated api_reference.qmd file.
-Side effects: Creates .qmd files in output_path directory and copies
-dataimago assets (logos, etc.) to assets/img/ subdirectory.
+Side effects: Creates .qmd files and _quarto.yml in output_path directory
+and copies dataimago assets (logos, etc.) to assets/img/ subdirectory.
 }
 \description{
 Converts R package documentation (.Rd files) and metadata (DESCRIPTION)
@@ -52,12 +52,14 @@ This function implements dataimago's philosophy of "code-as-philosophy" by:
 \code{post_process_md_to_qmd()}
 \item \strong{Foundation Linking}: Cross-references technical docs with philosophical content
 \item \strong{Visual Identity}: Copies dataimago logos and applies custom CSS styling
-\item \strong{AI Compatibility}: Generates machine-readable annotations for MCP integration
+\item \strong{AI Compatibility}: Generates machine-readable annotations for
+MCP integration
 }
 
 The generated documentation structure includes:
 \itemize{
-\item YAML frontmatter with package metadata
+\item \verb{_quarto.yml} configuration file for website project setup
+\item \code{api_reference.qmd} with YAML frontmatter and package metadata
 \item Full DESCRIPTION file content (if requested)
 \item Links to dataimago foundation documents
 \item Function documentation with ethical context boxes
@@ -65,7 +67,8 @@ The generated documentation structure includes:
 }
 
 For AI agents and MCP tools, this function provides structured documentation
-generation that embeds philosophical context into technical reference material,
+generation that embeds philosophical context into technical reference
+material,
 enabling AI systems to understand both the "what" and "why" of each function.
 }
 \section{MCP Tool Integration}{
@@ -76,14 +79,16 @@ This function is designed for Model Context Protocol (MCP) integration:
 \item \strong{Structured Output}: Generates consistent .qmd file format
 \item \strong{Error Handling}: Provides clear error messages for debugging
 \item \strong{Asset Management}: Handles file copying and directory creation
-\item \strong{Status Reporting}: Uses colored console output for progress tracking
+\item \strong{Status Reporting}: Uses colored console output for progress
+tracking
 }
 }
 
 \section{Philosophical Context}{
 
-This function embodies dataimago's principle of embedding AI within culture for
-emancipatory purposes. Rather than treating documentation as mere technical
+This function embodies dataimago's principle of embedding AI within culture
+for emancipatory purposes. Rather than treating documentation as mere
+technical
 reference, it creates living documents that connect computational tools to
 their ethical foundations and societal purposes.
 }

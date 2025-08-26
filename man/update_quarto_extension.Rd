@@ -18,28 +18,39 @@ List containing update results:
 }
 }
 \description{
-Copies compiled CSS and other assets from ui/dist/ into the Quarto extension structure.
-Maintains proper extension.yml configuration and ensures asset linking works correctly.
+Copies compiled CSS and other assets from ui/dist/ into the Quarto
+extension structure.
+Maintains proper extension.yml configuration and ensures asset linking
+works correctly.
 }
 \details{
 This function performs the following operations:
 \enumerate{
-\item \strong{Validates Extension Structure}: Checks that \verb{quarto_website/_extensions/dataimago/ai-native/} exists
-\item \strong{Copies Main CSS}: Copies \code{ui/dist/dataimago.min.css} to extension assets
-\item \strong{Updates Asset References}: Ensures extension.yml references the correct CSS files
-\item \strong{Preserves Extension Config}: Maintains existing Lua filters, shortcodes, etc.
+\item \strong{Validates Extension Structure}: Checks that
+\verb{quarto_website/_extensions/dataimago/ai-native/} exists
+\item \strong{Copies Main CSS}: Copies \code{ui/dist/dataimago.min.css} to
+extension assets
+\item \strong{Updates Asset References}: Ensures extension.yml references the
+correct CSS files
+\item \strong{Preserves Extension Config}: Maintains existing Lua filters,
+shortcodes, etc.
 }
 
 \strong{Extension Asset Mapping:}
 \itemize{
-\item \code{ui/dist/dataimago.min.css} -> \verb{quarto_website/_extensions/dataimago/ai-native/assets/css/dataimago.min.css}
-\item \code{ui/dist/tokens.css} -> \verb{quarto_website/_extensions/dataimago/ai-native/assets/css/tokens.css} (if exists)
-\item Source maps and development files are excluded from extension distribution
+\item \code{ui/dist/dataimago.min.css} ->
+\verb{quarto_website/_extensions/dataimago/ai-native/assets/css/dataimago.min.css}
+\item \code{ui/dist/tokens.css} ->
+\verb{quarto_website/_extensions/dataimago/ai-native/assets/css/tokens.css} (if exists)
+\item Source maps and development files are excluded from extension
+distribution
 }
 
 \strong{File Operations:}
-All file copying uses R's \code{fs::file_copy()} with overwrite protection and atomic operations
-to prevent corrupted assets during development. The function will not overwrite extension
+All file copying uses R's \code{fs::file_copy()} with overwrite protection
+and atomic operations
+to prevent corrupted assets during development. The function will not
+overwrite extension
 configuration files (like _extension.yml) unless they become corrupted.
 }
 \examples{
@@ -50,7 +61,8 @@ result <- update_quarto_extension()
 
 # Check what was updated
 if (result$success) {
-  cat("Updated files:", paste(result$updated_files, collapse = "\n  "))
+  cat("Updated files:",
+      paste(result$updated_files, collapse = "\n  "))
 }
 }
 

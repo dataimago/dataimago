@@ -124,8 +124,8 @@ build_design_system <- function(force_rebuild = FALSE,
   ui_dir <- "ui"
   if (!dir_exists(ui_dir)) {
     errors <- c(errors, glue("ui/ directory not found. Run create_ui_workspace() first."))
-    return(list(success = FALSE, errors = errors, assets = assets,
-                sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
+    list(success = FALSE, errors = errors, assets = assets,
+         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
   }
 
   # Check for pnpm (preferred) or npm
@@ -150,8 +150,8 @@ build_design_system <- function(force_rebuild = FALSE,
 
   if (!pnpm_available && !npm_available) {
     errors <- c(errors, "Neither pnpm nor npm found. Please install Node.js and pnpm/npm globally.")
-    return(list(success = FALSE, errors = errors, assets = assets,
-                sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
+    list(success = FALSE, errors = errors, assets = assets,
+         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
   }
 
   package_manager <- ifelse(pnpm_available, "pnpm", "npm")
@@ -174,13 +174,13 @@ build_design_system <- function(force_rebuild = FALSE,
 
     if (install_result$status != 0) {
       errors <- c(errors, glue("{package_manager} install failed with status {install_result$status}"))
-      return(list(success = FALSE, errors = errors, assets = assets,
-                  sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
+      list(success = FALSE, errors = errors, assets = assets,
+           sri_hashes = sri_hashes, build_time = start_time, metadata = list())
     }
   }, error = function(e) {
     errors <- c(errors, glue("Error running {package_manager} install: {e$message}"))
-    return(list(success = FALSE, errors = errors, assets = assets,
-                sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
+    list(success = FALSE, errors = errors, assets = assets,
+         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
   })
 
   # 3. Run build process
@@ -198,13 +198,13 @@ build_design_system <- function(force_rebuild = FALSE,
 
     if (build_result$status != 0) {
       errors <- c(errors, glue("{package_manager} run build failed with status {build_result$status}"))
-      return(list(success = FALSE, errors = errors, assets = assets,
-                  sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
+      list(success = FALSE, errors = errors, assets = assets,
+           sri_hashes = sri_hashes, build_time = start_time, metadata = list())
     }
   }, error = function(e) {
     errors <- c(errors, glue("Error running {package_manager} run build: {e$message}"))
-    return(list(success = FALSE, errors = errors, assets = assets,
-                sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
+    list(success = FALSE, errors = errors, assets = assets,
+         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
   })
 
   # 4. Verify build output
@@ -213,8 +213,8 @@ build_design_system <- function(force_rebuild = FALSE,
 
   if (!file_exists(main_css)) {
     errors <- c(errors, "Build completed but dataimago.min.css not found in ui/dist/")
-    return(list(success = FALSE, errors = errors, assets = assets,
-                sri_hashes = sri_hashes, build_time = start_time, metadata = list()))
+    list(success = FALSE, errors = errors, assets = assets,
+         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
   }
 
   assets <- c(assets, main_css)
@@ -394,12 +394,12 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
         ui_info("  Use force_overwrite = TRUE to replace with minimal system")
       }
       # Return success without creating anything new - the sophisticated system is already there
-      return(list(success = TRUE, created_files = character(0),
-                  errors = character(0),
-                  note = "Preserved existing sophisticated UI build system"))
+      list(success = TRUE, created_files = character(0),
+           errors = character(0),
+           note = "Preserved existing sophisticated UI build system")
     } else if (!force_overwrite) {
       errors <- c(errors, "ui/ directory already exists. Use force_overwrite = TRUE to recreate.")
-      return(list(success = FALSE, created_files = created_files, errors = errors))
+      list(success = FALSE, created_files = created_files, errors = errors)
     } else {
       if (verbose) {
         if (has_sophisticated_system) {
@@ -783,14 +783,14 @@ update_quarto_extension <- function(verbose = TRUE) {
   main_css <- "ui/dist/dataimago.min.css"
   if (!file_exists(main_css)) {
     errors <- c(errors, "dataimago.min.css not found in ui/dist/. Run build_design_system() first.")
-    return(list(success = FALSE, updated_files = updated_files, errors = errors))
+    list(success = FALSE, updated_files = updated_files, errors = errors)
   }
 
   # Validate extension directory exists
   extension_dir <- "quarto_website/_extensions/dataimago/ai-native"
   if (!dir_exists(extension_dir)) {
     errors <- c(errors, "Quarto extension directory not found. Extension structure may be corrupted.")
-    return(list(success = FALSE, updated_files = updated_files, errors = errors))
+    list(success = FALSE, updated_files = updated_files, errors = errors)
   }
 
   # Create extension assets directory if needed
@@ -947,7 +947,7 @@ generate_cdn_assets <- function(verbose = TRUE) {
   dist_dir <- "ui/dist"
   if (!dir_exists(dist_dir)) {
     errors <- c(errors, "ui/dist/ directory not found. Run build_design_system() first.")
-    return(list(success = FALSE, assets = assets, errors = errors))
+    list(success = FALSE, assets = assets, errors = errors)
   }
 
   # Copy CSS files

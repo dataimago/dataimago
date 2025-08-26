@@ -18,8 +18,10 @@ List containing CDN preparation results:
 }
 }
 \description{
-Prepares assets for CDN distribution with versioning, SRI hashes, and metadata.
-Creates jsDelivr-compatible structure in inst/quarto-assets/ for R package distribution.
+Prepares assets for CDN distribution with versioning, SRI hashes,
+and metadata.
+Creates jsDelivr-compatible structure in inst/quarto-assets/ for
+R package distribution.
 }
 \details{
 This function creates CDN-ready assets by:
