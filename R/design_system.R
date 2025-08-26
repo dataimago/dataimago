@@ -250,18 +250,27 @@ build_design_system <- function(force_rebuild = FALSE,
       if (file_exists(asset)) {
         tryCatch(
           {
-            # Use openssl to generate SHA384 hash for SRI
-            hash_result <- processx::run("openssl", c("dgst", "-sha384", "-binary", asset))
-            if (hash_result$status == 0) {
-              base64_result <- processx::run("openssl", c("base64", "-A"),
-                input = hash_result$stdout_raw
-              )
-              if (base64_result$status == 0) {
-                sri_hash <- paste0("sha384-", base64_result$stdout)
+            # Use openssl to generate SHA384 hash for SRI (using hex output then converting)
+            hash_result <- processx::run("openssl", c("dgst", "-sha384", "-hex", asset))
+            if (hash_result$status == 0 && !is.null(hash_result$stdout) && nchar(hash_result$stdout) > 0) {
+              # Extract hex hash from "SHA384(file)= hexvalue" format
+              hex_hash <- sub(".*= ", "", trimws(hash_result$stdout))
+              if (nchar(hex_hash) == 96) { # SHA384 hex should be 96 characters
+                # Convert hex to base64 for SRI format using base R
+                raw_bytes <- as.raw(strtoi(substring(hex_hash, seq(1, 95, 2), seq(2, 96, 2)), 16L))
+                sri_hash <- paste0("sha384-", jsonlite::base64_enc(raw_bytes))
                 sri_hashes[[basename(asset)]] <- sri_hash
                 if (verbose) {
                   ui_info(glue("  {basename(asset)}: {substr(sri_hash, 1, 20)}..."))
                 }
+              } else {
+                if (verbose) {
+                  ui_warn(glue("Invalid hash length for {basename(asset)}: expected 96, got {nchar(hex_hash)}"))
+                }
+              }
+            } else {
+              if (verbose) {
+                ui_warn(glue("Could not generate hash for {basename(asset)}: openssl returned status {hash_result$status}"))
               }
             }
           },

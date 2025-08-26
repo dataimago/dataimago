@@ -63,9 +63,12 @@ jobs:
         run: |
           R CMD INSTALL .
           Rscript -e "
-          # Test workspace creation
-          result <- dataimago::create_ui_workspace(force_overwrite = TRUE)
-          if (!result[['success']]) quit(status = 1)
+          # Test workspace creation (preserve existing sophisticated system)
+          result <- dataimago::create_ui_workspace()
+          if (!result[['success']]) {
+            cat('UI workspace creation failed:', paste(result[['errors']], collapse = '; '), '\n')
+            quit(status = 1)
+          }
 
           # Test full build pipeline
           result <- dataimago::build_design_system(
