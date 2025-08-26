@@ -254,13 +254,15 @@ convert_rd_files_to_qmd <- function(rd_files) {
   for (rd_file in rd_files) {
     # Extract function name from filename
     func_name <- tools::file_path_sans_ext(basename(rd_file))
-
-    # Use Rd2md to convert .Rd to markdown (using new as_markdown function)
-    md_content <- Rd2md::as_markdown(Rd2md::read_rdfile(rd_file))
-
+    
+    # Use Rd2md to convert .Rd to markdown with warning suppression for known issues
+    md_content <- suppressWarnings({
+      Rd2md::as_markdown(Rd2md::read_rdfile(rd_file))
+    })
+    
     # Post-process markdown to qmd format with dataimago customizations
     qmd_content <- post_process_md_to_qmd(md_content, func_name)
-
+    
     rd_content[[func_name]] <- qmd_content
   }
 
