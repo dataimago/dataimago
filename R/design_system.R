@@ -110,7 +110,6 @@ build_design_system <- function(force_rebuild = FALSE,
                                 include_sri = TRUE,
                                 update_extension = TRUE,
                                 verbose = TRUE) {
-
   start_time <- Sys.time()
   errors <- character(0)
   assets <- character(0)
@@ -124,30 +123,40 @@ build_design_system <- function(force_rebuild = FALSE,
   ui_dir <- "ui"
   if (!dir_exists(ui_dir)) {
     errors <- c(errors, glue("ui/ directory not found. Run create_ui_workspace() first."))
-    list(success = FALSE, errors = errors, assets = assets,
-         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
+    list(
+      success = FALSE, errors = errors, assets = assets,
+      sri_hashes = sri_hashes, build_time = start_time, metadata = list()
+    )
   }
 
   # Check for pnpm (preferred) or npm
   pnpm_available <- FALSE
   npm_available <- FALSE
 
-  pnpm_available <- tryCatch({
-    pnpm_result <- processx::run("which", "pnpm", error_on_status = FALSE)
-    pnpm_result$status == 0
-  }, error = function(e) FALSE)
+  pnpm_available <- tryCatch(
+    {
+      pnpm_result <- processx::run("which", "pnpm", error_on_status = FALSE)
+      pnpm_result$status == 0
+    },
+    error = function(e) FALSE
+  )
 
   if (!pnpm_available) {
-    npm_available <- tryCatch({
-      npm_result <- processx::run("which", "npm", error_on_status = FALSE)
-      npm_result$status == 0
-    }, error = function(e) FALSE)
+    npm_available <- tryCatch(
+      {
+        npm_result <- processx::run("which", "npm", error_on_status = FALSE)
+        npm_result$status == 0
+      },
+      error = function(e) FALSE
+    )
   }
 
   if (!pnpm_available && !npm_available) {
     errors <- c(errors, "Neither pnpm nor npm found. Please install Node.js and pnpm/npm globally.")
-    list(success = FALSE, errors = errors, assets = assets,
-         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
+    list(
+      success = FALSE, errors = errors, assets = assets,
+      sri_hashes = sri_hashes, build_time = start_time, metadata = list()
+    )
   }
 
   package_manager <- ifelse(pnpm_available, "pnpm", "npm")
@@ -160,48 +169,62 @@ build_design_system <- function(force_rebuild = FALSE,
     ui_info("Installing Node.js dependencies...")
   }
 
-  tryCatch({
-    install_result <- processx::run(
-      package_manager, "install",
-      wd = ui_dir,
-      stdout_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL,
-      stderr_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL
-    )
+  tryCatch(
+    {
+      install_result <- processx::run(
+        package_manager, "install",
+        wd = ui_dir,
+        stdout_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL,
+        stderr_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL
+      )
 
-    if (install_result$status != 0) {
-      errors <- c(errors, glue("{package_manager} install failed with status {install_result$status}"))
-      list(success = FALSE, errors = errors, assets = assets,
-           sri_hashes = sri_hashes, build_time = start_time, metadata = list())
+      if (install_result$status != 0) {
+        errors <- c(errors, glue("{package_manager} install failed with status {install_result$status}"))
+        list(
+          success = FALSE, errors = errors, assets = assets,
+          sri_hashes = sri_hashes, build_time = start_time, metadata = list()
+        )
+      }
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Error running {package_manager} install: {e$message}"))
+      list(
+        success = FALSE, errors = errors, assets = assets,
+        sri_hashes = sri_hashes, build_time = start_time, metadata = list()
+      )
     }
-  }, error = function(e) {
-    errors <- c(errors, glue("Error running {package_manager} install: {e$message}"))
-    list(success = FALSE, errors = errors, assets = assets,
-         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
-  })
+  )
 
   # 3. Run build process
   if (verbose) {
     ui_info("Compiling SCSS and design tokens...")
   }
 
-  tryCatch({
-    build_result <- processx::run(
-      package_manager, c("run", "build"),
-      wd = ui_dir,
-      stdout_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL,
-      stderr_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL
-    )
+  tryCatch(
+    {
+      build_result <- processx::run(
+        package_manager, c("run", "build"),
+        wd = ui_dir,
+        stdout_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL,
+        stderr_line_callback = if (verbose) function(x, ...) cat("  ", x, "\n") else NULL
+      )
 
-    if (build_result$status != 0) {
-      errors <- c(errors, glue("{package_manager} run build failed with status {build_result$status}"))
-      list(success = FALSE, errors = errors, assets = assets,
-           sri_hashes = sri_hashes, build_time = start_time, metadata = list())
+      if (build_result$status != 0) {
+        errors <- c(errors, glue("{package_manager} run build failed with status {build_result$status}"))
+        list(
+          success = FALSE, errors = errors, assets = assets,
+          sri_hashes = sri_hashes, build_time = start_time, metadata = list()
+        )
+      }
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Error running {package_manager} run build: {e$message}"))
+      list(
+        success = FALSE, errors = errors, assets = assets,
+        sri_hashes = sri_hashes, build_time = start_time, metadata = list()
+      )
     }
-  }, error = function(e) {
-    errors <- c(errors, glue("Error running {package_manager} run build: {e$message}"))
-    list(success = FALSE, errors = errors, assets = assets,
-         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
-  })
+  )
 
   # 4. Verify build output
   dist_dir <- file.path(ui_dir, "dist")
@@ -209,8 +232,10 @@ build_design_system <- function(force_rebuild = FALSE,
 
   if (!file_exists(main_css)) {
     errors <- c(errors, "Build completed but dataimago.min.css not found in ui/dist/")
-    list(success = FALSE, errors = errors, assets = assets,
-         sri_hashes = sri_hashes, build_time = start_time, metadata = list())
+    list(
+      success = FALSE, errors = errors, assets = assets,
+      sri_hashes = sri_hashes, build_time = start_time, metadata = list()
+    )
   }
 
   assets <- c(assets, main_css)
@@ -223,25 +248,29 @@ build_design_system <- function(force_rebuild = FALSE,
 
     for (asset in assets) {
       if (file_exists(asset)) {
-        tryCatch({
-          # Use openssl to generate SHA384 hash for SRI
-          hash_result <- processx::run("openssl", c("dgst", "-sha384", "-binary", asset))
-          if (hash_result$status == 0) {
-            base64_result <- processx::run("openssl", c("base64", "-A"),
-                                           input = hash_result$stdout_raw)
-            if (base64_result$status == 0) {
-              sri_hash <- paste0("sha384-", base64_result$stdout)
-              sri_hashes[[basename(asset)]] <- sri_hash
-              if (verbose) {
-                ui_info(glue("  {basename(asset)}: {substr(sri_hash, 1, 20)}..."))
+        tryCatch(
+          {
+            # Use openssl to generate SHA384 hash for SRI
+            hash_result <- processx::run("openssl", c("dgst", "-sha384", "-binary", asset))
+            if (hash_result$status == 0) {
+              base64_result <- processx::run("openssl", c("base64", "-A"),
+                input = hash_result$stdout_raw
+              )
+              if (base64_result$status == 0) {
+                sri_hash <- paste0("sha384-", base64_result$stdout)
+                sri_hashes[[basename(asset)]] <- sri_hash
+                if (verbose) {
+                  ui_info(glue("  {basename(asset)}: {substr(sri_hash, 1, 20)}..."))
+                }
               }
             }
+          },
+          error = function(e) {
+            if (verbose) {
+              ui_warn(glue("Could not generate SRI hash for {basename(asset)}: {e$message}"))
+            }
           }
-        }, error = function(e) {
-          if (verbose) {
-            ui_warn(glue("Could not generate SRI hash for {basename(asset)}: {e$message}"))
-          }
-        })
+        )
       }
     }
   }
@@ -368,7 +397,6 @@ build_design_system <- function(force_rebuild = FALSE,
 #'
 #' @export
 create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
-
   ui_dir <- "ui"
   created_files <- character(0)
   errors <- character(0)
@@ -390,9 +418,11 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
         ui_info("  Use force_overwrite = TRUE to replace with minimal system")
       }
       # Return success without creating anything new - the sophisticated system is already there
-      list(success = TRUE, created_files = character(0),
-           errors = character(0),
-           note = "Preserved existing sophisticated UI build system")
+      list(
+        success = TRUE, created_files = character(0),
+        errors = character(0),
+        note = "Preserved existing sophisticated UI build system"
+      )
     } else if (!force_overwrite) {
       errors <- c(errors, "ui/ directory already exists. Use force_overwrite = TRUE to recreate.")
       list(success = FALSE, created_files = created_files, errors = errors)
@@ -409,18 +439,21 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
   }
 
   # Create directory structure
-  tryCatch({
-    dir_create(file.path(ui_dir, "src", "tokens"))
-    dir_create(file.path(ui_dir, "src", "styles"))
-    dir_create(file.path(ui_dir, "dist"))  # Will be populated by build
+  tryCatch(
+    {
+      dir_create(file.path(ui_dir, "src", "tokens"))
+      dir_create(file.path(ui_dir, "src", "styles"))
+      dir_create(file.path(ui_dir, "dist")) # Will be populated by build
 
-    if (verbose) {
-      ui_info("Created directory structure")
+      if (verbose) {
+        ui_info("Created directory structure")
+      }
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Error creating directories: {e$message}"))
+      list(success = FALSE, created_files = created_files, errors = errors)
     }
-  }, error = function(e) {
-    errors <- c(errors, glue("Error creating directories: {e$message}"))
-    list(success = FALSE, created_files = created_files, errors = errors)
-  })
+  )
 
   # Create package.json
   package_json <- list(
@@ -446,16 +479,21 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
   )
 
   package_json_file <- file.path(ui_dir, "package.json")
-  tryCatch({
-    writeLines(jsonlite::toJSON(package_json, pretty = TRUE, auto_unbox = TRUE),
-               package_json_file)
-    created_files <- c(created_files, package_json_file)
-    if (verbose) {
-      ui_info("Created package.json with Node.js dependencies")
+  tryCatch(
+    {
+      writeLines(
+        jsonlite::toJSON(package_json, pretty = TRUE, auto_unbox = TRUE),
+        package_json_file
+      )
+      created_files <- c(created_files, package_json_file)
+      if (verbose) {
+        ui_info("Created package.json with Node.js dependencies")
+      }
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Error creating package.json: {e$message}"))
     }
-  }, error = function(e) {
-    errors <- c(errors, glue("Error creating package.json: {e$message}"))
-  })
+  )
 
   # Create design tokens - colors.json
   colors_tokens <- list(
@@ -480,10 +518,14 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       ),
       background = list(
         page = list(value = "#FFFFFF", description = "Main page background"),
-        surface = list(value = "#F8F9FA",
-                       description = "Card and surface backgrounds"),
-        overlay = list(value = "#000000",
-                       description = "Modal overlay background")
+        surface = list(
+          value = "#F8F9FA",
+          description = "Card and surface backgrounds"
+        ),
+        overlay = list(
+          value = "#000000",
+          description = "Modal overlay background"
+        )
       ),
       border = list(
         default = list(value = "#E9ECEF", description = "Default border color"),
@@ -493,23 +535,34 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
   )
 
   colors_file <- file.path(ui_dir, "src", "tokens", "colors.json")
-  tryCatch({
-    writeLines(jsonlite::toJSON(colors_tokens, pretty = TRUE,
-                                auto_unbox = TRUE),
-               colors_file)
-    created_files <- c(created_files, colors_file)
-  }, error = function(e) {
-    errors <- c(errors, glue("Error creating colors.json: {e$message}"))
-  })
+  tryCatch(
+    {
+      writeLines(
+        jsonlite::toJSON(colors_tokens,
+          pretty = TRUE,
+          auto_unbox = TRUE
+        ),
+        colors_file
+      )
+      created_files <- c(created_files, colors_file)
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Error creating colors.json: {e$message}"))
+    }
+  )
 
   # Create design tokens - typography.json
   typography_tokens <- list(
     font = list(
       family = list(
-        sans = list(value = paste0("Inter, system-ui, -apple-system, ",
-                                   "Segoe UI, Roboto, sans-serif")),
-        mono = list(value = paste0("JetBrains Mono, SF Mono, Monaco, ",
-                                   "Inconsolata, monospace")),
+        sans = list(value = paste0(
+          "Inter, system-ui, -apple-system, ",
+          "Segoe UI, Roboto, sans-serif"
+        )),
+        mono = list(value = paste0(
+          "JetBrains Mono, SF Mono, Monaco, ",
+          "Inconsolata, monospace"
+        )),
         display = list(value = "Inter, system-ui, sans-serif")
       ),
       size = list(
@@ -536,15 +589,22 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     )
   )
 
-  typography_file <- file.path(ui_dir, "src", "tokens",
-                               "typography.json")
-  tryCatch({
-    writeLines(jsonlite::toJSON(typography_tokens, pretty = TRUE, auto_unbox = TRUE),
-               typography_file)
-    created_files <- c(created_files, typography_file)
-  }, error = function(e) {
-    errors <- c(errors, glue("Error creating typography.json: {e$message}"))
-  })
+  typography_file <- file.path(
+    ui_dir, "src", "tokens",
+    "typography.json"
+  )
+  tryCatch(
+    {
+      writeLines(
+        jsonlite::toJSON(typography_tokens, pretty = TRUE, auto_unbox = TRUE),
+        typography_file
+      )
+      created_files <- c(created_files, typography_file)
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Error creating typography.json: {e$message}"))
+    }
+  )
 
   # Create design tokens - spacing.json
   spacing_tokens <- list(
@@ -568,19 +628,26 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       sm = list(value = "0 1px 2px 0 rgb(0 0 0 / 0.05)"),
       md = list(value = "0 4px 6px -1px rgb(0 0 0 / 0.1)"),
       lg = list(value = "0 10px 15px -3px rgb(0 0 0 / 0.1)"),
-      xl = list(value = paste0("0 20px 25px -5px ",
-                               "rgb(0 0 0 / 0.1)"))
+      xl = list(value = paste0(
+        "0 20px 25px -5px ",
+        "rgb(0 0 0 / 0.1)"
+      ))
     )
   )
 
   spacing_file <- file.path(ui_dir, "src", "tokens", "spacing.json")
-  tryCatch({
-    writeLines(jsonlite::toJSON(spacing_tokens, pretty = TRUE, auto_unbox = TRUE),
-               spacing_file)
-    created_files <- c(created_files, spacing_file)
-  }, error = function(e) {
-    errors <- c(errors, glue("Error creating spacing.json: {e$message}"))
-  })
+  tryCatch(
+    {
+      writeLines(
+        jsonlite::toJSON(spacing_tokens, pretty = TRUE, auto_unbox = TRUE),
+        spacing_file
+      )
+      created_files <- c(created_files, spacing_file)
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Error creating spacing.json: {e$message}"))
+    }
+  )
 
   # Create build.js script
   build_js_content <- c(
@@ -679,15 +746,18 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     "}"
   )
   build_js_file <- file.path(ui_dir, "build.js")
-  tryCatch({
-    writeLines(build_js_content, build_js_file)
-    created_files <- c(created_files, build_js_file)
-    if (verbose) {
-      ui_info("Created build.js script")
+  tryCatch(
+    {
+      writeLines(build_js_content, build_js_file)
+      created_files <- c(created_files, build_js_file)
+      if (verbose) {
+        ui_info("Created build.js script")
+      }
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Error creating build.js: {e$message}"))
     }
-  }, error = function(e) {
-    errors <- c(errors, glue("Error creating build.js: {e$message}"))
-  })
+  )
 
   success <- length(errors) == 0
 
@@ -767,7 +837,6 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 #'
 #' @export
 update_quarto_extension <- function(verbose = TRUE) {
-
   updated_files <- character(0)
   errors <- character(0)
 
@@ -799,32 +868,38 @@ update_quarto_extension <- function(verbose = TRUE) {
   }
 
   # Copy main CSS file
-  tryCatch({
-    target_css <- file.path(extension_css_dir, "dataimago.min.css")
-    file_copy(main_css, target_css, overwrite = TRUE)
-    updated_files <- c(updated_files, target_css)
+  tryCatch(
+    {
+      target_css <- file.path(extension_css_dir, "dataimago.min.css")
+      file_copy(main_css, target_css, overwrite = TRUE)
+      updated_files <- c(updated_files, target_css)
 
-    if (verbose) {
-      ui_info(glue("Copied dataimago.min.css to extension"))
+      if (verbose) {
+        ui_info(glue("Copied dataimago.min.css to extension"))
+      }
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Error copying main CSS: {e$message}"))
     }
-  }, error = function(e) {
-    errors <- c(errors, glue("Error copying main CSS: {e$message}"))
-  })
+  )
 
   # Copy tokens file if it exists
   tokens_css <- "ui/dist/tokens.css"
   if (file_exists(tokens_css)) {
-    tryCatch({
-      target_tokens <- file.path(extension_css_dir, "tokens.css")
-      file_copy(tokens_css, target_tokens, overwrite = TRUE)
-      updated_files <- c(updated_files, target_tokens)
+    tryCatch(
+      {
+        target_tokens <- file.path(extension_css_dir, "tokens.css")
+        file_copy(tokens_css, target_tokens, overwrite = TRUE)
+        updated_files <- c(updated_files, target_tokens)
 
-      if (verbose) {
-        ui_info("Copied tokens.css to extension")
+        if (verbose) {
+          ui_info("Copied tokens.css to extension")
+        }
+      },
+      error = function(e) {
+        errors <- c(errors, glue("Error copying tokens CSS: {e$message}"))
       }
-    }, error = function(e) {
-      errors <- c(errors, glue("Error copying tokens CSS: {e$message}"))
-    })
+    )
   }
 
   # Copy any additional built assets
@@ -835,19 +910,22 @@ update_quarto_extension <- function(verbose = TRUE) {
       filename <- basename(dist_file)
       # Skip already copied files
       if (!filename %in% c("dataimago.min.css", "tokens.css")) {
-        tryCatch({
-          target_file <- file.path(extension_css_dir, filename)
-          file_copy(dist_file, target_file, overwrite = TRUE)
-          updated_files <- c(updated_files, target_file)
+        tryCatch(
+          {
+            target_file <- file.path(extension_css_dir, filename)
+            file_copy(dist_file, target_file, overwrite = TRUE)
+            updated_files <- c(updated_files, target_file)
 
-          if (verbose) {
-            ui_info(glue("Copied {filename} to extension"))
+            if (verbose) {
+              ui_info(glue("Copied {filename} to extension"))
+            }
+          },
+          error = function(e) {
+            if (verbose) {
+              ui_warn(glue("Could not copy {filename}: {e$message}"))
+            }
           }
-        }, error = function(e) {
-          if (verbose) {
-            ui_warn(glue("Could not copy {filename}: {e$message}"))
-          }
-        })
+        )
       }
     }
   }
@@ -856,10 +934,14 @@ update_quarto_extension <- function(verbose = TRUE) {
 
   if (verbose) {
     if (success) {
-      ui_done(glue("Quarto extension updated ",
-                   "successfully"))
-      ui_info(glue("   Updated {length(updated_files)} ",
-                   "asset files"))
+      ui_done(glue(
+        "Quarto extension updated ",
+        "successfully"
+      ))
+      ui_info(glue(
+        "   Updated {length(updated_files)} ",
+        "asset files"
+      ))
     } else {
       ui_oops("Extension update failed")
       for (error in errors) {
@@ -921,7 +1003,6 @@ update_quarto_extension <- function(verbose = TRUE) {
 #'
 #' @export
 generate_cdn_assets <- function(verbose = TRUE) {
-
   assets <- character(0)
   errors <- character(0)
 
@@ -934,8 +1015,10 @@ generate_cdn_assets <- function(verbose = TRUE) {
   if (!dir_exists(cdn_dir)) {
     dir_create(cdn_dir)
     if (verbose) {
-      ui_info(paste0("Created inst/quarto-assets ",
-                     "directory"))
+      ui_info(paste0(
+        "Created inst/quarto-assets ",
+        "directory"
+      ))
     }
   }
 
@@ -949,17 +1032,20 @@ generate_cdn_assets <- function(verbose = TRUE) {
   # Copy CSS files
   css_files <- dir_ls(dist_dir, type = "file", glob = "*.css")
   for (css_file in css_files) {
-    tryCatch({
-      target_file <- file.path(cdn_dir, basename(css_file))
-      file_copy(css_file, target_file, overwrite = TRUE)
-      assets <- c(assets, target_file)
+    tryCatch(
+      {
+        target_file <- file.path(cdn_dir, basename(css_file))
+        file_copy(css_file, target_file, overwrite = TRUE)
+        assets <- c(assets, target_file)
 
-      if (verbose) {
-        ui_info(glue("Copied {basename(css_file)} to CDN assets"))
+        if (verbose) {
+          ui_info(glue("Copied {basename(css_file)} to CDN assets"))
+        }
+      },
+      error = function(e) {
+        errors <- c(errors, glue("Error copying {basename(css_file)}: {e$message}"))
       }
-    }, error = function(e) {
-      errors <- c(errors, glue("Error copying {basename(css_file)}: {e$message}"))
-    })
+    )
   }
 
   success <- length(errors) == 0
