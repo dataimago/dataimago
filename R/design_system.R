@@ -511,9 +511,9 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     font = list(
       family = list(
         sans = list(value = paste0("Inter, system-ui, -apple-system, ",
-                                    "Segoe UI, Roboto, sans-serif")),
+                                   "Segoe UI, Roboto, sans-serif")),
         mono = list(value = paste0("JetBrains Mono, SF Mono, Monaco, ",
-                                    "Inconsolata, monospace")),
+                                   "Inconsolata, monospace")),
         display = list(value = "Inter, system-ui, sans-serif")
       ),
       size = list(
@@ -541,7 +541,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
   )
 
   typography_file <- file.path(ui_dir, "src", "tokens",
-                                "typography.json")
+                               "typography.json")
   tryCatch({
     writeLines(jsonlite::toJSON(typography_tokens, pretty = TRUE, auto_unbox = TRUE),
                typography_file)
@@ -573,7 +573,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
       md = list(value = "0 4px 6px -1px rgb(0 0 0 / 0.1)"),
       lg = list(value = "0 10px 15px -3px rgb(0 0 0 / 0.1)"),
       xl = list(value = paste0("0 20px 25px -5px ",
-                                "rgb(0 0 0 / 0.1)"))
+                               "rgb(0 0 0 / 0.1)"))
     )
   )
 
@@ -692,7 +692,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
   }, error = function(e) {
     errors <- c(errors, glue("Error creating build.js: {e$message}"))
   })
-  
+
   success <- length(errors) == 0
 
   if (verbose) {

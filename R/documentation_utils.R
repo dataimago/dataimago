@@ -229,7 +229,7 @@ extract_desc_field <- function(desc_lines, field_name) {
     continuation_lines <- c()
     for (i in (field_line_idx + 1):length(desc_lines)) {
       if (grepl("^\\s+", desc_lines[i]) &&
-          !grepl("^[A-Za-z]+:", desc_lines[i])) {
+            !grepl("^[A-Za-z]+:", desc_lines[i])) {
         continuation_lines <- c(continuation_lines, trimws(desc_lines[i]))
       } else {
         break
@@ -323,7 +323,7 @@ post_process_md_to_qmd <- function(md_content, func_name) {
       qmd_lines <- c(qmd_lines, line)
       qmd_lines <- c(qmd_lines, "")
       qmd_lines <- c(qmd_lines,
-        "_Examples using dataimago's ethical AI framework:_")
+                     "_Examples using dataimago's ethical AI framework:_")
       qmd_lines <- c(qmd_lines, "")
     } else {
       # Keep line as-is
@@ -352,7 +352,7 @@ post_process_md_to_qmd <- function(md_content, func_name) {
 #' @keywords internal
 generate_api_reference_qmd <- function(desc_content, rd_content,
                                        include_description = TRUE,
-                                      include_foundation_links = TRUE) {
+                                       include_foundation_links = TRUE) {
   qmd_content <- c()
 
   # Add YAML frontmatter
@@ -582,7 +582,7 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
   yml_content <- c(yml_content, "project:")
   yml_content <- c(yml_content, "  type: website")
   yml_content <- c(yml_content,
-    paste0("  title: \"", desc_content$package, ": ", desc_content$title, "\""))
+                   paste0("  title: \"", desc_content$package, ": ", desc_content$title, "\""))
   yml_content <- c(yml_content, "")
 
   # Execution settings
@@ -594,13 +594,13 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
   yml_content <- c(yml_content, "website:")
   if (!is.null(desc_content$url)) {
     yml_content <- c(yml_content,
-      paste0("  site-url: \"", desc_content$url, "\""))
+                     paste0("  site-url: \"", desc_content$url, "\""))
   }
   yml_content <- c(yml_content,
-    paste0("  title: \"", desc_content$package, ": ", desc_content$title, "\""))
+                   paste0("  title: \"", desc_content$package, ": ", desc_content$title, "\""))
   if (!is.null(desc_content$description)) {
     yml_content <- c(yml_content,
-      paste0("  description: \"", desc_content$description, "\""))
+                     paste0("  description: \"", desc_content$description, "\""))
   }
   yml_content <- c(yml_content, "  page-navigation: true")
   yml_content <- c(yml_content, "")
@@ -608,7 +608,7 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
   # Navbar configuration
   yml_content <- c(yml_content, "  navbar:")
   yml_content <- c(yml_content,
-    paste0("    title: \"", desc_content$package, "\""))
+                   paste0("    title: \"", desc_content$package, "\""))
   yml_content <- c(yml_content, "    left:")
   yml_content <- c(yml_content, "      - href: index.qmd")
   yml_content <- c(yml_content, "        text: Home")
