@@ -227,8 +227,7 @@ extract_desc_field <- function(desc_lines, field_name) {
   if (field_line_idx < length(desc_lines)) {
     continuation_lines <- c()
     for (i in (field_line_idx + 1):length(desc_lines)) {
-      if (grepl("^\\s+", desc_lines[i]) &&
-        !grepl("^[A-Za-z]+:", desc_lines[i])) {
+      if (grepl("^\\s+", desc_lines[i]) && !grepl("^[A-Za-z]+:", desc_lines[i])) {
         continuation_lines <- c(continuation_lines, trimws(desc_lines[i]))
       } else {
         break
