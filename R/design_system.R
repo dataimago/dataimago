@@ -132,20 +132,16 @@ build_design_system <- function(force_rebuild = FALSE,
   pnpm_available <- FALSE
   npm_available <- FALSE
 
-  tryCatch({
+  pnpm_available <- tryCatch({
     pnpm_result <- processx::run("which", "pnpm", error_on_status = FALSE)
-    pnpm_available <- pnpm_result$status == 0
-  }, error = function(e) {
-    # pnpm_available remains FALSE (already initialized)
-  })
+    pnpm_result$status == 0
+  }, error = function(e) FALSE)
 
   if (!pnpm_available) {
-    tryCatch({
+    npm_available <- tryCatch({
       npm_result <- processx::run("which", "npm", error_on_status = FALSE)
-      npm_available <- npm_result$status == 0
-    }, error = function(e) {
-      # npm_available remains FALSE (already initialized)
-    })
+      npm_result$status == 0
+    }, error = function(e) FALSE)
   }
 
   if (!pnpm_available && !npm_available) {
