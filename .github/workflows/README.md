@@ -1,11 +1,11 @@
 # dataimago GitHub Actions CI/CD
 
 <!-- CI/CD Badges -->
-[![Workflows](https://img.shields.io/badge/Workflows-6%20Comprehensive-blue.svg)](.)
+[![Workflows](https://img.shields.io/badge/Workflows-7%20Comprehensive-blue.svg)](.)
 [![Multi-Platform](https://img.shields.io/badge/Testing-macOS%20%7C%20Windows%20%7C%20Ubuntu-green.svg)](test-suite.yml)
 [![R Versions](https://img.shields.io/badge/R%20Versions-4.1%2B%20%7C%20Latest%20%7C%20Devel-orange.svg)](test-suite.yml)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B%20Integration-purple.svg)](test-suite.yml)
-[![Automated](https://img.shields.io/badge/Deployment-Fully%20Automated-brightgreen.svg)](quarto-deploy.yml)
+[![Deployment Options](https://img.shields.io/badge/Deployment-GitHub%20Pages%20%7C%20Netlify-brightgreen.svg)](DEPLOYMENT.md)
 [![Security](https://img.shields.io/badge/Dependencies-Auto%20Monitored-red.svg)](dependencies.yml)
 
 This directory contains comprehensive GitHub Actions workflows for the dataimago R package, providing automated testing, building, and deployment across multiple platforms.
@@ -21,15 +21,23 @@ This directory contains comprehensive GitHub Actions workflows for the dataimago
   - Automated dependency management
   - Build artifact caching
 
-### 2. **quarto-deploy.yml** - Website Deployment
+### 2. **quarto-deploy.yml** - GitHub Pages Deployment
 - **Triggers**: Push to main, manual dispatch
 - **Features**:
   - Automated API documentation generation
   - Design system asset compilation
   - Quarto website rendering
-  - GitHub Pages deployment
+  - GitHub Pages deployment with OIDC authentication
 
-### 3. **release-cdn.yml** - CDN Release Automation
+### 3. **netlify-deploy.yml** - Netlify Deployment (Recommended)
+- **Triggers**: Push to main, manual dispatch
+- **Features**:
+  - Identical build process to GitHub Pages
+  - Superior performance with global CDN
+  - Advanced deployment features (redirects, headers, forms)
+  - Requires NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID secrets
+
+### 4. **release-cdn.yml** - CDN Release Automation
 - **Triggers**: Git tags (v*.*.*), manual dispatch
 - **Features**:
   - Versioned CDN asset generation
@@ -37,7 +45,7 @@ This directory contains comprehensive GitHub Actions workflows for the dataimago
   - jsDelivr cache purging
   - GitHub release creation with assets
 
-### 4. **test-suite.yml** - Comprehensive Testing
+### 5. **test-suite.yml** - Comprehensive Testing
 - **Triggers**: Push, pull requests
 - **Features**:
   - R code linting and style checks
@@ -45,13 +53,31 @@ This directory contains comprehensive GitHub Actions workflows for the dataimago
   - Documentation generation testing
   - Quarto rendering verification
 
-### 5. **dependencies.yml** - Dependency Management
+### 6. **dependencies.yml** - Dependency Management
 - **Triggers**: Weekly schedule, dependency file changes
 - **Features**:
   - R and Node.js dependency monitoring
   - Security vulnerability scanning
   - Automated update PRs
   - Outdated package reporting
+
+## 🌐 Deployment Options
+
+The dataimago website can be deployed to two platforms:
+
+### 📄 GitHub Pages (Fixed)
+- **Status**: ✅ OIDC permissions resolved
+- **Setup**: Enable Pages in repository settings
+- **Workflow**: `quarto-deploy.yml`
+- **Best for**: Simple GitHub integration
+
+### 🚀 Netlify (Recommended)
+- **Status**: ✅ Ready to use
+- **Setup**: Add `NETLIFY_AUTH_TOKEN` and `NETLIFY_SITE_ID` secrets
+- **Workflow**: `netlify-deploy.yml`
+- **Best for**: Production websites with superior performance
+
+📋 **See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed setup instructions**
 
 ## 🚀 Usage Workflows
 
