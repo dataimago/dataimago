@@ -34,8 +34,10 @@ jobs:
         run: |
           Rscript -e "
           changed <- styler::style_pkg(include_roxygen_examples = FALSE)
-          if (any(changed)) {
+          if (any(changed\$changed)) {
             cat('Code style issues found. Run styler::style_pkg(include_roxygen_examples = FALSE) locally.\n')
+            cat('Files that need styling:\n')
+            print(changed[changed\$changed, 'file'])
             quit(status = 1)
           }
           "
