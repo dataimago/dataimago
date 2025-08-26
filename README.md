@@ -241,25 +241,25 @@ flowchart TD
 
 ## Key Features
 
-### \U0001F4DA Foundation Documents
+### 📚 Foundation Documents
 - **Philosophical Framework**: Built on Frankfurt School critical theory and modern alignment discourse
 - **Mission & Vision**: Core purpose and societal transformation goals
 - **Governance**: Multi-dimensional governance structure for emancipatory AI development
 - **Manifesto**: Contrasts with dominant paradigms (e.g., Palantir critique)
 
-### \U0001F6E0\UFE0F Documentation Generation
+### 🛠 Documentation Generation
 - **`create_quarto_documentation()`**: Convert R package documentation to Quarto websites
 - **Ethical AI Annotations**: Every function includes philosophical context
 - **Foundation Links**: Automatic cross-referencing to philosophical documents
 - **dataimago Branding**: Custom styling and visual identity integration
 
-### \U0001F3A8 R-First Design System
+### 🎨 R-First Design System
 - **`create_ui_workspace()`**: Set up Node.js workspace for CSS compilation
 - **`build_design_system()`**: Master build function wrapping modern CSS tools in R
 - **Multi-Channel Distribution**: Quarto extension, CDN assets, and Next.js integration
 - **Ethical AI Styling**: WCAG AA compliance with reduced motion and high contrast support
 
-### \U0001F3D7\UFE0F Application Architecture
+### 🏗 Application Architecture
 - **NextJS + R Integration**: Best practices and templates
 - **Emancipatory Metrics**: Flow-based performance management frameworks
 - **API Readiness**: Structured outputs for web interfaces and AI agents
