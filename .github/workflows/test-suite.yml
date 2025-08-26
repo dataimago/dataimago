@@ -61,6 +61,7 @@ jobs:
 
       - name: Test Design System Build
         run: |
+          cd dataimago
           R CMD INSTALL .
           Rscript -e "
           # Test workspace creation
@@ -109,6 +110,7 @@ jobs:
 
       - name: Test Documentation Generation
         run: |
+          cd dataimago
           R CMD INSTALL .
           Rscript -e "
           # Test Quarto documentation generation
@@ -135,7 +137,7 @@ jobs:
 
       - name: Test Quarto Rendering
         run: |
-          cd test-docs
+          cd dataimago/test-docs
           quarto render --to html
 
           # Verify website was generated

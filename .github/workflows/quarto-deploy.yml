@@ -47,17 +47,21 @@ jobs:
 
       - name: Install Package and Build Design System
         run: |
-          cd ui
-          pnpm install
-          cd ..
+          cd dataimago
           R CMD INSTALL .
           Rscript -e "
+          # Create UI workspace first
+          result <- dataimago::create_ui_workspace(force_overwrite = TRUE)
+          if (!result[['success']]) quit(status = 1)
+          
+          # Build design system
           result <- dataimago::build_design_system(verbose = TRUE)
           if (!result[['success']]) quit(status = 1)
           "
 
       - name: Generate API Documentation
         run: |
+          cd dataimago
           Rscript -e "
           dataimago::create_quarto_documentation(
             package_path = '.',
