@@ -107,9 +107,9 @@ NULL
 #' @concept dataimago r-first-development MCP-compatible
 #' @export
 build_design_system <- function(force_rebuild = FALSE,
-                               include_sri = TRUE,
-                               update_extension = TRUE,
-                               verbose = TRUE) {
+                                include_sri = TRUE,
+                                update_extension = TRUE,
+                                verbose = TRUE) {
 
   start_time <- Sys.time()
   errors <- character(0)
@@ -232,7 +232,7 @@ build_design_system <- function(force_rebuild = FALSE,
           hash_result <- processx::run("openssl", c("dgst", "-sha384", "-binary", asset))
           if (hash_result$status == 0) {
             base64_result <- processx::run("openssl", c("base64", "-A"),
-                                         input = hash_result$stdout_raw)
+                                           input = hash_result$stdout_raw)
             if (base64_result$status == 0) {
               sri_hash <- paste0("sha384-", base64_result$stdout)
               sri_hashes[[basename(asset)]] <- sri_hash
@@ -384,7 +384,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
   # Check if ui/ directory exists and assess its type
   if (dir_exists(ui_dir)) {
     # Check if this is a sophisticated build system (has real source files)
-    has_sophisticated_system <- file.exists(file.path(ui_dir, "src", "styles")) && 
+    has_sophisticated_system <- file.exists(file.path(ui_dir, "src", "styles")) &&
                                file.exists(file.path(ui_dir, "src", "tokens")) &&
                                file.exists(file.path(ui_dir, "build.js"))
     
