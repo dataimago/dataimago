@@ -60,12 +60,27 @@ jobs:
           jsonlite::write_json(result[['metadata']], 'build-metadata.json', pretty = TRUE)
           "
 
+      - name: Set Version Variable
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+          else
+            echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          fi
+          echo "Using version: $VERSION"
+
       - name: Create Release Archive
         run: |
           # Create versioned CDN package
           mkdir -p release-assets
           cp -r inst/quarto-assets/* release-assets/
-          cp ui/dist/tailwind-preset.js release-assets/
+          
+          # Copy tailwind preset if it exists
+          if [ -f "ui/dist/tailwind-preset.js" ]; then
+            cp ui/dist/tailwind-preset.js release-assets/
+          else
+            echo "Warning: tailwind-preset.js not found, skipping..."
+          fi
 
           # Create integrity file for SRI hashes
           echo "# dataimago CDN Assets - Subresource Integrity Hashes" > release-assets/INTEGRITY.md
@@ -85,41 +100,41 @@ jobs:
           done
           cd ..
 
-          # Create archive
-          tar -czf dataimago-cdn-${GITHUB_REF#refs/tags/}.tar.gz -C release-assets .
+          # Create archive with proper version
+          tar -czf dataimago-cdn-${VERSION}.tar.gz -C release-assets .
 
       - name: Generate Release Notes
         run: |
-          cat > release-notes.md << 'EOF'
-          # dataimago Design System Release ${GITHUB_REF#refs/tags/}
+          cat > release-notes.md << EOF
+          # dataimago Design System Release ${VERSION}
 
           ## 📦 CDN Assets
 
           **jsDelivr URLs:**
-          ```
-          https://cdn.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/dataimago.min.css
-          https://cdn.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/tokens.css
-          ```
+          \`\`\`
+          https://cdn.jsdelivr.net/gh/dataimago/dataimago@${VERSION}/inst/quarto-assets/dataimago.min.css
+          https://cdn.jsdelivr.net/gh/dataimago/dataimago@${VERSION}/inst/quarto-assets/tokens.css
+          \`\`\`
 
           **Quarto Integration:**
-          ```yaml
+          \`\`\`yaml
           format:
             html:
               css:
-                - https://cdn.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/dataimago.min.css
-          ```
+                - https://cdn.jsdelivr.net/gh/dataimago/dataimago@${VERSION}/inst/quarto-assets/dataimago.min.css
+          \`\`\`
 
           **Next.js Integration:**
-          ```js
+          \`\`\`js
           // Download and use tailwind-preset.js
           module.exports = {
             presets: [require('./dataimago-tailwind-preset.js')]
           };
-          ```
+          \`\`\`
 
           ## 🔐 Security
 
-          All assets include SHA-384 integrity hashes. See `INTEGRITY.md` in the release archive for complete hash listing.
+          All assets include SHA-384 integrity hashes. See \`INTEGRITY.md\` in the release archive for complete hash listing.
 
           ## 🎨 Features
 
@@ -141,18 +156,20 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ env.VERSION }}
+          name: dataimago Design System ${{ env.VERSION }}
           body_path: release-notes.md
           files: |
-            dataimago-cdn-${{ github.ref_name }}.tar.gz
+            dataimago-cdn-${{ env.VERSION }}.tar.gz
             release-assets/INTEGRITY.md
           draft: false
-          prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
+          prerelease: ${{ contains(env.VERSION, 'alpha') || contains(env.VERSION, 'beta') || contains(env.VERSION, 'rc') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Trigger jsDelivr Cache Purge
         run: |
           # Purge jsDelivr cache for new release
-          curl -X POST "https://purge.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/dataimago.min.css"
-          curl -X POST "https://purge.jsdelivr.net/gh/dataimago/dataimago@${GITHUB_REF#refs/tags/}/inst/quarto-assets/tokens.css"
-          echo "jsDelivr cache purged for version ${GITHUB_REF#refs/tags/}"
+          curl -X POST "https://purge.jsdelivr.net/gh/dataimago/dataimago@${VERSION}/inst/quarto-assets/dataimago.min.css"
+          curl -X POST "https://purge.jsdelivr.net/gh/dataimago/dataimago@${VERSION}/inst/quarto-assets/tokens.css"
+          echo "jsDelivr cache purged for version ${VERSION}"
