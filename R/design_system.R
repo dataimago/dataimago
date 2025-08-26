@@ -136,7 +136,7 @@ build_design_system <- function(force_rebuild = FALSE,
     pnpm_result <- processx::run("which", "pnpm", error_on_status = FALSE)
     pnpm_available <- pnpm_result$status == 0
   }, error = function(e) {
-    pnpm_available <- FALSE
+    # pnpm_available remains FALSE (already initialized)
   })
 
   if (!pnpm_available) {
@@ -144,7 +144,7 @@ build_design_system <- function(force_rebuild = FALSE,
       npm_result <- processx::run("which", "npm", error_on_status = FALSE)
       npm_available <- npm_result$status == 0
     }, error = function(e) {
-      npm_available <- FALSE
+      # npm_available remains FALSE (already initialized)
     })
   }
 
