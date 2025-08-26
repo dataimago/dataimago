@@ -510,7 +510,7 @@ citation("dataimago")
 
 - **Website**: [https://dataimago.github.io/dataimago/](https://dataimago.github.io/dataimago/)
 - **Issues**: [https://github.com/dataimago/dataimago/issues/](https://github.com/dataimago/dataimago/issues/)
-- **Maintainer**: Damian W. Betebenner <dbetebenner@nciea.org>
+- **Maintainer**: Damian W. Betebenner <dbetebenner@gmail.com>
 
 ---
 

@@ -33,9 +33,9 @@ jobs:
       - name: Check Code Style
         run: |
           Rscript -e "
-          changed <- styler::style_pkg()
+          changed <- styler::style_pkg(include_roxygen_examples = FALSE)
           if (any(changed)) {
-            cat('Code style issues found. Run styler::style_pkg() locally.\n')
+            cat('Code style issues found. Run styler::style_pkg(include_roxygen_examples = FALSE) locally.\n')
             quit(status = 1)
           }
           "

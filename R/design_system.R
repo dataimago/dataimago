@@ -830,8 +830,10 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 #'
 #' # Check what was updated
 #' if (result$success) {
-#'   cat("Updated files:",
-#'       paste(result$updated_files, collapse = "\n  "))
+#'   cat(
+#'     "Updated files:",
+#'     paste(result$updated_files, collapse = "\n  ")
+#'   )
 #' }
 #' }
 #'
