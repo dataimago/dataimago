@@ -38,13 +38,15 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Install Package
+        run: R CMD INSTALL .
+
       - name: Build Design System with SRI Hashes
         run: |
           cd ui
           pnpm install
           cd ..
           Rscript -e "
-          devtools::load_all()
           result <- dataimago::build_design_system(
             force_rebuild = TRUE,
             include_sri = TRUE,
