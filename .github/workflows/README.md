@@ -1,5 +1,13 @@
 # dataimago GitHub Actions CI/CD
 
+<!-- CI/CD Badges -->
+[![Workflows](https://img.shields.io/badge/Workflows-6%20Comprehensive-blue.svg)](.)
+[![Multi-Platform](https://img.shields.io/badge/Testing-macOS%20%7C%20Windows%20%7C%20Ubuntu-green.svg)](test-suite.yml)
+[![R Versions](https://img.shields.io/badge/R%20Versions-4.1%2B%20%7C%20Latest%20%7C%20Devel-orange.svg)](test-suite.yml)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B%20Integration-purple.svg)](test-suite.yml)
+[![Automated](https://img.shields.io/badge/Deployment-Fully%20Automated-brightgreen.svg)](quarto-deploy.yml)
+[![Security](https://img.shields.io/badge/Dependencies-Auto%20Monitored-red.svg)](dependencies.yml)
+
 This directory contains comprehensive GitHub Actions workflows for the dataimago R package, providing automated testing, building, and deployment across multiple platforms.
 
 ## 🔄 Workflows Overview

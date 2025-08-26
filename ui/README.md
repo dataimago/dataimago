@@ -1,5 +1,13 @@
 # dataimago Design System - Node.js Workspace
 
+<!-- Design System Badges -->
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![Package Manager](https://img.shields.io/badge/Package%20Manager-pnpm-orange.svg)](https://pnpm.io/)
+[![Build System](https://img.shields.io/badge/Build-Style%20Dictionary%20%2B%20Sass-blue.svg)](package.json)
+[![Design Tokens](https://img.shields.io/badge/Tokens-JSON%20%E2%86%92%20CSS-purple.svg)](src/tokens/)
+[![Accessibility](https://img.shields.io/badge/WCAG-AA%20Compliant-brightgreen.svg)](#-accessibility-features)
+[![R Controlled](https://img.shields.io/badge/Controlled%20by-R%20Functions-red.svg)](../R/design_system.R)
+
 This directory contains the Node.js workspace for compiling the dataimago ethical AI design system. It's controlled entirely through R functions in `R/design_system.R`, maintaining the "R as source of truth" philosophy.
 
 > 📋 **See [../ARCHITECTURE.md](../ARCHITECTURE.md) for comprehensive system diagrams** that show how this UI workspace integrates with the broader dataimago package architecture.

@@ -1,10 +1,28 @@
 # dataimago: Ethical AI-Native Data Science Foundation Package
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/dataimago/dataimago/workflows/R-CMD-check/badge.svg)](https://github.com/dataimago/dataimago/actions)
-[![Deploy Quarto Website](https://github.com/dataimago/dataimago/workflows/Deploy%20Quarto%20Website/badge.svg)](https://github.com/dataimago/dataimago/actions)
+
+<!-- Core Package Status -->
+[![Comprehensive Tests](https://github.com/dataimago/dataimago/workflows/Comprehensive%20Test%20Suite/badge.svg)](https://github.com/dataimago/dataimago/actions)
+[![Quarto Deploy](https://github.com/dataimago/dataimago/workflows/Deploy%20Quarto%20Website/badge.svg)](https://github.com/dataimago/dataimago/actions)
+[![Dependencies](https://github.com/dataimago/dataimago/workflows/Dependency%20Management/badge.svg)](https://github.com/dataimago/dataimago/actions)
+
+<!-- Package Information -->
 [![CRAN status](https://www.r-pkg.org/badges/version/dataimago)](https://CRAN.R-project.org/package=dataimago)
+[![R Version](https://img.shields.io/badge/R-%E2%89%A5%204.1.0-blue.svg)](https://cran.r-project.org/)
+[![Package Version](https://img.shields.io/badge/Version-0.0--0.3-brightgreen.svg)](https://github.com/dataimago/dataimago)
+
+<!-- Technical Architecture -->
+[![Node.js Version](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![Design System](https://img.shields.io/badge/Design%20System-Ethical%20AI-purple.svg)](ui/README.md)
+[![CDN Ready](https://img.shields.io/badge/CDN-jsDelivr%20Ready-orange.svg)](https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@main/inst/quarto-assets/)
+
+<!-- Philosophy & Standards -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code Style](https://img.shields.io/badge/Code%20Style-140%20chars-lightblue.svg)](.lintr)
+[![Accessibility](https://img.shields.io/badge/Accessibility-WCAG%20AA-green.svg)](ui/README.md#ethical-ai-features)
+[![Ethical AI](https://img.shields.io/badge/Framework-Emancipatory%20AI-red.svg)](ARCHITECTURE.md)
+
 <!-- badges: end -->
 
 ![dataimago Logo](inst/dataimago/04_dataimago_Content/Design_Assets/logos/dataimago.png)

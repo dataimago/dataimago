@@ -1,5 +1,13 @@
 # dataimago CDN Distribution Assets
 
+<!-- CDN Assets Badges -->
+[![jsDelivr CDN](https://img.shields.io/badge/CDN-jsDelivr%20Ready-orange.svg)](https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@main/inst/quarto-assets/)
+[![CSS Size](https://img.shields.io/badge/CSS%20Size-~6.1KB%20min-green.svg)](dataimago.min.css)
+[![Design Tokens](https://img.shields.io/badge/Tokens-~1.8KB-blue.svg)](tokens.css)
+[![SRI Hashes](https://img.shields.io/badge/Security-SRI%20Ready-red.svg)](#-security--reliability)
+[![R Package Access](https://img.shields.io/badge/R%20Access-system.file()-purple.svg)](#r-package-access)
+[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)](#-file-inventory)
+
 ## 🎯 Purpose
 
 This directory contains **CDN-ready CSS assets** that enable external projects to directly link to dataimago design system files via jsDelivr CDN. These files are **critical infrastructure** for the dataimago ecosystem.

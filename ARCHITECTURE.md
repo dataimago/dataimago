@@ -1,5 +1,12 @@
 # dataimago Package Architecture
 
+<!-- Architecture Documentation Badges -->
+[![Diagrams](https://img.shields.io/badge/Diagrams-5%20Comprehensive-blue.svg)](#-system-overview)
+[![Mermaid](https://img.shields.io/badge/Visualization-Mermaid-orange.svg)](https://mermaid.js.org/)
+[![Multi-Layer](https://img.shields.io/badge/Architecture-Multi--Layer-green.svg)](#-system-overview)
+[![Philosophical](https://img.shields.io/badge/Integration-Ethical%20AI-purple.svg)](#-key-design-principles)
+[![R-First](https://img.shields.io/badge/Philosophy-R%20as%20Truth-red.svg)](#r-first-philosophy)
+
 This document provides comprehensive Mermaid diagrams that illustrate the architecture and workflows of the dataimago R package.
 
 ## 🏗️ System Overview
