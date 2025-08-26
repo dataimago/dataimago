@@ -2,10 +2,15 @@
 #' @importFrom processx run
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom digest digest
-#' @importFrom crayon green silver yellow red bold
+#' @importFrom crayon green silver yellow red bold blue
 #' @importFrom glue glue
-#' @importFrom usethis ui_done ui_info ui_warn ui_oops
 NULL
+
+# Internal UI functions to replace usethis dependency
+ui_info <- function(x) cat(crayon::blue(paste0("\u2139", " ", x, "\n")))
+ui_done <- function(x) cat(crayon::green(paste0("\u2713", " ", x, "\n")))
+ui_warn <- function(x) cat(crayon::yellow(paste0("Warning:", " ", x, "\n")))
+ui_oops <- function(x) cat(crayon::red(paste0("\u2717", " ", x, "\n")))
 
 #' Build Design System Assets
 #'

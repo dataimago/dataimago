@@ -39,14 +39,22 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install Package
-        run: R CMD INSTALL .
+        run: |
+          echo "Installing dataimago package..."
+          R CMD INSTALL . || (echo "Package installation failed" && exit 1)
+          echo "Package installation completed successfully"
 
       - name: Build Design System with SRI Hashes
         run: |
           cd ui
           pnpm install
           cd ..
+          echo "Starting design system build..."
           Rscript -e "
+          cat('Testing package loading...\n')
+          library(dataimago)
+          cat('Package loaded successfully\n')
+          cat('Starting build_design_system...\n')
           result <- dataimago::build_design_system(
             force_rebuild = TRUE,
             include_sri = TRUE,
@@ -58,6 +66,7 @@ jobs:
           }
           # Save build metadata for release notes
           jsonlite::write_json(result[['metadata']], 'build-metadata.json', pretty = TRUE)
+          cat('Build completed successfully\n')
           "
 
       - name: Create Release Archive

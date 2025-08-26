@@ -2,7 +2,11 @@
 #' @importFrom glue glue
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom rlang .data
-#' @importFrom usethis ui_done ui_info ui_warn
+# Internal UI functions to replace usethis dependency  
+#' @importFrom crayon blue green yellow
+ui_info <- function(x) cat(crayon::blue(paste0("\u2139", " ", x, "\n")))
+ui_done <- function(x) cat(crayon::green(paste0("\u2713", " ", x, "\n")))
+ui_warn <- function(x) cat(crayon::yellow(paste0("Warning:", " ", x, "\n")))
 #' @importFrom whisker whisker.render
 #' @importFrom yaml read_yaml write_yaml
 #' @importFrom crayon green silver yellow
