@@ -790,7 +790,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Build for CDN distribution only (skip local copying)</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">build_design_system</span>(</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_sri =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_sri =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">update_extension =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -947,12 +947,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 +-- build.js                  # Custom build script for compilation
 +-- src/
 |   +-- tokens/
-|   |   +-- colors.json       # dataimago color palette 
+|   |   +-- colors.json       # dataimago color palette
 |   |   +-- typography.json   # Font definitions and scales
 |   |   +-- spacing.json      # Spacing scale and dimensions
 |   +-- styles/
 |       +-- base.scss         # Base styles using design tokens
-|       +-- components.scss   # UI component styles  
+|       +-- components.scss   # UI component styles
 |       +-- utilities.scss    # Utility classes
 +-- dist/                     # Build output directory (created by build process)</code></pre>
 <p><strong><em>Design Token Philosophy:</em></strong>The design tokens follow dataimago’s ethical AI principles:</p>
@@ -1180,7 +1180,7 @@ bootstrap_emancipatory_framework(path = "my-project")</code></pre>
 <p><strong><em>CDN Distribution Strategy:</em></strong>Files in <code>inst/quarto-assets/</code> become available via jsDelivr once the package is tagged and released on GitHub:</p>
 <pre><code>https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css</code></pre>
 <p><strong><em>SRI (Subresource Integrity) Hashes:</em></strong>Each CSS file gets a SHA-384 hash for security:</p>
-<pre><code>&lt;link rel="stylesheet" 
+<pre><code>&lt;link rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/.../dataimago.min.css"
       integrity="sha384-..."
       crossorigin="anonymous"&gt;</code></pre>

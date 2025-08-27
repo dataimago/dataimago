@@ -66,3 +66,27 @@ $link-color: $accent;
   font-style: italic;
   color: $secondary;
 }
+
+// SVG Hex Logo Styling
+.dataimago-hex-logo {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Responsive SVG sizing
+.dataimago-hex-logo {
+  max-width: 100%;
+  height: auto;
+  
+  @media (max-width: 768px) {
+    width: 150px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 120px;
+  }
+}

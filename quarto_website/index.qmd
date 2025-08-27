@@ -3,7 +3,7 @@ title: "dataimago: Ethical AI-Native Data Science"
 subtitle: "Reconciling meaning (hermeneutics) and measurement (positivism)"
 ---
 
-![](assets/img/dataimago.png){width=200 .center}
+![](assets/img/package_hex_logo_grey-light.svg){width=200 .center .dataimago-hex-logo}
 
 ## Welcome to dataimago
 

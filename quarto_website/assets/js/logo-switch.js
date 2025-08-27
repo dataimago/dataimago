@@ -1,7 +1,19 @@
-// Paths for logos (using absolute paths to work from all subdirectories)
+// Legacy PNG logo paths (for navbar/footer)
 const greyLogo = '/assets/img/ai_monogram_supreme_bg_BW.png';
 const lightModeColorLogo = '/assets/img/ai_monogram_supreme_bg_BLACK_WHITE.png';  // Black bg, white AI
 const darkModeColorLogo = '/assets/img/ai_monogram_supreme_bg_WHITE_BLACK.png';   // White bg, black AI
+
+// New SVG hex logo paths (for homepage and future use)
+const svgLogos = {
+  light: {
+    default: '/assets/img/package_hex_logo_grey-light.svg',
+    hover: '/assets/img/package_hex_logo_dark-light.svg'
+  },
+  dark: {
+    default: '/assets/img/package_hex_logo_grey-dark.svg', 
+    hover: '/assets/img/package_hex_logo_light-dark.svg'
+  }
+};
 
 // URL configurations
 const defaultLogoHref = 'https://dataimago.github.io/HelloWorld/';  // Default URL for logo/title
@@ -148,11 +160,56 @@ function setNavbarBrandHoverEffect() {
   });
 }
 
+// SVG Logo Management Functions
+function getSVGLogos() {
+  const theme = getCurrentTheme();
+  return svgLogos[theme] || svgLogos.light;
+}
+
+function setHomepageHexLogoEffects() {
+  const hexLogos = document.querySelectorAll('.dataimago-hex-logo');
+  
+  hexLogos.forEach(logo => {
+    // Remove existing event listeners by cloning
+    const newLogo = logo.cloneNode(true);
+    logo.parentNode.replaceChild(newLogo, logo);
+    
+    const currentSVGLogos = getSVGLogos();
+    
+    // Set initial state
+    newLogo.src = currentSVGLogos.default;
+    
+    // Add hover effects
+    newLogo.addEventListener('mouseover', () => {
+      const currentThemeLogos = getSVGLogos();
+      newLogo.src = currentThemeLogos.hover;
+    });
+    
+    newLogo.addEventListener('mouseout', () => {
+      const currentThemeLogos = getSVGLogos();
+      newLogo.src = currentThemeLogos.default;
+    });
+  });
+}
+
+function updateSVGLogosForTheme() {
+  const hexLogos = document.querySelectorAll('.dataimago-hex-logo');
+  const currentSVGLogos = getSVGLogos();
+  
+  hexLogos.forEach(logo => {
+    // Update to appropriate default state for current theme
+    if (logo.src.includes('grey-') || logo.src.includes('hover')) {
+      logo.src = currentSVGLogos.default;
+    }
+  });
+}
+
 // Function to set all logo hover effects
 function setLogoHoverEffect() {
   setNavbarLogoHoverEffect();
   setNavbarBrandHoverEffect();
   setFooterLogoHoverEffect();
+  setHomepageHexLogoEffects();
 }
 
 // Initialize logo hover effects
@@ -162,6 +219,7 @@ setLogoHoverEffect();
 function handleThemeChange() {
   // Small delay to allow theme switch to complete
   setTimeout(() => {
+    updateSVGLogosForTheme();
     setLogoHoverEffect();
   }, 100);
 }
