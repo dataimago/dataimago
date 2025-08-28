@@ -1,6 +1,6 @@
 /**
  * logo-switch.js - dataimago Design System
- * Built: 2025-08-28T14:00:15.070Z
+ * Built: 2025-08-28T14:57:57.091Z
  * Source: ui/src/js/logo-switch.js
  */
 // AI Monogram SVG paths (for navbar/footer) - Local paths (switch to CDN after GitHub push)
@@ -48,7 +48,7 @@ const svgLogos = {
 };
 
 // URL configurations
-const defaultLogoHref = 'https://dataimago.github.io/HelloWorld/';  // Default URL for logo/title
+const defaultLogoHref = 'https://dataimago.github.io/dataimago/';  // Default URL for logo/title
 const hoverLogoHref = 'https://dataimago.ai';  // URL when hovering over logo
 
 // Function to detect current theme mode

@@ -1,10 +1,10 @@
 /**
  * lenis-integration.js - dataimago Design System
- * Built: 2025-08-28T14:00:15.070Z
+ * Built: 2025-08-28T14:57:57.091Z
  * Source: ui/src/js/lenis-integration.js
  */
 /**
- * Lenis Integration for HelloWorld Website
+ * Lenis Integration for dataimago Website
  * Provides smooth scrolling and slide-based navigation
  */
 

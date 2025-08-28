@@ -43,7 +43,7 @@ const svgLogos = {
 };
 
 // URL configurations
-const defaultLogoHref = 'https://dataimago.github.io/HelloWorld/';  // Default URL for logo/title
+const defaultLogoHref = 'https://dataimago.github.io/dataimago/';  // Default URL for logo/title
 const hoverLogoHref = 'https://dataimago.ai';  // URL when hovering over logo
 
 // Function to detect current theme mode

@@ -91,7 +91,7 @@ dataimago:
 
       {{< feature-box title="Get started" icon="🚀" animate="fade-up" >}}
       1. Fork or use as a template
-      2. Search/replace `HelloWorld`
+      2. Search/replace package names with your project
       3. Configure your MiCP values
       4. Write functions, build site, publish
       5. Integrate with your web applications

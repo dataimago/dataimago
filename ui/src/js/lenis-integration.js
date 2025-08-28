@@ -1,5 +1,5 @@
 /**
- * Lenis Integration for HelloWorld Website
+ * Lenis Integration for dataimago Website
  * Provides smooth scrolling and slide-based navigation
  */
 
