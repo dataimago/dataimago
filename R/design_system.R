@@ -1064,6 +1064,8 @@ generate_cdn_assets <- function(verbose = TRUE) {
     )
   }
 
+  # Note: Website uses SCSS compilation, not these compiled files
+
   success <- length(errors) == 0
 
   if (verbose) {

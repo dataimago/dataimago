@@ -171,6 +171,26 @@ pre code {
   border-color: var(--color-brand-accent);
 }
 
+.dataimago-hex-logo {
+  transition: max-height 0.25s ease-in-out, transform 0.25s ease-in-out;
+  cursor: pointer;
+  max-width: 100%;
+  height: auto;
+}
+.dataimago-hex-logo:hover {
+  transform: scale(1.05);
+}
+@media (max-width: 768px) {
+  .dataimago-hex-logo {
+    width: 150px;
+  }
+}
+@media (max-width: 480px) {
+  .dataimago-hex-logo {
+    width: 120px;
+  }
+}
+
 .di-m-0 {
   margin: 0;
 }

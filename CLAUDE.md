@@ -38,6 +38,47 @@ Compiled CSS        → PostCSS        → 7 different output files
 Final Assets        → Distribution   → 3 channels (ui/dist, inst/quarto-assets, _extensions)
 ```
 
+### 🎨 SVG Logo System (Current Implementation)
+
+**Asset Organization:**
+- **Package-specific**: `inst/dataimago/assets/img/` (hex logos)
+- **Template-level**: `inst/quarto-assets/` (navbar AI monogram + CDN distribution)
+
+**Theme Mapping (Critical for Development):**
+- **Light mode**: `grey-light` (non-hover) → `dark-light` (hover)
+- **Dark mode**: `grey-dark` (non-hover) → `light-dark` (hover)
+
+**Known Issues Fixed:**
+- CSS transitions on `transition: all` were causing visual glitches during logo swaps
+- Fixed by limiting transitions to `max-height` and `transform` only
+- Added debugging console.log statements to track theme and hover state changes
+- Enhanced initialization to ensure logos start in correct default state
+
+**Logo Variants (All Available):**
+- **AI Monogram**: 4 SVG variants for navbar branding (920 bytes each)
+  - `ai_monogram_grey-light.svg` / `ai_monogram_grey-dark.svg` (default states)
+  - `ai_monogram_dark-light.svg` / `ai_monogram_light-dark.svg` (hover states)
+- **Package Hex Logo**: 4 SVG variants for homepage/package identity (1129 bytes each)
+  - `package_hex_logo_grey-light.svg` / `package_hex_logo_grey-dark.svg` (default states)
+  - `package_hex_logo_dark-light.svg` / `package_hex_logo_light-dark.svg` (hover states)
+
+**CDN Strategy:**
+- **Development**: Local paths (`useLocalPaths = true` in `assets/js/logo-switch.js`)
+- **Production**: CDN paths (`useLocalPaths = false` after GitHub push)
+- **Hybrid System**: Template assets (AI monogram) from dataimago CDN + package assets from individual package CDNs
+
+**Build Integration:**
+- `build_design_system()` automatically distributes SVGs to all channels
+- JavaScript handles theme-aware logo switching with 0.3s smooth transitions
+- CSS mask-based typography with rounded corners for sophisticated design
+- All 4 variants automatically available for both hex and AI monogram logos
+
+**Technical Quality:**
+- **File sizes**: Optimized SVG with sophisticated mask-based design
+- **Theme integration**: Perfect light/dark mode adaptation
+- **Hover states**: Professional 0.3s transitions with appropriate contrast switching
+- **Build performance**: 2.6s build time with comprehensive asset generation
+
 ## \U0001F3AF Purpose
 
 This file defines the design context, architectural principles, and ethical underpinnings for developing the `dataimago` R package. The package is the seed of a wider vision: an emancipatory AI-aligned performance management system built on flow-based analytics. It is not just a library of functions — it is the philosophical and computational *core* of a future system spanning APIs, machine interfaces, and planetary-scale performance infrastructures.

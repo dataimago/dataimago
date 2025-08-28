@@ -8,8 +8,8 @@ $btn-code-copy-color-active: rgb(237, 237, 235) !default;
 /*-- scss:rules --*/
 
 /* SCSS variables for logo paths */
-$logo-grey-path: url('./assets/img/ai_monogram_supreme_bg_BW.png');
-$logo-color-path: url('./assets/img/ai_monogram_supreme_bg_WHITE_BLACK.png');
+$logo-grey-path: url('/assets/img/ai_monogram_grey-dark.svg');
+$logo-color-path: url('/assets/img/ai_monogram_light-dark.svg');
 
 /* Body background transition on scroll ------------------ */
 body {
@@ -66,7 +66,8 @@ body.shrink {
     background-size: contain;
     background-repeat: no-repeat;
     max-height: 36px;
-    transition: all 0.25s ease-in-out; 
+    transition: max-height 0.25s ease-in-out, transform 0.25s ease-in-out; 
+    /* Exclude src from transitions to prevent visual glitches during logo swaps */
  }
 
  /* Logo hover effects are handled by JavaScript in logo-switch.js */
@@ -1263,4 +1264,84 @@ html.lenis body {
 
 .scroller-content {
     will-change: transform;
+}
+
+/* dataimago website-specific styling */
+
+// dataimago branding
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+// Philosophical content styling  
+.foundation-quote {
+  border-left: 4px solid #3498DB;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  background-color: rgba(52, 152, 219, 0.05);
+  padding: 1rem;
+}
+
+.ethical-note {
+  background-color: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.ethical-note::before {
+  content: "🧠 Ethical AI Context: ";
+  font-weight: bold;
+  color: #E74C3C;
+}
+
+// Center images
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Function documentation styling
+.function-title {
+  border-bottom: 2px solid #3498DB;
+  padding-bottom: 0.5rem;
+}
+
+// dataimago footer styling
+.dataimago-footer {
+  border-top: 1px solid #3498DB;
+  padding-top: 0.5rem;
+  margin-top: 2rem;
+  font-style: italic;
+  color: #34495E;
+}
+
+// SVG Hex Logo Styling
+.dataimago-hex-logo {
+  transition: max-height .25s ease-in-out, transform .25s ease-in-out;
+  cursor: pointer;
+  max-width: 100%;
+  height: auto;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  @media (max-width: 768px) {
+    width: 150px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 120px;
+  }
+}
+
+// Responsive images
+img {
+  max-width: 100%;
+  height: auto;
 }

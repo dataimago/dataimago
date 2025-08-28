@@ -1,7 +1,34 @@
-// Legacy PNG logo paths (for navbar/footer)
-const greyLogo = '/assets/img/ai_monogram_supreme_bg_BW.png';
-const lightModeColorLogo = '/assets/img/ai_monogram_supreme_bg_BLACK_WHITE.png';  // Black bg, white AI
-const darkModeColorLogo = '/assets/img/ai_monogram_supreme_bg_WHITE_BLACK.png';   // White bg, black AI
+// AI Monogram SVG paths (for navbar/footer) - Local paths (switch to CDN after GitHub push)
+const localBase = '/assets/img/';
+const cdnBase = 'https://cdn.jsdelivr.net/gh/dataimago/dataimago@main/inst/quarto-assets/';
+const useLocalPaths = true; // Set to false after GitHub push to use CDN
+
+const basePath = useLocalPaths ? localBase : cdnBase;
+const lightModeGreyLogo = basePath + 'ai_monogram_grey-light.svg';   // Light theme default
+const darkModeGreyLogo = basePath + 'ai_monogram_grey-dark.svg';     // Dark theme default
+const lightModeColorLogo = basePath + 'ai_monogram_dark-light.svg';  // Light mode hover
+const darkModeColorLogo = basePath + 'ai_monogram_light-dark.svg';   // Dark mode hover
+
+// Dynamic theme-aware logo selection functions
+function getGreyLogo() {
+  return getCurrentTheme() === 'dark' ? darkModeGreyLogo : lightModeGreyLogo;
+}
+
+function getColorLogo() {
+  return getCurrentTheme() === 'dark' ? darkModeColorLogo : lightModeColorLogo;
+}
+
+// Legacy variables for backward compatibility
+let greyLogo = getGreyLogo();
+
+// Legacy PNG fallback paths (matching SVG naming convention)
+const greyLogoPNG_light = '/assets/img/ai_monogram_grey-light.png';
+const greyLogoPNG_dark = '/assets/img/ai_monogram_grey-dark.png';
+
+// Helper function to get the correct grey PNG fallback for current theme
+function getGreyLogoPNG() {
+  return getCurrentTheme() === 'dark' ? greyLogoPNG_dark : greyLogoPNG_light;
+}
 
 // New SVG hex logo paths (for homepage and future use)
 const svgLogos = {
@@ -63,10 +90,7 @@ function getCurrentTheme() {
   return 'light';
 }
 
-// Function to get the appropriate color logo based on theme
-function getColorLogo() {
-  return getCurrentTheme() === 'dark' ? darkModeColorLogo : lightModeColorLogo;
-}
+// Remove duplicate function definition - already defined above
 
 // Select logo elements
 let navbarLogo = document.querySelector('.navbar-logo');
@@ -108,12 +132,17 @@ function setFooterLogoHoverEffect() {
   
   // Add new event listeners
   footerLogo.addEventListener('mouseover', () => {
+    const currentTheme = getCurrentTheme();
     const logoToUse = getColorLogo();
+    console.log('Footer hover ON - Theme:', currentTheme, 'Logo:', logoToUse);
     footerLogo.src = logoToUse;
   });
   
   footerLogo.addEventListener('mouseout', () => {
-    footerLogo.src = greyLogo;
+    const currentTheme = getCurrentTheme();
+    const logoToUse = getGreyLogo();
+    console.log('Footer hover OFF - Theme:', currentTheme, 'Logo:', logoToUse);
+    footerLogo.src = logoToUse;
   });
 }
 
@@ -141,7 +170,9 @@ function setNavbarBrandHoverEffect() {
   navbarBrandLink.addEventListener('mouseover', () => {
     // Change logo to colored version when hovering over brand area
     if (navbarLogo) {
+      const currentTheme = getCurrentTheme();
       const logoToUse = getColorLogo();
+      console.log('Navbar hover ON - Theme:', currentTheme, 'Logo:', logoToUse);
       navbarLogo.src = logoToUse;
     }
     
@@ -152,7 +183,10 @@ function setNavbarBrandHoverEffect() {
   navbarBrandLink.addEventListener('mouseout', () => {
     // Restore grey logo when leaving brand area
     if (navbarLogo) {
-      navbarLogo.src = greyLogo;
+      const currentTheme = getCurrentTheme();
+      const logoToUse = getGreyLogo();
+      console.log('Navbar hover OFF - Theme:', currentTheme, 'Logo:', logoToUse);
+      navbarLogo.src = logoToUse;
     }
     
     // Restore original href
@@ -164,6 +198,25 @@ function setNavbarBrandHoverEffect() {
 function getSVGLogos() {
   const theme = getCurrentTheme();
   return svgLogos[theme] || svgLogos.light;
+}
+
+// Enhanced hex logo transition function with smooth opacity effects
+function smoothLogoTransition(logoElement, newSrc, duration = 300) {
+  return new Promise((resolve) => {
+    // Add transitioning class for opacity fade
+    logoElement.classList.add('transitioning');
+    
+    // Wait for opacity transition, then change src
+    setTimeout(() => {
+      logoElement.src = newSrc;
+      
+      // Remove transitioning class to fade back in
+      setTimeout(() => {
+        logoElement.classList.remove('transitioning');
+        resolve();
+      }, 50); // Small delay to ensure src change is processed
+    }, duration / 2); // Fade out halfway through transition
+  });
 }
 
 function setHomepageHexLogoEffects() {
@@ -179,14 +232,16 @@ function setHomepageHexLogoEffects() {
     // Set initial state
     newLogo.src = currentSVGLogos.default;
     
-    // Add hover effects
+    // Add hover effects (CSS handles the transitions)
     newLogo.addEventListener('mouseover', () => {
       const currentThemeLogos = getSVGLogos();
+      console.log('Hex logo hover ON - Theme:', getCurrentTheme(), 'Logo:', currentThemeLogos.hover.split('/').pop());
       newLogo.src = currentThemeLogos.hover;
     });
     
     newLogo.addEventListener('mouseout', () => {
       const currentThemeLogos = getSVGLogos();
+      console.log('Hex logo hover OFF - Theme:', getCurrentTheme(), 'Logo:', currentThemeLogos.default.split('/').pop());
       newLogo.src = currentThemeLogos.default;
     });
   });
@@ -212,16 +267,43 @@ function setLogoHoverEffect() {
   setHomepageHexLogoEffects();
 }
 
-// Initialize logo hover effects
-setLogoHoverEffect();
+// Function to initialize all logos correctly
+function initializeLogos() {
+  // First, set all logos to their correct default (grey) state
+  updateAllLogosForCurrentTheme();
+  
+  // Then set up hover effects
+  setLogoHoverEffect();
+}
+
+// Initialize logo system
+initializeLogos();
 
 // Function to handle theme changes
 function handleThemeChange() {
   // Small delay to allow theme switch to complete
   setTimeout(() => {
-    updateSVGLogosForTheme();
+    // Update all logos to correct default state for new theme
+    updateAllLogosForCurrentTheme();
+    // Reset hover effects with new theme context
     setLogoHoverEffect();
   }, 100);
+}
+
+// Function to update all logos to correct default state
+function updateAllLogosForCurrentTheme() {
+  // Update navbar logo to grey state for current theme
+  if (navbarLogo) {
+    navbarLogo.src = getGreyLogo();
+  }
+  
+  // Update footer logo to grey state for current theme
+  if (footerLogo) {
+    footerLogo.src = getGreyLogo();
+  }
+  
+  // Update SVG hex logos
+  updateSVGLogosForTheme();
 }
 
 // Listen for theme toggle clicks

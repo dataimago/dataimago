@@ -68,3 +68,24 @@
   background: var(--color-brand-accent);
   border-color: var(--color-brand-accent);
 }
+
+// SVG Logo Components
+.dataimago-hex-logo {
+  transition: max-height .25s ease-in-out, transform .25s ease-in-out;
+  cursor: pointer;
+  max-width: 100%;
+  height: auto;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  // Responsive sizing
+  @media (max-width: 768px) {
+    width: 150px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 120px;
+  }
+}

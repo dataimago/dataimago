@@ -277,6 +277,13 @@ flowchart TD
 - **Multi-Channel Distribution**: Quarto extension, CDN assets, and Next.js integration
 - **Ethical AI Styling**: WCAG AA compliance with reduced motion and high contrast support
 
+### 🖼️ SVG-Based Visual Identity
+- **Scalable Design**: All logos now use SVG for perfect quality at any size
+- **Theme Integration**: Automatic light/dark mode adaptation with hover effects
+- **CDN Distribution**: Assets available globally via jsDelivr for external projects
+- **Template System**: Future packages inherit navbar branding while maintaining unique identity
+- **Professional Quality**: 920-1129 byte SVGs with CSS mask-based typography and rounded corners
+
 ### 🏗 Application Architecture
 - **NextJS + R Integration**: Best practices and templates
 - **Emancipatory Metrics**: Flow-based performance management frameworks
@@ -286,6 +293,12 @@ flowchart TD
 - **`inst/quarto-assets/`**: CDN-ready files accessible via jsDelivr (external projects)
 - **`_extensions/dataimago/ai-native/`**: Complete Quarto extension with filters and shortcodes  
 - **`ui/dist/`**: Development assets with source maps and build metadata
+
+### 🏗️ CDN Architecture
+- **Template Assets**: `https://cdn.jsdelivr.net/gh/dataimago/dataimago@main/inst/quarto-assets/`
+- **Package Assets**: Individual packages use own CDN for hex logos and custom styling
+- **Hybrid Strategy**: Consistent branding + unique package identity
+- **SVG Logo System**: Theme-aware switching with 4 variants per logo type (8 total SVG assets)
 
 ## Installation
 

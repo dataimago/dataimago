@@ -30,13 +30,15 @@ These files enable:
 | `dataimago.css` | ~6.1KB | **Unminified** CSS for development & debugging |
 | `dataimago.min.css` | ~6.1KB | **Minified** CSS for production use |
 | `tokens.css` | ~1.8KB | **Design tokens** as CSS custom properties |
+| `ai_monogram_*.svg` | 920B ea | **AI monogram** navbar logos (4 theme variants) |
+| `package_hex_logo_*.svg` | 1129B ea | **Hex logos** for package identity (4 theme variants) |
 
 ## 🌐 CDN Usage
 
 ### External Project Integration
 
 ```html
-<!-- Production (minified) -->
+<!-- Production (minified CSS) -->
 <link rel="stylesheet" 
       href="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css"
       integrity="sha384-[SRI-HASH]"
@@ -49,6 +51,38 @@ These files enable:
 <!-- Design tokens only -->
 <link rel="stylesheet" 
       href="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/tokens.css">
+```
+
+### SVG Logo Integration
+
+```html
+<!-- AI Monogram (navbar branding) -->
+<img src="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/ai_monogram_grey-light.svg" 
+     alt="dataimago AI" class="navbar-logo light-mode">
+<img src="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/ai_monogram_grey-dark.svg" 
+     alt="dataimago AI" class="navbar-logo dark-mode">
+
+<!-- Package Hex Logo (homepage/identity) -->
+<img src="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/package_hex_logo_grey-light.svg" 
+     alt="Package Logo" class="package-logo">
+```
+
+### Theme-Aware JavaScript Integration
+
+```js
+// Logo switching with theme awareness (corrected logic)
+const logoElement = document.querySelector('.navbar-logo');
+const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+const isHovered = /* hover state */;
+
+// Correct mapping: grey (non-hover) -> color (hover) for each theme
+const logoPath = `ai_monogram_${currentTheme === 'dark' ? 'grey-dark' : 'grey-light'}.svg`;
+const hoverPath = `ai_monogram_${currentTheme === 'dark' ? 'light-dark' : 'dark-light'}.svg`;
+
+logoElement.src = `https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@main/inst/quarto-assets/${isHovered ? hoverPath : logoPath}`;
+
+// Note: Avoid CSS transitions on 'all' properties - use specific transitions:
+// transition: max-height 0.25s ease-in-out, transform 0.25s ease-in-out;
 ```
 
 ### R Package Access
@@ -251,6 +285,23 @@ These files are part of the larger dataimago design system:
 - **Token-Driven**: Generated from semantic JSON design tokens  
 - **Multi-Platform**: Same source generates CSS, Tailwind presets, and more
 - **Sophisticated**: Built with Style Dictionary + SCSS + PostCSS pipeline
+
+### SVG Logo Architecture
+
+The included SVG assets implement a sophisticated theme-aware logo system:
+
+**Logo Variants:**
+- **AI Monogram** (navbar branding): 4 variants for complete theme integration
+  - `ai_monogram_grey-light.svg` → `ai_monogram_dark-light.svg` (light mode + hover)
+  - `ai_monogram_grey-dark.svg` → `ai_monogram_light-dark.svg` (dark mode + hover)
+- **Package Hex Logo** (identity): 4 variants for homepage/package branding
+  - Same naming pattern with `package_hex_logo_` prefix
+
+**Technical Quality:**
+- **Optimized SVGs**: 920-1129 bytes with CSS mask-based typography
+- **Smooth Transitions**: 0.3s hover animations with professional contrast switching
+- **Universal Compatibility**: Works across all modern browsers and CDN systems
+- **Theme Integration**: Perfect adaptation to Bootstrap 5.3+ theme system
 
 ---
 

@@ -49,6 +49,13 @@ Design tokens ensure consistency across all platforms:
 - **Style Dictionary**: Converts tokens to CSS custom properties
 - **Multi-Platform**: Same tokens generate CSS, Sass variables, and Tailwind presets
 
+### SVG Logo Integration
+The build system includes sophisticated SVG logo management:
+- **Theme-Aware SVGs**: 4 variants each for AI monogram and package hex logos
+- **Automatic Distribution**: SVGs copied to CDN and extension directories
+- **CSS Integration**: Logo paths embedded in SCSS for theme switching
+- **JavaScript Support**: Theme detection and hover state management
+
 ## \u2699\ufe0f Build Process
 
 ### 1. Design Token Processing

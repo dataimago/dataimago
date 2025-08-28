@@ -8,8 +8,8 @@ $btn-code-copy-color-active: rgb(237, 237, 235) !default;
 /*-- scss:rules --*/
 
 /* SCSS variables for logo paths */
-$logo-grey-path: url('./assets/img/ai_monogram_supreme_bg_BW.png');
-$logo-color-path: url('./assets/img/ai_monogram_supreme_bg_WHITE_BLACK.png');
+$logo-grey-path: url('https://cdn.jsdelivr.net/gh/dataimago/dataimago@main/inst/quarto-assets/ai_monogram_grey-dark.svg');
+$logo-color-path: url('https://cdn.jsdelivr.net/gh/dataimago/dataimago@main/inst/quarto-assets/ai_monogram_light-dark.svg');
 
 /* Body background transition on scroll ------------------ */
 body {
@@ -66,7 +66,8 @@ body.shrink {
     background-size: contain;
     background-repeat: no-repeat;
     max-height: 36px;
-    transition: all 0.25s ease-in-out; 
+    transition: max-height 0.25s ease-in-out, transform 0.25s ease-in-out; 
+    /* Exclude src from transitions to prevent visual glitches during logo swaps */
  }
 
  /* Logo hover effects are handled by JavaScript in logo-switch.js */
