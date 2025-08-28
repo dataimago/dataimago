@@ -985,6 +985,10 @@ update_quarto_extension <- function(verbose = TRUE) {
   # Also copy JavaScript to quarto_website/assets/js/ for development
   quarto_js_dir <- "quarto_website/assets/js"
   if (dir_exists(js_dist_dir) && dir_exists(quarto_js_dir)) {
+    if (verbose) {
+      ui_info("Copying JavaScript assets to Quarto development directory...")
+    }
+    
     js_files <- dir_ls(js_dist_dir, type = "file", glob = "*.js")
     for (js_file in js_files) {
       filename <- basename(js_file)
@@ -993,6 +997,10 @@ update_quarto_extension <- function(verbose = TRUE) {
           target_file <- file.path(quarto_js_dir, filename)
           file_copy(js_file, target_file, overwrite = TRUE)
           updated_files <- c(updated_files, target_file)
+          
+          if (verbose) {
+            ui_info(glue("Copied {filename} to Quarto assets"))
+          }
         },
         error = function(e) {
           if (verbose) {
@@ -1004,6 +1012,10 @@ update_quarto_extension <- function(verbose = TRUE) {
     
     if (verbose && length(js_files) > 0) {
       ui_info(glue("Updated {length(js_files)} JavaScript files in Quarto assets"))
+    }
+  } else {
+    if (verbose) {
+      ui_warn(glue("Cannot copy JS to Quarto assets - js_dist_dir exists: {dir_exists(js_dist_dir)}, quarto_js_dir exists: {dir_exists(quarto_js_dir)}"))
     }
   }
 
