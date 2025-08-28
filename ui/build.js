@@ -16,7 +16,8 @@ const config = {
   srcDir: path.join(__dirname, 'src'),
   distDir: path.join(__dirname, 'dist'),
   tokensDir: path.join(__dirname, 'src', 'tokens'),
-  stylesDir: path.join(__dirname, 'src', 'styles')
+  stylesDir: path.join(__dirname, 'src', 'styles'),
+  jsDir: path.join(__dirname, 'src', 'js')
 };
 
 console.log('🛠️  dataimago: Building design system assets...');
@@ -155,7 +156,46 @@ module.exports = {
 fs.writeFileSync(path.join(config.distDir, 'tailwind-preset.js'), tailwindPreset);
 console.log('✅ Tailwind preset generated');
 
-// Step 6: Generate build manifest
+// Step 6: Process JavaScript files
+console.log('📜 Processing JavaScript files...');
+
+// Create js distribution directory
+const jsDist = path.join(config.distDir, 'js');
+if (!fs.existsSync(jsDist)) {
+  fs.mkdirSync(jsDist, { recursive: true });
+}
+
+// Copy individual JavaScript files (no bundling for now - preserve individual files)
+if (fs.existsSync(config.jsDir)) {
+  const jsFiles = fs.readdirSync(config.jsDir).filter(file => file.endsWith('.js'));
+  
+  jsFiles.forEach(file => {
+    const srcPath = path.join(config.jsDir, file);
+    const distPath = path.join(jsDist, file);
+    
+    // Copy file with header comment
+    const content = fs.readFileSync(srcPath, 'utf8');
+    const processedContent = `/**
+ * ${file} - dataimago Design System
+ * Built: ${new Date().toISOString()}
+ * Source: ui/src/js/${file}
+ */
+${content}`;
+    
+    fs.writeFileSync(distPath, processedContent);
+  });
+  
+  console.log(`✅ JavaScript files processed (${jsFiles.length} files)`);
+  jsFiles.forEach(file => {
+    const stats = fs.statSync(path.join(jsDist, file));
+    const sizeKB = Math.round(stats.size / 1024 * 100) / 100;
+    console.log(`   ✓ js/${file} (${sizeKB} KB)`);
+  });
+} else {
+  console.log('⚠️  No JavaScript source directory found (ui/src/js)');
+}
+
+// Step 7: Generate build manifest
 const manifest = {
   name: 'dataimago Design System',
   version: '0.1.0', 
@@ -165,8 +205,17 @@ const manifest = {
     'dataimago.css': 'Expanded CSS for development',
     'dataimago.min.css': 'Minified CSS for production',
     'tailwind-preset.js': 'Tailwind CSS preset for Next.js integration'
-  }
+  },
+  javascript: {}
 };
+
+// Add JavaScript files to manifest
+if (fs.existsSync(path.join(config.distDir, 'js'))) {
+  const jsFiles = fs.readdirSync(path.join(config.distDir, 'js')).filter(file => file.endsWith('.js'));
+  jsFiles.forEach(file => {
+    manifest.javascript[`js/${file}`] = `JavaScript component: ${file.replace('.js', '')}`;
+  });
+}
 
 fs.writeFileSync(
   path.join(config.distDir, 'manifest.json'), 

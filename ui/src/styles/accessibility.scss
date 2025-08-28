@@ -45,6 +45,13 @@ a {
   }
 }
 
+// Smooth scrolling for users who don't prefer reduced motion
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 // High contrast mode support
 @media (prefers-contrast: high) {
   :root {

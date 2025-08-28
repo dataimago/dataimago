@@ -1,9 +1,4 @@
 /**
- * slide-navigation.js - dataimago Design System
- * Built: 2025-08-28T14:00:15.071Z
- * Source: ui/src/js/slide-navigation.js
- */
-/**
  * Dataimago AI-Native Extension - Slide Navigation
  * Handles slide-based navigation and visual indicators
  */

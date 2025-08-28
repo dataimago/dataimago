@@ -1,11 +1,21 @@
 {
   "name": "dataimago Design System",
   "version": "0.1.0",
-  "buildTime": "2025-08-28T09:10:49.755Z",
+  "buildTime": "2025-08-28T14:05:28.313Z",
   "assets": {
     "tokens.css": "CSS custom properties from design tokens",
     "dataimago.css": "Expanded CSS for development",
     "dataimago.min.css": "Minified CSS for production",
     "tailwind-preset.js": "Tailwind CSS preset for Next.js integration"
+  },
+  "javascript": {
+    "js/accessibility.js": "JavaScript component: accessibility",
+    "js/custom-anchors.js": "JavaScript component: custom-anchors",
+    "js/hero-scroller.js": "JavaScript component: hero-scroller",
+    "js/jquery.sticky-kit.min.js": "JavaScript component: jquery.sticky-kit.min",
+    "js/lenis-integration.js": "JavaScript component: lenis-integration",
+    "js/logo-switch.js": "JavaScript component: logo-switch",
+    "js/scroll.js": "JavaScript component: scroll",
+    "js/slide-navigation.js": "JavaScript component: slide-navigation"
   }
 }

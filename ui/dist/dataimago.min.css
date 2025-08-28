@@ -338,6 +338,11 @@ a {
     scroll-behavior: auto !important;
   }
 }
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
 @media (prefers-contrast: high) {
   :root {
     --color-brand-primary: #000000;

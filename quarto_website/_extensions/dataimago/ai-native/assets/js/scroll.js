@@ -1,3 +1,8 @@
+/**
+ * scroll.js - dataimago Design System
+ * Built: 2025-08-28T14:00:15.070Z
+ * Source: ui/src/js/scroll.js
+ */
 // NOTE: Navbar shrinking functionality has been moved to lenis-integration.js
 // to avoid conflicts with Lenis smooth scrolling system.
 // See setupNavbarScrollEffects() in lenis-integration.js

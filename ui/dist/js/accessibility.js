@@ -1,6 +1,6 @@
 /**
  * accessibility.js - dataimago Design System
- * Built: 2025-08-28T14:00:15.069Z
+ * Built: 2025-08-28T14:05:28.311Z
  * Source: ui/src/js/accessibility.js
  */
 /**

@@ -1,9 +1,4 @@
 /**
- * hero-scroller.js - dataimago Design System
- * Built: 2025-08-28T14:00:15.069Z
- * Source: ui/src/js/hero-scroller.js
- */
-/**
  * Dataimago AI-Native Extension - Hero Scroller
  * Handles smooth scrolling hero content areas (carousel replacement)
  */

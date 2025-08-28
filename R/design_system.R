@@ -918,7 +918,7 @@ update_quarto_extension <- function(verbose = TRUE) {
     )
   }
 
-  # Copy any additional built assets
+  # Copy any additional built CSS assets
   dist_dir <- "ui/dist"
   if (dir_exists(dist_dir)) {
     dist_files <- dir_ls(dist_dir, type = "file", glob = "*.css")
@@ -943,6 +943,67 @@ update_quarto_extension <- function(verbose = TRUE) {
           }
         )
       }
+    }
+  }
+  
+  # Copy JavaScript assets from ui/dist/js/
+  js_dist_dir <- "ui/dist/js"
+  extension_js_dir <- "quarto_website/_extensions/dataimago/ai-native/assets/js"
+  
+  if (dir_exists(js_dist_dir) && dir_exists(extension_js_dir)) {
+    if (verbose) {
+      ui_info("Copying JavaScript assets to extension...")
+    }
+    
+    js_files <- dir_ls(js_dist_dir, type = "file", glob = "*.js")
+    for (js_file in js_files) {
+      filename <- basename(js_file)
+      tryCatch(
+        {
+          target_file <- file.path(extension_js_dir, filename)
+          file_copy(js_file, target_file, overwrite = TRUE)
+          updated_files <- c(updated_files, target_file)
+
+          if (verbose) {
+            ui_info(glue("Copied {filename} to extension"))
+          }
+        },
+        error = function(e) {
+          if (verbose) {
+            ui_warn(glue("Could not copy {filename}: {e$message}"))
+          }
+        }
+      )
+    }
+    
+    js_count <- length(js_files)
+    if (verbose && js_count > 0) {
+      ui_info(glue("Updated {js_count} JavaScript files in extension"))
+    }
+  }
+  
+  # Also copy JavaScript to quarto_website/assets/js/ for development
+  quarto_js_dir <- "quarto_website/assets/js"
+  if (dir_exists(js_dist_dir) && dir_exists(quarto_js_dir)) {
+    js_files <- dir_ls(js_dist_dir, type = "file", glob = "*.js")
+    for (js_file in js_files) {
+      filename <- basename(js_file)
+      tryCatch(
+        {
+          target_file <- file.path(quarto_js_dir, filename)
+          file_copy(js_file, target_file, overwrite = TRUE)
+          updated_files <- c(updated_files, target_file)
+        },
+        error = function(e) {
+          if (verbose) {
+            ui_warn(glue("Could not copy {filename} to Quarto assets: {e$message}"))
+          }
+        }
+      )
+    }
+    
+    if (verbose && length(js_files) > 0) {
+      ui_info(glue("Updated {length(js_files)} JavaScript files in Quarto assets"))
     }
   }
 

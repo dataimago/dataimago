@@ -1,4 +1,9 @@
 /**
+ * lenis-integration.js - dataimago Design System
+ * Built: 2025-08-28T14:00:15.070Z
+ * Source: ui/src/js/lenis-integration.js
+ */
+/**
  * Lenis Integration for HelloWorld Website
  * Provides smooth scrolling and slide-based navigation
  */
@@ -28,7 +33,7 @@ class LenisIntegration {
         
         // Initialize Lenis with optimized settings
         this.lenis = new Lenis({
-            duration: 1.8,
+            duration: 1.0,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             direction: 'vertical',
             gestureOrientation: 'vertical',
@@ -56,6 +61,9 @@ class LenisIntegration {
         
         // Setup intersection observers for slide transitions
         this.setupIntersectionObservers();
+        
+        // Setup navbar scroll effects (replaces jQuery scroll handler)
+        this.setupNavbarScrollEffects();
         
         console.log('✅ Lenis Integration Complete');
     }
@@ -289,6 +297,52 @@ class LenisIntegration {
         document.querySelectorAll('.slide-indicator').forEach((indicator, index) => {
             indicator.classList.toggle('active', index === this.currentSlide);
         });
+    }
+
+    setupNavbarScrollEffects() {
+        // Setup navbar shrinking based on Lenis scroll position
+        // Replaces the jQuery $(window).scroll() handler to avoid conflicts
+        console.log('🔧 Setting up Lenis-integrated navbar scroll effects');
+        
+        let isNavbarShrunk = false;
+        const shrinkThreshold = 35; // pixels
+        
+        // Use Lenis scroll event instead of window scroll to avoid conflicts
+        this.lenis.on('scroll', (e) => {
+            const scrollY = e.scroll;
+            const shouldShrink = scrollY > shrinkThreshold;
+            
+            // Only update DOM when state changes to optimize performance
+            if (shouldShrink !== isNavbarShrunk) {
+                isNavbarShrunk = shouldShrink;
+                
+                // Direct DOM updates - no nested RAF needed (already in Lenis RAF context)
+                const navbar = document.querySelector('.navbar');
+                const navbarTitle = document.querySelector('.navbar-title');
+                const navbarLogo = document.querySelector('.navbar-logo');
+                const body = document.body;
+                
+                if (shouldShrink) {
+                    // Add shrink classes
+                    navbar?.classList.add('shrink');
+                    navbarTitle?.classList.add('shrink');
+                    navbarLogo?.classList.add('shrink');
+                    body?.classList.add('shrink');
+                    
+                    console.debug('📏 Navbar shrunk at scroll position:', scrollY);
+                } else {
+                    // Remove shrink classes
+                    navbar?.classList.remove('shrink');
+                    navbarTitle?.classList.remove('shrink');
+                    navbarLogo?.classList.remove('shrink');
+                    body?.classList.remove('shrink');
+                    
+                    console.debug('📏 Navbar expanded at scroll position:', scrollY);
+                }
+            }
+        });
+        
+        console.log(`✅ Navbar scroll effects integrated with Lenis (threshold: ${shrinkThreshold}px)`);
     }
 
     // Public methods for external control
