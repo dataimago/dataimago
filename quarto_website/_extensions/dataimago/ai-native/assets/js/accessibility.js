@@ -1,6 +1,6 @@
 /**
  * accessibility.js - dataimago Design System
- * Built: 2025-08-28T14:57:57.090Z
+ * Built: 2025-08-28T17:04:31.428Z
  * Source: ui/src/js/accessibility.js
  */
 /**
@@ -47,8 +47,11 @@ class DataimagoAccessibility {
         // Setup contrast preferences
         this.setupContrastPreferences();
         
-        // Add skip links
-        this.addSkipLinks();
+        // Add skip links (configurable)
+        const skipLinksEnabled = document.querySelector('meta[name="dataimago-skip-links"]')?.content !== 'false';
+        if (skipLinksEnabled) {
+            this.addSkipLinks();
+        }
         
         // Setup landmark navigation
         this.setupLandmarkNavigation();

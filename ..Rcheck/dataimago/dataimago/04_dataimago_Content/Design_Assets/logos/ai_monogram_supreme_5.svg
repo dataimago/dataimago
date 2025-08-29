@@ -1,0 +1,59 @@
+<svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .futura {
+        font-family: 'Futura';
+        font-style: italic;
+        font-size: 400px;
+        font-weight: bold;
+      }
+
+      .data {
+        fill: black;
+      }
+
+      .imago {
+        font-size: 380px;
+      }
+
+      .background {
+        fill: none;
+      }
+    </style>
+  </defs>
+
+  <!-- Transparent Background (optional for clarity) -->
+  <rect class="background" width="100%" height="100%" rx="5" ry="5" />
+
+  <!-- Animated "i" — only the dot is visible -->
+  <text x="237" y="360" class="futura imago" fill="red">
+    <animate attributeName="fill"
+         values="
+           red;
+           orange;
+           gold;
+           #116666;
+           #339999;
+           red
+         "
+         dur="4s"
+         repeatCount="indefinite" />
+    i
+  </text>
+
+  <!-- Animated "a" -->
+  <text x="105" y="360" class="futura imago" fill="red">
+    <animate attributeName="fill"
+         values="
+           red;
+           orange;
+           gold;
+           #116666;
+           #339999;
+           red
+         "
+         dur="4s"
+         repeatCount="indefinite" />
+    a
+  </text>
+</svg>

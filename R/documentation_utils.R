@@ -443,16 +443,27 @@ update_dataimago_assets <- function(output_path, package_path) {
   )
 
   if (dir.exists(inst_dir)) {
-    png_files <- list.files(inst_dir, pattern = "\\.png$", full.names = TRUE)
-
-    for (png_file in png_files) {
-      file.copy(png_file, img_dir, overwrite = TRUE)
+    # Only copy essential PNG files (favicon and social media assets)
+    essential_pngs <- c(
+      "ai_monogram_supreme_favicon.png",
+      "ai_monogram_supreme_COLOR.png"
+    )
+    
+    png_files <- character(0)
+    for (png_name in essential_pngs) {
+      png_path <- file.path(inst_dir, png_name)
+      if (file.exists(png_path)) {
+        file.copy(png_path, img_dir, overwrite = TRUE)
+        png_files <- c(png_files, png_name)
+      }
     }
 
-    cat(
-      crayon::silver("  Copied"), length(png_files),
-      "logo files to assets/img/\n"
-    )
+    if (length(png_files) > 0) {
+      cat(
+        crayon::silver("  Copied"), length(png_files),
+        "essential PNG files to assets/img/\n"
+      )
+    }
   }
 
   # Ensure dataimago/ai-native Quarto extension is available

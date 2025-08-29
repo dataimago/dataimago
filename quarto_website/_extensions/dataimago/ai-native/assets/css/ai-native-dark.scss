@@ -11,13 +11,16 @@ $btn-code-copy-color-active: rgb(237, 237, 235) !default;
 $logo-grey-path: url('https://cdn.jsdelivr.net/gh/dataimago/dataimago@main/inst/quarto-assets/ai_monogram_grey-dark.svg');
 $logo-color-path: url('https://cdn.jsdelivr.net/gh/dataimago/dataimago@main/inst/quarto-assets/ai_monogram_light-dark.svg');
 
-/* Body styling (background transition removed to prevent glitches) */
+/* Body background transition on scroll ------------------ */
 body {
     background-color: rgb(20, 20, 16);
+    transition: background-color 0.35s ease;
     //color: #ffffff;
 }
 
-/* body.shrink background transition removed - was causing text glitches at 35px threshold */
+body.shrink {
+    background-color: rgb(20, 20, 22); 
+}
 
 /* For shrinking navbar ------------------ */
 

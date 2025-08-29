@@ -4,8 +4,12 @@ subtitle: "dataimago Ethical AI Framework"
 version: "0.0-0.3"
 format:
   html:
+    page-layout: article
     toc: true
+    toc-location: right
     toc-depth: 3
+    sidebar: false
+    css: assets/css/enhanced-right-toc.css
 ---
 
 # Package Information
@@ -39,9 +43,9 @@ format:
 
 This package is built on dataimago's ethical AI framework:
 
-- [Mission & Vision](../foundations/mission.html)
-- [Philosophy](../foundations/philosophy.html)
-- [Critical Theory Manifesto](../manifesto/critical_theory_manifesto.html)
+- [Mission & Vision](mission.html)
+- [Philosophy](philosophy.html)
+- [Critical Theory Manifesto](critical_theory_manifesto.html)
 
 # Exported Functions
 

@@ -12,9 +12,9 @@ This directory contains the source files for the dataimago project website, buil
 - **`index.qmd`** - Homepage with project overview and philosophy
 - **`api_reference.qmd`** - Generated API documentation (auto-updated)
 - **Foundation Pages**:
-  - `foundations/mission.qmd` - Mission and vision statements
-  - `foundations/philosophy.qmd` - Theoretical frameworks
-  - `manifesto/critical_theory_manifesto.qmd` - Critical theory positioning
+  - `mission.qmd` - Mission and vision statements
+  - `philosophy.qmd` - Theoretical frameworks
+  - `critical_theory_manifesto.qmd` - Critical theory positioning
 
 ### Enhanced Features
 - **AI-Native Extension** - Custom Quarto extension providing ethical AI styling

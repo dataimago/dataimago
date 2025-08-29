@@ -1,6 +1,6 @@
 /**
  * accessibility.js - dataimago Design System
- * Built: 2025-08-28T14:57:57.090Z
+ * Built: 2025-08-28T17:04:31.428Z
  * Source: ui/src/js/accessibility.js
  */
 /**
@@ -336,6 +336,15 @@ class DataimagoAccessibility {
     }
 
     addSkipLinks() {
+        // Check if skip links are disabled via meta tag
+        const skipLinksMeta = document.querySelector('meta[name="dataimago-skip-links"]');
+        const skipLinksEnabled = !skipLinksMeta || skipLinksMeta.getAttribute('content') !== 'false';
+        
+        if (!skipLinksEnabled) {
+            console.log('♿ Skip links disabled via configuration');
+            return;
+        }
+        
         // Main skip link (if not already present)
         if (!document.querySelector('.dataimago-skip-link')) {
             const skipToMain = document.createElement('a');

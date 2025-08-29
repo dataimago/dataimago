@@ -1,11 +1,10 @@
 /**
  * scroll.js - dataimago Design System
- * Built: 2025-08-28T14:57:57.091Z
+ * Built: 2025-08-28T17:04:31.429Z
  * Source: ui/src/js/scroll.js
  */
-// NOTE: Navbar shrinking functionality has been moved to lenis-integration.js
-// to avoid conflicts with Lenis smooth scrolling system.
-// See setupNavbarScrollEffects() in lenis-integration.js
+// Navbar shrinking functionality (jQuery-based fallback)
+// Simple implementation that doesn't depend on Lenis
 
 // Dropdown caret rotation functionality
 $(document).ready(function() {
@@ -65,4 +64,38 @@ $(document).ready(function() {
     $('.navbar-nav .dropdown, .navbar-nav .nav-item').on('hide.bs.dropdown', function() {
         $(this).removeClass('open');
     });
+    
+    // Navbar shrink functionality
+    let isNavbarShrunk = false;
+    const shrinkThreshold = 35; // pixels
+    
+    function updateNavbarShrink() {
+        const scrollY = $(window).scrollTop();
+        const shouldShrink = scrollY > shrinkThreshold;
+        
+        // Only update DOM when state changes to optimize performance
+        if (shouldShrink !== isNavbarShrunk) {
+            isNavbarShrunk = shouldShrink;
+            
+            if (shouldShrink) {
+                // Add shrink classes
+                $('.navbar').addClass('shrink');
+                $('.navbar-title').addClass('shrink');
+                $('.navbar-logo').addClass('shrink');
+                $('body').addClass('shrink');
+            } else {
+                // Remove shrink classes
+                $('.navbar').removeClass('shrink');
+                $('.navbar-title').removeClass('shrink');
+                $('.navbar-logo').removeClass('shrink');
+                $('body').removeClass('shrink');
+            }
+        }
+    }
+    
+    // Listen for scroll events
+    $(window).on('scroll', updateNavbarShrink);
+    
+    // Initialize on page load
+    updateNavbarShrink();
 });

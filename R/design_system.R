@@ -309,7 +309,26 @@ build_design_system <- function(force_rebuild = FALSE,
     assets <- c(assets, cdn_result$assets)
   }
 
-  # 8. Create build metadata
+  # 8. Synchronize Quarto assets (ensure consistency across directories)
+  if (verbose) {
+    ui_info("Synchronizing Quarto assets across directories...")
+  }
+  tryCatch({
+    # Source the asset sync function if not already loaded
+    if (!exists("sync_quarto_assets")) {
+      source("R/asset_sync.R")
+    }
+    sync_result <- sync_quarto_assets(verbose = FALSE)
+    if (!sync_result$success) {
+      errors <- c(errors, sync_result$errors)
+    } else if (length(sync_result$synced_files) > 0 && verbose) {
+      ui_info(glue("   Synchronized {length(sync_result$synced_files)} asset files"))
+    }
+  }, error = function(e) {
+    errors <- c(errors, glue("Asset synchronization failed: {e$message}"))
+  })
+
+  # 9. Create build metadata
   build_time <- Sys.time()
   metadata <- list(
     package_manager = package_manager,
@@ -324,7 +343,7 @@ build_design_system <- function(force_rebuild = FALSE,
     sri_hashes_generated = length(sri_hashes)
   )
 
-  # 9. Final status
+  # 10. Final status
   success <- length(errors) == 0
 
   if (verbose) {
