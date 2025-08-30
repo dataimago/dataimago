@@ -2,7 +2,7 @@
 % Please edit documentation in R/design_system.R
 \name{build_design_system}
 \alias{build_design_system}
-\title{Build Design System Assets}
+\title{Build Complete Design System for Multi-Platform Deployment}
 \usage{
 build_design_system(
   force_rebuild = FALSE,
@@ -32,12 +32,12 @@ List containing build results:
 }
 }
 \description{
-Master function that orchestrates the entire CSS compilation and distribution pipeline.
-This function wraps Node.js tooling (pnpm/npm) in R to maintain R-first development workflow.
+Master function that orchestrates CSS compilation and asset distribution for web applications.
+This function provides R-first workflows that wrap Node.js tooling for rapid application development.
 }
 \details{
-This function implements dataimago's R-first philosophy by wrapping Node.js build tools
-in well-documented R functions. The build process includes:
+This function implements dataimago's framework approach to asset compilation by providing
+R-first workflows that wrap modern web development tools. The build process includes:
 
 \strong{System Requirements:}
 \itemize{
@@ -53,9 +53,9 @@ in well-documented R functions. The build process includes:
 \item \strong{SCSS Compilation}: Executes \verb{pnpm run build} to convert design tokens and SCSS to minified CSS
 \item \strong{Asset Distribution}: Copies built \code{dataimago.min.css} to multiple locations:
 \itemize{
-\item \verb{quarto_website/_extensions/dataimago/ai-native/assets/css/} for Quarto extension distribution
+\item \verb{ui/www/_extensions/dataimago/ai-native/assets/css/} for Quarto extension distribution
 \item \verb{inst/quarto-assets/} for R package CDN distribution
-\item \verb{quarto_website/assets/css/} for local website development
+\item \verb{ui/www/assets/css/} for local website development
 }
 \item \strong{SRI Hash Generation}: Uses \verb{openssl dgst -sha384 -binary | openssl base64 -A} for subresource integrity
 \item \strong{Build Manifest}: Creates JSON metadata with paths, versions, checksums, and build timestamp

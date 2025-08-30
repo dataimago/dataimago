@@ -143,9 +143,10 @@ build_design_system()      # Compile design tokens + SCSS → CSS
 ```
 
 **Distribution Channels**:
-- **Quarto Extension**: `quarto_website/_extensions/dataimago/ai-native/`
+- **Quarto Extension**: `ui/www/_extensions/dataimago/ai-native/` (complete asset structure)
 - **CDN Distribution**: `inst/quarto-assets/` (jsDelivr-compatible)
 - **Next.js Integration**: `ui/dist/tailwind-preset.js`
+- **Website Output**: `docs/` (GitHub Pages deployment from ui/www render)
 
 ### 5. **File System Standards**
 ```
@@ -153,10 +154,15 @@ dataimago/
 ├── R/                      # Core functions
 │   ├── documentation_utils.R # Documentation generation
 │   └── design_system.R     # R-first CSS build pipeline
-├── ui/                     # Node.js design system workspace (source of truth)
-│   ├── src/tokens/         # Design tokens (JSON)
-│   ├── src/styles/         # SCSS source files
-│   └── dist/              # Built CSS assets
+├── ui/                     # Complete frontend development workspace
+│   ├── src/tokens/         # Design tokens (JSON) - SOURCE OF TRUTH
+│   ├── src/styles/         # SCSS source files - SOURCE OF TRUTH
+│   ├── dist/              # Built CSS assets (regenerable)
+│   └── www/               # Quarto website project with assets and extensions
+│       ├── assets/        # Website-specific assets (CSS, JS, images)
+│       ├── _extensions/   # Quarto extension with complete asset structure
+│       ├── _quarto.yml    # Website configuration
+│       └── *.qmd          # Content files
 ├── inst/
 │   ├── dataimago/          # Complete foundation documents
 │   │   ├── 01_Foundations/ # Mission, vision, philosophy
@@ -166,8 +172,6 @@ dataimago/
 │   ├── quarto-assets/      # CDN-ready CSS distribution
 │   ├── CLAUDE.md           # AI agent context
 │   └── AGENT_INDEX.md      # Agent coordination
-├── quarto_website/         # Website source
-│   └── _extensions/dataimago/ai-native/ # Quarto extension
 ├── docs/                   # Rendered website (GitHub Pages)
 ├── docs/development/       # Developer documentation
 ├── man/                    # Generated .Rd files
@@ -241,9 +245,11 @@ This R package is an instantiation of critical theory in code:
 ## \U0001F3D7\UFE0F Package Architecture Principles
 
 ### Separation of Concerns
-- **`ui/`**: Source of truth for design system (development workspace)
+- **`ui/`**: Complete frontend development workspace (source of truth + website)
+  - **`ui/src/`**: Design tokens, SCSS, and JavaScript source files
+  - **`ui/dist/`**: Built assets for distribution
+  - **`ui/www/`**: Quarto website project and Quarto extensions
 - **`inst/dataimago/`**: Foundation documents and philosophical content
-- **`quarto_website/`**: Website generation and Quarto extensions
 - **`docs/development/`**: Developer-specific documentation (excluded from builds)
 - **`R/`**: Function orchestration and R-native interfaces
 

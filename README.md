@@ -1,4 +1,4 @@
-# dataimago: Ethical AI-Native Data Science Foundation Package
+# dataimago: AI-Native Web-Application Development Framework for Data Science
 
 <!-- badges: start -->
 
@@ -29,7 +29,7 @@
 
 ## Overview
 
-**dataimago** is an R package containing the philosophical foundations, technical architecture, and application templates for dataimago's emancipatory data science platform. It provides versioned access to critical theory frameworks, application blueprints, and packageSkeleton functionality for creating AI-native data science applications that reconcile meaning (hermeneutics) and measurement (positivism).
+**dataimago** is a comprehensive development framework that accelerates the creation of data science web applications for both human developers and AI agents. It provides complete design system compilation, multi-platform deployment (Quarto, Shiny, Next.js), MCP-compatible tooling, and embedded ethical AI principles. Features R-first workflows that wrap modern web development tools in familiar interfaces, enabling rapid application scaffolding with consistent branding and best practices.
 
 ### Vision
 
@@ -142,7 +142,7 @@ dataimago/
 │   ├── dist/                   # Built CSS assets (regenerable)
 │   ├── build.js               # Sophisticated build script
 │   └── package.json           # Node.js dependencies
-├── quarto_website/            # Complete Quarto website structure
+├── ui/www/                    # Complete Quarto website structure
 │   ├── _extensions/           # dataimago Quarto extension
 │   ├── assets/               # Website-specific assets
 │   └── *.qmd                 # Quarto content files
@@ -259,35 +259,35 @@ flowchart TD
 
 ## Key Features
 
-### 📚 Foundation Documents
-- **Philosophical Framework**: Built on Frankfurt School critical theory and modern alignment discourse
-- **Mission & Vision**: Core purpose and societal transformation goals
-- **Governance**: Multi-dimensional governance structure for emancipatory AI development
-- **Manifesto**: Contrasts with dominant paradigms (e.g., Palantir critique)
+### ⚡ Rapid Application Development
+- **`create_ui_workspace()`**: One-command setup for complete Node.js development environment
+- **`build_design_system()`**: Automated CSS compilation from design tokens to production assets
+- **`create_quarto_documentation()`**: Generate professional documentation with consistent branding
+- **Multi-Platform Deployment**: Single source generates assets for Quarto, Shiny, Next.js, and CDN
 
-### 🛠 Documentation Generation
-- **`create_quarto_documentation()`**: Convert R package documentation to Quarto websites
-- **Ethical AI Annotations**: Every function includes philosophical context
-- **Foundation Links**: Automatic cross-referencing to philosophical documents
-- **dataimago Branding**: Custom styling and visual identity integration
+### 🎨 Complete Design System
+- **Design Tokens**: JSON-based system with CSS custom properties for consistent styling
+- **SCSS Pipeline**: Style Dictionary + Sass compilation with PostCSS optimization  
+- **SVG Visual Identity**: Theme-aware logos with automatic light/dark mode switching
+- **WCAG AA Compliance**: Built-in accessibility with reduced motion and high contrast support
 
-### 🎨 R-First Design System
-- **`create_ui_workspace()`**: Set up Node.js workspace for CSS compilation
-- **`build_design_system()`**: Master build function wrapping modern CSS tools in R
-- **Multi-Channel Distribution**: Quarto extension, CDN assets, and Next.js integration
-- **Ethical AI Styling**: WCAG AA compliance with reduced motion and high contrast support
+### 🤖 AI-Native Architecture
+- **MCP-Compatible Functions**: Structured APIs designed for AI agent consumption
+- **Deterministic Operations**: Reproducible builds with comprehensive error handling
+- **Machine-Readable Outputs**: JSON-compatible results for programmatic integration
+- **Agent Context Files**: Persistent AI context and coordination capabilities
 
-### 🖼️ SVG-Based Visual Identity
-- **Scalable Design**: All logos now use SVG for perfect quality at any size
-- **Theme Integration**: Automatic light/dark mode adaptation with hover effects
-- **CDN Distribution**: Assets available globally via jsDelivr for external projects
-- **Template System**: Future packages inherit navbar branding while maintaining unique identity
-- **Professional Quality**: 920-1129 byte SVGs with CSS mask-based typography and rounded corners
+### 🚀 Multi-Platform Distribution
+- **CDN Assets**: jsDelivr-ready files with SRI hashes for global distribution
+- **Quarto Extensions**: Complete `dataimago/ai-native` extension for documentation sites
+- **Next.js Integration**: Generated Tailwind presets for seamless web application development
+- **R Package Access**: Built-in asset management via `system.file()` for Shiny applications
 
-### 🏗 Application Architecture
-- **NextJS + R Integration**: Best practices and templates
-- **Emancipatory Metrics**: Flow-based performance management frameworks
-- **API Readiness**: Structured outputs for web interfaces and AI agents
+### 📋 Framework Documentation
+- **Architecture Patterns**: Technical blueprints and implementation best practices
+- **Ethical AI Guidelines**: Embedded principles for human-centered development
+- **Design System Guide**: Complete visual identity and branding specifications  
+- **Development Workflows**: Step-by-step guidance for rapid application creation
 
 ### 🌐 Distribution Channels
 - **`inst/quarto-assets/`**: CDN-ready files accessible via jsDelivr (external projects)
@@ -310,35 +310,39 @@ flowchart TD
 devtools::load_all()
 ```
 
-## Quick Start
+## Quick Start - Application Development Workflow
 
-### Generate Documentation
+### Complete Setup and First Build
 
 ```r
 library(dataimago)
 
-# Generate comprehensive API documentation with ethical context
-create_quarto_documentation()
-
-# Render the complete website
-# (from quarto_website/ directory)
-# quarto render
-```
-
-### Build Design System
-
-```r
-# One-time setup of Node.js workspace
+# 1. Initialize development workspace (one-time setup)
 create_ui_workspace()
 
-# Compile CSS assets for all distribution channels
+# 2. Build complete design system
 result <- build_design_system(verbose = TRUE)
 
-# Check build results
+# 3. Generate professional documentation
+create_quarto_documentation()
+
+# Check results
 if (result$success) {
-  cat("\u2705 Generated:", length(result$assets), "assets")
-  cat("\U0001F510 SRI hashes:", length(result$sri_hashes))
+  cat("✅ Framework ready! Generated", length(result$assets), "assets")
+  cat("🔐 Security: SRI hashes generated")
+  cat("🚀 Deploy: Assets available for Quarto, Shiny, Next.js")
 }
+```
+
+### Development Workflow
+
+```r
+# Rapid iteration during development
+build_design_system(force_rebuild = FALSE)  # Smart incremental builds
+
+# Deploy updates to all platforms
+build_design_system(update_extension = TRUE)  # Update Quarto extension
+# CDN assets automatically updated via GitHub releases
 ```
 
 ### Deploy Design System
@@ -368,21 +372,16 @@ module.exports = {
 };
 ```
 
-### Access Foundation Documents
+### Application Scaffolding (Planned)
 
 ```r
-# Access philosophical foundations (planned functionality)
-# get_foundation_document("mission")
-# get_foundation_document("philosophy")
-# get_manifesto_content("critical_theory")
-```
+# Generate complete application skeletons
+# create_dataimago_app(name = "my-data-dashboard", type = "quarto+shiny")
+# scaffold_nextjs_integration(path = "my-web-app")
 
-### Create Applications
-
-```r
-# Generate dataimago-compliant applications (planned functionality)
-# create_dataimago_app(name = "my-project", type = "nextjs")
-# bootstrap_emancipatory_framework(path = "my-project")
+# Access framework documentation
+# get_architecture_pattern("data_visualization_best_practices")
+# get_design_system_tokens("spacing", "colors")
 ```
 
 ## Package Structure
@@ -392,12 +391,13 @@ dataimago/
 ├── R/                          # Core functions
 │   ├── documentation_utils.R   # Documentation generation
 │   └── design_system.R         # R-first CSS build pipeline
-├── ui/                         # Node.js design system workspace
+├── ui/                         # Complete frontend development workspace
 │   ├── src/
-│   │   ├── tokens/             # Design tokens (JSON)
-│   │   └── styles/             # SCSS source files
-│   └── dist/                   # Built CSS assets
-├── quarto_website/_extensions/dataimago/ai-native/ # Quarto extension
+│   │   ├── tokens/             # Design tokens (JSON) - SOURCE OF TRUTH
+│   │   └── styles/             # SCSS source files - SOURCE OF TRUTH
+│   ├── dist/                   # Built CSS assets (regenerable)
+│   └── www/                    # Quarto website project
+│       └── _extensions/dataimago/ai-native/ # Quarto extension
 ├── inst/
 │   ├── dataimago/              # Complete foundation documents
 │   │   ├── 01_Foundations/     # Mission, vision, philosophy
@@ -407,7 +407,7 @@ dataimago/
 │   ├── quarto-assets/          # CDN-ready assets
 │   ├── CLAUDE.md               # AI agent context
 │   └── AGENT_INDEX.md          # Agent coordination
-├── quarto_website/             # Website source
+
 ├── docs/                       # Rendered website
 ├── man/                        # Generated documentation
 └── tests/                      # Package tests
@@ -421,42 +421,50 @@ dataimago/
 - **Design System Guide**: Detailed implementation notes in `docs/development/`
 - **Vignettes**: Long-form tutorials and conceptual guides
 
-## Philosophy in Practice
+## Framework Philosophy
 
-dataimago represents a fundamental inversion: instead of embedding culture in AI, we **embed AI in culture** for emancipatory ends. This approach transforms AI from an instrument of domination into a force for human flourishing.
+dataimago embeds ethical AI principles and consistent development patterns directly into the framework architecture. Rather than requiring developers to manually implement best practices, the framework provides pre-built components, automated tooling, and structured workflows that ensure applications are scalable, accessible, and aligned with human flourishing.
 
-### Code-as-Philosophy Commitments
+### Development Principles
 
-- **Hermeneutic Transparency**: All modeling assumptions documented and interpretable
-- **Positivistic Rigor**: Empirical operations robust, efficient, and replicable
-- **Ethical Reflexivity**: Tools include affordances for users to interrogate usage
-- **Iterative Design**: Each commit is dialectical step toward future aspirations
+- **R-First Workflows**: Familiar interfaces wrapping modern web development tools
+- **Consistency by Default**: Automated application of design systems and best practices
+- **AI-Native Design**: Built for both human developers and AI agent collaboration
+- **Multi-Platform Thinking**: Single source generates assets for all deployment targets
+- **Ethical Foundation**: Human-centered development embedded throughout the framework
 
-## For AI Agents and MCP Integration
+## AI-Native Development Features
 
-This package is designed for seamless integration with AI agents and Model Context Protocol (MCP):
+This framework is designed from the ground up for both human developers and AI agents:
 
-### Structured Metadata
-- All functions include comprehensive `@param`, `@return`, and `@examples` documentation
-- Philosophical context embedded in `@details` sections
-- Consistent naming conventions for programmatic access
-- JSON-compatible outputs where appropriate
+### MCP-Compatible Tooling
+- **Structured APIs**: All functions use consistent parameter patterns and return structured results
+- **Comprehensive Documentation**: Detailed roxygen2 docs with examples and error handling
+- **Machine-Readable Outputs**: JSON-compatible results for programmatic consumption
+- **Agent Context Files**: `inst/CLAUDE.md` and `inst/AGENT_INDEX.md` provide persistent AI context
 
-### AI-Friendly Features
-- `inst/CLAUDE.md`: Persistent context for AI interactions
-- `inst/AGENT_INDEX.md`: Agent coordination and capabilities
-- Foundation documents provide philosophical grounding for AI reasoning
-- Generated documentation includes machine-readable ethical annotations
+### AI-Optimized Workflows
+- **Deterministic Operations**: Same inputs always produce same outputs
+- **Clear Error Messages**: Detailed failure information for debugging and remediation
+- **Incremental Builds**: Smart dependency detection avoids unnecessary rebuilds
+- **Validation Pipelines**: Built-in checks ensure output quality and consistency
 
-### Example MCP Tool Usage
+### Example MCP Tool Integration
 ```json
 {
-  "name": "create_quarto_documentation",
-  "description": "Generate ethical AI documentation from R package",
+  "name": "build_design_system",
+  "description": "Compile complete CSS design system for multi-platform deployment",
   "parameters": {
-    "package_path": "Path to R package (default: current directory)",
-    "output_path": "Output directory for generated website",
-    "include_foundation_links": "Include links to dataimago foundations"
+    "force_rebuild": "Force rebuild even if assets appear up-to-date",
+    "include_sri": "Generate SRI hashes for CDN distribution", 
+    "update_extension": "Update Quarto extension with compiled assets",
+    "verbose": "Print detailed progress information"
+  },
+  "returns": {
+    "success": "Boolean indicating overall build success",
+    "assets": "Array of generated asset file paths",
+    "sri_hashes": "Object containing SRI hashes for each CSS file",
+    "build_time": "ISO timestamp of build completion"
   }
 }
 ```

@@ -1,0 +1,1172 @@
+---
+title: "dataimago API Reference"
+subtitle: "dataimago Ethical AI Framework"
+version: "0.0-0.3"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+# Package Information
+
+**Package**: dataimago
+
+**Version**: 0.0-0.3
+
+**Title**: AI-Native Web-Application Development Framework for Data Science
+
+**Description**: A comprehensive development framework that accelerates the creation of data science web applications for both human developers and AI agents. Provides complete design system compilation, multi-platform deployment (Quarto, Shiny, Next.js), MCP-compatible tooling, and embedded ethical AI principles. Features R-first workflows that wrap modern web development tools in familiar interfaces, enabling rapid application scaffolding with consistent branding and best practices.
+
+**Authors**: c(person(given=c("Damian", "W."), family="Betebenner", email="dbetebenner@gmail.com", role=c("aut", "cre"), comment = c(ORCID = "0000-0003-0476-5599")))
+
+**Maintainer**: Damian W. Betebenner <dbetebenner@gmail.com>
+
+**License**: MIT + file LICENSE
+
+**URL**: https://dataimago.github.io/dataimago/
+
+**Bug Reports**: https://github.com/dataimago/dataimago/issues/
+
+**Depends**: R (>= 4.0)
+
+**Imports**: jsonlite (>= 1.9.0), yaml (>= 2.3.0), fs (>= 1.6.0), rlang (>= 1.1.0), crayon, glue (>= 1.7.0), whisker (>= 0.4.0), Rd2md, tools, processx (>= 3.8.0), digest (>= 0.6.0), cli
+
+**Suggests**: knitr, rmarkdown, testthat (>= 3.2.0), quarto (>= 1.4.0), shiny (>= 1.8.0), plumber (>= 1.2.0)
+
+
+## dataimago Foundation
+
+This package is built on dataimago's ethical AI framework:
+
+- [Mission & Vision](../foundations/mission.html)
+- [Philosophy](../foundations/philosophy.html)
+- [Critical Theory Manifesto](../manifesto/critical_theory_manifesto.html)
+
+# Exported Functions
+
+The following functions are exported and available for use:
+
+# Build Complete Design System for Multi-Platform Deployment
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Master function that orchestrates CSS compilation and asset distribution for web applications.
+This function provides R-first workflows that wrap Node.js tooling for rapid application development.
+
+## Usage
+
+```r
+build_design_system(
+  force_rebuild = FALSE,
+  include_sri = TRUE,
+  update_extension = TRUE,
+  verbose = TRUE
+)
+```
+
+## Arguments
+
+* `force_rebuild`: Logical. Force rebuild even if assets appear up-to-date. Default: FALSE
+* `include_sri`: Logical. Generate SRI hashes for CDN distribution. Default: TRUE
+* `update_extension`: Logical. Update Quarto extension with compiled assets. Default: TRUE
+* `verbose`: Logical. Print detailed progress information. Default: TRUE
+
+## Details
+
+This function implements dataimago's framework approach to asset compilation by providing
+R-first workflows that wrap modern web development tools. The build process includes:
+***System Requirements:***
+
+* Node.js 18+ and pnpm installed globally
+* Write permissions to package directories
+* OpenSSL for SRI hash generation (usually pre-installed on macOS/Linux)
+
+***Build Process:***
+
+1. ***Node.js Dependency Check***: Verifies pnpm is available via `which pnpm`
+1. ***Dependency Installation***: Runs `pnpm install` in ui/ directory to install Style Dictionary, Sass, etc.
+1. ***SCSS Compilation***: Executes `pnpm run build` to convert design tokens and SCSS to minified CSS
+1. ***Asset Distribution***: Copies built `dataimago.min.css` to multiple locations:
+* `ui/www/_extensions/dataimago/ai-native/assets/css/` for Quarto extension distribution
+* `inst/quarto-assets/` for R package CDN distribution
+* `ui/www/assets/css/` for local website development
+1. ***SRI Hash Generation***: Uses `openssl dgst -sha384 -binary | openssl base64 -A` for subresource integrity
+1. ***Build Manifest***: Creates JSON metadata with paths, versions, checksums, and build timestamp
+
+***Design Token Philosophy:***The ui/ workspace uses Style Dictionary to convert semantic design tokens (color.json,
+typography.json, spacing.json) into CSS custom properties. This ensures design consistency
+across Quarto websites, R Shiny apps, and future Next.js applications while maintaining
+the ethical AI principles embedded in dataimago's visual identity.
+***Error Handling:***
+
+* Validates Node.js/pnpm availability before attempting build
+* Checks for required ui/ directory structure
+* Provides clear error messages with suggested remediation
+* Rolls back partial builds on failure
+
+## MCP Tool Integration
+
+This function is designed for Model Context Protocol (MCP) integration, providing
+structured output that AI agents can parse and reason about:
+
+* ***Deterministic Output***: Same inputs always produce same outputs
+* ***Machine Readable***: JSON-compatible result structure
+* ***Error Context***: Detailed error messages for debugging
+* ***Build Metadata***: Complete provenance information for reproducibility
+
+## Philosophical Context
+
+This function embodies dataimago's principle of "R as source of truth" while embracing
+modern web development practices. Rather than forcing R developers to learn Node.js
+toolchains, it wraps industry-standard CSS preprocessing in familiar R function calls
+with comprehensive documentation of every system interaction.
+
+## Seealso
+
+`[update_quarto_extension](update_quarto_extension)` for extension asset management,
+`[generate_cdn_assets](generate_cdn_assets)` for CDN preparation,
+`[create_ui_workspace](create_ui_workspace)` for UI workspace initialization
+
+## Concept
+
+dataimago r-first-development MCP-compatible
+
+## Keyword
+
+build-tools
+
+## Keyword
+
+css
+
+## Keyword
+
+design-system
+
+## Keyword
+
+ethical-ai
+
+## Value
+
+List containing build results:
+
+* success: Logical indicating overall build success
+* assets: Character vector of generated asset paths
+* sri_hashes: Named list of SRI hashes for each CSS file
+* build_time: POSIXct timestamp of build completion
+* metadata: List containing build configuration and system information
+* errors: Character vector of any error messages (empty if successful)
+
+## Examples
+
+_Examples using dataimago's ethical AI framework:_
+
+
+```r
+# Basic build - compile all assets
+result <- build_design_system()
+
+# Check if build succeeded
+if (result$success) {
+  cat("Success: Built assets:", paste(result$assets, collapse = ", "), "\n")
+  cat("SRI hashes:", length(result$sri_hashes), "generated\n")
+} else {
+  cat("ERROR: Build failed:", paste(result$errors, collapse = "; "), "\n")
+}
+
+# Force rebuild with verbose output (useful for debugging)
+result <- build_design_system(force_rebuild = TRUE, verbose = TRUE)
+
+# Build for CDN distribution only (skip local copying)
+result <- build_design_system(
+  include_sri = TRUE,
+  update_extension = FALSE,
+  verbose = FALSE
+)
+
+# Inspect build metadata
+str(result$metadata)
+```
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Check Quarto Render Asset Status
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Analyzes what happens to assets during `quarto render` and identifies
+potential issues with asset copying to the docs/ directory.
+
+## Usage
+
+```r
+check_quarto_asset_status(verbose = TRUE)
+```
+
+## Arguments
+
+* `verbose`: Logical. Print detailed analysis. Default: TRUE
+
+## Details
+
+This function helps understand the Quarto rendering process:
+***CSS Files***:
+
+* Quarto copies CSS files from `assets/css/` to `docs/assets/css/`
+* CSS files referenced in YAML frontmatter are automatically included
+
+***JavaScript Files***:
+
+* JS files in `assets/js/` are NOT automatically copied to `docs/assets/js/`
+* JS files must be referenced in `include-after` or `include-before` YAML
+* Only files referenced in HTML `<script>` tags get copied
+
+***Extensions***:
+
+* Extension assets are used during rendering but may not be copied to docs/
+* Extensions provide a way to package assets for reuse across projects
+
+## Concept
+
+dataimago quarto-rendering asset-analysis
+
+## Keyword
+
+analysis
+
+## Keyword
+
+quarto
+
+## Keyword
+
+render
+
+## Value
+
+List containing analysis of asset status across directories
+
+## Examples
+
+_Examples using dataimago's ethical AI framework:_
+
+
+```r
+# Analyze asset status
+status <- check_quarto_asset_status()
+
+# Check what files are missing after render
+if (length(status$missing_in_docs) > 0) {
+  cat("Files not copied to docs:", paste(status$missing_in_docs, collapse = ", "))
+}
+```
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Generate Professional Application Documentation
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Converts R package documentation (.Rd files) and metadata (DESCRIPTION)
+into Quarto-compatible .qmd files for professional website generation.
+Applies dataimago framework branding and integrates development patterns.
+
+## Usage
+
+```r
+create_quarto_documentation(
+  package_path = ".",
+  output_path = "ui/www",
+  include_description = TRUE,
+  include_foundation_links = TRUE,
+  template = "dataimago"
+)
+```
+
+## Arguments
+
+* `package_path`: Character. Path to the R package root directory.
+Must contain DESCRIPTION file and man/ directory with .Rd files.
+Default: "." (current directory)
+* `output_path`: Character. Path to quarto website directory where
+.qmd files will be generated. Directory will be created if it
+doesn't exist. Default: "ui/www"
+* `include_description`: Logical. Whether to include full DESCRIPTION file
+content in the generated API reference. Useful for package metadata display.
+Default: TRUE
+* `include_foundation_links`: Logical. Whether to add automatic links to
+dataimago philosophical foundation documents in the generated documentation.
+Default: TRUE
+* `template`: Character. Documentation template to use for styling and
+structure.  Currently supports "dataimago" template with ethical
+AI branding.  Default: "dataimago"
+
+## Details
+
+This function implements dataimago's framework approach to documentation generation:
+
+* ***Automated Processing***: Parses package DESCRIPTION and converts .Rd files to Quarto markdown
+* ***Framework Integration***: Uses Rd2md for technical conversion with dataimago branding
+* ***Professional Styling***: Applies consistent visual identity and development patterns
+* ***Multi-Platform Output***: Generates documentation suitable for web deployment
+* ***AI-Compatibility***: Creates machine-readable annotations for MCP integration
+* ***Rapid Generation***: One-command documentation creation for development workflows
+
+The generated documentation structure includes:
+
+* `_quarto.yml` configuration file for website project setup
+* `api_reference.qmd` with YAML frontmatter and package metadata
+* Full DESCRIPTION file content (if requested)
+* Links to dataimago foundation documents
+* Function documentation with ethical context boxes
+* dataimago branding footer on each function
+
+For AI agents and MCP tools, this function provides structured documentation
+generation that embeds philosophical context into technical reference
+material,
+enabling AI systems to understand both the "what" and "why" of each function.
+
+## MCP Tool Integration
+
+This function is designed for Model Context Protocol (MCP) integration:
+
+* ***Input Validation***: Checks for required package structure
+* ***Structured Output***: Generates consistent .qmd file format
+* ***Error Handling***: Provides clear error messages for debugging
+* ***Asset Management***: Handles file copying and directory creation
+* ***Status Reporting***: Uses colored console output for progress
+tracking
+
+## Philosophical Context
+
+This function embodies dataimago's principle of embedding AI within culture
+for emancipatory purposes. Rather than treating documentation as mere
+technical
+reference, it creates living documents that connect computational tools to
+their ethical foundations and societal purposes.
+
+## Seealso
+
+`[parse_description_file](parse_description_file)` for DESCRIPTION parsing,
+`[convert_rd_files_to_qmd](convert_rd_files_to_qmd)` for .Rd conversion,
+`[update_dataimago_assets](update_dataimago_assets)` for asset management
+
+## Concept
+
+dataimago ethical-documentation MCP-compatible
+
+## Keyword
+
+documentation
+
+## Keyword
+
+ethical-ai
+
+## Keyword
+
+generation
+
+## Keyword
+
+quarto
+
+## Value
+
+Character (invisible). File path to the generated api_reference.qmd file.
+Side effects: Creates .qmd files and _quarto.yml in output_path directory
+and copies dataimago assets (logos, etc.) to assets/img/ subdirectory.
+
+## Examples
+
+_Examples using dataimago's ethical AI framework:_
+
+
+```r
+# Basic usage - generate documentation for current package
+create_quarto_documentation()
+
+# Generate for specific package with custom output location
+create_quarto_documentation(
+  package_path = "/path/to/my/package",
+  output_path = "docs/website"
+)
+
+# Generate minimal documentation without foundation links
+create_quarto_documentation(
+  include_foundation_links = FALSE,
+  include_description = FALSE
+)
+
+# For MCP/AI usage - capture output path
+doc_path <- create_quarto_documentation()
+cat("Generated documentation at:", doc_path)
+```
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Create UI Workspace for Design System
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Sets up the Node.js workspace structure and configuration files needed for
+CSS compilation and design token processing. This function creates the complete
+ui/ directory structure with package.json, build scripts, and source files.
+
+## Usage
+
+```r
+create_ui_workspace(force_overwrite = FALSE, verbose = TRUE)
+```
+
+## Arguments
+
+* `force_overwrite`: Logical. Overwrite existing ui/ directory if it exists. Default: FALSE
+* `verbose`: Logical. Print detailed progress information. Default: TRUE
+
+## Details
+
+***Created Directory Structure:***
+
+```
+ui/
++-- package.json              # Node.js dependencies (Style Dictionary, Sass, etc.)
++-- build.js                  # Custom build script for compilation
++-- src/
+|   +-- tokens/
+|   |   +-- colors.json       # dataimago color palette
+|   |   +-- typography.json   # Font definitions and scales
+|   |   +-- spacing.json      # Spacing scale and dimensions
+|   +-- styles/
+|       +-- base.scss         # Base styles using design tokens
+|       +-- components.scss   # UI component styles
+|       +-- utilities.scss    # Utility classes
++-- dist/                     # Build output directory (created by build process)
+```
+
+***Design Token Philosophy:***The design tokens follow dataimago's ethical AI principles:
+
+* ***Semantic Naming***: Colors like `primary`, `accent`, `ethical-highlight`
+* ***Accessibility First***: WCAG AA contrast ratios and reduced motion support
+* ***Cultural Sensitivity***: Avoid culturally-biased color assumptions
+* ***Future-Proof***: JSON structure enables multiple output formats
+
+***Build Tool Configuration:***
+
+* ***Style Dictionary***: Converts design tokens to CSS custom properties
+* ***Sass/SCSS***: Compiles component styles with token integration
+* ***PostCSS***: Adds vendor prefixes and optimizations
+* ***CSSnano***: Minification for production distribution
+
+## Value
+
+List containing setup results:
+
+* success: Logical indicating setup success
+* created_files: Character vector of files created
+* errors: Character vector of any error messages
+
+## Examples
+
+_Examples using dataimago's ethical AI framework:_
+
+
+```r
+# Create new ui workspace
+result <- create_ui_workspace()
+
+# Force recreate existing workspace
+result <- create_ui_workspace(force_overwrite = TRUE)
+
+# Check what was created
+if (result$success) {
+  cat("Created files:", paste(result$created_files, collapse = "\n  "))
+}
+```
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# dataimago: AI-Native Web-Application Development Framework for Data Science
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+The `dataimago` package is a comprehensive development framework that accelerates
+the creation of data science web applications for both human developers and AI agents.
+It provides complete design system compilation, multi-platform deployment
+(Quarto, Shiny, Next.js), MCP-compatible tooling, and embedded ethical AI principles.
+Features R-first workflows that wrap modern web development tools in familiar
+interfaces, enabling rapid application scaffolding with consistent branding and best practices.
+
+## Details
+
+### Framework Philosophy
+
+dataimago is an AI-native development framework that embeds ethical principles
+and consistent patterns into every aspect of application development. Rather than
+requiring developers to manually implement best practices, the framework provides
+pre-built components, automated tooling, and structured workflows that ensure
+applications are scalable, accessible, and aligned with human flourishing.
+
+### Framework Components
+
+#### Application Development Tools
+
+* `[create_quarto_documentation](create_quarto_documentation)`: Generate professional documentation
+websites with consistent branding and ethical AI annotations
+* `[build_design_system](build_design_system)`: Complete CSS compilation pipeline
+from design tokens to production-ready assets
+* `[create_ui_workspace](create_ui_workspace)`: Set up Node.js development environment
+with modern web tooling
+* Multi-platform deployment to Quarto extensions, CDN, and Next.js applications
+
+#### Design System & Asset Management
+
+* ***Design Tokens***: JSON-based design system with CSS custom properties
+* ***SCSS Compilation***: Style Dictionary + Sass pipeline for consistent styling
+* ***CDN Distribution***: jsDelivr-ready assets with SRI hashes for security
+* ***Visual Identity***: SVG-based logos with automatic theme switching
+
+#### Framework Documentation (`inst/dataimago/`)
+
+* ***01_Foundations/***: Framework philosophy and governance principles
+* ***02_Manifesto/***: Ethical AI approach and paradigm differentiation
+* ***03_Application_Architecture/***: Technical implementation patterns and best practices
+* ***04_dataimago_Content/***: Complete design system assets and branding guidelines
+
+### AI-Native Development Features
+
+This framework is designed from the ground up for both human developers and AI agents:
+
+#### MCP-Compatible Tooling
+
+* ***Structured APIs***: All functions use consistent parameter patterns and return structured results
+* ***Comprehensive Documentation***: Detailed roxygen2 docs with examples and error handling
+* ***Machine-Readable Outputs***: JSON-compatible results for programmatic consumption
+* ***Agent Context Files***: `inst/CLAUDE.md` and `inst/AGENT_INDEX.md` provide persistent AI context
+
+#### Rapid Development Workflow
+
+* ***One-Command Setup***: `create_ui_workspace()` initializes complete development environment
+* ***Automated Asset Pipeline***: `build_design_system()` handles design token compilation to production CSS
+* ***Multi-Platform Deployment***: Single source generates assets for Quarto, Shiny, Next.js, and CDN
+* ***Consistent Branding***: Automatic application of design system and ethical AI principles
+
+#### AI Agent Integration
+
+Framework functions are optimized for AI-driven development:
+
+* ***Deterministic Operations***: Same inputs always produce same outputs
+* ***Clear Error Messages***: Detailed failure information for debugging and remediation
+* ***Incremental Builds***: Smart dependency detection avoids unnecessary rebuilds
+* ***Validation Pipelines***: Built-in checks ensure output quality and consistency
+
+### Code-as-Philosophy Commitments
+
+* ***Hermeneutic Transparency***: All modeling assumptions documented and interpretable
+* ***Positivistic Rigor***: Empirical operations robust, efficient, and replicable
+* ***Ethical Reflexivity***: Tools include affordances for users to interrogate usage
+* ***Iterative Design***: Each commit is dialectical step toward future aspirations
+
+### Quick Start - Application Development Workflow
+
+Set up development environment and build your first application:
+
+```
+library(dataimago)
+
+# 1. Initialize development workspace
+create_ui_workspace()
+
+# 2. Build design system assets
+result <- build_design_system()
+
+# 3. Generate professional documentation
+create_quarto_documentation()
+
+# 4. Deploy to multiple platforms
+# - Quarto extension: Available automatically
+# - CDN assets: Available via jsDelivr
+# - Next.js: Use generated tailwind-preset.js
+```
+
+Access framework documentation (planned):
+
+```
+get_foundation_document("architecture_patterns")
+get_design_system_tokens("colors")
+```
+
+Generate application scaffolding (planned):
+
+```
+create_dataimago_app(name = "my-data-app", type = "quarto+shiny")
+scaffold_nextjs_integration(path = "my-project")
+```
+
+## Package Metadata
+
+* ***Version***: 0.0-0.3 (using dataimago semantic versioning)
+* ***License***: MIT
+* ***Maintainer***: Damian W. Betebenner [dbetebenner@nciea.org](mailto:dbetebenner@nciea.org)
+* ***Website***: https://dataimago.github.io/dataimago/
+* ***Repository***: https://github.com/dataimago/dataimago/
+
+## Citation
+
+To cite dataimago in publications:
+
+```
+citation("dataimago")
+```
+
+## Philosophy in Practice
+
+"Would this object help an AI understand, improve, or operationalize
+emancipatory thinking? If yes, it belongs." - dataimago development philosophy
+
+## Seealso
+
+Useful links:
+
+* [https://dataimago.github.io/dataimago/](https://dataimago.github.io/dataimago/)
+* Report bugs at [https://github.com/dataimago/dataimago/issues/](https://github.com/dataimago/dataimago/issues/)
+
+## Author
+
+***Maintainer***: Damian W. Betebenner [dbetebenner@gmail.com](mailto:dbetebenner@gmail.com) ([ORCID](https://orcid.org/0000-0003-0476-5599))
+
+## Concept
+
+dataimago emancipatory-ai MCP-compatible foundation-package
+
+## Keyword
+
+critical-theory
+
+## Keyword
+
+documentation-generation
+
+## Keyword
+
+ethical-ai
+
+## Keyword
+
+package
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Generate CDN Distribution Assets
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Prepares assets for CDN distribution with versioning, SRI hashes,
+and metadata.
+Creates jsDelivr-compatible structure in inst/quarto-assets/ for
+R package distribution.
+
+## Usage
+
+```r
+generate_cdn_assets(verbose = TRUE)
+```
+
+## Arguments
+
+* `verbose`: Logical. Print detailed progress information. Default: TRUE
+
+## Details
+
+This function creates CDN-ready assets by:
+
+1. ***Copying Built Assets***: Moves `ui/dist/*.css` to `inst/quarto-assets/`
+1. ***Generating Metadata***: Creates manifest.json with build info and SRI hashes
+1. ***Creating Usage Examples***: Generates HTML snippets showing CDN usage
+1. ***Validating File Integrity***: Ensures all copied files are complete and uncorrupted
+
+***CDN Distribution Strategy:***Files in `inst/quarto-assets/` become available via jsDelivr once the package is
+tagged and released on GitHub:
+
+```
+https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css
+```
+
+***SRI (Subresource Integrity) Hashes:***Each CSS file gets a SHA-384 hash for security:
+
+```
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/.../dataimago.min.css"
+      integrity="sha384-..."
+      crossorigin="anonymous">
+```
+
+***Generated Files:***
+
+* `inst/quarto-assets/dataimago.min.css` - Main compiled CSS
+* `inst/quarto-assets/tokens.css` - CSS custom properties (if built)
+* `inst/quarto-assets/manifest.json` - Build metadata and SRI hashes
+* `inst/quarto-assets/README.md` - Usage instructions and examples
+
+## Value
+
+List containing CDN preparation results:
+
+* success: Logical indicating preparation success
+* assets: Character vector of CDN-ready asset paths
+* errors: Character vector of any error messages
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Update Quarto Extension Assets
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Copies compiled CSS and other assets from ui/dist/ into the Quarto
+extension structure.
+Maintains proper extension.yml configuration and ensures asset linking
+works correctly.
+
+## Usage
+
+```r
+update_quarto_extension(verbose = TRUE)
+```
+
+## Arguments
+
+* `verbose`: Logical. Print detailed progress information. Default: TRUE
+
+## Details
+
+This function performs the following operations:
+
+1. ***Validates Extension Structure***: Checks that
+`ui/www/_extensions/dataimago/ai-native/` exists
+1. ***Copies Main CSS***: Copies `ui/dist/dataimago.min.css` to
+extension assets
+1. ***Updates Asset References***: Ensures extension.yml references the
+correct CSS files
+1. ***Preserves Extension Config***: Maintains existing Lua filters,
+shortcodes, etc.
+
+***Extension Asset Mapping:***
+
+* `ui/dist/dataimago.min.css` ->
+`ui/www/_extensions/dataimago/ai-native/assets/css/dataimago.min.css`
+and
+`ui/www/_extensions/dataimago/ai-native/assets/css/tokens.css` (if exists)
+* Source maps and development files are excluded from extension
+distribution
+
+***File Operations:***All file copying uses R's `fs::file_copy()` with overwrite protection
+and atomic operations
+to prevent corrupted assets during development. The function will not
+overwrite extension
+configuration files (like _extension.yml) unless they become corrupted.
+
+## Value
+
+List containing update results:
+
+* success: Logical indicating update success
+* updated_files: Character vector of files updated in extension
+* errors: Character vector of any error messages
+
+## Examples
+
+_Examples using dataimago's ethical AI framework:_
+
+
+```r
+# Update extension after building CSS
+build_design_system()
+result <- update_quarto_extension()
+
+# Check what was updated
+if (result$success) {
+  cat(
+    "Updated files:",
+    paste(result$updated_files, collapse = "\n  ")
+  )
+}
+```
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Internal Functions
+
+The following functions are internal to the package:
+
+# Add Function Documentation Sections with Exported/Non-exported Structure
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Add Function Documentation Sections with Exported/Non-exported Structure
+
+## Usage
+
+```r
+add_function_docs_sections(rd_content)
+```
+
+## Arguments
+
+* `rd_content`: List of converted .Rd content
+
+## Keyword
+
+internal
+
+## Value
+
+Character vector with structured function documentation
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Convert .Rd Files to QMD Format using Rd2md
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Convert .Rd Files to QMD Format using Rd2md
+
+## Usage
+
+```r
+convert_rd_files_to_qmd(rd_files)
+```
+
+## Arguments
+
+* `rd_files`: Character vector of paths to .Rd files
+
+## Keyword
+
+internal
+
+## Value
+
+List containing converted documentation for each function
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Extract Field from DESCRIPTION Lines
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Extract Field from DESCRIPTION Lines
+
+## Usage
+
+```r
+extract_desc_field(desc_lines, field_name)
+```
+
+## Arguments
+
+* `desc_lines`: Character vector of DESCRIPTION file lines
+* `field_name`: Name of field to extract
+
+## Keyword
+
+internal
+
+## Value
+
+Character string with field value or NULL if not found
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Format DESCRIPTION Fields for Quarto Display
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Format DESCRIPTION Fields for Quarto Display
+
+## Usage
+
+```r
+format_description_fields(desc_content)
+```
+
+## Arguments
+
+* `desc_content`: Parsed DESCRIPTION content list
+
+## Keyword
+
+internal
+
+## Value
+
+Character vector with formatted DESCRIPTION fields
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Generate API Reference QMD Content
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Generate API Reference QMD Content
+
+## Usage
+
+```r
+generate_api_reference_qmd(
+  desc_content,
+  rd_content,
+  include_description = TRUE,
+  include_foundation_links = TRUE
+)
+```
+
+## Arguments
+
+* `desc_content`: Parsed DESCRIPTION content
+* `rd_content`: Converted .Rd content
+* `include_description`: Include DESCRIPTION section
+* `include_foundation_links`: Include dataimago foundation links
+
+## Keyword
+
+internal
+
+## Value
+
+Character vector with complete qmd content
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Generate _quarto.yml Configuration File
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Generate _quarto.yml Configuration File
+
+## Usage
+
+```r
+generate_quarto_yml(desc_content, template = "dataimago")
+```
+
+## Arguments
+
+* `desc_content`: Parsed DESCRIPTION content
+* `template`: Template type (currently supports "dataimago")
+
+## Keyword
+
+internal
+
+## Value
+
+Character vector with _quarto.yml content
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Parse DESCRIPTION File
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Parse DESCRIPTION File
+
+## Usage
+
+```r
+parse_description_file(desc_file)
+```
+
+## Arguments
+
+* `desc_file`: Path to DESCRIPTION file
+
+## Keyword
+
+internal
+
+## Value
+
+List containing parsed DESCRIPTION fields
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Post-Process Markdown to QMD Format with dataimago Customizations
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Post-Process Markdown to QMD Format with dataimago Customizations
+
+## Usage
+
+```r
+post_process_md_to_qmd(md_content, func_name)
+```
+
+## Arguments
+
+* `md_content`: Character vector of markdown content from Rd2md
+* `func_name`: Function name for customization
+
+## Keyword
+
+internal
+
+## Value
+
+Character vector with qmd-formatted content
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+
+# Update dataimago Assets in Quarto Website
+
+## Description
+
+::: {.ethical-note}
+This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
+:::
+
+
+Update dataimago Assets in Quarto Website
+
+## Usage
+
+```r
+update_dataimago_assets(output_path, package_path)
+```
+
+## Arguments
+
+* `output_path`: Path to quarto website directory
+* `package_path`: Path to package root
+
+## Keyword
+
+internal
+
+
+---
+
+*This function is part of the dataimago ethical AI framework.*
+

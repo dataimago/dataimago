@@ -1,0 +1,167 @@
+---
+## No title or subtitle - using full-page scrolly telling layout
+format:
+  html:
+    page-layout: full
+    toc: false
+    sidebar: false
+    css: assets/css/index.css
+---
+
+<!-- ###################################### -->
+<!-- SLIDE 1: Hero with scrollable content START -->
+<!-- ###################################### -->
+::::::::: {.lenis-slide .dataimago-slide .hero-slide}
+<!-- Hero section START -->
+::::::: {.hero-section}
+<!-- Grid container START -->
+:::::: {.grid}
+<!-- Logo/left column START -->
+:::: {.g-col-12 .g-col-md-4 .logo-column}
+<!-- Logo/left container START -->
+::: {.logo-container}
+![](assets/img/package_hex_logo_grey-light.svg){width=500 .hero-logo}
+<!-- Logo/left container END -->
+:::
+<!-- Logo/left column END -->
+::::
+<!-- Content/right column START -->
+:::: {.g-col-12 .g-col-md-8 .g-start-md-5}
+<!-- Hero content scroller START -->
+::: {.hero-content-scroller data-lenis-animate="fade-left"}
+<!-- Scroller content wrapper START -->
+::: {.scroller-content}
+
+### AI-Native Development Framework {.content-item}
+
+**dataimago** represents a new paradigm in data science application development, designed specifically for integration with AI-native workflows and modern web frameworks. Built with comprehensive design systems and ethical AI principles at its core.
+
+### Complete Build Pipeline & Multi-Platform Deployment {.content-item}
+
+The framework provides automated CSS compilation from design tokens to production-ready assets. A single source generates optimized builds for Quarto websites, Shiny applications, Next.js platforms, and CDN distribution.
+
+### MCP-Compatible & AI-Agent Ready {.content-item}
+
+All functions are designed with structured, machine-readable interfaces that enable seamless collaboration between human developers and AI agents. JSON-compatible results and deterministic operations ensure reliable automation.
+
+### R-First Workflows with Modern Web Tools {.content-item}
+
+Familiar R interfaces wrap sophisticated Node.js build tools, providing the power of modern web development without requiring developers to leave their preferred environment.
+
+### Professional Documentation & Design Systems {.content-item}
+
+Automated generation of branded websites with consistent styling, comprehensive API documentation, and responsive design patterns that work across all deployment targets.
+
+### Rapid Development with Consistent Quality {.content-item}
+
+From concept to deployment in minimal time, with built-in design systems ensuring professional results. Scalable architecture supports everything from simple documentation sites to complex data applications.
+
+<!-- Scroller content wrapper END -->
+:::
+<!-- Hero content scroller END -->
+:::
+<!-- Content column END -->
+::::
+<!-- Grid container END -->
+::::::
+<!-- Hero section END -->
+:::::::
+<!-- SLIDE 1: Hero with scrollable content END -->
+:::::::::
+
+<!-- ###################################### -->
+<!-- SLIDE 2: Cards section START -->
+<!-- ###################################### -->
+:::::: {.lenis-slide .dataimago-slide .cards-slide}
+<!-- Cards container START -->
+:::: {.cards-container}
+
+<!-- Cards grid START -->
+:::: {.cards-grid}
+
+<!-- Card 1: Development Tools START -->
+::: {.feature-card}
+### ⚡ Development Tools
+
+**Complete Build Pipeline**  
+Automated CSS compilation from design tokens to production-ready assets
+
+**Multi-Platform Deployment**  
+Single source generates assets for Quarto, Shiny, Next.js, and CDN
+
+**Professional Documentation**  
+Automated generation of branded websites with consistent styling
+
+<!-- Technical preview START -->
+::: {.technical-preview}
+#### Quick Start Workflow
+```r
+create_ui_workspace()        # Setup environment
+build_design_system()        # Compile assets  
+create_quarto_documentation() # Generate docs
+```
+<!-- Technical preview END -->
+:::
+<!-- Card 1: Development Tools END -->
+:::
+
+<!-- Card 2: AI-Native Features START -->
+::: {.feature-card}
+### 🤖 AI-Native Features
+
+**MCP-Compatible APIs**  
+Structured functions designed for AI agent consumption and automation
+
+**Deterministic Operations**  
+Reproducible builds with comprehensive error handling and validation
+
+**Machine-Readable Outputs**  
+JSON-compatible results for seamless programmatic integration
+
+<!-- Logo showcase START -->
+::: {.logo-showcase}
+![AI Monogram](assets/img/ai_monogram_grey-light.svg){width=60 .showcase-logo}
+![Package Logo](assets/img/package_hex_logo_grey-light.svg){width=60 .showcase-logo}
+<!-- Logo showcase END -->
+:::
+<!-- Card 2: AI-Native Features END -->
+:::
+
+<!-- Card 3: Framework Benefits START -->
+::: {.feature-card}
+### 🎯 Framework Benefits
+
+<!-- Benefits list START -->
+::: {.framework-benefits}
+**Rapid Development**  
+Complete applications from concept to deployment in minimal time
+
+**Consistent Quality**  
+Built-in design systems ensure professional results across all platforms
+
+**AI-Agent Ready**  
+MCP-compatible tooling enables seamless human-AI collaboration
+
+**Scalable Architecture**  
+Multi-platform deployment from single source with automated optimization
+:::
+<!-- Benefits list END -->
+
+<!-- Learn more links START -->
+::: {.learn-more-links}
+[**API Reference**](api_reference.qmd)  
+Complete function documentation and examples
+
+[**Framework Documentation**](mission.qmd)  
+[Architecture](philosophy.qmd) • [Development Patterns](critical_theory_manifesto.qmd)
+:::
+<!-- Learn more links END -->
+<!-- Card 3: Framework Benefits END -->
+:::
+
+<!-- Cards grid END -->
+::::
+<!-- Cards container END -->
+:::
+<!-- SLIDE 2: Cards section END -->
+::::

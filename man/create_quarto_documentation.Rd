@@ -2,11 +2,11 @@
 % Please edit documentation in R/documentation_utils.R
 \name{create_quarto_documentation}
 \alias{create_quarto_documentation}
-\title{Generate Quarto Documentation from R Package}
+\title{Generate Professional Application Documentation}
 \usage{
 create_quarto_documentation(
   package_path = ".",
-  output_path = "quarto_website",
+  output_path = "ui/www",
   include_description = TRUE,
   include_foundation_links = TRUE,
   template = "dataimago"
@@ -19,7 +19,7 @@ Default: "." (current directory)}
 
 \item{output_path}{Character. Path to quarto website directory where
 .qmd files will be generated. Directory will be created if it
-doesn't exist. Default: "quarto_website"}
+doesn't exist. Default: "ui/www"}
 
 \item{include_description}{Logical. Whether to include full DESCRIPTION file
 content in the generated API reference. Useful for package metadata display.
@@ -40,20 +40,18 @@ and copies dataimago assets (logos, etc.) to assets/img/ subdirectory.
 }
 \description{
 Converts R package documentation (.Rd files) and metadata (DESCRIPTION)
-into Quarto-compatible .qmd files for website generation. Integrates
-dataimago branding and philosophical foundations.
+into Quarto-compatible .qmd files for professional website generation.
+Applies dataimago framework branding and integrates development patterns.
 }
 \details{
-This function implements dataimago's philosophy of "code-as-philosophy" by:
+This function implements dataimago's framework approach to documentation generation:
 \itemize{
-\item \strong{Hermeneutic Integration}: Parses the package DESCRIPTION for metadata
-\item \strong{Technical Conversion}: Uses Rd2md to convert .Rd files to Quarto markdown
-\item \strong{Ethical Annotation}: Adds philosophical context to every function via
-\code{post_process_md_to_qmd()}
-\item \strong{Foundation Linking}: Cross-references technical docs with philosophical content
-\item \strong{Visual Identity}: Copies dataimago logos and applies custom CSS styling
-\item \strong{AI Compatibility}: Generates machine-readable annotations for
-MCP integration
+\item \strong{Automated Processing}: Parses package DESCRIPTION and converts .Rd files to Quarto markdown
+\item \strong{Framework Integration}: Uses Rd2md for technical conversion with dataimago branding
+\item \strong{Professional Styling}: Applies consistent visual identity and development patterns
+\item \strong{Multi-Platform Output}: Generates documentation suitable for web deployment
+\item \strong{AI-Compatibility}: Creates machine-readable annotations for MCP integration
+\item \strong{Rapid Generation}: One-command documentation creation for development workflows
 }
 
 The generated documentation structure includes:

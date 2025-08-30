@@ -1,0 +1,112 @@
+project:
+  type: website
+  title: "dataimago: Ethical AI-Native Data Science"
+  output-dir: ../../docs
+  render:
+   - "*.qmd"      # Render all .qmd files by default
+   - "!content/presentations/**"  # Exclude presentations directory
+   - "content/documents/**"       # Include documents directory
+
+execute:
+  freeze: auto
+
+# Extensions configuration
+extensions:
+  - dataimago/ai-native
+
+# Define your package documentation
+references:
+  - type: r
+    title: "Function Reference"
+    source: "../../man"   # Path to your R package .Rd files (relative to ui/www)
+
+website:
+  site-url: "https://dataimago.github.io/dataimago/"
+  repo-url: "https://github.com/dataimago/dataimago"
+  title: "dataimago: Ethical AI-Native Data Science Foundation Package"
+  description: "An emancipatory AI-aligned performance management system built on flow-based analytics and critical theory principles"
+  favicon: /assets/img/ai_monogram_supreme_favicon.png
+  repo-actions: [edit, issue]
+  page-navigation: false
+  bread-crumbs: false
+
+  navbar:
+    title: "dataimago"
+    logo: /assets/img/ai_monogram_grey-light.svg
+    logo-alt: "dataimago AI-Native Data Science"
+    logo-href: "https://dataimago.github.io/dataimago/"
+    title-href: "https://dataimago.github.io/dataimago/"
+    search: false
+    pinned: true
+    foreground: "#7c7c7c"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: api_reference.qmd
+        text: API Reference
+      - text: Foundation
+        menu:
+          - href: mission.qmd
+            text: Mission & Vision
+          - href: philosophy.qmd
+            text: Philosophy
+          - href: critical_theory_manifesto.qmd
+            text: Critical Theory Manifesto
+    right:
+      - icon: github
+        href: "https://github.com/dataimago/dataimago"
+        target: _blank
+
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+       - section: "Getting Started"
+         contents:
+           - api_reference.qmd
+       - section: "Foundation"
+         contents:
+           - mission.qmd
+           - philosophy.qmd
+           - critical_theory_manifesto.qmd
+
+  page-footer:
+    center:
+      - text: "<img src='/assets/img/ai_monogram_grey-light.svg' class='footer-img-icon' title='dataimago.ai' label='dataimago.ai' alt='dataimago.ai' style='height:28px; vertical-align:middle; padding-right: 4px;'/>" 
+        href: https://dataimago.github.io/
+        target: _blank
+      - text: "<i class='bi bi-info-square-fill' style='font-size: 28px;' title='About dataimago'></i>"
+        href: https://dataimago.github.io/dataimago/
+      - text: "<i class='bi bi-github' style='font-size: 28px;' title='dataimago GitHub Repo'></i>"
+        href: https://github.com/dataimago/dataimago/
+        target: _blank
+
+metadata:
+  image: /assets/img/ai_monogram_supreme_COLOR.png  # must be a valid URL or relative path
+  open-graph: true
+  twitter-card:
+    image: /assets/img/ai_monogram_supreme_COLOR.png
+    card-style: summary_large_image
+
+format:
+  html:
+    theme:
+      light: [cosmo, assets/css/website-light.scss]
+      dark: [cosmo, assets/css/website-dark.scss]
+    css:
+      - assets/css/documents.css
+      - assets/css/landing-page-navigation.css
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    include-after: |
+      <meta name="dataimago-skip-links" content="false">
+      <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,600" rel="stylesheet" type="text/css">
+      <script src="https://unpkg.com/lenis@1.3.8/dist/lenis.min.js"></script>
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script type="text/javascript" src="/assets/js/jquery.sticky-kit.min.js"></script>
+      <script type="text/javascript" src="/assets/js/lenis-integration.js"></script>
+      <script type="text/javascript" src="/assets/js/logo-switch.js"></script>
+      <script type="text/javascript" src="/assets/js/custom-anchors.js"></script>
+      <script type="text/javascript" src="/assets/js/accessibility.js"></script>

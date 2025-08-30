@@ -1,6 +1,6 @@
 /**
  * lenis-integration.js - dataimago Design System
- * Built: 2025-08-28T17:04:31.429Z
+ * Built: 2025-08-30T08:53:09.832Z
  * Source: ui/src/js/lenis-integration.js
  */
 /**

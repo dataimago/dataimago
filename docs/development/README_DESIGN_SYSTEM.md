@@ -21,7 +21,7 @@ All major components have been successfully implemented and tested:
 - \u2705 **Multi-format output**: regular CSS, minified CSS, Tailwind preset
 
 ### \U0001F4CB Distribution Channels
-- \u2705 **Quarto Extension**: `quarto_website/_extensions/dataimago/ai-native/`
+- \u2705 **Quarto Extension**: `ui/www/_extensions/dataimago/ai-native/`
 - \u2705 **CDN Distribution**: `inst/quarto-assets/` (jsDelivr-compatible)
 - \u2705 **Local Development**: `ui/dist/` with source maps
 

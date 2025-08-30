@@ -1,0 +1,199 @@
+/*
+ * Dataimago AI-Native Extension - Lenis Integration Styles
+ * Core smooth scrolling and slide-based navigation styles
+ * Compatible with both light and dark themes
+ */
+
+/* ——— Lenis Core Integration ——— */
+html.lenis, 
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+/* ——— CSS Custom Properties for Theming ——— */
+:root {
+    /* Dataimago brand colors - can be overridden by theme */
+    --dataimago-primary: #83838f;
+    --dataimago-accent: #ff69b4;
+    --dataimago-bg: var(--quarto-bg, #ffffff);
+    --dataimago-text: var(--quarto-color, #000000);
+    --dataimago-border: var(--quarto-border-color, #dee2e6);
+    
+    /* Animation settings */
+    --dataimago-transition: 0.3s ease;
+    --dataimago-slide-duration: 1.8s;
+    
+    /* Spacing system */
+    --dataimago-space-xs: 0.5rem;
+    --dataimago-space-sm: 1rem;
+    --dataimago-space-md: 1.5rem;
+    --dataimago-space-lg: 3rem;
+    --dataimago-space-xl: 6rem;
+}
+
+/* ——— Full-Page Slide System ——— */
+.lenis-slide,
+.dataimago-slide {
+    min-height: 100vh;
+    padding: 0;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+}
+
+.lenis-slide:first-child,
+.dataimago-slide:first-child {
+    padding-top: 0;
+}
+
+/* ——— Slide Navigation Indicators ——— */
+.lenis-slide-nav,
+.dataimago-slide-nav {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    pointer-events: all;
+}
+
+.slide-indicators,
+.dataimago-slide-indicators {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--dataimago-space-sm);
+}
+
+.slide-indicator,
+.dataimago-slide-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid rgba(131, 131, 143, 0.4);
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--dataimago-transition);
+    position: relative;
+    padding: 0;
+}
+
+.slide-indicator::before,
+.dataimago-slide-indicator::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--dataimago-primary);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform var(--dataimago-transition);
+}
+
+.slide-indicator:hover,
+.dataimago-slide-indicator:hover {
+    border-color: var(--dataimago-text);
+    transform: scale(1.2);
+}
+
+.slide-indicator.active,
+.dataimago-slide-indicator.active {
+    border-color: var(--dataimago-primary);
+}
+
+.slide-indicator.active::before,
+.dataimago-slide-indicator.active::before {
+    transform: scale(1);
+}
+
+/* ——— Note: Hero Content Scroller styles moved to website-light.scss and website-dark.scss ——— */
+/* Using .hero-content-scroller, .scroller-content, .content-item classes */
+
+/* ——— Slide Animations ——— */
+[data-dataimago-animate] {
+    will-change: transform, opacity;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Fade animations */
+[data-dataimago-animate="fade-up"] {
+    transform: translateY(30px);
+    opacity: 0;
+}
+
+[data-dataimago-animate="fade-down"] {
+    transform: translateY(-30px);
+    opacity: 0;
+}
+
+[data-dataimago-animate="fade-left"] {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+[data-dataimago-animate="fade-right"] {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+[data-dataimago-animate="scale"] {
+    transform: scale(0.95);
+    opacity: 0;
+}
+
+/* Activated animations */
+[data-dataimago-animate].dataimago-animate-active {
+    opacity: 1;
+    transform: translate(0) scale(1);
+}
+
+/* ——— Responsive Design ——— */
+@media (max-width: 768px) {
+    .dataimago-slide-nav,
+    .lenis-slide-nav {
+        right: 1rem;
+    }
+    
+    .dataimago-slide-indicators,
+    .slide-indicators {
+        gap: 0.75rem;
+    }
+    
+    .dataimago-slide-indicator,
+    .slide-indicator {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+/* ——— Motion Sensitivity ——— */
+@media (prefers-reduced-motion: reduce) {
+    .dataimago-slide-nav,
+    .dataimago-slide-indicator,
+    .dataimago-content-item,
+    [data-dataimago-animate] {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .dataimago-slide {
+        scroll-snap-align: none;
+    }
+}
+
+/* ——— Performance Optimizations ——— */
+.dataimago-slide,
+.lenis-slide {
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 100vh;
+}

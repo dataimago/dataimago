@@ -1,21 +1,23 @@
-#' @importFrom cli symbol
-#' 
 #' Synchronize Assets Across Quarto Directories
+#' 
+#' @importFrom cli symbol
+#' @importFrom crayon blue yellow green red bold
+#' @importFrom glue glue
 #'
 #' @description
-#' Synchronizes assets from quarto_website/assets/ to quarto_website/_extensions/
+#' Synchronizes assets from ui/www/assets/ to ui/www/_extensions/
 #' using a single source of truth approach.
 #'
 #' @details
-#' This function establishes `quarto_website/assets/` as the **source of truth** for:
+#' This function establishes `ui/www/assets/` as the **source of truth** for:
 #' - Custom CSS files (*.css)
-#' - SCSS source files (*.scss) 
+#' - SCSS source files (*.scss)
 #' - JavaScript files (*.js)
 #' 
 #' **Source of Truth Hierarchy**:
 #' 1. `ui/src/` - Design system tokens and base styles (build system input)
-#' 2. `quarto_website/assets/` - Quarto-specific styling and overrides (**source of truth**)
-#' 3. `quarto_website/_extensions/` - Distribution copies (synchronized FROM assets)
+#' 2. `ui/www/assets/` - Quarto-specific styling and overrides (**source of truth**)
+#' 3. `ui/www/_extensions/` - Distribution copies (synchronized FROM assets)
 #' 4. `inst/quarto-assets/` - CDN distribution (synchronized from extensions)
 #' 
 #' The function:
@@ -64,7 +66,7 @@ sync_quarto_assets <- function(verbose = TRUE) {
   # Get base directories
   base_dir <- getwd()
   
-  quarto_dir <- file.path(base_dir, "quarto_website")
+  quarto_dir <- file.path(base_dir, "ui/www")
   assets_dir <- file.path(quarto_dir, "assets")
   extensions_dir <- file.path(quarto_dir, "_extensions", "dataimago", "ai-native", "assets")
   docs_dir <- file.path(base_dir, "docs")
@@ -74,7 +76,7 @@ sync_quarto_assets <- function(verbose = TRUE) {
   
   # Verify directories exist
   if (!dir.exists(quarto_dir)) {
-    errors <- c(errors, "quarto_website directory not found")
+    errors <- c(errors, "ui/www directory not found")
     return(list(success = FALSE, synced_files = character(), errors = errors))
   }
   
@@ -311,7 +313,7 @@ check_quarto_asset_status <- function(verbose = TRUE) {
   # Get base directories
   base_dir <- getwd()
   
-  quarto_dir <- file.path(base_dir, "quarto_website")
+  quarto_dir <- file.path(base_dir, "ui/www")
   assets_dir <- file.path(quarto_dir, "assets")
   docs_dir <- file.path(base_dir, "docs")
   

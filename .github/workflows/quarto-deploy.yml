@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'quarto_website/**'
+      - 'ui/www/**'
       - 'man/**'
       - 'R/**'
       - 'ui/**'
@@ -63,15 +63,15 @@ jobs:
           Rscript -e "
           dataimago::create_quarto_documentation(
             package_path = '.',
-            output_path = 'quarto_website',
+            output_path = 'ui/www',
             include_foundation_links = TRUE
           )
           "
 
       - name: Render Quarto Website
         run: |
-          cd quarto_website
-          quarto render --output-dir ../docs
+          cd ui/www
+          quarto render --output-dir ../../docs
 
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3

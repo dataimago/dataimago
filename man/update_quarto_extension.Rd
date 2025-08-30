@@ -27,7 +27,7 @@ works correctly.
 This function performs the following operations:
 \enumerate{
 \item \strong{Validates Extension Structure}: Checks that
-\verb{quarto_website/_extensions/dataimago/ai-native/} exists
+\verb{ui/www/_extensions/dataimago/ai-native/} exists
 \item \strong{Copies Main CSS}: Copies \code{ui/dist/dataimago.min.css} to
 extension assets
 \item \strong{Updates Asset References}: Ensures extension.yml references the
@@ -39,9 +39,9 @@ shortcodes, etc.
 \strong{Extension Asset Mapping:}
 \itemize{
 \item \code{ui/dist/dataimago.min.css} ->
-\verb{quarto_website/_extensions/dataimago/ai-native/assets/css/dataimago.min.css}
-\item \code{ui/dist/tokens.css} ->
-\verb{quarto_website/_extensions/dataimago/ai-native/assets/css/tokens.css} (if exists)
+\verb{ui/www/_extensions/dataimago/ai-native/assets/css/dataimago.min.css}
+and
+\verb{ui/www/_extensions/dataimago/ai-native/assets/css/tokens.css} (if exists)
 \item Source maps and development files are excluded from extension
 distribution
 }

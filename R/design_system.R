@@ -12,10 +12,10 @@ ui_done <- function(x) cat(crayon::green(paste0("\u2713", " ", x, "\n")))
 ui_warn <- function(x) cat(crayon::yellow(paste0("Warning:", " ", x, "\n")))
 ui_oops <- function(x) cat(crayon::red(paste0("\u2717", " ", x, "\n")))
 
-#' Build Design System Assets
+#' Build Complete Design System for Multi-Platform Deployment
 #'
-#' Master function that orchestrates the entire CSS compilation and distribution pipeline.
-#' This function wraps Node.js tooling (pnpm/npm) in R to maintain R-first development workflow.
+#' Master function that orchestrates CSS compilation and asset distribution for web applications.
+#' This function provides R-first workflows that wrap Node.js tooling for rapid application development.
 #'
 #' @param force_rebuild Logical. Force rebuild even if assets appear up-to-date. Default: FALSE
 #' @param include_sri Logical. Generate SRI hashes for CDN distribution. Default: TRUE
@@ -23,8 +23,8 @@ ui_oops <- function(x) cat(crayon::red(paste0("\u2717", " ", x, "\n")))
 #' @param verbose Logical. Print detailed progress information. Default: TRUE
 #'
 #' @details
-#' This function implements dataimago's R-first philosophy by wrapping Node.js build tools
-#' in well-documented R functions. The build process includes:
+#' This function implements dataimago's framework approach to asset compilation by providing
+#' R-first workflows that wrap modern web development tools. The build process includes:
 #'
 #' **System Requirements:**
 #' - Node.js 18+ and pnpm installed globally
@@ -36,9 +36,9 @@ ui_oops <- function(x) cat(crayon::red(paste0("\u2717", " ", x, "\n")))
 #' 2. **Dependency Installation**: Runs `pnpm install` in ui/ directory to install Style Dictionary, Sass, etc.
 #' 3. **SCSS Compilation**: Executes `pnpm run build` to convert design tokens and SCSS to minified CSS
 #' 4. **Asset Distribution**: Copies built `dataimago.min.css` to multiple locations:
-#'    - `quarto_website/_extensions/dataimago/ai-native/assets/css/` for Quarto extension distribution
+#'    - `ui/www/_extensions/dataimago/ai-native/assets/css/` for Quarto extension distribution
 #'    - `inst/quarto-assets/` for R package CDN distribution
-#'    - `quarto_website/assets/css/` for local website development
+#'    - `ui/www/assets/css/` for local website development
 #' 5. **SRI Hash Generation**: Uses `openssl dgst -sha384 -binary | openssl base64 -A` for subresource integrity
 #' 6. **Build Manifest**: Creates JSON metadata with paths, versions, checksums, and build timestamp
 #'
@@ -827,7 +827,7 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 #' This function performs the following operations:
 #'
 #' 1. **Validates Extension Structure**: Checks that
-#'    `quarto_website/_extensions/dataimago/ai-native/` exists
+#'    `ui/www/_extensions/dataimago/ai-native/` exists
 #' 2. **Copies Main CSS**: Copies `ui/dist/dataimago.min.css` to
 #'    extension assets
 #' 3. **Updates Asset References**: Ensures extension.yml references the
@@ -837,9 +837,9 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
 #'
 #' **Extension Asset Mapping:**
 #' - `ui/dist/dataimago.min.css` ->
-#'   `quarto_website/_extensions/dataimago/ai-native/assets/css/dataimago.min.css`
-#' - `ui/dist/tokens.css` ->
-#'   `quarto_website/_extensions/dataimago/ai-native/assets/css/tokens.css` (if exists)
+#'   `ui/www/_extensions/dataimago/ai-native/assets/css/dataimago.min.css`
+#'   and
+#'   `ui/www/_extensions/dataimago/ai-native/assets/css/tokens.css` (if exists)
 #' - Source maps and development files are excluded from extension
 #'   distribution
 #'
@@ -887,7 +887,7 @@ update_quarto_extension <- function(verbose = TRUE) {
   }
 
   # Validate extension directory exists
-  extension_dir <- "quarto_website/_extensions/dataimago/ai-native"
+  extension_dir <- "ui/www/_extensions/dataimago/ai-native"
   if (!dir_exists(extension_dir)) {
     errors <- c(errors, "Quarto extension directory not found. Extension structure may be corrupted.")
     list(success = FALSE, updated_files = updated_files, errors = errors)
@@ -967,7 +967,7 @@ update_quarto_extension <- function(verbose = TRUE) {
   
   # Copy JavaScript assets from ui/dist/js/
   js_dist_dir <- "ui/dist/js"
-  extension_js_dir <- "quarto_website/_extensions/dataimago/ai-native/assets/js"
+  extension_js_dir <- "ui/www/_extensions/dataimago/ai-native/assets/js"
   
   if (dir_exists(js_dist_dir) && dir_exists(extension_js_dir)) {
     if (verbose) {
@@ -1001,8 +1001,8 @@ update_quarto_extension <- function(verbose = TRUE) {
     }
   }
   
-  # Also copy JavaScript to quarto_website/assets/js/ for development
-  quarto_js_dir <- "quarto_website/assets/js"
+  # Also copy JavaScript to ui/www/assets/js/ for development
+  quarto_js_dir <- "ui/www/assets/js"
   if (dir_exists(js_dist_dir) && dir_exists(quarto_js_dir)) {
     if (verbose) {
       ui_info("Copying JavaScript assets to Quarto development directory...")

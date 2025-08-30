@@ -5,8 +5,7 @@
    ======================================== */
 
 .hero-section {
-  background: linear-gradient(135deg, var(--bs-body-bg) 0%, color-mix(in srgb, var(--bs-body-bg) 95%, var(--bs-primary)) 100%);
-  min-height: 100vh;
+  min-height: 60vh;
   display: flex;
   align-items: center;
 }
@@ -46,6 +45,23 @@
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
+}
+
+/* Ensure full-height slide containers */
+.lenis-slide {
+  min-height: 60vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.hero-slide {
+  display: flex;
+  align-items: center;
+}
+
+.cards-slide {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 /* ========================================

@@ -33,8 +33,11 @@
 ^inst/dataimago/04_dataimago_Content/Design_Assets/logos/.*\.svg$
 
 # Exclude quarto generated files
-^quarto_website/_site$
-^quarto_website/\.quarto
+^ui/www/_site$
+^ui/www/\.quarto$
+
+# Exclude old quarto_website directory if it exists
+^quarto_website$
 
 # Exclude Node.js artifacts but include built CSS
 ^ui/node_modules$
@@ -49,7 +52,7 @@
 ^node_modules$
 ^\.npmrc$
 
-# Exclude any Quarto extensions at package root (should only be in quarto_website/)
+# Exclude any Quarto extensions at package root (should only be in ui/www/)
 ^_extensions$
 
 # Exclude README files in R/ and man/ directories (not allowed in R packages)
@@ -65,9 +68,9 @@
 ^vignettes/?$
 
 # Exclude empty quarto extension directories (if they exist)  
-^quarto_website/_extensions/dataimago/ai-native/docs$
-^quarto_website/_extensions/dataimago/ai-native/examples$
-^quarto_website/_extensions/dataimago/ai-native/assets/img$
+^ui/www/_extensions/dataimago/ai-native/docs$
+^ui/www/_extensions/dataimago/ai-native/examples$
+^ui/www/_extensions/dataimago/ai-native/assets/img$
 
 # Exclude large binary files
 .*\.pdf$
