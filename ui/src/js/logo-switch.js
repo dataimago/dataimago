@@ -220,7 +220,7 @@ function smoothLogoTransition(logoElement, newSrc, duration = 300) {
 }
 
 function setHomepageHexLogoEffects() {
-  const hexLogos = document.querySelectorAll('.dataimago-hex-logo');
+  const hexLogos = document.querySelectorAll('.di-hex-logo');
   
   hexLogos.forEach(logo => {
     // Remove existing event listeners by cloning
@@ -248,7 +248,7 @@ function setHomepageHexLogoEffects() {
 }
 
 function updateSVGLogosForTheme() {
-  const hexLogos = document.querySelectorAll('.dataimago-hex-logo');
+  const hexLogos = document.querySelectorAll('.di-hex-logo');
   const currentSVGLogos = getSVGLogos();
   
   hexLogos.forEach(logo => {

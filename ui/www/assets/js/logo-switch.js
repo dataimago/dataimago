@@ -1,6 +1,6 @@
 /**
  * logo-switch.js - dataimago Design System
- * Built: 2025-08-30T08:53:09.832Z
+ * Built: 2025-08-31T08:58:36.203Z
  * Source: ui/src/js/logo-switch.js
  */
 // AI Monogram SVG paths (for navbar/footer) - Local paths (switch to CDN after GitHub push)
@@ -225,7 +225,7 @@ function smoothLogoTransition(logoElement, newSrc, duration = 300) {
 }
 
 function setHomepageHexLogoEffects() {
-  const hexLogos = document.querySelectorAll('.dataimago-hex-logo');
+  const hexLogos = document.querySelectorAll('.di-hex-logo');
   
   hexLogos.forEach(logo => {
     // Remove existing event listeners by cloning
@@ -253,7 +253,7 @@ function setHomepageHexLogoEffects() {
 }
 
 function updateSVGLogosForTheme() {
-  const hexLogos = document.querySelectorAll('.dataimago-hex-logo');
+  const hexLogos = document.querySelectorAll('.di-hex-logo');
   const currentSVGLogos = getSVGLogos();
   
   hexLogos.forEach(logo => {

@@ -7,8 +7,8 @@ This directory contains all static assets for the dataimago-ai-native Quarto ext
 ```
 assets/
 ├── css/                    # Stylesheets and themes
-│   ├── ai-native-light.scss   # Light theme styles
-│   ├── ai-native-dark.scss    # Dark theme styles
+│   ├── website-light.scss     # Light theme styles (source of truth)
+│   ├── website-dark.scss      # Dark theme styles (source of truth)
 │   ├── lenis-integration.scss # Smooth scrolling styles
 │   └── components.scss        # Reusable component styles
 ├── js/                     # JavaScript functionality
@@ -23,8 +23,8 @@ assets/
 ## 🎨 CSS Architecture
 
 ### Theme Files
-- **`ai-native-light.scss`**: Complete light theme with all component styles
-- **`ai-native-dark.scss`**: Complete dark theme with all component styles
+- **`website-light.scss`**: Complete light theme with all component styles (source of truth)
+- **`website-dark.scss`**: Complete dark theme with all component styles (source of truth)
 
 ### Component Files
 - **`lenis-integration.scss`**: Core smooth scrolling and slide navigation styles

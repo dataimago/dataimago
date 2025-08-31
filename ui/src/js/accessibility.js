@@ -331,6 +331,13 @@ class DataimagoAccessibility {
     }
 
     addSkipLinks() {
+        // Check if skip links should be disabled via meta tag
+        const skipLinksMeta = document.querySelector('meta[name="dataimago-skip-links"]');
+        if (skipLinksMeta && skipLinksMeta.content === 'false') {
+            console.log('♿ Skip links disabled via meta tag');
+            return; // Exit early - don't create skip links
+        }
+        
         // Main skip link (if not already present)
         if (!document.querySelector('.dataimago-skip-link')) {
             const skipToMain = document.createElement('a');

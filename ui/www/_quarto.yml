@@ -95,7 +95,6 @@ format:
       dark: [cosmo, assets/css/website-dark.scss]
     css:
       - assets/css/documents.css
-      - assets/css/landing-page-navigation.css
     toc: true
     toc-depth: 3
     code-copy: true

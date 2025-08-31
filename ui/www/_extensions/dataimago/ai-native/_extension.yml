@@ -10,8 +10,8 @@ contributes:
       # Main format definition
       dataimago-ai-native-html:
         theme:
-          light: [cosmo, assets/css/ai-native-light.scss]
-          dark: [cosmo, assets/css/ai-native-dark.scss]
+          light: [cosmo, assets/css/website-light.scss]
+          dark: [cosmo, assets/css/website-dark.scss]
         css:
           - assets/css/lenis-integration.scss
           - assets/css/components.scss
