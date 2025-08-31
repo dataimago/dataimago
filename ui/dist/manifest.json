@@ -1,12 +1,15 @@
 {
   "name": "dataimago Design System",
   "version": "0.1.0",
-  "buildTime": "2025-08-31T09:35:33.182Z",
+  "buildTime": "2025-08-31T13:42:33.397Z",
   "assets": {
     "tokens.css": "CSS custom properties from design tokens",
     "dataimago.css": "Expanded CSS for development",
     "dataimago.min.css": "Minified CSS for production",
-    "tailwind-preset.js": "Tailwind CSS preset for Next.js integration"
+    "tailwind-preset.js": "Tailwind CSS preset for Next.js integration",
+    "website-theme.css": "Unified website theme (light/dark aware)",
+    "website-light.scss": "Quarto light theme compatibility",
+    "website-dark.scss": "Quarto dark theme compatibility"
   },
   "javascript": {
     "js/accessibility.js": "JavaScript component: accessibility",

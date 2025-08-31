@@ -158,15 +158,70 @@ const mainScssContent = `
 const mainScssPath = path.join(config.srcDir, 'main.scss');
 fs.writeFileSync(mainScssPath, mainScssContent);
 
-// Step 3: Compile SCSS to CSS
+// Step 3: Compile SCSS to CSS (both main and website theme)
 console.log('🎨 Compiling SCSS...');
 
+// Compile main design system
 try {
   const sassCmd = `npx sass ${mainScssPath}:${path.join(config.distDir, 'dataimago.css')} --style=expanded --source-map`;
   execSync(sassCmd, { stdio: 'inherit', cwd: __dirname });
-  console.log('✅ SCSS compiled successfully');
+  console.log('✅ Main design system compiled successfully');
 } catch (error) {
-  console.error('❌ SCSS compilation failed:', error.message);
+  console.error('❌ Main SCSS compilation failed:', error.message);
+  process.exit(1);
+}
+
+// Compile website theme
+try {
+  const websiteThemePath = path.join(config.stylesDir, 'website-theme.scss');
+  
+  if (fs.existsSync(websiteThemePath)) {
+    // Compile unified website theme
+    const websiteCmd = `npx sass ${websiteThemePath}:${path.join(config.distDir, 'website-theme.css')} --style=expanded --source-map`;
+    execSync(websiteCmd, { stdio: 'inherit', cwd: __dirname });
+    console.log('✅ Website theme compiled successfully');
+    
+    // Also create light/dark specific versions for Quarto compatibility
+    const lightContent = `
+// dataimago Website Light Theme - Generated from single source
+@import 'website-theme.css';
+
+/*-- scss:defaults --*/
+$h2-font-size: 1.6rem !default;
+$headings-font-weight: 500 !default;
+$body-bg: rgb(237, 237, 235) !default;
+$btn-code-copy-color: #7c7c7c !default;
+$btn-code-copy-color-active: #000 !default;
+
+/*-- scss:rules --*/
+// Theme styles handled by imported CSS above
+`;
+
+    const darkContent = `
+// dataimago Website Dark Theme - Generated from single source  
+@import 'website-theme.css';
+
+/*-- scss:defaults --*/
+$h2-font-size: 1.6rem !default;
+$headings-font-weight: 500 !default;
+$body-bg: rgb(20, 20, 16) !default;
+$btn-code-copy-color: #7c7c7c !default;
+$btn-code-copy-color-active: rgb(237, 237, 235) !default;
+
+/*-- scss:rules --*/
+// Theme styles handled by imported CSS above
+`;
+
+    // Write theme-specific files
+    fs.writeFileSync(path.join(config.distDir, 'website-light.scss'), lightContent);
+    fs.writeFileSync(path.join(config.distDir, 'website-dark.scss'), darkContent);
+    
+    console.log('✅ Light/Dark theme variants generated');
+  } else {
+    console.log('⚠️ Website theme not found, skipping...');
+  }
+} catch (error) {
+  console.error('❌ Website theme compilation failed:', error.message);
   process.exit(1);
 }
 
@@ -234,32 +289,57 @@ if (!fs.existsSync(jsDist)) {
   fs.mkdirSync(jsDist, { recursive: true });
 }
 
-// Copy individual JavaScript files (no bundling for now - preserve individual files)
-if (fs.existsSync(config.jsDir)) {
-  const jsFiles = fs.readdirSync(config.jsDir).filter(file => file.endsWith('.js'));
+// Process JavaScript files recursively (preserving directory structure)
+function processJSFiles(srcDir, distDir, basePath = '') {
+  if (!fs.existsSync(srcDir)) return 0;
   
-  jsFiles.forEach(file => {
-    const srcPath = path.join(config.jsDir, file);
-    const distPath = path.join(jsDist, file);
+  const items = fs.readdirSync(srcDir);
+  let processedCount = 0;
+  
+  items.forEach(item => {
+    const srcPath = path.join(srcDir, item);
+    const stats = fs.statSync(srcPath);
     
-    // Copy file with header comment
-    const content = fs.readFileSync(srcPath, 'utf8');
-    const processedContent = `/**
- * ${file} - dataimago Design System
+    if (stats.isDirectory()) {
+      // Create corresponding directory in dist
+      const subDistDir = path.join(distDir, item);
+      if (!fs.existsSync(subDistDir)) {
+        fs.mkdirSync(subDistDir, { recursive: true });
+      }
+      
+      // Recursively process subdirectory
+      processedCount += processJSFiles(srcPath, subDistDir, path.join(basePath, item));
+    } else if (item.endsWith('.js')) {
+      // Process JavaScript file
+      const distPath = path.join(distDir, item);
+      const relativePath = path.join(basePath, item).replace(/\\/g, '/');
+      
+      const content = fs.readFileSync(srcPath, 'utf8');
+      const processedContent = `/**
+ * ${item} - dataimago Design System
  * Built: ${new Date().toISOString()}
- * Source: ui/src/js/${file}
+ * Source: ui/src/js/${relativePath}
  */
 ${content}`;
-    
-    fs.writeFileSync(distPath, processedContent);
+      
+      fs.writeFileSync(distPath, processedContent);
+      processedCount++;
+      
+      // Log with appropriate path
+      const stats = fs.statSync(distPath);
+      const sizeKB = Math.round(stats.size / 1024 * 100) / 100;
+      const displayPath = relativePath || item;
+      console.log(`   ✓ js/${displayPath} (${sizeKB} KB)`);
+    }
   });
   
-  console.log(`✅ JavaScript files processed (${jsFiles.length} files)`);
-  jsFiles.forEach(file => {
-    const stats = fs.statSync(path.join(jsDist, file));
-    const sizeKB = Math.round(stats.size / 1024 * 100) / 100;
-    console.log(`   ✓ js/${file} (${sizeKB} KB)`);
-  });
+  return processedCount;
+}
+
+const totalJSFiles = processJSFiles(config.jsDir, jsDist);
+
+if (totalJSFiles > 0) {
+  console.log(`✅ JavaScript files processed (${totalJSFiles} files)`);
 } else {
   console.log('⚠️  No JavaScript source directory found (ui/src/js)');
 }
@@ -286,10 +366,150 @@ if (fs.existsSync(path.join(config.distDir, 'js'))) {
   });
 }
 
+// Add website theme files to manifest if they exist
+if (fs.existsSync(path.join(config.distDir, 'website-theme.css'))) {
+  manifest.assets['website-theme.css'] = 'Unified website theme (light/dark aware)';
+  manifest.assets['website-light.scss'] = 'Quarto light theme compatibility';
+  manifest.assets['website-dark.scss'] = 'Quarto dark theme compatibility';
+}
+
 fs.writeFileSync(
   path.join(config.distDir, 'manifest.json'), 
   JSON.stringify(manifest, null, 2)
 );
+
+// Step 8: Distribute assets to all channels
+console.log('📦 Distributing assets to all channels...');
+
+const distributionChannels = [
+  {
+    name: 'CDN Assets (inst/quarto-assets/)',
+    path: path.join(__dirname, '..', 'inst', 'quarto-assets'),
+    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css']
+  },
+  {
+    name: 'Website Assets (ui/www/assets/css/)',
+    path: path.join(__dirname, 'www', 'assets', 'css'),
+    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-light.scss', 'website-dark.scss']
+  },
+  {
+    name: 'Quarto Extension (ui/www/_extensions/dataimago/ai-native/assets/css/)',
+    path: path.join(__dirname, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'css'),
+    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-light.scss', 'website-dark.scss']
+  },
+  {
+    name: 'Docs Assets (docs/assets/css/)',
+    path: path.join(__dirname, '..', 'docs', 'assets', 'css'),
+    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css']
+  }
+];
+
+distributionChannels.forEach(channel => {
+  // Ensure target directory exists
+  if (!fs.existsSync(channel.path)) {
+    fs.mkdirSync(channel.path, { recursive: true });
+  }
+
+  let copied = 0;
+  channel.files.forEach(file => {
+    const srcPath = path.join(config.distDir, file);
+    const destPath = path.join(channel.path, file);
+    
+    if (fs.existsSync(srcPath)) {
+      fs.copyFileSync(srcPath, destPath);
+      copied++;
+    }
+  });
+  
+  console.log(`   ✓ ${channel.name} (${copied}/${channel.files.length} files)`);
+});
+
+// Also distribute JavaScript assets
+const jsChannels = [
+  {
+    name: 'Website JS (ui/www/assets/js/)',
+    path: path.join(__dirname, 'www', 'assets', 'js')
+  },
+  {
+    name: 'Extension JS (ui/www/_extensions/dataimago/ai-native/assets/js/)',
+    path: path.join(__dirname, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'js')
+  },
+  {
+    name: 'Docs JS (docs/assets/js/)',
+    path: path.join(__dirname, '..', 'docs', 'assets', 'js')
+  }
+];
+
+// Enhanced JS distribution with directory structure preservation
+function distributeJSFiles(srcDir, channels, basePath = '') {
+  if (!fs.existsSync(srcDir)) return;
+  
+  const items = fs.readdirSync(srcDir);
+  
+  items.forEach(item => {
+    const srcPath = path.join(srcDir, item);
+    const stats = fs.statSync(srcPath);
+    
+    if (stats.isDirectory()) {
+      // Create subdirectories in all channels and recurse
+      channels.forEach(channel => {
+        const channelSubDir = path.join(channel.path, item);
+        if (!fs.existsSync(channelSubDir)) {
+          fs.mkdirSync(channelSubDir, { recursive: true });
+        }
+      });
+      
+      distributeJSFiles(srcPath, channels.map(channel => ({
+        ...channel,
+        path: path.join(channel.path, item)
+      })), path.join(basePath, item));
+    } else if (item.endsWith('.js')) {
+      // Distribute JS files
+      channels.forEach(channel => {
+        const destPath = path.join(channel.path, item);
+        fs.copyFileSync(srcPath, destPath);
+      });
+    }
+  });
+}
+
+if (fs.existsSync(path.join(config.distDir, 'js'))) {
+  // Count total JS files for reporting
+  function countJSFiles(dir) {
+    let count = 0;
+    const items = fs.readdirSync(dir);
+    
+    items.forEach(item => {
+      const itemPath = path.join(dir, item);
+      const stats = fs.statSync(itemPath);
+      
+      if (stats.isDirectory()) {
+        count += countJSFiles(itemPath);
+      } else if (item.endsWith('.js')) {
+        count++;
+      }
+    });
+    
+    return count;
+  }
+  
+  const totalJSFiles = countJSFiles(path.join(config.distDir, 'js'));
+  
+  jsChannels.forEach(channel => {
+    if (!fs.existsSync(channel.path)) {
+      fs.mkdirSync(channel.path, { recursive: true });
+    }
+  });
+  
+  // Distribute all JS files preserving directory structure
+  distributeJSFiles(path.join(config.distDir, 'js'), jsChannels);
+  
+  jsChannels.forEach(channel => {
+    console.log(`   ✓ ${channel.name} (${totalJSFiles} JS files)`);
+  });
+}
+
+console.log('✅ Asset distribution complete');
 
 // Clean up temporary files
 if (fs.existsSync(mainScssPath)) {

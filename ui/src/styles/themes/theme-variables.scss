@@ -1,0 +1,101 @@
+// dataimago Theme Variables
+// Single source of truth for theme-specific color values and settings
+
+// Theme-specific color mappings using design tokens
+:root, [data-bs-theme="light"] {
+  // Light theme variables
+  --theme-body-bg: var(--color-surface-page-light, rgb(237, 237, 235));
+  --theme-navbar-bg: var(--color-surface-page-light, rgb(237, 237, 235));
+  --theme-navbar-bg-scrolled: rgb(237, 237, 238);
+  --theme-text-primary: var(--color-content-primary-light, #000000);
+  --theme-text-secondary: var(--color-content-secondary-light, #7c7c7c);
+  --theme-text-hover: var(--color-content-primary-light, #000000);
+  
+  // Code styling
+  --theme-code-bg: rgb(225, 225, 223);
+  --theme-code-border: rgb(220, 220, 218);
+  --theme-code-color: #cf2976;
+  
+  // Logo paths
+  --theme-logo-grey: url('/assets/img/ai_monogram_grey-light.svg');
+  --theme-logo-color: url('/assets/img/ai_monogram_dark-light.svg');
+  
+  // Dropdown styling
+  --theme-dropdown-bg: rgb(225, 225, 223);
+  --theme-dropdown-shadow: rgba(220, 220, 218, 0.9);
+  --theme-dropdown-border: rgb(210, 210, 208);
+  --theme-dropdown-hover-bg: rgb(237, 237, 235);
+  --theme-dropdown-hover-shadow: rgba(220, 220, 218, 0.8);
+  
+  // Content carousel
+  --theme-carousel-bg: rgb(225, 225, 223);
+  --theme-carousel-viewport-bg: rgb(234, 234, 232);
+  --theme-carousel-border: rgba(220, 220, 218, 0.3);
+  --theme-carousel-shadow: rgba(124, 124, 124, 0.1);
+  --theme-carousel-title-color: #343a40;
+  --theme-carousel-desc-color: #495057;
+  --theme-carousel-nav-bg: rgb(234, 234, 232);
+  --theme-carousel-nav-button-bg: rgb(225, 225, 223);
+  --theme-carousel-nav-button-color: #495057;
+  --theme-carousel-nav-button-hover: rgb(20, 20, 16);
+  --theme-carousel-progress-bg: rgba(220, 220, 218, 0.5);
+  --theme-carousel-progress-bar: linear-gradient(90deg, #7c7c7c, #a8a8a8);
+}
+
+[data-bs-theme="dark"] {
+  // Dark theme variables
+  --theme-body-bg: var(--color-surface-page-dark, rgb(20, 20, 16));
+  --theme-navbar-bg: var(--color-surface-page-dark, rgb(20, 20, 16));
+  --theme-navbar-bg-scrolled: rgb(20, 20, 22);
+  --theme-text-primary: var(--color-content-primary-dark, rgb(237, 237, 235));
+  --theme-text-secondary: var(--color-content-secondary-dark, #83838f);
+  --theme-text-hover: var(--color-content-primary-dark, rgb(237, 237, 235));
+  
+  // Code styling
+  --theme-code-bg: rgb(35, 35, 32);
+  --theme-code-border: rgb(40, 40, 37);
+  --theme-code-color: #ff79c6;
+  
+  // Logo paths
+  --theme-logo-grey: url('/assets/img/ai_monogram_grey-dark.svg');
+  --theme-logo-color: url('/assets/img/ai_monogram_light-dark.svg');
+  
+  // Dropdown styling
+  --theme-dropdown-bg: rgb(28, 28, 30);
+  --theme-dropdown-shadow: rgba(33, 33, 35, 0.9);
+  --theme-dropdown-border: rgb(47, 47, 49);
+  --theme-dropdown-hover-bg: rgb(18, 18, 20);
+  --theme-dropdown-hover-shadow: rgba(33, 33, 35, 0.8);
+  
+  // Content carousel
+  --theme-carousel-bg: rgb(20, 20, 16);
+  --theme-carousel-viewport-bg: rgb(20, 20, 16);
+  --theme-carousel-border: rgba(40, 40, 37, 0.4);
+  --theme-carousel-shadow: rgba(0, 0, 0, 0.3);
+  --theme-carousel-title-color: #e8eaf6;
+  --theme-carousel-desc-color: #b8bcc0;
+  --theme-carousel-nav-bg: rgb(20, 20, 16);
+  --theme-carousel-nav-button-bg: rgb(20, 20, 16);
+  --theme-carousel-nav-button-color: #7C7C7C;
+  --theme-carousel-nav-button-hover: rgb(237, 237, 235);
+  --theme-carousel-progress-bg: rgba(40, 40, 37, 0.6);
+  --theme-carousel-progress-bar: linear-gradient(90deg, #83838f, #a8a8b0);
+}
+
+// Quarto-specific SCSS variables (for compatibility)
+$h2-font-size: 1.6rem !default;
+$headings-font-weight: 500 !default;
+
+// Light theme SCSS defaults
+:root, [data-bs-theme="light"] {
+  $body-bg: var(--theme-body-bg) !default;
+  $btn-code-copy-color: var(--theme-text-secondary) !default;
+  $btn-code-copy-color-active: var(--theme-text-primary) !default;
+}
+
+// Dark theme SCSS defaults  
+[data-bs-theme="dark"] {
+  $body-bg: var(--theme-body-bg) !default;
+  $btn-code-copy-color: var(--theme-text-secondary) !default;
+  $btn-code-copy-color-active: var(--theme-text-primary) !default;
+}

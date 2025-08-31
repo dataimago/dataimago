@@ -1,0 +1,73 @@
+/**
+ * scroll.js - dataimago Design System
+ * Built: 2025-08-31T13:42:33.397Z
+ * Source: ui/src/js/utils/scroll.js
+ */
+/**
+ * scroll.js - dataimago Design System
+ * Built: 2025-08-30T08:53:09.833Z
+ * Source: ui/src/js/scroll.js
+ */
+// NOTE: Navbar shrinking functionality has been moved to lenis-integration.js
+// to avoid conflicts with Lenis smooth scrolling system.
+// See setupNavbarScrollEffects() in lenis-integration.js
+
+// Dropdown caret rotation functionality
+$(document).ready(function() {
+    // Use MutationObserver to watch for changes in dropdown state
+    function observeDropdownChanges() {
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes') {
+                    var $target = $(mutation.target);
+                    if ($target.hasClass('dropdown-toggle')) {
+                        var $dropdown = $target.closest('.dropdown, .nav-item');
+                        var isExpanded = $target.attr('aria-expanded') === 'true';
+                        
+                        if (isExpanded) {
+                            $dropdown.addClass('open');
+                        } else {
+                            $dropdown.removeClass('open');
+                        }
+                    }
+                }
+            });
+        });
+        
+        // Observe all dropdown toggles for aria-expanded changes
+        $('.navbar-nav .dropdown-toggle').each(function() {
+            observer.observe(this, { 
+                attributes: true, 
+                attributeFilter: ['aria-expanded'] 
+            });
+        });
+    }
+    
+    // Initialize observer
+    observeDropdownChanges();
+    
+    // Fallback: Listen for click events and check state after a brief delay
+    $('.navbar-nav .dropdown-toggle').on('click', function() {
+        var $this = $(this);
+        var $dropdown = $this.closest('.dropdown, .nav-item');
+        
+        // Check state after Quarto/Bootstrap has processed the click
+        setTimeout(function() {
+            var isExpanded = $this.attr('aria-expanded') === 'true';
+            if (isExpanded) {
+                $dropdown.addClass('open');
+            } else {
+                $dropdown.removeClass('open');
+            }
+        }, 50);
+    });
+    
+    // Handle Bootstrap dropdown events if they exist
+    $('.navbar-nav .dropdown, .navbar-nav .nav-item').on('show.bs.dropdown', function() {
+        $(this).addClass('open');
+    });
+    
+    $('.navbar-nav .dropdown, .navbar-nav .nav-item').on('hide.bs.dropdown', function() {
+        $(this).removeClass('open');
+    });
+});

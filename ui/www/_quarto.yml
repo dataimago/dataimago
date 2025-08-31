@@ -54,7 +54,13 @@ website:
             text: Critical Theory Manifesto
     right:
       - icon: github
-        href: "https://github.com/dataimago/dataimago"
+        menu:
+          - href: "https://github.com/dataimago/dataimago"
+            text: Source Code
+          - href: "https://github.com/dataimago/dataimago/issues"
+            text: Report a Bug
+          - href: "https://github.com/dataimago/dataimago/discussions"
+            text: Request a Feature
         target: _blank
 
   sidebar:
@@ -95,6 +101,7 @@ format:
       dark: [cosmo, assets/css/website-dark.scss]
     css:
       - assets/css/documents.css
+      - assets/css/tokens.css
     toc: true
     toc-depth: 3
     code-copy: true
