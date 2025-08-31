@@ -390,12 +390,12 @@ const distributionChannels = [
   {
     name: 'Website Assets (ui/www/assets/css/)',
     path: path.join(__dirname, 'www', 'assets', 'css'),
-    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-light.scss', 'website-dark.scss']
+    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', 'website-light.scss', 'website-dark.scss']
   },
   {
     name: 'Quarto Extension (ui/www/_extensions/dataimago/ai-native/assets/css/)',
     path: path.join(__dirname, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'css'),
-    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-light.scss', 'website-dark.scss']
+    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', 'website-light.scss', 'website-dark.scss']
   },
   {
     name: 'Docs Assets (docs/assets/css/)',
