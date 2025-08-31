@@ -1,0 +1,82 @@
+{
+  "color": {
+    "brand": {
+      "primary": {
+        "value": "#2C3E50",
+        "description": "dataimago primary brand color"
+      },
+      "secondary": {
+        "value": "#34495E",
+        "description": "dataimago secondary brand color"
+      },
+      "accent": {
+        "value": "#3498DB",
+        "description": "dataimago accent color for highlights"
+      },
+      "ethical": {
+        "value": "#E74C3C",
+        "description": "Ethical AI emphasis color"
+      }
+    },
+    "semantic": {
+      "success": {
+        "value": "#27AE60",
+        "description": "Success states and positive actions"
+      },
+      "warning": {
+        "value": "#F39C12",
+        "description": "Warning states and caution"
+      },
+      "error": {
+        "value": "#E74C3C",
+        "description": "Error states and critical issues"
+      },
+      "info": {
+        "value": "#3498DB",
+        "description": "Informational content"
+      }
+    },
+    "text": {
+      "primary": {
+        "value": "#2C3E50",
+        "description": "Primary text color"
+      },
+      "secondary": {
+        "value": "#7F8C8D",
+        "description": "Secondary text color"
+      },
+      "muted": {
+        "value": "#95A5A6",
+        "description": "Muted text color"
+      },
+      "inverse": {
+        "value": "#FFFFFF",
+        "description": "Inverse text for dark backgrounds"
+      }
+    },
+    "background": {
+      "page": {
+        "value": "#FFFFFF",
+        "description": "Main page background"
+      },
+      "surface": {
+        "value": "#F8F9FA",
+        "description": "Card and surface backgrounds"
+      },
+      "overlay": {
+        "value": "#000000",
+        "description": "Modal overlay background"
+      }
+    },
+    "border": {
+      "default": {
+        "value": "#E9ECEF",
+        "description": "Default border color"
+      },
+      "focus": {
+        "value": "#3498DB",
+        "description": "Focus ring border color"
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "color": {
+    "surface": {
+      "page": {
+        "light": "rgb(237, 237, 235)",
+        "dark": "rgb(20, 20, 16)",
+        "description": "Main page background - your carefully tuned light warm gray vs dark warm black"
+      },
+      "page-scrolled": {
+        "light": "rgb(237, 237, 238)",
+        "dark": "rgb(20, 20, 22)",
+        "description": "Page background when navbar shrinks - subtle shift for depth"
+      },
+      "elevated": {
+        "light": "#FFFFFF",
+        "dark": "#2d2d2d",
+        "description": "Cards, modals - elevated above page surface"
+      },
+      "navbar": {
+        "light": "rgb(237, 237, 235)",
+        "dark": "rgb(20, 20, 16)",
+        "description": "Navbar background - matches page in both themes"
+      },
+      "navbar-scrolled": {
+        "light": "rgb(237, 237, 238)",
+        "dark": "rgb(20, 20, 22)",
+        "description": "Navbar when scrolled/shrunk - matches page-scrolled"
+      }
+    },
+    "content": {
+      "primary": {
+        "light": "#000000",
+        "dark": "rgb(237, 237, 235)",
+        "description": "Primary text - black on light, warm white on dark"
+      },
+      "secondary": {
+        "light": "#7c7c7c",
+        "dark": "#83838f",
+        "description": "Secondary text - your tuned grays for medium emphasis"
+      },
+      "muted": {
+        "light": "#7c7c7c",
+        "dark": "#83838f",
+        "description": "Muted text - same as secondary in your current system"
+      },
+      "inverse": {
+        "light": "#FFFFFF",
+        "dark": "#000000",
+        "description": "Inverse text for contrasting backgrounds"
+      }
+    },
+    "interactive": {
+      "primary": {
+        "light": "#3498DB",
+        "dark": "#3498DB",
+        "description": "Primary interactive elements - dataimago blue works in both"
+      },
+      "accent": {
+        "light": "#ff69b4",
+        "dark": "#ff69b4",
+        "description": "Accent interactions - your magenta hover effect"
+      },
+      "hover": {
+        "light": "#2980B9",
+        "dark": "#4FC3F7",
+        "description": "Hover states - darker blue on light, lighter on dark"
+      }
+    },
+    "brand": {
+      "dataimago-primary": "#3498DB",
+      "dataimago-accent": "#ff69b4", 
+      "ethical-ai": "#E74C3C",
+      "description": "Theme-agnostic brand colors that work in both contexts"
+    },
+    "functional": {
+      "success": "#27AE60",
+      "warning": "#F39C12",
+      "error": "#E74C3C",
+      "info": "#3498DB",
+      "description": "Functional colors - work well in both themes"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "dataimago Design System",
   "version": "0.1.0",
-  "buildTime": "2025-08-31T08:58:36.203Z",
+  "buildTime": "2025-08-31T09:35:33.182Z",
   "assets": {
     "tokens.css": "CSS custom properties from design tokens",
     "dataimago.css": "Expanded CSS for development",

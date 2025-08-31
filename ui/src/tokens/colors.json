@@ -1,24 +1,88 @@
 {
   "color": {
     "brand": {
-      "primary": {
-        "value": "#2C3E50",
-        "description": "dataimago primary brand color"
-      },
-      "secondary": {
-        "value": "#34495E",
-        "description": "dataimago secondary brand color"
-      },
-      "accent": {
-        "value": "#3498DB",
-        "description": "dataimago accent color for highlights"
-      },
-      "ethical": {
-        "value": "#E74C3C",
-        "description": "Ethical AI emphasis color"
+      "dataimago": {
+        "primary": {
+          "value": "#3498DB",
+          "description": "dataimago primary brand color - works in both themes"
+        },
+        "accent": {
+          "value": "#ff69b4", 
+          "description": "dataimago accent color - your signature magenta"
+        },
+        "ethical": {
+          "value": "#E74C3C",
+          "description": "Ethical AI emphasis color"
+        }
       }
     },
-    "semantic": {
+    "surface": {
+      "page": {
+        "light": "rgb(237, 237, 235)",
+        "dark": "rgb(20, 20, 16)",
+        "description": "Main page background - your warm grays"
+      },
+      "page-scrolled": {
+        "light": "rgb(237, 237, 238)", 
+        "dark": "rgb(20, 20, 22)",
+        "description": "Page background when scrolled - subtle depth shift"
+      },
+      "elevated": {
+        "light": "#FFFFFF",
+        "dark": "#2d2d2d", 
+        "description": "Cards, modals, dropdowns - above page level"
+      },
+      "sunken": {
+        "light": "#f8f9fa",
+        "dark": "#1a1a1a",
+        "description": "Input fields, code blocks - below page level"
+      }
+    },
+    "content": {
+      "primary": {
+        "light": "#000000",
+        "dark": "rgb(237, 237, 235)",
+        "description": "Primary text - maximum contrast, your tuned colors"
+      },
+      "secondary": {
+        "light": "#7c7c7c",
+        "dark": "#83838f", 
+        "description": "Secondary text - your carefully balanced grays"
+      },
+      "muted": {
+        "light": "#7c7c7c",
+        "dark": "#83838f",
+        "description": "Muted text - same as secondary in your system"
+      },
+      "inverse": {
+        "light": "#FFFFFF",
+        "dark": "#000000",
+        "description": "Inverse text - for contrasting backgrounds"
+      }
+    },
+    "interactive": {
+      "primary": {
+        "light": "#3498DB",
+        "dark": "#3498DB", 
+        "description": "Primary interactive - dataimago blue, works both themes"
+      },
+      "hover": {
+        "light": "#2980B9",
+        "dark": "#4FC3F7",
+        "description": "Hover states - darker on light, brighter on dark"
+      },
+      "accent": {
+        "light": "#ff69b4",
+        "dark": "#ff69b4",
+        "description": "Accent interactions - your signature magenta hover"
+      },
+      "focus": {
+        "light": "#3498DB",
+        "dark": "#4FC3F7",
+        "description": "Focus indicators - accessibility compliance"
+      }
+    },
+    "functional": {
       "success": {
         "value": "#27AE60",
         "description": "Success states and positive actions"
@@ -28,7 +92,7 @@
         "description": "Warning states and caution"
       },
       "error": {
-        "value": "#E74C3C",
+        "value": "#E74C3C", 
         "description": "Error states and critical issues"
       },
       "info": {
@@ -36,46 +100,21 @@
         "description": "Informational content"
       }
     },
-    "text": {
-      "primary": {
-        "value": "#2C3E50",
-        "description": "Primary text color"
-      },
-      "secondary": {
-        "value": "#7F8C8D",
-        "description": "Secondary text color"
-      },
-      "muted": {
-        "value": "#95A5A6",
-        "description": "Muted text color"
-      },
-      "inverse": {
-        "value": "#FFFFFF",
-        "description": "Inverse text for dark backgrounds"
-      }
-    },
-    "background": {
-      "page": {
-        "value": "#FFFFFF",
-        "description": "Main page background"
-      },
-      "surface": {
-        "value": "#F8F9FA",
-        "description": "Card and surface backgrounds"
-      },
-      "overlay": {
-        "value": "#000000",
-        "description": "Modal overlay background"
-      }
-    },
     "border": {
-      "default": {
-        "value": "#E9ECEF",
-        "description": "Default border color"
+      "subtle": {
+        "light": "rgba(0, 0, 0, 0.1)",
+        "dark": "rgba(255, 255, 255, 0.1)",
+        "description": "Subtle borders - element separation"
       },
-      "focus": {
-        "value": "#3498DB",
-        "description": "Focus ring border color"
+      "moderate": {
+        "light": "rgba(0, 0, 0, 0.15)",
+        "dark": "rgba(255, 255, 255, 0.15)",
+        "description": "Moderate borders - defined boundaries"  
+      },
+      "strong": {
+        "light": "rgba(0, 0, 0, 0.25)",
+        "dark": "rgba(255, 255, 255, 0.25)",
+        "description": "Strong borders - prominent separation"
       }
     }
   }

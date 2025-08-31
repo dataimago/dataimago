@@ -25,7 +25,7 @@ console.log('🛠️  dataimago: Building design system assets...');
 // Step 1: Process design tokens with Style Dictionary
 console.log('📋 Processing design tokens...');
 
-// Style Dictionary configuration
+// Enhanced Style Dictionary configuration with theme support
 const styleDictionaryConfig = {
   source: [path.join(config.tokensDir, '**/*.json')],
   platforms: {
@@ -38,36 +38,105 @@ const styleDictionaryConfig = {
         'color/hex'
       ],
       buildPath: config.distDir + '/',
-      files: [{
-        destination: 'tokens.css',
-        format: 'css/variables',
-        options: {
-          selector: ':root',
-          outputReferences: true
+      files: [
+        {
+          destination: 'tokens.css',
+          format: 'css/theme-variables', // Custom format for theme-aware variables
+          options: {
+            selector: ':root',
+            outputReferences: true
+          }
+        },
+        {
+          destination: 'tokens-flat.css', // Fallback flat variables
+          format: 'css/variables',
+          options: {
+            selector: ':root',
+            outputReferences: true
+          }
         }
-      }]
+      ]
     }
   }
 };
 
-// Write temporary Style Dictionary config
-const configPath = path.join(__dirname, 'style-dictionary-temp.json');
-fs.writeFileSync(configPath, JSON.stringify(styleDictionaryConfig, null, 2));
+// Process theme-aware tokens manually (custom implementation)
+console.log('🎨 Processing theme-aware tokens...');
+
+function processThemeTokens() {
+  const tokenFiles = ['colors.json', 'theme-colors.json', 'frequent.json', 'effects.json', 'components.json'];
+  let cssContent = ':root {\n';
+  let themeCssContent = '';
+  
+  // Light theme variables
+  let lightThemeContent = ':root, [data-bs-theme="light"] {\n';
+  
+  // Dark theme variables  
+  let darkThemeContent = '[data-bs-theme="dark"], @media (prefers-color-scheme: dark) {\n';
+  
+  tokenFiles.forEach(filename => {
+    const filepath = path.join(config.tokensDir, filename);
+    if (!fs.existsSync(filepath)) return;
+    
+    const tokenData = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    
+    function processTokenGroup(obj, prefix = '') {
+      Object.keys(obj).forEach(key => {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          if (obj[key].light && obj[key].dark) {
+            // Theme-aware token
+            const varName = `--${prefix}${key}`.replace(/\./g, '-');
+            lightThemeContent += `  ${varName}: ${obj[key].light};\n`;
+            darkThemeContent += `  ${varName}: ${obj[key].dark};\n`;
+          } else if (obj[key].value) {
+            // Standard token
+            const varName = `--${prefix}${key}`.replace(/\./g, '-');
+            cssContent += `  ${varName}: ${obj[key].value};\n`;
+          } else if (!obj[key].description) {
+            // Nested group
+            processTokenGroup(obj[key], `${prefix}${key}-`);
+          }
+        }
+      });
+    }
+    
+    processTokenGroup(tokenData);
+  });
+  
+  cssContent += '}\n\n';
+  lightThemeContent += '}\n\n';
+  darkThemeContent += '}\n\n';
+  
+  // Combine all CSS
+  const finalCss = cssContent + lightThemeContent + darkThemeContent;
+  
+  // Write the enhanced tokens CSS
+  fs.writeFileSync(path.join(config.distDir, 'tokens.css'), finalCss);
+  
+  return finalCss;
+}
 
 try {
-  // Run Style Dictionary
-  execSync(`npx style-dictionary build --config ${configPath}`, { 
-    stdio: 'inherit',
-    cwd: __dirname 
-  });
-  console.log('✅ Design tokens processed successfully');
+  const processedTokens = processThemeTokens();
+  console.log('✅ Theme-aware tokens processed successfully');
 } catch (error) {
-  console.error('❌ Style Dictionary build failed:', error.message);
-  process.exit(1);
-} finally {
-  // Clean up temporary config
-  if (fs.existsSync(configPath)) {
-    fs.unlinkSync(configPath);
+  console.error('❌ Theme token processing failed:', error.message);
+  
+  // Fallback to standard Style Dictionary
+  console.log('📋 Falling back to standard token processing...');
+  const configPath = path.join(__dirname, 'style-dictionary-temp.json');
+  fs.writeFileSync(configPath, JSON.stringify(styleDictionaryConfig, null, 2));
+  
+  try {
+    execSync(`npx style-dictionary build --config ${configPath}`, { 
+      stdio: 'inherit',
+      cwd: __dirname 
+    });
+    console.log('✅ Standard tokens processed successfully');
+  } finally {
+    if (fs.existsSync(configPath)) {
+      fs.unlinkSync(configPath);
+    }
   }
 }
 

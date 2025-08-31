@@ -2,64 +2,90 @@
   "font": {
     "family": {
       "sans": {
-        "value": "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+        "value": "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
+        "description": "Primary sans-serif font - clean and readable"
       },
       "mono": {
-        "value": "JetBrains Mono, SF Mono, Monaco, Inconsolata, monospace"
+        "value": "JetBrains Mono, SF Mono, Monaco, Inconsolata, monospace",
+        "description": "Monospace font - code blocks and technical content"
       },
       "display": {
-        "value": "Inter, system-ui, sans-serif"
+        "value": "Inter, system-ui, sans-serif",
+        "description": "Display font - headings and prominent text"
+      },
+      "brand": {
+        "value": "Josefin Sans, Inter, system-ui, sans-serif",
+        "description": "Brand font - dataimago navbar and branding elements"
       }
     },
     "size": {
-      "xs": {
-        "value": "0.75rem"
+      "micro": {
+        "value": "0.75rem",
+        "description": "Micro text - captions, metadata"
       },
-      "sm": {
-        "value": "0.875rem"
+      "small": {
+        "value": "0.875rem", 
+        "description": "Small text - secondary information"
       },
       "base": {
-        "value": "1rem"
+        "value": "1rem",
+        "description": "Base text size - body content"
       },
-      "lg": {
-        "value": "1.125rem"
+      "readable": {
+        "value": "1.125rem",
+        "description": "Comfortable reading size - main content"
       },
-      "xl": {
-        "value": "1.25rem"
+      "emphasis": {
+        "value": "1.25rem",
+        "description": "Emphasized text - call-outs"
       },
-      "2xl": {
-        "value": "1.5rem"
+      "heading-small": {
+        "value": "1.5rem",
+        "description": "Small headings - H4, H5"
       },
-      "3xl": {
-        "value": "1.875rem"
+      "heading-medium": {
+        "value": "1.875rem",
+        "description": "Medium headings - H3"
       },
-      "4xl": {
-        "value": "2.25rem"
+      "heading-large": {
+        "value": "2.25rem",
+        "description": "Large headings - H2"
+      },
+      "heading-xl": {
+        "value": "3rem",
+        "description": "Extra large headings - H1"
       }
     },
     "weight": {
       "normal": {
-        "value": "400"
+        "value": "400",
+        "description": "Normal text weight - body content"
       },
       "medium": {
-        "value": "500"
+        "value": "500", 
+        "description": "Medium weight - emphasis within text"
       },
       "semibold": {
-        "value": "600"
+        "value": "600",
+        "description": "Semi-bold - headings, important text"
       },
       "bold": {
-        "value": "700"
+        "value": "700",
+        "description": "Bold - strong emphasis"
       }
     },
     "lineHeight": {
       "tight": {
-        "value": "1.25"
+        "value": "1.25",
+        "description": "Tight line height - headings"
       },
       "normal": {
-        "value": "1.5"
+        "value": "1.5",
+        "description": "Normal line height - body text"
       },
       "relaxed": {
-        "value": "1.625"
+        "value": "1.625",
+        "description": "Relaxed line height - long-form content"
       }
     }
   }
