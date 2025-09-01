@@ -26,6 +26,37 @@ This directory is now **fully managed by the R-first design system**:
 3. ✅ All files in this directory automatically updated
 4. ✅ Quarto render/preview work without errors
 
+## 🔄 Propagation Flow from Source-of-Truth
+
+This directory is one of **4 distribution targets** in the CSS/SCSS pipeline:
+
+```mermaid
+graph LR
+    A["🎯 ui/src/<br/>SOURCE OF TRUTH"] --> B[build_design_system]
+    B --> C["📦 ui/dist/<br/>Generated Assets"]
+    C --> D["🌐 ui/www/assets/css/<br/>THIS DIRECTORY"]
+    C --> E["🔧 _extensions/.../assets/css/<br/>Quarto Extension"]
+    C --> F["📡 inst/quarto-assets/<br/>CDN Distribution"]
+    C --> G["📄 docs/assets/css/<br/>Rendered Website"]
+    
+    style A fill:#e1f5fe
+    style D fill:#e8f5e8
+    style E fill:#fff3e0
+    style F fill:#fce4ec
+    style G fill:#f1f8e9
+```
+
+### 📋 File Traceability
+
+| File in This Directory | Source Location | Build Process |
+|------------------------|-----------------|---------------|
+| `tokens.css` | `ui/src/tokens/*.json` | Style Dictionary → CSS variables |
+| `website-theme.css` | `ui/src/styles/website-theme.scss` | Sass compilation |
+| `website-light.scss` | `ui/src/styles/website-light.scss` | Direct copy + imports |
+| `website-dark.scss` | `ui/src/styles/website-dark.scss` | Direct copy + imports |
+| `dataimago.css` | `ui/src/main.scss` (generated) | Sass compilation |
+| `dataimago.min.css` | `ui/src/main.scss` (generated) | PostCSS minification |
+
 ## CSS Architecture
 
 ### Primary Stylesheet (`website-custom.scss`)

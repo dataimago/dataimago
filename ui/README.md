@@ -12,6 +12,46 @@ This directory contains the Node.js workspace for compiling the dataimago ethica
 
 **✅ RECENTLY UPDATED**: Established complete SCSS source-of-truth pipeline eliminating 404 errors and enabling confident asset management from `/ui/src/` to all deployment targets.
 
+## 🔄 CSS/SCSS Propagation Pipeline
+
+The design system follows a systematic build and distribution flow:
+
+```mermaid
+graph TD
+    A["📦 ui/src/tokens/*.json<br/>Design Tokens"] --> B[Style Dictionary]
+    C["🎨 ui/src/styles/*.scss<br/>SCSS Stylesheets"] --> D[Sass Compiler]
+    E["🎯 ui/src/tokens.scss<br/>SCSS Entry Point"] --> D
+    
+    B --> F["📋 ui/dist/tokens.css<br/>CSS Custom Properties"]
+    D --> G["🎨 ui/dist/dataimago.css<br/>Main Design System"]
+    D --> H["🌐 ui/dist/website-theme.css<br/>Website Theme"]
+    D --> I["📱 ui/dist/website-{light,dark}.scss<br/>Theme Variants"]
+    
+    F --> J[Distribution Engine]
+    G --> J
+    H --> J
+    I --> J
+    
+    J --> K["🌐 ui/www/assets/css/<br/>Website Development"]
+    J --> L["🔧 ui/www/_extensions/.../assets/css/<br/>Quarto Extension"]
+    J --> M["📡 inst/quarto-assets/<br/>CDN Distribution"]
+    J --> N["📄 docs/assets/css/<br/>Rendered Website"]
+    
+    style A fill:#e1f5fe
+    style F fill:#f3e5f5
+    style K fill:#e8f5e8
+    style L fill:#fff3e0
+    style M fill:#fce4ec
+    style N fill:#f1f8e9
+```
+
+### Build Process Steps:
+1. **Tokens** → Style Dictionary processes JSON → CSS custom properties
+2. **Main SCSS** → Dynamically creates entry point → Main design system CSS  
+3. **Website Theme** → Compiles unified theme → Website-specific CSS
+4. **Theme Variants** → Generates light/dark SCSS → Quarto-compatible themes
+5. **Distribution** → Copies assets to 4 deployment targets
+
 > 📋 **See [../ARCHITECTURE.md](../ARCHITECTURE.md) for comprehensive system diagrams** that show how this UI workspace integrates with the broader dataimago package architecture.
 
 ## \U0001F3D7\UFE0F Architecture
