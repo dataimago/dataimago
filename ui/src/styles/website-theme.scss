@@ -2,9 +2,9 @@
 // This file combines all theme components and replaces the separate light/dark files
 
 // Import design tokens first (provides CSS custom properties)
-// Path: 'tokens.css' - RUNTIME CSS import, resolved by browser when website-theme.css loads
-// Must be relative to ui/www/assets/css/ where this compiled CSS will be deployed
-@import 'tokens.css';
+// Path: '../tokens' - BUILD-TIME SCSS import, resolved during Sass compilation
+// Content gets inlined into final CSS, no runtime path resolution needed
+@import '../tokens';
 
 // Import theme variables (theme-aware CSS custom properties)  
 // Path: 'themes/' - BUILD-TIME SCSS import, resolved during Sass compilation

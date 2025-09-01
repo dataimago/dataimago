@@ -1,0 +1,11 @@
+// dataimago Website Light Theme - Source of Truth
+// Imports the main theme and applies light-specific SCSS variables
+
+@import 'website-theme';
+
+/*-- scss:defaults --*/
+$h2-font-size: 1.6rem !default;
+$headings-font-weight: 500 !default;
+$body-bg: rgb(237, 237, 235) !default;
+$btn-code-copy-color: #7c7c7c !default;
+$btn-code-copy-color-active: #000 !default;
