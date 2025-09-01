@@ -1,0 +1,30 @@
+<svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .data {
+        font-family: 'Futura';
+        font-style: italic;
+        font-weight: bold;
+        font-size: 400px;
+      }
+      .imago {
+        font-family: 'Futura';
+        font-style: italic;
+        font-weight: bold;
+        font-size: 380px;
+      }
+    </style>
+
+    <!-- Define mask: letters are black = transparent in mask -->
+    <mask id="aiMask">
+      <!-- White = visible area -->
+      <rect width="100%" height="100%" fill="white" />
+      <!-- Black = transparent (cut out letters) -->
+      <text x="245.5" y="355" class="imago" fill="black">i</text>
+      <text x="105" y="360" class="data" fill="black">a</text>
+    </mask>
+  </defs>
+
+  <!-- Apply the mask to a filled rectangle -->
+  <rect width="100%" height="100%" rx="40" ry="40" fill="#000000" mask="url(#aiMask)" />
+</svg>
