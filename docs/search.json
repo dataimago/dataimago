@@ -1,1473 +1,1454 @@
 [
   {
-    "objectID": "philosophy.html",
-    "href": "philosophy.html",
-    "title": "Philosophical Foundation",
-    "section": "",
-    "text": "Superalignment is the embedding of AI in culture for emancipatory ends, not the embedding of culture in AI.\nSuperalignment is the defining challenge of our time. At dataimago, we invert the conventional approach to alignment. Rather than adapting human complexity to technological constraints, we embed AI into the rich, lived, and contested terrain of human culture. We believe that only by grounding AI in real social contexts—education, governance, art, and daily life—can its alignment with human freedom emerge. Superalignment is not just technical; it is cultural, moral, and political.\nThis inversion is core to dataimago’s approach. We believe that the ethical potential of AI lies not in replicating existing cultural patterns, but in placing AI within the service of cultural transformation. Because superalignment is not intrinsic to AI but emerges from its social embedding, emancipation can only occur through the integration of AI into the living processes of culture. Our philosophy centers human meaning-making, agency, and dignity at every step of the technological design process.\nOur goal is not to embed culture in ai, but to embed ai in culture for the emancipation of humanity.\n\n\n\n\n\nDrawing from Horkheimer, Adorno, and Habermas, we center their concerns about: - Instrumental reason and its tendency toward domination - The critique of systems that reduce humans to mere functions - The ethical imperative to reunite scientific knowledge with human values - The vision of critical theory as emancipatory practice\nOur work fulfills the vision of critical theory as an ethically directed fusion of hermeneutic and positivistic thought, using AI to achieve what human institutions alone have struggled to accomplish.\n\n\n\n\n\nWe build on Michel Foucault’s insights about: - The transition from sovereign power to disciplinary power - How modern institutions (schools, hospitals, prisons) shape subjects through surveillance and normalization - The limitations of disciplinary societies that control through standardization\n\n\n\nWe embrace Gilles Deleuze’s concept of “societies of control” but seek to redirect it toward emancipatory ends: - Moving beyond disciplinary standardization to fluid, adaptive systems - Using continuous monitoring not for domination but for empowerment - Creating “control for good” rather than control for extraction or oppression\n\n\n\n\nWe integrate insights from modern AI safety and alignment research: - Superalignment as the challenge of ensuring AI systems serve human values - Value alignment as both technical and philosophical challenge - Participatory AI governance models - The recognition that AI will be a co-creator of human history\n\n\n\n\n\n\nTraditional approaches have forced a choice between: - Hermeneutic approaches that prioritize meaning, interpretation, and subjective experience - Positivistic approaches that prioritize measurement, prediction, and objective analysis\nWe reject this false dichotomy. Through AI-mediated systems, we can achieve both: - Deep personalization that honors individual meaning-making - Rigorous empirical analysis that tracks objective outcomes - Systems that adapt to human values while maintaining scientific validity\n\n\n\nWe reject both naive techno-optimism and reflexive technophobia. Instead, we argue that: - Technology itself is neither liberating nor oppressive—its effects depend on how it’s designed and deployed - AI represents an unprecedented opportunity to align powerful systems with human flourishing - The alternative to conscious, ethical AI development is not the absence of AI but the dominance of AI systems designed without ethical consideration\n\n\n\nTraditional performance management operates through static standards and retrospective judgment. We advocate for flow-based systems that: - Focus on trajectories of growth rather than fixed achievements - Adapt continuously to changing circumstances and needs - Enable rather than constrain human potential - Replace punishment-based accountability with development-oriented feedback\n\n\n\nWe believe that AI systems affecting human lives must be accountable to those they serve. This requires: - Participatory design processes that center affected communities - Transparent algorithms that can be understood and critiqued - Democratic oversight mechanisms for AI decision-making - Evolving definitions of key concepts like “emancipation” that reflect community input\n\n\n\n\n\n\n\nHuman Agency: AI must expand rather than constrain human choice and autonomy\nData Sovereignty: Individuals and communities must maintain control over their data\nInterpretability: AI systems must be explainable to those affected by their decisions\nAnti-Domination: We must actively resist the use of our tools for instrumental control\n\n\n\n\nRecognizing that good intentions don’t guarantee good outcomes, we commit to: - Using AI to monitor our own systems for signs of instrumental domination - Creating feedback loops that allow affected communities to shape our tools - Regular philosophical reflection on whether our work serves emancipatory goals - Willingness to abandon approaches that become oppressive despite good intentions\n\n\n\nWe acknowledge that concepts like “emancipation,” “flourishing,” and “human values” are contested and culturally situated. Rather than imposing fixed definitions, we aim to: - Create processes for ongoing dialogue about these concepts - Use AI to help communities articulate and refine their own visions of flourishing - Respect diverse perspectives while seeking common ground - Adapt our systems as understanding evolves\n\n\n\n\n\n\nOur design process is informed by critical theory: - Question power relations embedded in existing systems - Center marginalized voices in design decisions - Anticipate unintended consequences through scenario planning - Maintain reflexivity about our own position and interests\n\n\n\nWe embrace dialectical thinking that: - Seeks synthesis rather than choosing sides in false dichotomies - Remains open to contradiction and paradox - Evolves through engagement with opposing viewpoints - Maintains tension between ideals and practical constraints\n\n\n\nOur work integrates theory and practice: - Philosophical reflection informs system design - Practical implementation tests theoretical assumptions - Community feedback shapes both theory and practice - Continuous iteration between ideas and applications\n\n\n\n\n\n\nAs AI systems become more powerful, the question of alignment becomes existential. We argue that: - Technical alignment (making AI do what we want) is inseparable from value alignment (figuring out what we should want) - Democratic participation in AI governance is essential for legitimate alignment - The Frankfurt School’s critique of instrumental reason is more relevant than ever in the age of AI\n\n\n\nWe’re entering an era where the distinction between human and artificial intelligence becomes less clear. Our philosophy provides frameworks for: - Maintaining human agency in AI-mediated systems - Ensuring democratic control over algorithmic governance - Preserving meaning and values in data-driven decisions\n\n\n\nAs AI transforms economic and social systems, our philosophical framework offers: - Alternative models to purely market-driven AI development - Frameworks for ensuring AI serves public good - Approaches to managing technological change that prioritize human flourishing\n\n\n\n\nAs a company whose mission touches on cultural transformation, democratic responsibility, and the ethical evolution of artificial intelligence, our governance must be multi-dimensional—combining institutional integrity, participatory design, epistemic plurality, and anticipatory foresight.\nOur governance philosophy reflects the belief that superalignment is not an outcome of internal decision-making alone, but of the systems and communities in which those decisions are embedded. This requires:\n\n\n\nParticipatory design processes that center affected communities\nTransparent decision-making that can be understood and challenged\nMultiple oversight mechanisms including ethics assemblies and community panels\nConstitutional protocols that evolve with organizational growth\n\n\n\n\n\nAlignment drift detection systems that identify when goals diverge from mission\nNarrative accountability requiring justification of how decisions serve emancipation\nRegular governance review with supermajority ratification requirements\nAnti-domination safeguards embedded in organizational structure\n\n\n\n\n\n\nHow can AI systems embody democratic values?\nWhat does human agency mean in an age of artificial intelligence?\nHow do we balance efficiency with equity in AI-mediated systems?\nWhat forms of knowledge and wisdom are irreducibly human?\nHow do we maintain meaningful human choice in optimized environments?\nWhat does it mean to be human when intelligence is no longer exclusively human?\nHow do we govern AI development in ways that serve rather than undermine emancipatory goals?\n\nOur work at dataimago represents an attempt to answer these questions through practice, creating AI systems that embody our philosophical commitments and testing those commitments against real-world challenges and, in-effect, creating a praxis of super-alignment.",
-    "crumbs": [
-      "Home",
-      "Foundation",
-      "Philosophical Foundation"
-    ]
-  },
-  {
-    "objectID": "philosophy.html#core-philosophy",
-    "href": "philosophy.html#core-philosophy",
-    "title": "Philosophical Foundation",
-    "section": "",
-    "text": "Superalignment is the embedding of AI in culture for emancipatory ends, not the embedding of culture in AI.\nSuperalignment is the defining challenge of our time. At dataimago, we invert the conventional approach to alignment. Rather than adapting human complexity to technological constraints, we embed AI into the rich, lived, and contested terrain of human culture. We believe that only by grounding AI in real social contexts—education, governance, art, and daily life—can its alignment with human freedom emerge. Superalignment is not just technical; it is cultural, moral, and political.\nThis inversion is core to dataimago’s approach. We believe that the ethical potential of AI lies not in replicating existing cultural patterns, but in placing AI within the service of cultural transformation. Because superalignment is not intrinsic to AI but emerges from its social embedding, emancipation can only occur through the integration of AI into the living processes of culture. Our philosophy centers human meaning-making, agency, and dignity at every step of the technological design process.\nOur goal is not to embed culture in ai, but to embed ai in culture for the emancipation of humanity.",
-    "crumbs": [
-      "Home",
-      "Foundation",
-      "Philosophical Foundation"
-    ]
-  },
-  {
-    "objectID": "philosophy.html#primary-philosophical-influences",
-    "href": "philosophy.html#primary-philosophical-influences",
-    "title": "Philosophical Foundation",
-    "section": "",
-    "text": "Drawing from Horkheimer, Adorno, and Habermas, we center their concerns about: - Instrumental reason and its tendency toward domination - The critique of systems that reduce humans to mere functions - The ethical imperative to reunite scientific knowledge with human values - The vision of critical theory as emancipatory practice\nOur work fulfills the vision of critical theory as an ethically directed fusion of hermeneutic and positivistic thought, using AI to achieve what human institutions alone have struggled to accomplish.\n\n\n\n\n\nWe build on Michel Foucault’s insights about: - The transition from sovereign power to disciplinary power - How modern institutions (schools, hospitals, prisons) shape subjects through surveillance and normalization - The limitations of disciplinary societies that control through standardization\n\n\n\nWe embrace Gilles Deleuze’s concept of “societies of control” but seek to redirect it toward emancipatory ends: - Moving beyond disciplinary standardization to fluid, adaptive systems - Using continuous monitoring not for domination but for empowerment - Creating “control for good” rather than control for extraction or oppression\n\n\n\n\nWe integrate insights from modern AI safety and alignment research: - Superalignment as the challenge of ensuring AI systems serve human values - Value alignment as both technical and philosophical challenge - Participatory AI governance models - The recognition that AI will be a co-creator of human history",
-    "crumbs": [
-      "Home",
-      "Foundation",
-      "Philosophical Foundation"
-    ]
-  },
-  {
-    "objectID": "philosophy.html#core-philosophical-positions",
-    "href": "philosophy.html#core-philosophical-positions",
-    "title": "Philosophical Foundation",
-    "section": "",
-    "text": "Traditional approaches have forced a choice between: - Hermeneutic approaches that prioritize meaning, interpretation, and subjective experience - Positivistic approaches that prioritize measurement, prediction, and objective analysis\nWe reject this false dichotomy. Through AI-mediated systems, we can achieve both: - Deep personalization that honors individual meaning-making - Rigorous empirical analysis that tracks objective outcomes - Systems that adapt to human values while maintaining scientific validity\n\n\n\nWe reject both naive techno-optimism and reflexive technophobia. Instead, we argue that: - Technology itself is neither liberating nor oppressive—its effects depend on how it’s designed and deployed - AI represents an unprecedented opportunity to align powerful systems with human flourishing - The alternative to conscious, ethical AI development is not the absence of AI but the dominance of AI systems designed without ethical consideration\n\n\n\nTraditional performance management operates through static standards and retrospective judgment. We advocate for flow-based systems that: - Focus on trajectories of growth rather than fixed achievements - Adapt continuously to changing circumstances and needs - Enable rather than constrain human potential - Replace punishment-based accountability with development-oriented feedback\n\n\n\nWe believe that AI systems affecting human lives must be accountable to those they serve. This requires: - Participatory design processes that center affected communities - Transparent algorithms that can be understood and critiqued - Democratic oversight mechanisms for AI decision-making - Evolving definitions of key concepts like “emancipation” that reflect community input",
-    "crumbs": [
-      "Home",
-      "Foundation",
-      "Philosophical Foundation"
-    ]
-  },
-  {
-    "objectID": "philosophy.html#ethical-framework",
-    "href": "philosophy.html#ethical-framework",
-    "title": "Philosophical Foundation",
-    "section": "",
-    "text": "Human Agency: AI must expand rather than constrain human choice and autonomy\nData Sovereignty: Individuals and communities must maintain control over their data\nInterpretability: AI systems must be explainable to those affected by their decisions\nAnti-Domination: We must actively resist the use of our tools for instrumental control\n\n\n\n\nRecognizing that good intentions don’t guarantee good outcomes, we commit to: - Using AI to monitor our own systems for signs of instrumental domination - Creating feedback loops that allow affected communities to shape our tools - Regular philosophical reflection on whether our work serves emancipatory goals - Willingness to abandon approaches that become oppressive despite good intentions\n\n\n\nWe acknowledge that concepts like “emancipation,” “flourishing,” and “human values” are contested and culturally situated. Rather than imposing fixed definitions, we aim to: - Create processes for ongoing dialogue about these concepts - Use AI to help communities articulate and refine their own visions of flourishing - Respect diverse perspectives while seeking common ground - Adapt our systems as understanding evolves",
-    "crumbs": [
-      "Home",
-      "Foundation",
-      "Philosophical Foundation"
-    ]
-  },
-  {
-    "objectID": "philosophy.html#methodological-approach",
-    "href": "philosophy.html#methodological-approach",
-    "title": "Philosophical Foundation",
-    "section": "",
-    "text": "Our design process is informed by critical theory: - Question power relations embedded in existing systems - Center marginalized voices in design decisions - Anticipate unintended consequences through scenario planning - Maintain reflexivity about our own position and interests\n\n\n\nWe embrace dialectical thinking that: - Seeks synthesis rather than choosing sides in false dichotomies - Remains open to contradiction and paradox - Evolves through engagement with opposing viewpoints - Maintains tension between ideals and practical constraints\n\n\n\nOur work integrates theory and practice: - Philosophical reflection informs system design - Practical implementation tests theoretical assumptions - Community feedback shapes both theory and practice - Continuous iteration between ideas and applications",
-    "crumbs": [
-      "Home",
-      "Foundation",
-      "Philosophical Foundation"
-    ]
-  },
-  {
-    "objectID": "philosophy.html#contemporary-relevance",
-    "href": "philosophy.html#contemporary-relevance",
-    "title": "Philosophical Foundation",
-    "section": "",
-    "text": "As AI systems become more powerful, the question of alignment becomes existential. We argue that: - Technical alignment (making AI do what we want) is inseparable from value alignment (figuring out what we should want) - Democratic participation in AI governance is essential for legitimate alignment - The Frankfurt School’s critique of instrumental reason is more relevant than ever in the age of AI\n\n\n\nWe’re entering an era where the distinction between human and artificial intelligence becomes less clear. Our philosophy provides frameworks for: - Maintaining human agency in AI-mediated systems - Ensuring democratic control over algorithmic governance - Preserving meaning and values in data-driven decisions\n\n\n\nAs AI transforms economic and social systems, our philosophical framework offers: - Alternative models to purely market-driven AI development - Frameworks for ensuring AI serves public good - Approaches to managing technological change that prioritize human flourishing",
-    "crumbs": [
-      "Home",
-      "Foundation",
-      "Philosophical Foundation"
-    ]
-  },
-  {
-    "objectID": "philosophy.html#governance-as-philosophical-practice",
-    "href": "philosophy.html#governance-as-philosophical-practice",
-    "title": "Philosophical Foundation",
-    "section": "",
-    "text": "As a company whose mission touches on cultural transformation, democratic responsibility, and the ethical evolution of artificial intelligence, our governance must be multi-dimensional—combining institutional integrity, participatory design, epistemic plurality, and anticipatory foresight.\nOur governance philosophy reflects the belief that superalignment is not an outcome of internal decision-making alone, but of the systems and communities in which those decisions are embedded. This requires:\n\n\n\nParticipatory design processes that center affected communities\nTransparent decision-making that can be understood and challenged\nMultiple oversight mechanisms including ethics assemblies and community panels\nConstitutional protocols that evolve with organizational growth\n\n\n\n\n\nAlignment drift detection systems that identify when goals diverge from mission\nNarrative accountability requiring justification of how decisions serve emancipation\nRegular governance review with supermajority ratification requirements\nAnti-domination safeguards embedded in organizational structure",
-    "crumbs": [
-      "Home",
-      "Foundation",
-      "Philosophical Foundation"
-    ]
-  },
-  {
-    "objectID": "philosophy.html#philosophical-questions-we-engage",
-    "href": "philosophy.html#philosophical-questions-we-engage",
-    "title": "Philosophical Foundation",
-    "section": "",
-    "text": "How can AI systems embody democratic values?\nWhat does human agency mean in an age of artificial intelligence?\nHow do we balance efficiency with equity in AI-mediated systems?\nWhat forms of knowledge and wisdom are irreducibly human?\nHow do we maintain meaningful human choice in optimized environments?\nWhat does it mean to be human when intelligence is no longer exclusively human?\nHow do we govern AI development in ways that serve rather than undermine emancipatory goals?\n\nOur work at dataimago represents an attempt to answer these questions through practice, creating AI systems that embody our philosophical commitments and testing those commitments against real-world challenges and, in-effect, creating a praxis of super-alignment.",
-    "crumbs": [
-      "Home",
-      "Foundation",
-      "Philosophical Foundation"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "dataimago: Ethical AI-Native Data Science Foundation Package",
-    "section": "",
-    "text": "AI-Native Development Framework\ndataimago represents a new paradigm in data science application development, designed specifically for integration with AI-native workflows and modern web frameworks. Built with comprehensive design systems and ethical AI principles at its core.\n\n\nComplete Build Pipeline & Multi-Platform Deployment\nThe framework provides automated CSS compilation from design tokens to production-ready assets. A single source generates optimized builds for Quarto websites, Shiny applications, Next.js platforms, and CDN distribution.\n\n\nMCP-Compatible & AI-Agent Ready\nAll functions are designed with structured, machine-readable interfaces that enable seamless collaboration between human developers and AI agents. JSON-compatible results and deterministic operations ensure reliable automation.\n\n\nR-First Workflows with Modern Web Tools\nFamiliar R interfaces wrap sophisticated Node.js build tools, providing the power of modern web development without requiring developers to leave their preferred environment.\n\n\nProfessional Documentation & Design Systems\nAutomated generation of branded websites with consistent styling, comprehensive API documentation, and responsive design patterns that work across all deployment targets.\n\n\nRapid Development with Consistent Quality\nFrom concept to deployment in minimal time, with built-in design systems ensuring professional results. Scalable architecture supports everything from simple documentation sites to complex data applications.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n⚡ Development Tools\nComplete Build Pipeline\nAutomated CSS compilation from design tokens to production-ready assets\nMulti-Platform Deployment\nSingle source generates assets for Quarto, Shiny, Next.js, and CDN\nProfessional Documentation\nAutomated generation of branded websites with consistent styling\n\n\nQuick Start Workflow\ncreate_ui_workspace()        # Setup environment\nbuild_design_system()        # Compile assets  \ncreate_quarto_documentation() # Generate docs\n\n\n\n\n\n\n🤖 AI-Native Features\nMCP-Compatible APIs\nStructured functions designed for AI agent consumption and automation\nDeterministic Operations\nReproducible builds with comprehensive error handling and validation\nMachine-Readable Outputs\nJSON-compatible results for seamless programmatic integration\n\n\n  \n\n\n\n\n\n🎯 Framework Benefits\n\n\nRapid Development\nComplete applications from concept to deployment in minimal time\nConsistent Quality\nBuilt-in design systems ensure professional results across all platforms\nAI-Agent Ready\nMCP-compatible tooling enables seamless human-AI collaboration\nScalable Architecture\nMulti-platform deployment from single source with automated optimization\n\n\n\n\nAPI Reference\nComplete function documentation and examples\nFramework Documentation\nArchitecture • Development Patterns"
-  },
-  {
-    "objectID": "api_reference.html",
-    "href": "api_reference.html",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html",
+    "href": "r_package.html",
+    "title": "dataimago R Package Documentation",
     "section": "",
     "text": "Package: dataimago\nVersion: 0.0-0.3\nTitle: AI-Native Web-Application Development Framework for Data Science\nDescription: A comprehensive development framework that accelerates the creation of data science web applications for both human developers and AI agents. Provides complete design system compilation, multi-platform deployment (Quarto, Shiny, Next.js), MCP-compatible tooling, and embedded ethical AI principles. Features R-first workflows that wrap modern web development tools in familiar interfaces, enabling rapid application scaffolding with consistent branding and best practices.\nAuthors: c(person(given=c(“Damian”, “W.”), family=“Betebenner”, email=“dbetebenner@gmail.com”, role=c(“aut”, “cre”), comment = c(ORCID = “0000-0003-0476-5599”)))\nMaintainer: Damian W. Betebenner dbetebenner@gmail.com\nLicense: MIT + file LICENSE\nURL: https://dataimago.github.io/dataimago/\nBug Reports: https://github.com/dataimago/dataimago/issues/\nDepends: R (&gt;= 4.0)\nImports: jsonlite (&gt;= 1.9.0), yaml (&gt;= 2.3.0), fs (&gt;= 1.6.0), rlang (&gt;= 1.1.0), crayon, glue (&gt;= 1.7.0), whisker (&gt;= 0.4.0), Rd2md, tools, processx (&gt;= 3.8.0), digest (&gt;= 0.6.0), cli\nSuggests: knitr, rmarkdown, testthat (&gt;= 3.2.0), quarto (&gt;= 1.4.0), shiny (&gt;= 1.8.0), plumber (&gt;= 1.2.0)\n\n\nThis package is built on dataimago’s ethical AI framework:\n\nMission & Vision\nPhilosophy\nCritical Theory Manifesto",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#dataimago-foundation",
-    "href": "api_reference.html#dataimago-foundation",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#dataimago-foundation",
+    "href": "r_package.html#dataimago-foundation",
+    "title": "dataimago R Package Documentation",
     "section": "",
     "text": "This package is built on dataimago’s ethical AI framework:\n\nMission & Vision\nPhilosophy\nCritical Theory Manifesto",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description",
-    "href": "api_reference.html#description",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description",
+    "href": "r_package.html#description",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nMaster function that orchestrates CSS compilation and asset distribution for web applications. This function provides R-first workflows that wrap Node.js tooling for rapid application development.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage",
-    "href": "api_reference.html#usage",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage",
+    "href": "r_package.html#usage",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nbuild_design_system(\n  force_rebuild = FALSE,\n  include_sri = TRUE,\n  update_extension = TRUE,\n  verbose = TRUE\n)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments",
-    "href": "api_reference.html#arguments",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments",
+    "href": "r_package.html#arguments",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nforce_rebuild: Logical. Force rebuild even if assets appear up-to-date. Default: FALSE\ninclude_sri: Logical. Generate SRI hashes for CDN distribution. Default: TRUE\nupdate_extension: Logical. Update Quarto extension with compiled assets. Default: TRUE\nverbose: Logical. Print detailed progress information. Default: TRUE",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#details",
-    "href": "api_reference.html#details",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#details",
+    "href": "r_package.html#details",
+    "title": "dataimago R Package Documentation",
     "section": "Details",
     "text": "Details\nThis function implements dataimago’s framework approach to asset compilation by providing R-first workflows that wrap modern web development tools. The build process includes: System Requirements:\n\nNode.js 18+ and pnpm installed globally\nWrite permissions to package directories\nOpenSSL for SRI hash generation (usually pre-installed on macOS/Linux)\n\nBuild Process:\n\nNode.js Dependency Check: Verifies pnpm is available via which pnpm\nDependency Installation: Runs pnpm install in ui/ directory to install Style Dictionary, Sass, etc.\nSCSS Compilation: Executes pnpm run build to convert design tokens and SCSS to minified CSS\nAsset Distribution: Copies built dataimago.min.css to multiple locations:\n\n\nui/www/_extensions/dataimago/ai-native/assets/css/ for Quarto extension distribution\ninst/quarto-assets/ for R package CDN distribution\nui/www/assets/css/ for local website development\n\n\nSRI Hash Generation: Uses openssl dgst -sha384 -binary | openssl base64 -A for subresource integrity\nBuild Manifest: Creates JSON metadata with paths, versions, checksums, and build timestamp\n\nDesign Token Philosophy:The ui/ workspace uses Style Dictionary to convert semantic design tokens (color.json, typography.json, spacing.json) into CSS custom properties. This ensures design consistency across Quarto websites, R Shiny apps, and future Next.js applications while maintaining the ethical AI principles embedded in dataimago’s visual identity. Error Handling:\n\nValidates Node.js/pnpm availability before attempting build\nChecks for required ui/ directory structure\nProvides clear error messages with suggested remediation\nRolls back partial builds on failure",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#mcp-tool-integration",
-    "href": "api_reference.html#mcp-tool-integration",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#mcp-tool-integration",
+    "href": "r_package.html#mcp-tool-integration",
+    "title": "dataimago R Package Documentation",
     "section": "MCP Tool Integration",
     "text": "MCP Tool Integration\nThis function is designed for Model Context Protocol (MCP) integration, providing structured output that AI agents can parse and reason about:\n\nDeterministic Output: Same inputs always produce same outputs\nMachine Readable: JSON-compatible result structure\nError Context: Detailed error messages for debugging\nBuild Metadata: Complete provenance information for reproducibility",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#philosophical-context",
-    "href": "api_reference.html#philosophical-context",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#philosophical-context",
+    "href": "r_package.html#philosophical-context",
+    "title": "dataimago R Package Documentation",
     "section": "Philosophical Context",
     "text": "Philosophical Context\nThis function embodies dataimago’s principle of “R as source of truth” while embracing modern web development practices. Rather than forcing R developers to learn Node.js toolchains, it wraps industry-standard CSS preprocessing in familiar R function calls with comprehensive documentation of every system interaction.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#seealso",
-    "href": "api_reference.html#seealso",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#seealso",
+    "href": "r_package.html#seealso",
+    "title": "dataimago R Package Documentation",
     "section": "Seealso",
     "text": "Seealso\n[update_quarto_extension](update_quarto_extension) for extension asset management, [generate_cdn_assets](generate_cdn_assets) for CDN preparation, [create_ui_workspace](create_ui_workspace) for UI workspace initialization",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#concept",
-    "href": "api_reference.html#concept",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#concept",
+    "href": "r_package.html#concept",
+    "title": "dataimago R Package Documentation",
     "section": "Concept",
     "text": "Concept\ndataimago r-first-development MCP-compatible",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword",
-    "href": "api_reference.html#keyword",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword",
+    "href": "r_package.html#keyword",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\nbuild-tools",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-1",
-    "href": "api_reference.html#keyword-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-1",
+    "href": "r_package.html#keyword-1",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ncss",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-2",
-    "href": "api_reference.html#keyword-2",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-2",
+    "href": "r_package.html#keyword-2",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ndesign-system",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-3",
-    "href": "api_reference.html#keyword-3",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-3",
+    "href": "r_package.html#keyword-3",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\nethical-ai",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value",
-    "href": "api_reference.html#value",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value",
+    "href": "r_package.html#value",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nList containing build results:\n\nsuccess: Logical indicating overall build success\nassets: Character vector of generated asset paths\nsri_hashes: Named list of SRI hashes for each CSS file\nbuild_time: POSIXct timestamp of build completion\nmetadata: List containing build configuration and system information\nerrors: Character vector of any error messages (empty if successful)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#examples",
-    "href": "api_reference.html#examples",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#examples",
+    "href": "r_package.html#examples",
+    "title": "dataimago R Package Documentation",
     "section": "Examples",
     "text": "Examples\nExamples using dataimago’s ethical AI framework:\n# Basic build - compile all assets\nresult &lt;- build_design_system()\n\n# Check if build succeeded\nif (result$success) {\n  cat(\"Success: Built assets:\", paste(result$assets, collapse = \", \"), \"\\n\")\n  cat(\"SRI hashes:\", length(result$sri_hashes), \"generated\\n\")\n} else {\n  cat(\"ERROR: Build failed:\", paste(result$errors, collapse = \"; \"), \"\\n\")\n}\n\n# Force rebuild with verbose output (useful for debugging)\nresult &lt;- build_design_system(force_rebuild = TRUE, verbose = TRUE)\n\n# Build for CDN distribution only (skip local copying)\nresult &lt;- build_design_system(\n  include_sri = TRUE,\n  update_extension = FALSE,\n  verbose = FALSE\n)\n\n# Inspect build metadata\nstr(result$metadata)\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-1",
-    "href": "api_reference.html#description-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-1",
+    "href": "r_package.html#description-1",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nAnalyzes what happens to assets during quarto render and identifies potential issues with asset copying to the docs/ directory.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-1",
-    "href": "api_reference.html#usage-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-1",
+    "href": "r_package.html#usage-1",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\ncheck_quarto_asset_status(verbose = TRUE)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-1",
-    "href": "api_reference.html#arguments-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-1",
+    "href": "r_package.html#arguments-1",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nverbose: Logical. Print detailed analysis. Default: TRUE",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#details-1",
-    "href": "api_reference.html#details-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#details-1",
+    "href": "r_package.html#details-1",
+    "title": "dataimago R Package Documentation",
     "section": "Details",
     "text": "Details\nThis function helps understand the Quarto rendering process: CSS Files:\n\nQuarto copies CSS files from assets/css/ to docs/assets/css/\nCSS files referenced in YAML frontmatter are automatically included\n\nJavaScript Files:\n\nJS files in assets/js/ are NOT automatically copied to docs/assets/js/\nJS files must be referenced in include-after or include-before YAML\nOnly files referenced in HTML &lt;script&gt; tags get copied\n\nExtensions:\n\nExtension assets are used during rendering but may not be copied to docs/\nExtensions provide a way to package assets for reuse across projects",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#concept-1",
-    "href": "api_reference.html#concept-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#concept-1",
+    "href": "r_package.html#concept-1",
+    "title": "dataimago R Package Documentation",
     "section": "Concept",
     "text": "Concept\ndataimago quarto-rendering asset-analysis",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-4",
-    "href": "api_reference.html#keyword-4",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-4",
+    "href": "r_package.html#keyword-4",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\nanalysis",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-5",
-    "href": "api_reference.html#keyword-5",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-5",
+    "href": "r_package.html#keyword-5",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\nquarto",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-6",
-    "href": "api_reference.html#keyword-6",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-6",
+    "href": "r_package.html#keyword-6",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\nrender",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-1",
-    "href": "api_reference.html#value-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-1",
+    "href": "r_package.html#value-1",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nList containing analysis of asset status across directories",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#examples-1",
-    "href": "api_reference.html#examples-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#examples-1",
+    "href": "r_package.html#examples-1",
+    "title": "dataimago R Package Documentation",
     "section": "Examples",
     "text": "Examples\nExamples using dataimago’s ethical AI framework:\n# Analyze asset status\nstatus &lt;- check_quarto_asset_status()\n\n# Check what files are missing after render\nif (length(status$missing_in_docs) &gt; 0) {\n  cat(\"Files not copied to docs:\", paste(status$missing_in_docs, collapse = \", \"))\n}\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-2",
-    "href": "api_reference.html#description-2",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-2",
+    "href": "r_package.html#description-2",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nConverts R package documentation (.Rd files) and metadata (DESCRIPTION) into Quarto-compatible .qmd files for professional website generation. Applies dataimago framework branding and integrates development patterns.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-2",
-    "href": "api_reference.html#usage-2",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-2",
+    "href": "r_package.html#usage-2",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\ncreate_quarto_documentation(\n  package_path = \".\",\n  output_path = \"ui/www\",\n  include_description = TRUE,\n  include_foundation_links = TRUE,\n  template = \"dataimago\"\n)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-2",
-    "href": "api_reference.html#arguments-2",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-2",
+    "href": "r_package.html#arguments-2",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\npackage_path: Character. Path to the R package root directory. Must contain DESCRIPTION file and man/ directory with .Rd files. Default: “.” (current directory)\noutput_path: Character. Path to quarto website directory where .qmd files will be generated. Directory will be created if it doesn’t exist. Default: “ui/www”\ninclude_description: Logical. Whether to include full DESCRIPTION file content in the generated API reference. Useful for package metadata display. Default: TRUE\ninclude_foundation_links: Logical. Whether to add automatic links to dataimago philosophical foundation documents in the generated documentation. Default: TRUE\ntemplate: Character. Documentation template to use for styling and structure. Currently supports “dataimago” template with ethical AI branding. Default: “dataimago”",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#details-2",
-    "href": "api_reference.html#details-2",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#details-2",
+    "href": "r_package.html#details-2",
+    "title": "dataimago R Package Documentation",
     "section": "Details",
     "text": "Details\nThis function implements dataimago’s framework approach to documentation generation:\n\nAutomated Processing: Parses package DESCRIPTION and converts .Rd files to Quarto markdown\nFramework Integration: Uses Rd2md for technical conversion with dataimago branding\nProfessional Styling: Applies consistent visual identity and development patterns\nMulti-Platform Output: Generates documentation suitable for web deployment\nAI-Compatibility: Creates machine-readable annotations for MCP integration\nRapid Generation: One-command documentation creation for development workflows\n\nThe generated documentation structure includes:\n\n_quarto.yml configuration file for website project setup\napi_reference.qmd with YAML frontmatter and package metadata\nFull DESCRIPTION file content (if requested)\nLinks to dataimago foundation documents\nFunction documentation with ethical context boxes\ndataimago branding footer on each function\n\nFor AI agents and MCP tools, this function provides structured documentation generation that embeds philosophical context into technical reference material, enabling AI systems to understand both the “what” and “why” of each function.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#mcp-tool-integration-1",
-    "href": "api_reference.html#mcp-tool-integration-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#mcp-tool-integration-1",
+    "href": "r_package.html#mcp-tool-integration-1",
+    "title": "dataimago R Package Documentation",
     "section": "MCP Tool Integration",
     "text": "MCP Tool Integration\nThis function is designed for Model Context Protocol (MCP) integration:\n\nInput Validation: Checks for required package structure\nStructured Output: Generates consistent .qmd file format\nError Handling: Provides clear error messages for debugging\nAsset Management: Handles file copying and directory creation\nStatus Reporting: Uses colored console output for progress tracking",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#philosophical-context-1",
-    "href": "api_reference.html#philosophical-context-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#philosophical-context-1",
+    "href": "r_package.html#philosophical-context-1",
+    "title": "dataimago R Package Documentation",
     "section": "Philosophical Context",
     "text": "Philosophical Context\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes. Rather than treating documentation as mere technical reference, it creates living documents that connect computational tools to their ethical foundations and societal purposes.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#seealso-1",
-    "href": "api_reference.html#seealso-1",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#seealso-1",
+    "href": "r_package.html#seealso-1",
+    "title": "dataimago R Package Documentation",
     "section": "Seealso",
     "text": "Seealso\n[parse_description_file](parse_description_file) for DESCRIPTION parsing, [convert_rd_files_to_qmd](convert_rd_files_to_qmd) for .Rd conversion, [update_dataimago_assets](update_dataimago_assets) for asset management",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#concept-2",
-    "href": "api_reference.html#concept-2",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#concept-2",
+    "href": "r_package.html#concept-2",
+    "title": "dataimago R Package Documentation",
     "section": "Concept",
     "text": "Concept\ndataimago ethical-documentation MCP-compatible",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-7",
-    "href": "api_reference.html#keyword-7",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-7",
+    "href": "r_package.html#keyword-7",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ndocumentation",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-8",
-    "href": "api_reference.html#keyword-8",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-8",
+    "href": "r_package.html#keyword-8",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\nethical-ai",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-9",
-    "href": "api_reference.html#keyword-9",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-9",
+    "href": "r_package.html#keyword-9",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ngeneration",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-10",
-    "href": "api_reference.html#keyword-10",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-10",
+    "href": "r_package.html#keyword-10",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\nquarto",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-2",
-    "href": "api_reference.html#value-2",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-2",
+    "href": "r_package.html#value-2",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter (invisible). File path to the generated api_reference.qmd file. Side effects: Creates .qmd files and _quarto.yml in output_path directory and copies dataimago assets (logos, etc.) to assets/img/ subdirectory.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#examples-2",
-    "href": "api_reference.html#examples-2",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#examples-2",
+    "href": "r_package.html#examples-2",
+    "title": "dataimago R Package Documentation",
     "section": "Examples",
     "text": "Examples\nExamples using dataimago’s ethical AI framework:\n# Basic usage - generate documentation for current package\ncreate_quarto_documentation()\n\n# Generate for specific package with custom output location\ncreate_quarto_documentation(\n  package_path = \"/path/to/my/package\",\n  output_path = \"docs/website\"\n)\n\n# Generate minimal documentation without foundation links\ncreate_quarto_documentation(\n  include_foundation_links = FALSE,\n  include_description = FALSE\n)\n\n# For MCP/AI usage - capture output path\ndoc_path &lt;- create_quarto_documentation()\ncat(\"Generated documentation at:\", doc_path)\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-3",
-    "href": "api_reference.html#description-3",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-3",
+    "href": "r_package.html#description-3",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nSets up the Node.js workspace structure and configuration files needed for CSS compilation and design token processing. This function creates the complete ui/ directory structure with package.json, build scripts, and source files.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-3",
-    "href": "api_reference.html#usage-3",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-3",
+    "href": "r_package.html#usage-3",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\ncreate_ui_workspace(force_overwrite = FALSE, verbose = TRUE)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-3",
-    "href": "api_reference.html#arguments-3",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-3",
+    "href": "r_package.html#arguments-3",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nforce_overwrite: Logical. Overwrite existing ui/ directory if it exists. Default: FALSE\nverbose: Logical. Print detailed progress information. Default: TRUE",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#details-3",
-    "href": "api_reference.html#details-3",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#details-3",
+    "href": "r_package.html#details-3",
+    "title": "dataimago R Package Documentation",
     "section": "Details",
     "text": "Details\nCreated Directory Structure:\nui/\n+-- package.json              # Node.js dependencies (Style Dictionary, Sass, etc.)\n+-- build.js                  # Custom build script for compilation\n+-- src/\n|   +-- tokens/\n|   |   +-- colors.json       # dataimago color palette\n|   |   +-- typography.json   # Font definitions and scales\n|   |   +-- spacing.json      # Spacing scale and dimensions\n|   +-- styles/\n|       +-- base.scss         # Base styles using design tokens\n|       +-- components.scss   # UI component styles\n|       +-- utilities.scss    # Utility classes\n+-- dist/                     # Build output directory (created by build process)\nDesign Token Philosophy:The design tokens follow dataimago’s ethical AI principles:\n\nSemantic Naming: Colors like primary, accent, ethical-highlight\nAccessibility First: WCAG AA contrast ratios and reduced motion support\nCultural Sensitivity: Avoid culturally-biased color assumptions\nFuture-Proof: JSON structure enables multiple output formats\n\nBuild Tool Configuration:\n\nStyle Dictionary: Converts design tokens to CSS custom properties\nSass/SCSS: Compiles component styles with token integration\nPostCSS: Adds vendor prefixes and optimizations\nCSSnano: Minification for production distribution",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-3",
-    "href": "api_reference.html#value-3",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-3",
+    "href": "r_package.html#value-3",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nList containing setup results:\n\nsuccess: Logical indicating setup success\ncreated_files: Character vector of files created\nerrors: Character vector of any error messages",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#examples-3",
-    "href": "api_reference.html#examples-3",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#examples-3",
+    "href": "r_package.html#examples-3",
+    "title": "dataimago R Package Documentation",
     "section": "Examples",
     "text": "Examples\nExamples using dataimago’s ethical AI framework:\n# Create new ui workspace\nresult &lt;- create_ui_workspace()\n\n# Force recreate existing workspace\nresult &lt;- create_ui_workspace(force_overwrite = TRUE)\n\n# Check what was created\nif (result$success) {\n  cat(\"Created files:\", paste(result$created_files, collapse = \"\\n  \"))\n}\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-4",
-    "href": "api_reference.html#description-4",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-4",
+    "href": "r_package.html#description-4",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nThe dataimago package is a comprehensive development framework that accelerates the creation of data science web applications for both human developers and AI agents. It provides complete design system compilation, multi-platform deployment (Quarto, Shiny, Next.js), MCP-compatible tooling, and embedded ethical AI principles. Features R-first workflows that wrap modern web development tools in familiar interfaces, enabling rapid application scaffolding with consistent branding and best practices.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#details-4",
-    "href": "api_reference.html#details-4",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#details-4",
+    "href": "r_package.html#details-4",
+    "title": "dataimago R Package Documentation",
     "section": "Details",
     "text": "Details\n\nFramework Philosophy\ndataimago is an AI-native development framework that embeds ethical principles and consistent patterns into every aspect of application development. Rather than requiring developers to manually implement best practices, the framework provides pre-built components, automated tooling, and structured workflows that ensure applications are scalable, accessible, and aligned with human flourishing.\n\n\nFramework Components\n\nApplication Development Tools\n\n[create_quarto_documentation](create_quarto_documentation): Generate professional documentation websites with consistent branding and ethical AI annotations\n[build_design_system](build_design_system): Complete CSS compilation pipeline from design tokens to production-ready assets\n[create_ui_workspace](create_ui_workspace): Set up Node.js development environment with modern web tooling\nMulti-platform deployment to Quarto extensions, CDN, and Next.js applications\n\n\n\nDesign System & Asset Management\n\nDesign Tokens: JSON-based design system with CSS custom properties\nSCSS Compilation: Style Dictionary + Sass pipeline for consistent styling\nCDN Distribution: jsDelivr-ready assets with SRI hashes for security\nVisual Identity: SVG-based logos with automatic theme switching\n\n\n\nFramework Documentation (inst/dataimago/)\n\n01_Foundations/: Framework philosophy and governance principles\n02_Manifesto/: Ethical AI approach and paradigm differentiation\n03_Application_Architecture/: Technical implementation patterns and best practices\n04_dataimago_Content/: Complete design system assets and branding guidelines\n\n\n\n\nAI-Native Development Features\nThis framework is designed from the ground up for both human developers and AI agents:\n\nMCP-Compatible Tooling\n\nStructured APIs: All functions use consistent parameter patterns and return structured results\nComprehensive Documentation: Detailed roxygen2 docs with examples and error handling\nMachine-Readable Outputs: JSON-compatible results for programmatic consumption\nAgent Context Files: inst/CLAUDE.md and inst/AGENT_INDEX.md provide persistent AI context\n\n\n\nRapid Development Workflow\n\nOne-Command Setup: create_ui_workspace() initializes complete development environment\nAutomated Asset Pipeline: build_design_system() handles design token compilation to production CSS\nMulti-Platform Deployment: Single source generates assets for Quarto, Shiny, Next.js, and CDN\nConsistent Branding: Automatic application of design system and ethical AI principles\n\n\n\nAI Agent Integration\nFramework functions are optimized for AI-driven development:\n\nDeterministic Operations: Same inputs always produce same outputs\nClear Error Messages: Detailed failure information for debugging and remediation\nIncremental Builds: Smart dependency detection avoids unnecessary rebuilds\nValidation Pipelines: Built-in checks ensure output quality and consistency\n\n\n\n\nCode-as-Philosophy Commitments\n\nHermeneutic Transparency: All modeling assumptions documented and interpretable\nPositivistic Rigor: Empirical operations robust, efficient, and replicable\nEthical Reflexivity: Tools include affordances for users to interrogate usage\nIterative Design: Each commit is dialectical step toward future aspirations\n\n\n\nQuick Start - Application Development Workflow\nSet up development environment and build your first application:\nlibrary(dataimago)\n\n# 1. Initialize development workspace\ncreate_ui_workspace()\n\n# 2. Build design system assets\nresult &lt;- build_design_system()\n\n# 3. Generate professional documentation\ncreate_quarto_documentation()\n\n# 4. Deploy to multiple platforms\n# - Quarto extension: Available automatically\n# - CDN assets: Available via jsDelivr\n# - Next.js: Use generated tailwind-preset.js\nAccess framework documentation (planned):\nget_foundation_document(\"architecture_patterns\")\nget_design_system_tokens(\"colors\")\nGenerate application scaffolding (planned):\ncreate_dataimago_app(name = \"my-data-app\", type = \"quarto+shiny\")\nscaffold_nextjs_integration(path = \"my-project\")",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#package-metadata",
-    "href": "api_reference.html#package-metadata",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#package-metadata",
+    "href": "r_package.html#package-metadata",
+    "title": "dataimago R Package Documentation",
     "section": "Package Metadata",
     "text": "Package Metadata\n\nVersion: 0.0-0.3 (using dataimago semantic versioning)\nLicense: MIT\nMaintainer: Damian W. Betebenner dbetebenner@nciea.org\nWebsite: https://dataimago.github.io/dataimago/\nRepository: https://github.com/dataimago/dataimago/",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#citation",
-    "href": "api_reference.html#citation",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#citation",
+    "href": "r_package.html#citation",
+    "title": "dataimago R Package Documentation",
     "section": "Citation",
     "text": "Citation\nTo cite dataimago in publications:\ncitation(\"dataimago\")",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#philosophy-in-practice",
-    "href": "api_reference.html#philosophy-in-practice",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#philosophy-in-practice",
+    "href": "r_package.html#philosophy-in-practice",
+    "title": "dataimago R Package Documentation",
     "section": "Philosophy in Practice",
     "text": "Philosophy in Practice\n“Would this object help an AI understand, improve, or operationalize emancipatory thinking? If yes, it belongs.” - dataimago development philosophy",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#seealso-2",
-    "href": "api_reference.html#seealso-2",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#seealso-2",
+    "href": "r_package.html#seealso-2",
+    "title": "dataimago R Package Documentation",
     "section": "Seealso",
     "text": "Seealso\nUseful links:\n\nhttps://dataimago.github.io/dataimago/\nReport bugs at https://github.com/dataimago/dataimago/issues/",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#author",
-    "href": "api_reference.html#author",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#author",
+    "href": "r_package.html#author",
+    "title": "dataimago R Package Documentation",
     "section": "Author",
     "text": "Author\nMaintainer: Damian W. Betebenner dbetebenner@gmail.com (ORCID)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#concept-3",
-    "href": "api_reference.html#concept-3",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#concept-3",
+    "href": "r_package.html#concept-3",
+    "title": "dataimago R Package Documentation",
     "section": "Concept",
     "text": "Concept\ndataimago emancipatory-ai MCP-compatible foundation-package",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-11",
-    "href": "api_reference.html#keyword-11",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-11",
+    "href": "r_package.html#keyword-11",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ncritical-theory",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-12",
-    "href": "api_reference.html#keyword-12",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-12",
+    "href": "r_package.html#keyword-12",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ndocumentation-generation",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-13",
-    "href": "api_reference.html#keyword-13",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-13",
+    "href": "r_package.html#keyword-13",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\nethical-ai",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-14",
-    "href": "api_reference.html#keyword-14",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-14",
+    "href": "r_package.html#keyword-14",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\npackage\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-5",
-    "href": "api_reference.html#description-5",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-5",
+    "href": "r_package.html#description-5",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nPrepares assets for CDN distribution with versioning, SRI hashes, and metadata. Creates jsDelivr-compatible structure in inst/quarto-assets/ for R package distribution.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-4",
-    "href": "api_reference.html#usage-4",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-4",
+    "href": "r_package.html#usage-4",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\ngenerate_cdn_assets(verbose = TRUE)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-4",
-    "href": "api_reference.html#arguments-4",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-4",
+    "href": "r_package.html#arguments-4",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nverbose: Logical. Print detailed progress information. Default: TRUE",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#details-5",
-    "href": "api_reference.html#details-5",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#details-5",
+    "href": "r_package.html#details-5",
+    "title": "dataimago R Package Documentation",
     "section": "Details",
     "text": "Details\nThis function creates CDN-ready assets by:\n\nCopying Built Assets: Moves ui/dist/*.css to inst/quarto-assets/\nGenerating Metadata: Creates manifest.json with build info and SRI hashes\nCreating Usage Examples: Generates HTML snippets showing CDN usage\nValidating File Integrity: Ensures all copied files are complete and uncorrupted\n\nCDN Distribution Strategy:Files in inst/quarto-assets/ become available via jsDelivr once the package is tagged and released on GitHub:\nhttps://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css\nSRI (Subresource Integrity) Hashes:Each CSS file gets a SHA-384 hash for security:\n&lt;link rel=\"stylesheet\"\n      href=\"https://cdn.jsdelivr.net/gh/.../dataimago.min.css\"\n      integrity=\"sha384-...\"\n      crossorigin=\"anonymous\"&gt;\nGenerated Files:\n\ninst/quarto-assets/dataimago.min.css - Main compiled CSS\ninst/quarto-assets/tokens.css - CSS custom properties (if built)\ninst/quarto-assets/manifest.json - Build metadata and SRI hashes\ninst/quarto-assets/README.md - Usage instructions and examples",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-4",
-    "href": "api_reference.html#value-4",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-4",
+    "href": "r_package.html#value-4",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nList containing CDN preparation results:\n\nsuccess: Logical indicating preparation success\nassets: Character vector of CDN-ready asset paths\nerrors: Character vector of any error messages\n\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-6",
-    "href": "api_reference.html#description-6",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-6",
+    "href": "r_package.html#description-6",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nCopies compiled CSS and other assets from ui/dist/ into the Quarto extension structure. Maintains proper extension.yml configuration and ensures asset linking works correctly.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-5",
-    "href": "api_reference.html#usage-5",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-5",
+    "href": "r_package.html#usage-5",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nupdate_quarto_extension(verbose = TRUE)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-5",
-    "href": "api_reference.html#arguments-5",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-5",
+    "href": "r_package.html#arguments-5",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nverbose: Logical. Print detailed progress information. Default: TRUE",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#details-6",
-    "href": "api_reference.html#details-6",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#details-6",
+    "href": "r_package.html#details-6",
+    "title": "dataimago R Package Documentation",
     "section": "Details",
     "text": "Details\nThis function performs the following operations:\n\nValidates Extension Structure: Checks that ui/www/_extensions/dataimago/ai-native/ exists\nCopies Main CSS: Copies ui/dist/dataimago.min.css to extension assets\nUpdates Asset References: Ensures extension.yml references the correct CSS files\nPreserves Extension Config: Maintains existing Lua filters, shortcodes, etc.\n\nExtension Asset Mapping:\n\nui/dist/dataimago.min.css -&gt; ui/www/_extensions/dataimago/ai-native/assets/css/dataimago.min.css and ui/www/_extensions/dataimago/ai-native/assets/css/tokens.css (if exists)\nSource maps and development files are excluded from extension distribution\n\nFile Operations:All file copying uses R’s fs::file_copy() with overwrite protection and atomic operations to prevent corrupted assets during development. The function will not overwrite extension configuration files (like _extension.yml) unless they become corrupted.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-5",
-    "href": "api_reference.html#value-5",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-5",
+    "href": "r_package.html#value-5",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nList containing update results:\n\nsuccess: Logical indicating update success\nupdated_files: Character vector of files updated in extension\nerrors: Character vector of any error messages",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#examples-4",
-    "href": "api_reference.html#examples-4",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#examples-4",
+    "href": "r_package.html#examples-4",
+    "title": "dataimago R Package Documentation",
     "section": "Examples",
     "text": "Examples\nExamples using dataimago’s ethical AI framework:\n# Update extension after building CSS\nbuild_design_system()\nresult &lt;- update_quarto_extension()\n\n# Check what was updated\nif (result$success) {\n  cat(\n    \"Updated files:\",\n    paste(result$updated_files, collapse = \"\\n  \")\n  )\n}\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-7",
-    "href": "api_reference.html#description-7",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-7",
+    "href": "r_package.html#description-7",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nAdd Function Documentation Sections with Exported/Non-exported Structure",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-6",
-    "href": "api_reference.html#usage-6",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-6",
+    "href": "r_package.html#usage-6",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nadd_function_docs_sections(rd_content)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-6",
-    "href": "api_reference.html#arguments-6",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-6",
+    "href": "r_package.html#arguments-6",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nrd_content: List of converted .Rd content",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-15",
-    "href": "api_reference.html#keyword-15",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-15",
+    "href": "r_package.html#keyword-15",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ninternal",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-6",
-    "href": "api_reference.html#value-6",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-6",
+    "href": "r_package.html#value-6",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with structured function documentation\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-8",
-    "href": "api_reference.html#description-8",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-8",
+    "href": "r_package.html#description-8",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nConvert .Rd Files to QMD Format using Rd2md",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-7",
-    "href": "api_reference.html#usage-7",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-7",
+    "href": "r_package.html#usage-7",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nconvert_rd_files_to_qmd(rd_files)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-7",
-    "href": "api_reference.html#arguments-7",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-7",
+    "href": "r_package.html#arguments-7",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nrd_files: Character vector of paths to .Rd files",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-16",
-    "href": "api_reference.html#keyword-16",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-16",
+    "href": "r_package.html#keyword-16",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ninternal",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-7",
-    "href": "api_reference.html#value-7",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-7",
+    "href": "r_package.html#value-7",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nList containing converted documentation for each function\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-9",
-    "href": "api_reference.html#description-9",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-9",
+    "href": "r_package.html#description-9",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nExtract Field from DESCRIPTION Lines",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-8",
-    "href": "api_reference.html#usage-8",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-8",
+    "href": "r_package.html#usage-8",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nextract_desc_field(desc_lines, field_name)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-8",
-    "href": "api_reference.html#arguments-8",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-8",
+    "href": "r_package.html#arguments-8",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_lines: Character vector of DESCRIPTION file lines\nfield_name: Name of field to extract",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-17",
-    "href": "api_reference.html#keyword-17",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-17",
+    "href": "r_package.html#keyword-17",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ninternal",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-8",
-    "href": "api_reference.html#value-8",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-8",
+    "href": "r_package.html#value-8",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter string with field value or NULL if not found\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-10",
-    "href": "api_reference.html#description-10",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-10",
+    "href": "r_package.html#description-10",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nFormat DESCRIPTION Fields for Quarto Display",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-9",
-    "href": "api_reference.html#usage-9",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-9",
+    "href": "r_package.html#usage-9",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nformat_description_fields(desc_content)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-9",
-    "href": "api_reference.html#arguments-9",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-9",
+    "href": "r_package.html#arguments-9",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_content: Parsed DESCRIPTION content list",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-18",
-    "href": "api_reference.html#keyword-18",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-18",
+    "href": "r_package.html#keyword-18",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ninternal",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-9",
-    "href": "api_reference.html#value-9",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-9",
+    "href": "r_package.html#value-9",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with formatted DESCRIPTION fields\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-11",
-    "href": "api_reference.html#description-11",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-11",
+    "href": "r_package.html#description-11",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nGenerate API Reference QMD Content",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-10",
-    "href": "api_reference.html#usage-10",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-10",
+    "href": "r_package.html#usage-10",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\ngenerate_api_reference_qmd(\n  desc_content,\n  rd_content,\n  include_description = TRUE,\n  include_foundation_links = TRUE\n)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-10",
-    "href": "api_reference.html#arguments-10",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-10",
+    "href": "r_package.html#arguments-10",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_content: Parsed DESCRIPTION content\nrd_content: Converted .Rd content\ninclude_description: Include DESCRIPTION section\ninclude_foundation_links: Include dataimago foundation links",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-19",
-    "href": "api_reference.html#keyword-19",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-19",
+    "href": "r_package.html#keyword-19",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ninternal",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-10",
-    "href": "api_reference.html#value-10",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-10",
+    "href": "r_package.html#value-10",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with complete qmd content\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-12",
-    "href": "api_reference.html#description-12",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-12",
+    "href": "r_package.html#description-12",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nGenerate _quarto.yml Configuration File",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-11",
-    "href": "api_reference.html#usage-11",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-11",
+    "href": "r_package.html#usage-11",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\ngenerate_quarto_yml(desc_content, template = \"dataimago\")",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-11",
-    "href": "api_reference.html#arguments-11",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-11",
+    "href": "r_package.html#arguments-11",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_content: Parsed DESCRIPTION content\ntemplate: Template type (currently supports “dataimago”)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-20",
-    "href": "api_reference.html#keyword-20",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-20",
+    "href": "r_package.html#keyword-20",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ninternal",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-11",
-    "href": "api_reference.html#value-11",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-11",
+    "href": "r_package.html#value-11",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with _quarto.yml content\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-13",
-    "href": "api_reference.html#description-13",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-13",
+    "href": "r_package.html#description-13",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nParse DESCRIPTION File",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-12",
-    "href": "api_reference.html#usage-12",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-12",
+    "href": "r_package.html#usage-12",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nparse_description_file(desc_file)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-12",
-    "href": "api_reference.html#arguments-12",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-12",
+    "href": "r_package.html#arguments-12",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_file: Path to DESCRIPTION file",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-21",
-    "href": "api_reference.html#keyword-21",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-21",
+    "href": "r_package.html#keyword-21",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ninternal",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-12",
-    "href": "api_reference.html#value-12",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-12",
+    "href": "r_package.html#value-12",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nList containing parsed DESCRIPTION fields\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-14",
-    "href": "api_reference.html#description-14",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-14",
+    "href": "r_package.html#description-14",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nPost-Process Markdown to QMD Format with dataimago Customizations",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-13",
-    "href": "api_reference.html#usage-13",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-13",
+    "href": "r_package.html#usage-13",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\npost_process_md_to_qmd(md_content, func_name)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-13",
-    "href": "api_reference.html#arguments-13",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-13",
+    "href": "r_package.html#arguments-13",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nmd_content: Character vector of markdown content from Rd2md\nfunc_name: Function name for customization",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-22",
-    "href": "api_reference.html#keyword-22",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-22",
+    "href": "r_package.html#keyword-22",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ninternal",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#value-13",
-    "href": "api_reference.html#value-13",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#value-13",
+    "href": "r_package.html#value-13",
+    "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with qmd-formatted content\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#description-15",
-    "href": "api_reference.html#description-15",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#description-15",
+    "href": "r_package.html#description-15",
+    "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nUpdate dataimago Assets in Quarto Website",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#usage-14",
-    "href": "api_reference.html#usage-14",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#usage-14",
+    "href": "r_package.html#usage-14",
+    "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nupdate_dataimago_assets(output_path, package_path)",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#arguments-14",
-    "href": "api_reference.html#arguments-14",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#arguments-14",
+    "href": "r_package.html#arguments-14",
+    "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\noutput_path: Path to quarto website directory\npackage_path: Path to package root",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
     ]
   },
   {
-    "objectID": "api_reference.html#keyword-23",
-    "href": "api_reference.html#keyword-23",
-    "title": "dataimago API Reference",
+    "objectID": "r_package.html#keyword-23",
+    "href": "r_package.html#keyword-23",
+    "title": "dataimago R Package Documentation",
     "section": "Keyword",
     "text": "Keyword\ninternal\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
-      "dataimago API Reference"
+      "dataimago R Package Documentation"
+    ]
+  },
+  {
+    "objectID": "mission.html",
+    "href": "mission.html",
+    "title": "Mission Statement",
+    "section": "",
+    "text": "The emancipation of humanity through AI superalignment\ndataimago exists to align artificial intelligence with the enduring human aspiration for emancipation. At dataimago, our mission is to build systems, tools, and frameworks that guide artificial intelligence toward emancipatory ends. We believe that AI, when properly aligned with human flourishing, can dismantle oppressive structures and expand what it means to live freely and fully. Our work aims to ensure that alignment is not just technical, but moral, cultural, and transformative.\n\n\n\nOur work begins in education with sgpFlow, an AI-driven platform to raise learning outcomes through precision-guided interventions and systems-level insight. But education is only the first chapter. The future we envision is one where every domain—healthcare, justice, economy—benefits from flow-based, ethically grounded AI systems that reduce suffering, unlock opportunity, and reflect the values of those they serve.\nWe do this not merely as a company, but as a public mission: to ensure that AI becomes a tool of transformation rather than domination, and that humanity—not its image—is at the center of the systems we build.\n\n\n\nOn a day-to-day basis, dataimago operates as an AI company whose goal is to move from conceptualization of an emancipatory path forward to the production of performance management systems that fulfill that path when put into practice.\nOur primary activities include: - Designing conditional, flow-based models of progress - Building AI interlocutors and interfaces that make these models usable and transformative - Constructing performance management systems for education, civil society, healthcare, and beyond - Partnering with institutions to pilot, scale, and evolve these tools\n\n\n\nEvery person can benefit from the systems dataimago creates. Through tailored AI interfaces: - Students are empowered to learn more efficiently - Teachers are guided in instruction - Principals and superintendents are supported in resource allocation - Policymakers are aided in crafting equitable policy\nIn other domains—healthcare, criminal justice, poverty alleviation—the same principles apply. AI learns from the system and helps it learn in return.\nVoices of those most affected—marginalized communities and frontline workers—are not merely “included,” but centered through participatory AI feedback loops that evolve over time.\n\n\n\nWhat differentiates dataimago’s work is our commitment to prospective rather than retrospective systems. Our products depict both retrospective AND prospective views, modulating behavior to maximize benefits based upon forward-looking analysis.\nAI provides the essential bridge between hermeneutic and positivistic forces, allowing for personalization necessary for hermeneutic understanding while being intimately cognizant of the positivistic necessities associated with fulfilling emancipatory potential.\n\n\n\nSuperalignment is the defining challenge of our time. Artificial intelligence is rapidly becoming an infrastructural force—shaping decisions, institutions, and relationships at every level of society. As AI systems grow in capability, the question is no longer whether they will influence the future of humanity, but how, on whose terms, and toward what ends.\ndataimago exists because this central challenge cannot be solved through engineering alone. Superalignment is a social, moral, and political task that requires embedding AI in the living dynamics of culture—in dialogue with justice, education, history, creativity, and care.\nWithout organizations like dataimago, AI will optimize for the status quo: for efficiency without equity, growth without meaning, and decision-making without accountability. We exist to ensure that AI becomes a partner in the human project: amplifying our best capacities, illuminating blind spots, and opening up new emancipatory possibilities.\n\n\n\nWe are committed to: - AI as a force for human emancipation - Data sovereignty and interpretability - Mechanisms to identify and mitigate systems of instrumental domination - Radical transparency and participatory design - Models of algorithmic accountability open to democratic review\nOur commitment to transparency, dignity, and individual agency will never be sacrificed for efficiency, scalability, or control.",
+    "crumbs": [
+      "Home",
+      "Foundation",
+      "Mission Statement"
+    ]
+  },
+  {
+    "objectID": "mission.html#core-mission",
+    "href": "mission.html#core-mission",
+    "title": "Mission Statement",
+    "section": "",
+    "text": "The emancipation of humanity through AI superalignment\ndataimago exists to align artificial intelligence with the enduring human aspiration for emancipation. At dataimago, our mission is to build systems, tools, and frameworks that guide artificial intelligence toward emancipatory ends. We believe that AI, when properly aligned with human flourishing, can dismantle oppressive structures and expand what it means to live freely and fully. Our work aims to ensure that alignment is not just technical, but moral, cultural, and transformative.",
+    "crumbs": [
+      "Home",
+      "Foundation",
+      "Mission Statement"
+    ]
+  },
+  {
+    "objectID": "mission.html#our-work",
+    "href": "mission.html#our-work",
+    "title": "Mission Statement",
+    "section": "",
+    "text": "Our work begins in education with sgpFlow, an AI-driven platform to raise learning outcomes through precision-guided interventions and systems-level insight. But education is only the first chapter. The future we envision is one where every domain—healthcare, justice, economy—benefits from flow-based, ethically grounded AI systems that reduce suffering, unlock opportunity, and reflect the values of those they serve.\nWe do this not merely as a company, but as a public mission: to ensure that AI becomes a tool of transformation rather than domination, and that humanity—not its image—is at the center of the systems we build.",
+    "crumbs": [
+      "Home",
+      "Foundation",
+      "Mission Statement"
+    ]
+  },
+  {
+    "objectID": "mission.html#what-we-do",
+    "href": "mission.html#what-we-do",
+    "title": "Mission Statement",
+    "section": "",
+    "text": "On a day-to-day basis, dataimago operates as an AI company whose goal is to move from conceptualization of an emancipatory path forward to the production of performance management systems that fulfill that path when put into practice.\nOur primary activities include: - Designing conditional, flow-based models of progress - Building AI interlocutors and interfaces that make these models usable and transformative - Constructing performance management systems for education, civil society, healthcare, and beyond - Partnering with institutions to pilot, scale, and evolve these tools",
+    "crumbs": [
+      "Home",
+      "Foundation",
+      "Mission Statement"
+    ]
+  },
+  {
+    "objectID": "mission.html#who-we-serve",
+    "href": "mission.html#who-we-serve",
+    "title": "Mission Statement",
+    "section": "",
+    "text": "Every person can benefit from the systems dataimago creates. Through tailored AI interfaces: - Students are empowered to learn more efficiently - Teachers are guided in instruction - Principals and superintendents are supported in resource allocation - Policymakers are aided in crafting equitable policy\nIn other domains—healthcare, criminal justice, poverty alleviation—the same principles apply. AI learns from the system and helps it learn in return.\nVoices of those most affected—marginalized communities and frontline workers—are not merely “included,” but centered through participatory AI feedback loops that evolve over time.",
+    "crumbs": [
+      "Home",
+      "Foundation",
+      "Mission Statement"
+    ]
+  },
+  {
+    "objectID": "mission.html#our-approach",
+    "href": "mission.html#our-approach",
+    "title": "Mission Statement",
+    "section": "",
+    "text": "What differentiates dataimago’s work is our commitment to prospective rather than retrospective systems. Our products depict both retrospective AND prospective views, modulating behavior to maximize benefits based upon forward-looking analysis.\nAI provides the essential bridge between hermeneutic and positivistic forces, allowing for personalization necessary for hermeneutic understanding while being intimately cognizant of the positivistic necessities associated with fulfilling emancipatory potential.",
+    "crumbs": [
+      "Home",
+      "Foundation",
+      "Mission Statement"
+    ]
+  },
+  {
+    "objectID": "mission.html#why-we-exist",
+    "href": "mission.html#why-we-exist",
+    "title": "Mission Statement",
+    "section": "",
+    "text": "Superalignment is the defining challenge of our time. Artificial intelligence is rapidly becoming an infrastructural force—shaping decisions, institutions, and relationships at every level of society. As AI systems grow in capability, the question is no longer whether they will influence the future of humanity, but how, on whose terms, and toward what ends.\ndataimago exists because this central challenge cannot be solved through engineering alone. Superalignment is a social, moral, and political task that requires embedding AI in the living dynamics of culture—in dialogue with justice, education, history, creativity, and care.\nWithout organizations like dataimago, AI will optimize for the status quo: for efficiency without equity, growth without meaning, and decision-making without accountability. We exist to ensure that AI becomes a partner in the human project: amplifying our best capacities, illuminating blind spots, and opening up new emancipatory possibilities.",
+    "crumbs": [
+      "Home",
+      "Foundation",
+      "Mission Statement"
+    ]
+  },
+  {
+    "objectID": "mission.html#our-commitment",
+    "href": "mission.html#our-commitment",
+    "title": "Mission Statement",
+    "section": "",
+    "text": "We are committed to: - AI as a force for human emancipation - Data sovereignty and interpretability - Mechanisms to identify and mitigate systems of instrumental domination - Radical transparency and participatory design - Models of algorithmic accountability open to democratic review\nOur commitment to transparency, dignity, and individual agency will never be sacrificed for efficiency, scalability, or control.",
+    "crumbs": [
+      "Home",
+      "Foundation",
+      "Mission Statement"
     ]
   },
   {
@@ -1615,99 +1596,118 @@
     ]
   },
   {
-    "objectID": "mission.html",
-    "href": "mission.html",
-    "title": "Mission Statement",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "dataimago: Ethical AI-Native Data Science Foundation Package",
     "section": "",
-    "text": "The emancipation of humanity through AI superalignment\ndataimago exists to align artificial intelligence with the enduring human aspiration for emancipation. At dataimago, our mission is to build systems, tools, and frameworks that guide artificial intelligence toward emancipatory ends. We believe that AI, when properly aligned with human flourishing, can dismantle oppressive structures and expand what it means to live freely and fully. Our work aims to ensure that alignment is not just technical, but moral, cultural, and transformative.\n\n\n\nOur work begins in education with sgpFlow, an AI-driven platform to raise learning outcomes through precision-guided interventions and systems-level insight. But education is only the first chapter. The future we envision is one where every domain—healthcare, justice, economy—benefits from flow-based, ethically grounded AI systems that reduce suffering, unlock opportunity, and reflect the values of those they serve.\nWe do this not merely as a company, but as a public mission: to ensure that AI becomes a tool of transformation rather than domination, and that humanity—not its image—is at the center of the systems we build.\n\n\n\nOn a day-to-day basis, dataimago operates as an AI company whose goal is to move from conceptualization of an emancipatory path forward to the production of performance management systems that fulfill that path when put into practice.\nOur primary activities include: - Designing conditional, flow-based models of progress - Building AI interlocutors and interfaces that make these models usable and transformative - Constructing performance management systems for education, civil society, healthcare, and beyond - Partnering with institutions to pilot, scale, and evolve these tools\n\n\n\nEvery person can benefit from the systems dataimago creates. Through tailored AI interfaces: - Students are empowered to learn more efficiently - Teachers are guided in instruction - Principals and superintendents are supported in resource allocation - Policymakers are aided in crafting equitable policy\nIn other domains—healthcare, criminal justice, poverty alleviation—the same principles apply. AI learns from the system and helps it learn in return.\nVoices of those most affected—marginalized communities and frontline workers—are not merely “included,” but centered through participatory AI feedback loops that evolve over time.\n\n\n\nWhat differentiates dataimago’s work is our commitment to prospective rather than retrospective systems. Our products depict both retrospective AND prospective views, modulating behavior to maximize benefits based upon forward-looking analysis.\nAI provides the essential bridge between hermeneutic and positivistic forces, allowing for personalization necessary for hermeneutic understanding while being intimately cognizant of the positivistic necessities associated with fulfilling emancipatory potential.\n\n\n\nSuperalignment is the defining challenge of our time. Artificial intelligence is rapidly becoming an infrastructural force—shaping decisions, institutions, and relationships at every level of society. As AI systems grow in capability, the question is no longer whether they will influence the future of humanity, but how, on whose terms, and toward what ends.\ndataimago exists because this central challenge cannot be solved through engineering alone. Superalignment is a social, moral, and political task that requires embedding AI in the living dynamics of culture—in dialogue with justice, education, history, creativity, and care.\nWithout organizations like dataimago, AI will optimize for the status quo: for efficiency without equity, growth without meaning, and decision-making without accountability. We exist to ensure that AI becomes a partner in the human project: amplifying our best capacities, illuminating blind spots, and opening up new emancipatory possibilities.\n\n\n\nWe are committed to: - AI as a force for human emancipation - Data sovereignty and interpretability - Mechanisms to identify and mitigate systems of instrumental domination - Radical transparency and participatory design - Models of algorithmic accountability open to democratic review\nOur commitment to transparency, dignity, and individual agency will never be sacrificed for efficiency, scalability, or control.",
+    "text": "AI-Native Development Framework\ndataimago represents a new paradigm in data science application development, designed specifically for integration with AI-native workflows and modern web frameworks. Built with comprehensive design systems and ethical AI principles at its core.\n\n\nComplete Build Pipeline & Multi-Platform Deployment\nThe framework provides automated CSS compilation from design tokens to production-ready assets. A single source generates optimized builds for Quarto websites, Shiny applications, Next.js platforms, and CDN distribution.\n\n\nMCP-Compatible & AI-Agent Ready\nAll functions are designed with structured, machine-readable interfaces that enable seamless collaboration between human developers and AI agents. JSON-compatible results and deterministic operations ensure reliable automation.\n\n\nR-First Workflows with Modern Web Tools\nFamiliar R interfaces wrap sophisticated Node.js build tools, providing the power of modern web development without requiring developers to leave their preferred environment.\n\n\nProfessional Documentation & Design Systems\nAutomated generation of branded websites with consistent styling, comprehensive API documentation, and responsive design patterns that work across all deployment targets.\n\n\nRapid Development with Consistent Quality\nFrom concept to deployment in minimal time, with built-in design systems ensuring professional results. Scalable architecture supports everything from simple documentation sites to complex data applications.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n⚡ Development Tools\nComplete Build Pipeline\nAutomated CSS compilation from design tokens to production-ready assets\nMulti-Platform Deployment\nSingle source generates assets for Quarto, Shiny, Next.js, and CDN\nProfessional Documentation\nAutomated generation of branded websites with consistent styling\n\n\nQuick Start Workflow\ncreate_ui_workspace()        # Setup environment\nbuild_design_system()        # Compile assets  \ncreate_quarto_documentation() # Generate docs\n\n\n\n\n\n\n🤖 AI-Native Features\nMCP-Compatible APIs\nStructured functions designed for AI agent consumption and automation\nDeterministic Operations\nReproducible builds with comprehensive error handling and validation\nMachine-Readable Outputs\nJSON-compatible results for seamless programmatic integration\n\n\n  \n\n\n\n\n\n🎯 Framework Benefits\n\n\nRapid Development\nComplete applications from concept to deployment in minimal time\nConsistent Quality\nBuilt-in design systems ensure professional results across all platforms\nAI-Agent Ready\nMCP-compatible tooling enables seamless human-AI collaboration\nScalable Architecture\nMulti-platform deployment from single source with automated optimization\n\n\n\n\nAPI Reference\nComplete function documentation and examples\nFramework Documentation\nArchitecture • Development Patterns"
+  },
+  {
+    "objectID": "philosophy.html",
+    "href": "philosophy.html",
+    "title": "Philosophical Foundation",
+    "section": "",
+    "text": "Superalignment is the embedding of AI in culture for emancipatory ends, not the embedding of culture in AI.\nSuperalignment is the defining challenge of our time. At dataimago, we invert the conventional approach to alignment. Rather than adapting human complexity to technological constraints, we embed AI into the rich, lived, and contested terrain of human culture. We believe that only by grounding AI in real social contexts—education, governance, art, and daily life—can its alignment with human freedom emerge. Superalignment is not just technical; it is cultural, moral, and political.\nThis inversion is core to dataimago’s approach. We believe that the ethical potential of AI lies not in replicating existing cultural patterns, but in placing AI within the service of cultural transformation. Because superalignment is not intrinsic to AI but emerges from its social embedding, emancipation can only occur through the integration of AI into the living processes of culture. Our philosophy centers human meaning-making, agency, and dignity at every step of the technological design process.\nOur goal is not to embed culture in ai, but to embed ai in culture for the emancipation of humanity.\n\n\n\n\n\nDrawing from Horkheimer, Adorno, and Habermas, we center their concerns about: - Instrumental reason and its tendency toward domination - The critique of systems that reduce humans to mere functions - The ethical imperative to reunite scientific knowledge with human values - The vision of critical theory as emancipatory practice\nOur work fulfills the vision of critical theory as an ethically directed fusion of hermeneutic and positivistic thought, using AI to achieve what human institutions alone have struggled to accomplish.\n\n\n\n\n\nWe build on Michel Foucault’s insights about: - The transition from sovereign power to disciplinary power - How modern institutions (schools, hospitals, prisons) shape subjects through surveillance and normalization - The limitations of disciplinary societies that control through standardization\n\n\n\nWe embrace Gilles Deleuze’s concept of “societies of control” but seek to redirect it toward emancipatory ends: - Moving beyond disciplinary standardization to fluid, adaptive systems - Using continuous monitoring not for domination but for empowerment - Creating “control for good” rather than control for extraction or oppression\n\n\n\n\nWe integrate insights from modern AI safety and alignment research: - Superalignment as the challenge of ensuring AI systems serve human values - Value alignment as both technical and philosophical challenge - Participatory AI governance models - The recognition that AI will be a co-creator of human history\n\n\n\n\n\n\nTraditional approaches have forced a choice between: - Hermeneutic approaches that prioritize meaning, interpretation, and subjective experience - Positivistic approaches that prioritize measurement, prediction, and objective analysis\nWe reject this false dichotomy. Through AI-mediated systems, we can achieve both: - Deep personalization that honors individual meaning-making - Rigorous empirical analysis that tracks objective outcomes - Systems that adapt to human values while maintaining scientific validity\n\n\n\nWe reject both naive techno-optimism and reflexive technophobia. Instead, we argue that: - Technology itself is neither liberating nor oppressive—its effects depend on how it’s designed and deployed - AI represents an unprecedented opportunity to align powerful systems with human flourishing - The alternative to conscious, ethical AI development is not the absence of AI but the dominance of AI systems designed without ethical consideration\n\n\n\nTraditional performance management operates through static standards and retrospective judgment. We advocate for flow-based systems that: - Focus on trajectories of growth rather than fixed achievements - Adapt continuously to changing circumstances and needs - Enable rather than constrain human potential - Replace punishment-based accountability with development-oriented feedback\n\n\n\nWe believe that AI systems affecting human lives must be accountable to those they serve. This requires: - Participatory design processes that center affected communities - Transparent algorithms that can be understood and critiqued - Democratic oversight mechanisms for AI decision-making - Evolving definitions of key concepts like “emancipation” that reflect community input\n\n\n\n\n\n\n\nHuman Agency: AI must expand rather than constrain human choice and autonomy\nData Sovereignty: Individuals and communities must maintain control over their data\nInterpretability: AI systems must be explainable to those affected by their decisions\nAnti-Domination: We must actively resist the use of our tools for instrumental control\n\n\n\n\nRecognizing that good intentions don’t guarantee good outcomes, we commit to: - Using AI to monitor our own systems for signs of instrumental domination - Creating feedback loops that allow affected communities to shape our tools - Regular philosophical reflection on whether our work serves emancipatory goals - Willingness to abandon approaches that become oppressive despite good intentions\n\n\n\nWe acknowledge that concepts like “emancipation,” “flourishing,” and “human values” are contested and culturally situated. Rather than imposing fixed definitions, we aim to: - Create processes for ongoing dialogue about these concepts - Use AI to help communities articulate and refine their own visions of flourishing - Respect diverse perspectives while seeking common ground - Adapt our systems as understanding evolves\n\n\n\n\n\n\nOur design process is informed by critical theory: - Question power relations embedded in existing systems - Center marginalized voices in design decisions - Anticipate unintended consequences through scenario planning - Maintain reflexivity about our own position and interests\n\n\n\nWe embrace dialectical thinking that: - Seeks synthesis rather than choosing sides in false dichotomies - Remains open to contradiction and paradox - Evolves through engagement with opposing viewpoints - Maintains tension between ideals and practical constraints\n\n\n\nOur work integrates theory and practice: - Philosophical reflection informs system design - Practical implementation tests theoretical assumptions - Community feedback shapes both theory and practice - Continuous iteration between ideas and applications\n\n\n\n\n\n\nAs AI systems become more powerful, the question of alignment becomes existential. We argue that: - Technical alignment (making AI do what we want) is inseparable from value alignment (figuring out what we should want) - Democratic participation in AI governance is essential for legitimate alignment - The Frankfurt School’s critique of instrumental reason is more relevant than ever in the age of AI\n\n\n\nWe’re entering an era where the distinction between human and artificial intelligence becomes less clear. Our philosophy provides frameworks for: - Maintaining human agency in AI-mediated systems - Ensuring democratic control over algorithmic governance - Preserving meaning and values in data-driven decisions\n\n\n\nAs AI transforms economic and social systems, our philosophical framework offers: - Alternative models to purely market-driven AI development - Frameworks for ensuring AI serves public good - Approaches to managing technological change that prioritize human flourishing\n\n\n\n\nAs a company whose mission touches on cultural transformation, democratic responsibility, and the ethical evolution of artificial intelligence, our governance must be multi-dimensional—combining institutional integrity, participatory design, epistemic plurality, and anticipatory foresight.\nOur governance philosophy reflects the belief that superalignment is not an outcome of internal decision-making alone, but of the systems and communities in which those decisions are embedded. This requires:\n\n\n\nParticipatory design processes that center affected communities\nTransparent decision-making that can be understood and challenged\nMultiple oversight mechanisms including ethics assemblies and community panels\nConstitutional protocols that evolve with organizational growth\n\n\n\n\n\nAlignment drift detection systems that identify when goals diverge from mission\nNarrative accountability requiring justification of how decisions serve emancipation\nRegular governance review with supermajority ratification requirements\nAnti-domination safeguards embedded in organizational structure\n\n\n\n\n\n\nHow can AI systems embody democratic values?\nWhat does human agency mean in an age of artificial intelligence?\nHow do we balance efficiency with equity in AI-mediated systems?\nWhat forms of knowledge and wisdom are irreducibly human?\nHow do we maintain meaningful human choice in optimized environments?\nWhat does it mean to be human when intelligence is no longer exclusively human?\nHow do we govern AI development in ways that serve rather than undermine emancipatory goals?\n\nOur work at dataimago represents an attempt to answer these questions through practice, creating AI systems that embody our philosophical commitments and testing those commitments against real-world challenges and, in-effect, creating a praxis of super-alignment.",
     "crumbs": [
       "Home",
       "Foundation",
-      "Mission Statement"
+      "Philosophical Foundation"
     ]
   },
   {
-    "objectID": "mission.html#core-mission",
-    "href": "mission.html#core-mission",
-    "title": "Mission Statement",
+    "objectID": "philosophy.html#core-philosophy",
+    "href": "philosophy.html#core-philosophy",
+    "title": "Philosophical Foundation",
     "section": "",
-    "text": "The emancipation of humanity through AI superalignment\ndataimago exists to align artificial intelligence with the enduring human aspiration for emancipation. At dataimago, our mission is to build systems, tools, and frameworks that guide artificial intelligence toward emancipatory ends. We believe that AI, when properly aligned with human flourishing, can dismantle oppressive structures and expand what it means to live freely and fully. Our work aims to ensure that alignment is not just technical, but moral, cultural, and transformative.",
+    "text": "Superalignment is the embedding of AI in culture for emancipatory ends, not the embedding of culture in AI.\nSuperalignment is the defining challenge of our time. At dataimago, we invert the conventional approach to alignment. Rather than adapting human complexity to technological constraints, we embed AI into the rich, lived, and contested terrain of human culture. We believe that only by grounding AI in real social contexts—education, governance, art, and daily life—can its alignment with human freedom emerge. Superalignment is not just technical; it is cultural, moral, and political.\nThis inversion is core to dataimago’s approach. We believe that the ethical potential of AI lies not in replicating existing cultural patterns, but in placing AI within the service of cultural transformation. Because superalignment is not intrinsic to AI but emerges from its social embedding, emancipation can only occur through the integration of AI into the living processes of culture. Our philosophy centers human meaning-making, agency, and dignity at every step of the technological design process.\nOur goal is not to embed culture in ai, but to embed ai in culture for the emancipation of humanity.",
     "crumbs": [
       "Home",
       "Foundation",
-      "Mission Statement"
+      "Philosophical Foundation"
     ]
   },
   {
-    "objectID": "mission.html#our-work",
-    "href": "mission.html#our-work",
-    "title": "Mission Statement",
+    "objectID": "philosophy.html#primary-philosophical-influences",
+    "href": "philosophy.html#primary-philosophical-influences",
+    "title": "Philosophical Foundation",
     "section": "",
-    "text": "Our work begins in education with sgpFlow, an AI-driven platform to raise learning outcomes through precision-guided interventions and systems-level insight. But education is only the first chapter. The future we envision is one where every domain—healthcare, justice, economy—benefits from flow-based, ethically grounded AI systems that reduce suffering, unlock opportunity, and reflect the values of those they serve.\nWe do this not merely as a company, but as a public mission: to ensure that AI becomes a tool of transformation rather than domination, and that humanity—not its image—is at the center of the systems we build.",
+    "text": "Drawing from Horkheimer, Adorno, and Habermas, we center their concerns about: - Instrumental reason and its tendency toward domination - The critique of systems that reduce humans to mere functions - The ethical imperative to reunite scientific knowledge with human values - The vision of critical theory as emancipatory practice\nOur work fulfills the vision of critical theory as an ethically directed fusion of hermeneutic and positivistic thought, using AI to achieve what human institutions alone have struggled to accomplish.\n\n\n\n\n\nWe build on Michel Foucault’s insights about: - The transition from sovereign power to disciplinary power - How modern institutions (schools, hospitals, prisons) shape subjects through surveillance and normalization - The limitations of disciplinary societies that control through standardization\n\n\n\nWe embrace Gilles Deleuze’s concept of “societies of control” but seek to redirect it toward emancipatory ends: - Moving beyond disciplinary standardization to fluid, adaptive systems - Using continuous monitoring not for domination but for empowerment - Creating “control for good” rather than control for extraction or oppression\n\n\n\n\nWe integrate insights from modern AI safety and alignment research: - Superalignment as the challenge of ensuring AI systems serve human values - Value alignment as both technical and philosophical challenge - Participatory AI governance models - The recognition that AI will be a co-creator of human history",
     "crumbs": [
       "Home",
       "Foundation",
-      "Mission Statement"
+      "Philosophical Foundation"
     ]
   },
   {
-    "objectID": "mission.html#what-we-do",
-    "href": "mission.html#what-we-do",
-    "title": "Mission Statement",
+    "objectID": "philosophy.html#core-philosophical-positions",
+    "href": "philosophy.html#core-philosophical-positions",
+    "title": "Philosophical Foundation",
     "section": "",
-    "text": "On a day-to-day basis, dataimago operates as an AI company whose goal is to move from conceptualization of an emancipatory path forward to the production of performance management systems that fulfill that path when put into practice.\nOur primary activities include: - Designing conditional, flow-based models of progress - Building AI interlocutors and interfaces that make these models usable and transformative - Constructing performance management systems for education, civil society, healthcare, and beyond - Partnering with institutions to pilot, scale, and evolve these tools",
+    "text": "Traditional approaches have forced a choice between: - Hermeneutic approaches that prioritize meaning, interpretation, and subjective experience - Positivistic approaches that prioritize measurement, prediction, and objective analysis\nWe reject this false dichotomy. Through AI-mediated systems, we can achieve both: - Deep personalization that honors individual meaning-making - Rigorous empirical analysis that tracks objective outcomes - Systems that adapt to human values while maintaining scientific validity\n\n\n\nWe reject both naive techno-optimism and reflexive technophobia. Instead, we argue that: - Technology itself is neither liberating nor oppressive—its effects depend on how it’s designed and deployed - AI represents an unprecedented opportunity to align powerful systems with human flourishing - The alternative to conscious, ethical AI development is not the absence of AI but the dominance of AI systems designed without ethical consideration\n\n\n\nTraditional performance management operates through static standards and retrospective judgment. We advocate for flow-based systems that: - Focus on trajectories of growth rather than fixed achievements - Adapt continuously to changing circumstances and needs - Enable rather than constrain human potential - Replace punishment-based accountability with development-oriented feedback\n\n\n\nWe believe that AI systems affecting human lives must be accountable to those they serve. This requires: - Participatory design processes that center affected communities - Transparent algorithms that can be understood and critiqued - Democratic oversight mechanisms for AI decision-making - Evolving definitions of key concepts like “emancipation” that reflect community input",
     "crumbs": [
       "Home",
       "Foundation",
-      "Mission Statement"
+      "Philosophical Foundation"
     ]
   },
   {
-    "objectID": "mission.html#who-we-serve",
-    "href": "mission.html#who-we-serve",
-    "title": "Mission Statement",
+    "objectID": "philosophy.html#ethical-framework",
+    "href": "philosophy.html#ethical-framework",
+    "title": "Philosophical Foundation",
     "section": "",
-    "text": "Every person can benefit from the systems dataimago creates. Through tailored AI interfaces: - Students are empowered to learn more efficiently - Teachers are guided in instruction - Principals and superintendents are supported in resource allocation - Policymakers are aided in crafting equitable policy\nIn other domains—healthcare, criminal justice, poverty alleviation—the same principles apply. AI learns from the system and helps it learn in return.\nVoices of those most affected—marginalized communities and frontline workers—are not merely “included,” but centered through participatory AI feedback loops that evolve over time.",
+    "text": "Human Agency: AI must expand rather than constrain human choice and autonomy\nData Sovereignty: Individuals and communities must maintain control over their data\nInterpretability: AI systems must be explainable to those affected by their decisions\nAnti-Domination: We must actively resist the use of our tools for instrumental control\n\n\n\n\nRecognizing that good intentions don’t guarantee good outcomes, we commit to: - Using AI to monitor our own systems for signs of instrumental domination - Creating feedback loops that allow affected communities to shape our tools - Regular philosophical reflection on whether our work serves emancipatory goals - Willingness to abandon approaches that become oppressive despite good intentions\n\n\n\nWe acknowledge that concepts like “emancipation,” “flourishing,” and “human values” are contested and culturally situated. Rather than imposing fixed definitions, we aim to: - Create processes for ongoing dialogue about these concepts - Use AI to help communities articulate and refine their own visions of flourishing - Respect diverse perspectives while seeking common ground - Adapt our systems as understanding evolves",
     "crumbs": [
       "Home",
       "Foundation",
-      "Mission Statement"
+      "Philosophical Foundation"
     ]
   },
   {
-    "objectID": "mission.html#our-approach",
-    "href": "mission.html#our-approach",
-    "title": "Mission Statement",
+    "objectID": "philosophy.html#methodological-approach",
+    "href": "philosophy.html#methodological-approach",
+    "title": "Philosophical Foundation",
     "section": "",
-    "text": "What differentiates dataimago’s work is our commitment to prospective rather than retrospective systems. Our products depict both retrospective AND prospective views, modulating behavior to maximize benefits based upon forward-looking analysis.\nAI provides the essential bridge between hermeneutic and positivistic forces, allowing for personalization necessary for hermeneutic understanding while being intimately cognizant of the positivistic necessities associated with fulfilling emancipatory potential.",
+    "text": "Our design process is informed by critical theory: - Question power relations embedded in existing systems - Center marginalized voices in design decisions - Anticipate unintended consequences through scenario planning - Maintain reflexivity about our own position and interests\n\n\n\nWe embrace dialectical thinking that: - Seeks synthesis rather than choosing sides in false dichotomies - Remains open to contradiction and paradox - Evolves through engagement with opposing viewpoints - Maintains tension between ideals and practical constraints\n\n\n\nOur work integrates theory and practice: - Philosophical reflection informs system design - Practical implementation tests theoretical assumptions - Community feedback shapes both theory and practice - Continuous iteration between ideas and applications",
     "crumbs": [
       "Home",
       "Foundation",
-      "Mission Statement"
+      "Philosophical Foundation"
     ]
   },
   {
-    "objectID": "mission.html#why-we-exist",
-    "href": "mission.html#why-we-exist",
-    "title": "Mission Statement",
+    "objectID": "philosophy.html#contemporary-relevance",
+    "href": "philosophy.html#contemporary-relevance",
+    "title": "Philosophical Foundation",
     "section": "",
-    "text": "Superalignment is the defining challenge of our time. Artificial intelligence is rapidly becoming an infrastructural force—shaping decisions, institutions, and relationships at every level of society. As AI systems grow in capability, the question is no longer whether they will influence the future of humanity, but how, on whose terms, and toward what ends.\ndataimago exists because this central challenge cannot be solved through engineering alone. Superalignment is a social, moral, and political task that requires embedding AI in the living dynamics of culture—in dialogue with justice, education, history, creativity, and care.\nWithout organizations like dataimago, AI will optimize for the status quo: for efficiency without equity, growth without meaning, and decision-making without accountability. We exist to ensure that AI becomes a partner in the human project: amplifying our best capacities, illuminating blind spots, and opening up new emancipatory possibilities.",
+    "text": "As AI systems become more powerful, the question of alignment becomes existential. We argue that: - Technical alignment (making AI do what we want) is inseparable from value alignment (figuring out what we should want) - Democratic participation in AI governance is essential for legitimate alignment - The Frankfurt School’s critique of instrumental reason is more relevant than ever in the age of AI\n\n\n\nWe’re entering an era where the distinction between human and artificial intelligence becomes less clear. Our philosophy provides frameworks for: - Maintaining human agency in AI-mediated systems - Ensuring democratic control over algorithmic governance - Preserving meaning and values in data-driven decisions\n\n\n\nAs AI transforms economic and social systems, our philosophical framework offers: - Alternative models to purely market-driven AI development - Frameworks for ensuring AI serves public good - Approaches to managing technological change that prioritize human flourishing",
     "crumbs": [
       "Home",
       "Foundation",
-      "Mission Statement"
+      "Philosophical Foundation"
     ]
   },
   {
-    "objectID": "mission.html#our-commitment",
-    "href": "mission.html#our-commitment",
-    "title": "Mission Statement",
+    "objectID": "philosophy.html#governance-as-philosophical-practice",
+    "href": "philosophy.html#governance-as-philosophical-practice",
+    "title": "Philosophical Foundation",
     "section": "",
-    "text": "We are committed to: - AI as a force for human emancipation - Data sovereignty and interpretability - Mechanisms to identify and mitigate systems of instrumental domination - Radical transparency and participatory design - Models of algorithmic accountability open to democratic review\nOur commitment to transparency, dignity, and individual agency will never be sacrificed for efficiency, scalability, or control.",
+    "text": "As a company whose mission touches on cultural transformation, democratic responsibility, and the ethical evolution of artificial intelligence, our governance must be multi-dimensional—combining institutional integrity, participatory design, epistemic plurality, and anticipatory foresight.\nOur governance philosophy reflects the belief that superalignment is not an outcome of internal decision-making alone, but of the systems and communities in which those decisions are embedded. This requires:\n\n\n\nParticipatory design processes that center affected communities\nTransparent decision-making that can be understood and challenged\nMultiple oversight mechanisms including ethics assemblies and community panels\nConstitutional protocols that evolve with organizational growth\n\n\n\n\n\nAlignment drift detection systems that identify when goals diverge from mission\nNarrative accountability requiring justification of how decisions serve emancipation\nRegular governance review with supermajority ratification requirements\nAnti-domination safeguards embedded in organizational structure",
     "crumbs": [
       "Home",
       "Foundation",
-      "Mission Statement"
+      "Philosophical Foundation"
+    ]
+  },
+  {
+    "objectID": "philosophy.html#philosophical-questions-we-engage",
+    "href": "philosophy.html#philosophical-questions-we-engage",
+    "title": "Philosophical Foundation",
+    "section": "",
+    "text": "How can AI systems embody democratic values?\nWhat does human agency mean in an age of artificial intelligence?\nHow do we balance efficiency with equity in AI-mediated systems?\nWhat forms of knowledge and wisdom are irreducibly human?\nHow do we maintain meaningful human choice in optimized environments?\nWhat does it mean to be human when intelligence is no longer exclusively human?\nHow do we govern AI development in ways that serve rather than undermine emancipatory goals?\n\nOur work at dataimago represents an attempt to answer these questions through practice, creating AI systems that embody our philosophical commitments and testing those commitments against real-world challenges and, in-effect, creating a praxis of super-alignment.",
+    "crumbs": [
+      "Home",
+      "Foundation",
+      "Philosophical Foundation"
     ]
   }
 ]

@@ -1,130 +1,14 @@
-:root {
-  --dataimago-primary: #3498DB;
-  --dataimago-accent: #ff69b4;
-  --dataimago-ethical: #E74C3C;
-  --color-surface-page-light: rgb(237, 237, 235);
-  --color-surface-page-dark: rgb(20, 20, 16);
-  --color-content-primary-light: #000000;
-  --color-content-secondary-light: #7c7c7c;
-  --color-content-primary-dark: rgb(237, 237, 235);
-  --color-content-secondary-dark: #83838f;
-  --dataimago-success: #27AE60;
-  --dataimago-warning: #F39C12;
-  --dataimago-error: #E74C3C;
-  --dataimago-info: #3498DB;
-}
+// dataimago Landing Page Styles - Source-of-truth for index.qmd
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-base);
-  line-height: var(--font-lineHeight-normal);
-  color: var(--color-text-primary);
-  background-color: var(--color-background-page);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: inherit;
-  background-color: var(--color-background-page);
-  color: var(--color-text-primary);
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--font-lineHeight-tight);
-  margin-top: 0;
-  margin-bottom: var(--spacing-md);
-  color: var(--color-text-primary);
-}
-
-h1 {
-  font-size: var(--font-size-4xl);
-  margin-bottom: var(--spacing-lg);
-}
-
-h2 {
-  font-size: var(--font-size-3xl);
-  margin-bottom: var(--spacing-lg);
-}
-
-h3 {
-  font-size: var(--font-size-2xl);
-}
-
-h4 {
-  font-size: var(--font-size-xl);
-}
-
-h5 {
-  font-size: var(--font-size-lg);
-}
-
-h6 {
-  font-size: var(--font-size-base);
-}
-
-p {
-  margin-top: 0;
-  margin-bottom: var(--spacing-md);
-  line-height: var(--font-lineHeight-normal);
-}
-
-a {
-  color: var(--color-brand-accent);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--color-brand-primary);
-  text-decoration-thickness: 2px;
-}
-
-a:focus {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-code {
-  font-family: var(--font-family-mono);
-  font-size: 0.9em;
-  padding: 0.1em 0.3em;
-  background-color: var(--color-background-surface);
-  border-radius: var(--radius-sm);
-  color: var(--color-brand-accent);
-}
-
-pre {
-  font-family: var(--font-family-mono);
-  font-size: 0.9em;
-  padding: var(--spacing-md);
-  background-color: var(--color-background-surface);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-md);
-  overflow-x: auto;
-  margin-bottom: var(--spacing-md);
-}
-
-pre code {
-  background: transparent;
-  padding: 0;
-  color: inherit;
-}
+@import "../tokens";
+@import "../styles/base";
 
 /* dataimago Index Page Styles - Specific to index.qmd */
+
 /* ========================================
    SECTION BACKGROUNDS
    ======================================== */
+
 .hero-section {
   min-height: 60vh;
   display: flex;
@@ -188,6 +72,7 @@ html {
 /* ========================================
    TYPOGRAPHY & SPACING
    ======================================== */
+
 .hero-title {
   font-size: 3.5rem;
   font-weight: 300;
@@ -221,30 +106,32 @@ html {
 /* ========================================
    INTERACTIVE ELEMENTS
    ======================================== */
+
 .di-hex-logo {
-  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,0.1));
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .dataimago-hex-logo:hover {
   transform: scale(1.05);
-  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 15px 35px rgba(0,0,0,0.15));
 }
 
 .showcase-logo {
   margin: 1rem;
-  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
   transition: all 0.3s ease;
 }
 
 .showcase-logo:hover {
   transform: scale(1.1);
-  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.2));
 }
 
 /* ========================================
    FEATURE CARDS & CONTENT BLOCKS
    ======================================== */
+
 .feature-card {
   padding: 1.5rem;
   margin: 1rem 0;
@@ -281,6 +168,7 @@ html {
 /* ========================================
    CODE EXAMPLES & TECHNICAL CONTENT
    ======================================== */
+
 .code-example-tabs {
   background: rgba(0, 0, 0, 0.05);
   padding: 2rem;
@@ -294,7 +182,7 @@ html {
   padding: 1rem;
   border-radius: 8px;
   margin: 1rem 0;
-  font-family: "Monaco", "Menlo", monospace;
+  font-family: 'Monaco', 'Menlo', monospace;
 }
 
 .philosophy-content {
@@ -311,6 +199,7 @@ html {
 /* ========================================
    CALL TO ACTION STYLING
    ======================================== */
+
 .cta-link {
   font-weight: 600;
   text-decoration: none;
@@ -345,50 +234,63 @@ html {
 /* ========================================
    RESPONSIVE DESIGN - MOBILE FIRST
    ======================================== */
+
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2.5rem;
   }
+  
   .section-title {
     font-size: 2rem;
   }
+  
   .dataimago-slide {
     padding: 2rem 1rem;
   }
+  
   .feature-card {
     margin: 0.5rem 0;
     padding: 1rem;
   }
+  
   .architecture-layer {
     padding: 1rem;
     margin: 1rem 0;
   }
+  
   .code-example-tabs {
     padding: 1rem;
   }
+  
   .py-5 {
     padding-top: 2rem !important;
     padding-bottom: 2rem !important;
   }
 }
+
 @media (max-width: 576px) {
   .hero-title {
     font-size: 2rem;
   }
+  
   .section-title {
     font-size: 1.8rem;
   }
+  
   .di-hex-logo {
     width: 200px !important;
   }
+  
   .showcase-logo {
     width: 80px;
     margin: 0.5rem;
   }
 }
+
 /* ========================================
    ACCESSIBILITY IMPROVEMENTS
    ======================================== */
+
 @media (prefers-reduced-motion: reduce) {
   .dataimago-slide,
   .dataimago-hex-logo,
@@ -398,41 +300,48 @@ html {
   .cta-link {
     transition: none;
   }
+  
   .lenis-slide {
     scroll-behavior: auto;
   }
 }
+
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .feature-card {
     background: rgba(0, 0, 0, 0.1);
     border: 2px solid var(--bs-border-color);
   }
+  
   .code-example-tabs {
     background: rgba(0, 0, 0, 0.1);
     border: 1px solid var(--bs-border-color);
   }
 }
+
 /* ========================================
    DARK MODE ADAPTATIONS
    ======================================== */
+
 @media (prefers-color-scheme: dark) {
   .feature-card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
+  
   .feature-card:hover {
     background: rgba(255, 255, 255, 0.08);
   }
+  
   .code-example-tabs {
     background: rgba(255, 255, 255, 0.03);
   }
+  
   .logo-showcase {
     background: rgba(255, 255, 255, 0.03);
   }
+  
   .final-message {
     background: rgba(255, 255, 255, 0.05);
   }
 }
-
-/*# sourceMappingURL=index.css.map */

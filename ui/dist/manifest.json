@@ -1,7 +1,7 @@
 {
   "name": "dataimago Design System",
   "version": "0.1.0",
-  "buildTime": "2025-09-01T17:06:30.386Z",
+  "buildTime": "2025-09-01T17:34:09.637Z",
   "assets": {
     "tokens.css": "CSS custom properties from design tokens",
     "dataimago.css": "Expanded CSS for development",
@@ -15,7 +15,6 @@
     "js/accessibility.js": "JavaScript component: accessibility",
     "js/custom-anchors.js": "JavaScript component: custom-anchors",
     "js/hero-scroller.js": "JavaScript component: hero-scroller",
-    "js/landing-page-enhanced.js": "JavaScript component: landing-page-enhanced",
     "js/lenis-integration.js": "JavaScript component: lenis-integration",
     "js/logo-switch.js": "JavaScript component: logo-switch",
     "js/slide-navigation.js": "JavaScript component: slide-navigation"

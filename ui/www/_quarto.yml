@@ -42,7 +42,7 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: api_reference.qmd
+      - href: r_package.qmd
         text: API Reference
       - text: Foundation
         menu:
@@ -69,7 +69,7 @@ website:
     contents:
        - section: "Getting Started"
          contents:
-           - api_reference.qmd
+           - r_package.qmd
        - section: "Foundation"
          contents:
            - mission.qmd

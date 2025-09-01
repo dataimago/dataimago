@@ -1,5 +1,5 @@
 ---
-title: "dataimago API Reference"
+title: "dataimago R Package Documentation"
 subtitle: "dataimago Ethical AI Framework"
 version: "0.0-0.3"
 format:

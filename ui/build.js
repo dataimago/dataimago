@@ -230,6 +230,54 @@ $btn-code-copy-color-active: rgb(237, 237, 235) !default;
   process.exit(1);
 }
 
+// Step 3.5: Compile page-specific SCSS files
+console.log('📄 Compiling page-specific SCSS...');
+
+const pagesDir = path.join(config.srcDir, 'pages');
+let pageFilesCompiled = 0;
+
+if (fs.existsSync(pagesDir)) {
+  try {
+    // Compile main page files
+    const pageFiles = fs.readdirSync(pagesDir)
+      .filter(file => file.endsWith('.scss') && !fs.statSync(path.join(pagesDir, file)).isDirectory());
+    
+    pageFiles.forEach(file => {
+      const srcPath = path.join(pagesDir, file);
+      const destPath = path.join(config.distDir, file.replace('.scss', '.css'));
+      const sassCmd = `npx sass ${srcPath}:${destPath} --style=expanded --source-map`;
+      execSync(sassCmd, { stdio: 'inherit', cwd: __dirname });
+      pageFilesCompiled++;
+    });
+    
+    // Compile shared components
+    const sharedDir = path.join(pagesDir, 'shared');
+    if (fs.existsSync(sharedDir)) {
+      const sharedFiles = fs.readdirSync(sharedDir)
+        .filter(file => file.endsWith('.scss'));
+      
+      sharedFiles.forEach(file => {
+        const srcPath = path.join(sharedDir, file);
+        const destPath = path.join(config.distDir, `shared-${file.replace('.scss', '.css')}`);
+        const sassCmd = `npx sass ${srcPath}:${destPath} --style=expanded --source-map`;
+        execSync(sassCmd, { stdio: 'inherit', cwd: __dirname });
+        pageFilesCompiled++;
+      });
+    }
+    
+    if (pageFilesCompiled > 0) {
+      console.log(`✅ Page-specific SCSS compiled successfully (${pageFilesCompiled} files)`);
+    } else {
+      console.log('⚠️ No page-specific SCSS files found');
+    }
+  } catch (error) {
+    console.error('❌ Page-specific SCSS compilation failed:', error.message);
+    process.exit(1);
+  }
+} else {
+  console.log('⚠️ Pages directory not found, skipping page-specific compilation');
+}
+
 // Step 4: Run PostCSS for optimization
 console.log('⚡ Running PostCSS optimization...');
 
@@ -386,26 +434,33 @@ fs.writeFileSync(
 // Step 8: Distribute assets to all channels
 console.log('📦 Distributing assets to all channels...');
 
+// Collect all available files from dist directory
+const coreFiles = ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', 'website-light.scss', 'website-dark.scss'];
+const pageFiles = fs.existsSync(path.join(config.distDir))
+  ? fs.readdirSync(config.distDir)
+      .filter(file => (file.endsWith('.css') || file.endsWith('.scss')) && !coreFiles.includes(file))
+  : [];
+
 const distributionChannels = [
   {
     name: 'CDN Assets (inst/quarto-assets/)',
     path: path.join(__dirname, '..', 'inst', 'quarto-assets'),
-    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css']
+    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', ...pageFiles.filter(f => f.endsWith('.css'))]
   },
   {
     name: 'Website Assets (ui/www/assets/css/)',
     path: path.join(__dirname, 'www', 'assets', 'css'),
-    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', 'website-light.scss', 'website-dark.scss']
+    files: [...coreFiles, ...pageFiles]
   },
   {
     name: 'Quarto Extension (ui/www/_extensions/dataimago/ai-native/assets/css/)',
     path: path.join(__dirname, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'css'),
-    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', 'website-light.scss', 'website-dark.scss']
+    files: [...coreFiles, ...pageFiles]
   },
   {
     name: 'Docs Assets (docs/assets/css/)',
     path: path.join(__dirname, '..', 'docs', 'assets', 'css'),
-    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css']
+    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', ...pageFiles.filter(f => f.endsWith('.css'))]
   }
 ];
 

@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>dataimago R Package Documentation – dataimago: Ethical AI-Native Data Science Foundation Package</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href=".//assets/img/ai_monogram_supreme_favicon.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-80a3802ddbf5508f2e73590c1f9e4b45.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-02a2dbe24b5cbc5c629ad8d558b48c91.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-80a3802ddbf5508f2e73590c1f9e4b45.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<meta property="og:title" content="dataimago R Package Documentation – dataimago: Ethical AI-Native Data Science Foundation Package">
+<meta property="og:description" content="dataimago Ethical AI Framework">
+<meta property="og:image" content="https://dataimago.github.io/dataimago//assets/img/ai_monogram_supreme_COLOR.png">
+<meta property="og:site_name" content="dataimago: Ethical AI-Native Data Science Foundation Package">
+<meta property="og:image:height" content="480">
+<meta property="og:image:width" content="480">
+<meta name="twitter:title" content="dataimago R Package Documentation – dataimago: Ethical AI-Native Data Science Foundation Package">
+<meta name="twitter:description" content="dataimago Ethical AI Framework">
+<meta name="twitter:image" content="https://dataimago.github.io/dataimago//assets/img/ai_monogram_supreme_COLOR.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="480">
+<meta name="twitter:image-width" content="480">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="https://dataimago.github.io/dataimago/" class="navbar-brand navbar-brand-logo">
+    <img src="./assets/img/ai_monogram_grey-light.svg" alt="dataimago AI-Native Data Science" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="https://dataimago.github.io/dataimago/">
+    <span class="navbar-title">dataimago</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./r_package.html" aria-current="page"> 
+<span class="menu-text">API Reference</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-foundation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Foundation</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-foundation">    
+        <li>
+    <a class="dropdown-item" href="./mission.html">
+ <span class="dropdown-text">Mission &amp; Vision</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./philosophy.html">
+ <span class="dropdown-text">Philosophy</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./critical_theory_manifesto.html">
+ <span class="dropdown-text">Critical Theory Manifesto</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="link" data-bs-toggle="dropdown" aria-expanded="false" target="_blank">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/dataimago/dataimago">
+ <span class="dropdown-text">Source Code</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/dataimago/dataimago/issues">
+ <span class="dropdown-text">Report a Bug</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/dataimago/dataimago/discussions">
+ <span class="dropdown-text">Request a Feature</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">dataimago R Package Documentation</h1>
+        </a>     
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Getting Started</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r_package.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">dataimago R Package Documentation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Foundation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mission.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mission Statement</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./philosophy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Philosophical Foundation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./critical_theory_manifesto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Critical Theory Manifesto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#package-information" id="toc-package-information" class="nav-link active" data-scroll-target="#package-information">Package Information</a>
+  <ul class="collapse">
+  <li><a href="#dataimago-foundation" id="toc-dataimago-foundation" class="nav-link" data-scroll-target="#dataimago-foundation">dataimago Foundation</a></li>
+  </ul></li>
+  <li><a href="#exported-functions" id="toc-exported-functions" class="nav-link" data-scroll-target="#exported-functions">Exported Functions</a></li>
+  <li><a href="#build-complete-design-system-for-multi-platform-deployment" id="toc-build-complete-design-system-for-multi-platform-deployment" class="nav-link" data-scroll-target="#build-complete-design-system-for-multi-platform-deployment">Build Complete Design System for Multi-Platform Deployment</a>
+  <ul class="collapse">
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+  <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
+  <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
+  <li><a href="#mcp-tool-integration" id="toc-mcp-tool-integration" class="nav-link" data-scroll-target="#mcp-tool-integration">MCP Tool Integration</a></li>
+  <li><a href="#philosophical-context" id="toc-philosophical-context" class="nav-link" data-scroll-target="#philosophical-context">Philosophical Context</a></li>
+  <li><a href="#seealso" id="toc-seealso" class="nav-link" data-scroll-target="#seealso">Seealso</a></li>
+  <li><a href="#concept" id="toc-concept" class="nav-link" data-scroll-target="#concept">Concept</a></li>
+  <li><a href="#keyword" id="toc-keyword" class="nav-link" data-scroll-target="#keyword">Keyword</a></li>
+  <li><a href="#keyword-1" id="toc-keyword-1" class="nav-link" data-scroll-target="#keyword-1">Keyword</a></li>
+  <li><a href="#keyword-2" id="toc-keyword-2" class="nav-link" data-scroll-target="#keyword-2">Keyword</a></li>
+  <li><a href="#keyword-3" id="toc-keyword-3" class="nav-link" data-scroll-target="#keyword-3">Keyword</a></li>
+  <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  </ul></li>
+  <li><a href="#check-quarto-render-asset-status" id="toc-check-quarto-render-asset-status" class="nav-link" data-scroll-target="#check-quarto-render-asset-status">Check Quarto Render Asset Status</a>
+  <ul class="collapse">
+  <li><a href="#description-1" id="toc-description-1" class="nav-link" data-scroll-target="#description-1">Description</a></li>
+  <li><a href="#usage-1" id="toc-usage-1" class="nav-link" data-scroll-target="#usage-1">Usage</a></li>
+  <li><a href="#arguments-1" id="toc-arguments-1" class="nav-link" data-scroll-target="#arguments-1">Arguments</a></li>
+  <li><a href="#details-1" id="toc-details-1" class="nav-link" data-scroll-target="#details-1">Details</a></li>
+  <li><a href="#concept-1" id="toc-concept-1" class="nav-link" data-scroll-target="#concept-1">Concept</a></li>
+  <li><a href="#keyword-4" id="toc-keyword-4" class="nav-link" data-scroll-target="#keyword-4">Keyword</a></li>
+  <li><a href="#keyword-5" id="toc-keyword-5" class="nav-link" data-scroll-target="#keyword-5">Keyword</a></li>
+  <li><a href="#keyword-6" id="toc-keyword-6" class="nav-link" data-scroll-target="#keyword-6">Keyword</a></li>
+  <li><a href="#value-1" id="toc-value-1" class="nav-link" data-scroll-target="#value-1">Value</a></li>
+  <li><a href="#examples-1" id="toc-examples-1" class="nav-link" data-scroll-target="#examples-1">Examples</a></li>
+  </ul></li>
+  <li><a href="#generate-professional-application-documentation" id="toc-generate-professional-application-documentation" class="nav-link" data-scroll-target="#generate-professional-application-documentation">Generate Professional Application Documentation</a>
+  <ul class="collapse">
+  <li><a href="#description-2" id="toc-description-2" class="nav-link" data-scroll-target="#description-2">Description</a></li>
+  <li><a href="#usage-2" id="toc-usage-2" class="nav-link" data-scroll-target="#usage-2">Usage</a></li>
+  <li><a href="#arguments-2" id="toc-arguments-2" class="nav-link" data-scroll-target="#arguments-2">Arguments</a></li>
+  <li><a href="#details-2" id="toc-details-2" class="nav-link" data-scroll-target="#details-2">Details</a></li>
+  <li><a href="#mcp-tool-integration-1" id="toc-mcp-tool-integration-1" class="nav-link" data-scroll-target="#mcp-tool-integration-1">MCP Tool Integration</a></li>
+  <li><a href="#philosophical-context-1" id="toc-philosophical-context-1" class="nav-link" data-scroll-target="#philosophical-context-1">Philosophical Context</a></li>
+  <li><a href="#seealso-1" id="toc-seealso-1" class="nav-link" data-scroll-target="#seealso-1">Seealso</a></li>
+  <li><a href="#concept-2" id="toc-concept-2" class="nav-link" data-scroll-target="#concept-2">Concept</a></li>
+  <li><a href="#keyword-7" id="toc-keyword-7" class="nav-link" data-scroll-target="#keyword-7">Keyword</a></li>
+  <li><a href="#keyword-8" id="toc-keyword-8" class="nav-link" data-scroll-target="#keyword-8">Keyword</a></li>
+  <li><a href="#keyword-9" id="toc-keyword-9" class="nav-link" data-scroll-target="#keyword-9">Keyword</a></li>
+  <li><a href="#keyword-10" id="toc-keyword-10" class="nav-link" data-scroll-target="#keyword-10">Keyword</a></li>
+  <li><a href="#value-2" id="toc-value-2" class="nav-link" data-scroll-target="#value-2">Value</a></li>
+  <li><a href="#examples-2" id="toc-examples-2" class="nav-link" data-scroll-target="#examples-2">Examples</a></li>
+  </ul></li>
+  <li><a href="#create-ui-workspace-for-design-system" id="toc-create-ui-workspace-for-design-system" class="nav-link" data-scroll-target="#create-ui-workspace-for-design-system">Create UI Workspace for Design System</a>
+  <ul class="collapse">
+  <li><a href="#description-3" id="toc-description-3" class="nav-link" data-scroll-target="#description-3">Description</a></li>
+  <li><a href="#usage-3" id="toc-usage-3" class="nav-link" data-scroll-target="#usage-3">Usage</a></li>
+  <li><a href="#arguments-3" id="toc-arguments-3" class="nav-link" data-scroll-target="#arguments-3">Arguments</a></li>
+  <li><a href="#details-3" id="toc-details-3" class="nav-link" data-scroll-target="#details-3">Details</a></li>
+  <li><a href="#value-3" id="toc-value-3" class="nav-link" data-scroll-target="#value-3">Value</a></li>
+  <li><a href="#examples-3" id="toc-examples-3" class="nav-link" data-scroll-target="#examples-3">Examples</a></li>
+  </ul></li>
+  <li><a href="#dataimago-ai-native-web-application-development-framework-for-data-science" id="toc-dataimago-ai-native-web-application-development-framework-for-data-science" class="nav-link" data-scroll-target="#dataimago-ai-native-web-application-development-framework-for-data-science">dataimago: AI-Native Web-Application Development Framework for Data Science</a>
+  <ul class="collapse">
+  <li><a href="#description-4" id="toc-description-4" class="nav-link" data-scroll-target="#description-4">Description</a></li>
+  <li><a href="#details-4" id="toc-details-4" class="nav-link" data-scroll-target="#details-4">Details</a>
+  <ul class="collapse">
+  <li><a href="#framework-philosophy" id="toc-framework-philosophy" class="nav-link" data-scroll-target="#framework-philosophy">Framework Philosophy</a></li>
+  <li><a href="#framework-components" id="toc-framework-components" class="nav-link" data-scroll-target="#framework-components">Framework Components</a></li>
+  <li><a href="#ai-native-development-features" id="toc-ai-native-development-features" class="nav-link" data-scroll-target="#ai-native-development-features">AI-Native Development Features</a></li>
+  <li><a href="#code-as-philosophy-commitments" id="toc-code-as-philosophy-commitments" class="nav-link" data-scroll-target="#code-as-philosophy-commitments">Code-as-Philosophy Commitments</a></li>
+  <li><a href="#quick-start---application-development-workflow" id="toc-quick-start---application-development-workflow" class="nav-link" data-scroll-target="#quick-start---application-development-workflow">Quick Start - Application Development Workflow</a></li>
+  </ul></li>
+  <li><a href="#package-metadata" id="toc-package-metadata" class="nav-link" data-scroll-target="#package-metadata">Package Metadata</a></li>
+  <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a></li>
+  <li><a href="#philosophy-in-practice" id="toc-philosophy-in-practice" class="nav-link" data-scroll-target="#philosophy-in-practice">Philosophy in Practice</a></li>
+  <li><a href="#seealso-2" id="toc-seealso-2" class="nav-link" data-scroll-target="#seealso-2">Seealso</a></li>
+  <li><a href="#author" id="toc-author" class="nav-link" data-scroll-target="#author">Author</a></li>
+  <li><a href="#concept-3" id="toc-concept-3" class="nav-link" data-scroll-target="#concept-3">Concept</a></li>
+  <li><a href="#keyword-11" id="toc-keyword-11" class="nav-link" data-scroll-target="#keyword-11">Keyword</a></li>
+  <li><a href="#keyword-12" id="toc-keyword-12" class="nav-link" data-scroll-target="#keyword-12">Keyword</a></li>
+  <li><a href="#keyword-13" id="toc-keyword-13" class="nav-link" data-scroll-target="#keyword-13">Keyword</a></li>
+  <li><a href="#keyword-14" id="toc-keyword-14" class="nav-link" data-scroll-target="#keyword-14">Keyword</a></li>
+  </ul></li>
+  <li><a href="#generate-cdn-distribution-assets" id="toc-generate-cdn-distribution-assets" class="nav-link" data-scroll-target="#generate-cdn-distribution-assets">Generate CDN Distribution Assets</a>
+  <ul class="collapse">
+  <li><a href="#description-5" id="toc-description-5" class="nav-link" data-scroll-target="#description-5">Description</a></li>
+  <li><a href="#usage-4" id="toc-usage-4" class="nav-link" data-scroll-target="#usage-4">Usage</a></li>
+  <li><a href="#arguments-4" id="toc-arguments-4" class="nav-link" data-scroll-target="#arguments-4">Arguments</a></li>
+  <li><a href="#details-5" id="toc-details-5" class="nav-link" data-scroll-target="#details-5">Details</a></li>
+  <li><a href="#value-4" id="toc-value-4" class="nav-link" data-scroll-target="#value-4">Value</a></li>
+  </ul></li>
+  <li><a href="#update-quarto-extension-assets" id="toc-update-quarto-extension-assets" class="nav-link" data-scroll-target="#update-quarto-extension-assets">Update Quarto Extension Assets</a>
+  <ul class="collapse">
+  <li><a href="#description-6" id="toc-description-6" class="nav-link" data-scroll-target="#description-6">Description</a></li>
+  <li><a href="#usage-5" id="toc-usage-5" class="nav-link" data-scroll-target="#usage-5">Usage</a></li>
+  <li><a href="#arguments-5" id="toc-arguments-5" class="nav-link" data-scroll-target="#arguments-5">Arguments</a></li>
+  <li><a href="#details-6" id="toc-details-6" class="nav-link" data-scroll-target="#details-6">Details</a></li>
+  <li><a href="#value-5" id="toc-value-5" class="nav-link" data-scroll-target="#value-5">Value</a></li>
+  <li><a href="#examples-4" id="toc-examples-4" class="nav-link" data-scroll-target="#examples-4">Examples</a></li>
+  </ul></li>
+  <li><a href="#internal-functions" id="toc-internal-functions" class="nav-link" data-scroll-target="#internal-functions">Internal Functions</a></li>
+  <li><a href="#add-function-documentation-sections-with-exportednon-exported-structure" id="toc-add-function-documentation-sections-with-exportednon-exported-structure" class="nav-link" data-scroll-target="#add-function-documentation-sections-with-exportednon-exported-structure">Add Function Documentation Sections with Exported/Non-exported Structure</a>
+  <ul class="collapse">
+  <li><a href="#description-7" id="toc-description-7" class="nav-link" data-scroll-target="#description-7">Description</a></li>
+  <li><a href="#usage-6" id="toc-usage-6" class="nav-link" data-scroll-target="#usage-6">Usage</a></li>
+  <li><a href="#arguments-6" id="toc-arguments-6" class="nav-link" data-scroll-target="#arguments-6">Arguments</a></li>
+  <li><a href="#keyword-15" id="toc-keyword-15" class="nav-link" data-scroll-target="#keyword-15">Keyword</a></li>
+  <li><a href="#value-6" id="toc-value-6" class="nav-link" data-scroll-target="#value-6">Value</a></li>
+  </ul></li>
+  <li><a href="#convert-.rd-files-to-qmd-format-using-rd2md" id="toc-convert-.rd-files-to-qmd-format-using-rd2md" class="nav-link" data-scroll-target="#convert-.rd-files-to-qmd-format-using-rd2md">Convert .Rd Files to QMD Format using Rd2md</a>
+  <ul class="collapse">
+  <li><a href="#description-8" id="toc-description-8" class="nav-link" data-scroll-target="#description-8">Description</a></li>
+  <li><a href="#usage-7" id="toc-usage-7" class="nav-link" data-scroll-target="#usage-7">Usage</a></li>
+  <li><a href="#arguments-7" id="toc-arguments-7" class="nav-link" data-scroll-target="#arguments-7">Arguments</a></li>
+  <li><a href="#keyword-16" id="toc-keyword-16" class="nav-link" data-scroll-target="#keyword-16">Keyword</a></li>
+  <li><a href="#value-7" id="toc-value-7" class="nav-link" data-scroll-target="#value-7">Value</a></li>
+  </ul></li>
+  <li><a href="#extract-field-from-description-lines" id="toc-extract-field-from-description-lines" class="nav-link" data-scroll-target="#extract-field-from-description-lines">Extract Field from DESCRIPTION Lines</a>
+  <ul class="collapse">
+  <li><a href="#description-9" id="toc-description-9" class="nav-link" data-scroll-target="#description-9">Description</a></li>
+  <li><a href="#usage-8" id="toc-usage-8" class="nav-link" data-scroll-target="#usage-8">Usage</a></li>
+  <li><a href="#arguments-8" id="toc-arguments-8" class="nav-link" data-scroll-target="#arguments-8">Arguments</a></li>
+  <li><a href="#keyword-17" id="toc-keyword-17" class="nav-link" data-scroll-target="#keyword-17">Keyword</a></li>
+  <li><a href="#value-8" id="toc-value-8" class="nav-link" data-scroll-target="#value-8">Value</a></li>
+  </ul></li>
+  <li><a href="#format-description-fields-for-quarto-display" id="toc-format-description-fields-for-quarto-display" class="nav-link" data-scroll-target="#format-description-fields-for-quarto-display">Format DESCRIPTION Fields for Quarto Display</a>
+  <ul class="collapse">
+  <li><a href="#description-10" id="toc-description-10" class="nav-link" data-scroll-target="#description-10">Description</a></li>
+  <li><a href="#usage-9" id="toc-usage-9" class="nav-link" data-scroll-target="#usage-9">Usage</a></li>
+  <li><a href="#arguments-9" id="toc-arguments-9" class="nav-link" data-scroll-target="#arguments-9">Arguments</a></li>
+  <li><a href="#keyword-18" id="toc-keyword-18" class="nav-link" data-scroll-target="#keyword-18">Keyword</a></li>
+  <li><a href="#value-9" id="toc-value-9" class="nav-link" data-scroll-target="#value-9">Value</a></li>
+  </ul></li>
+  <li><a href="#generate-api-reference-qmd-content" id="toc-generate-api-reference-qmd-content" class="nav-link" data-scroll-target="#generate-api-reference-qmd-content">Generate API Reference QMD Content</a>
+  <ul class="collapse">
+  <li><a href="#description-11" id="toc-description-11" class="nav-link" data-scroll-target="#description-11">Description</a></li>
+  <li><a href="#usage-10" id="toc-usage-10" class="nav-link" data-scroll-target="#usage-10">Usage</a></li>
+  <li><a href="#arguments-10" id="toc-arguments-10" class="nav-link" data-scroll-target="#arguments-10">Arguments</a></li>
+  <li><a href="#keyword-19" id="toc-keyword-19" class="nav-link" data-scroll-target="#keyword-19">Keyword</a></li>
+  <li><a href="#value-10" id="toc-value-10" class="nav-link" data-scroll-target="#value-10">Value</a></li>
+  </ul></li>
+  <li><a href="#generate-_quarto.yml-configuration-file" id="toc-generate-_quarto.yml-configuration-file" class="nav-link" data-scroll-target="#generate-_quarto.yml-configuration-file">Generate _quarto.yml Configuration File</a>
+  <ul class="collapse">
+  <li><a href="#description-12" id="toc-description-12" class="nav-link" data-scroll-target="#description-12">Description</a></li>
+  <li><a href="#usage-11" id="toc-usage-11" class="nav-link" data-scroll-target="#usage-11">Usage</a></li>
+  <li><a href="#arguments-11" id="toc-arguments-11" class="nav-link" data-scroll-target="#arguments-11">Arguments</a></li>
+  <li><a href="#keyword-20" id="toc-keyword-20" class="nav-link" data-scroll-target="#keyword-20">Keyword</a></li>
+  <li><a href="#value-11" id="toc-value-11" class="nav-link" data-scroll-target="#value-11">Value</a></li>
+  </ul></li>
+  <li><a href="#parse-description-file" id="toc-parse-description-file" class="nav-link" data-scroll-target="#parse-description-file">Parse DESCRIPTION File</a>
+  <ul class="collapse">
+  <li><a href="#description-13" id="toc-description-13" class="nav-link" data-scroll-target="#description-13">Description</a></li>
+  <li><a href="#usage-12" id="toc-usage-12" class="nav-link" data-scroll-target="#usage-12">Usage</a></li>
+  <li><a href="#arguments-12" id="toc-arguments-12" class="nav-link" data-scroll-target="#arguments-12">Arguments</a></li>
+  <li><a href="#keyword-21" id="toc-keyword-21" class="nav-link" data-scroll-target="#keyword-21">Keyword</a></li>
+  <li><a href="#value-12" id="toc-value-12" class="nav-link" data-scroll-target="#value-12">Value</a></li>
+  </ul></li>
+  <li><a href="#post-process-markdown-to-qmd-format-with-dataimago-customizations" id="toc-post-process-markdown-to-qmd-format-with-dataimago-customizations" class="nav-link" data-scroll-target="#post-process-markdown-to-qmd-format-with-dataimago-customizations">Post-Process Markdown to QMD Format with dataimago Customizations</a>
+  <ul class="collapse">
+  <li><a href="#description-14" id="toc-description-14" class="nav-link" data-scroll-target="#description-14">Description</a></li>
+  <li><a href="#usage-13" id="toc-usage-13" class="nav-link" data-scroll-target="#usage-13">Usage</a></li>
+  <li><a href="#arguments-13" id="toc-arguments-13" class="nav-link" data-scroll-target="#arguments-13">Arguments</a></li>
+  <li><a href="#keyword-22" id="toc-keyword-22" class="nav-link" data-scroll-target="#keyword-22">Keyword</a></li>
+  <li><a href="#value-13" id="toc-value-13" class="nav-link" data-scroll-target="#value-13">Value</a></li>
+  </ul></li>
+  <li><a href="#update-dataimago-assets-in-quarto-website" id="toc-update-dataimago-assets-in-quarto-website" class="nav-link" data-scroll-target="#update-dataimago-assets-in-quarto-website">Update dataimago Assets in Quarto Website</a>
+  <ul class="collapse">
+  <li><a href="#description-15" id="toc-description-15" class="nav-link" data-scroll-target="#description-15">Description</a></li>
+  <li><a href="#usage-14" id="toc-usage-14" class="nav-link" data-scroll-target="#usage-14">Usage</a></li>
+  <li><a href="#arguments-14" id="toc-arguments-14" class="nav-link" data-scroll-target="#arguments-14">Arguments</a></li>
+  <li><a href="#keyword-23" id="toc-keyword-23" class="nav-link" data-scroll-target="#keyword-23">Keyword</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dataimago/dataimago/edit/main/r_package.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/dataimago/dataimago/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">dataimago R Package Documentation</h1>
+<p class="subtitle lead">dataimago Ethical AI Framework</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="package-information" class="level1">
+<h1>Package Information</h1>
+<p><strong>Package</strong>: dataimago</p>
+<p><strong>Version</strong>: 0.0-0.3</p>
+<p><strong>Title</strong>: AI-Native Web-Application Development Framework for Data Science</p>
+<p><strong>Description</strong>: A comprehensive development framework that accelerates the creation of data science web applications for both human developers and AI agents. Provides complete design system compilation, multi-platform deployment (Quarto, Shiny, Next.js), MCP-compatible tooling, and embedded ethical AI principles. Features R-first workflows that wrap modern web development tools in familiar interfaces, enabling rapid application scaffolding with consistent branding and best practices.</p>
+<p><strong>Authors</strong>: c(person(given=c(“Damian”, “W.”), family=“Betebenner”, email=“dbetebenner@gmail.com”, role=c(“aut”, “cre”), comment = c(ORCID = “0000-0003-0476-5599”)))</p>
+<p><strong>Maintainer</strong>: Damian W. Betebenner <a href="mailto:dbetebenner@gmail.com" class="email">dbetebenner@gmail.com</a></p>
+<p><strong>License</strong>: MIT + file LICENSE</p>
+<p><strong>URL</strong>: https://dataimago.github.io/dataimago/</p>
+<p><strong>Bug Reports</strong>: https://github.com/dataimago/dataimago/issues/</p>
+<p><strong>Depends</strong>: R (&gt;= 4.0)</p>
+<p><strong>Imports</strong>: jsonlite (&gt;= 1.9.0), yaml (&gt;= 2.3.0), fs (&gt;= 1.6.0), rlang (&gt;= 1.1.0), crayon, glue (&gt;= 1.7.0), whisker (&gt;= 0.4.0), Rd2md, tools, processx (&gt;= 3.8.0), digest (&gt;= 0.6.0), cli</p>
+<p><strong>Suggests</strong>: knitr, rmarkdown, testthat (&gt;= 3.2.0), quarto (&gt;= 1.4.0), shiny (&gt;= 1.8.0), plumber (&gt;= 1.2.0)</p>
+<section id="dataimago-foundation" class="level2">
+<h2 class="anchored" data-anchor-id="dataimago-foundation">dataimago Foundation</h2>
+<p>This package is built on dataimago’s ethical AI framework:</p>
+<ul>
+<li><a href="../foundations/mission.html">Mission &amp; Vision</a></li>
+<li><a href="../foundations/philosophy.html">Philosophy</a></li>
+<li><a href="../manifesto/critical_theory_manifesto.html">Critical Theory Manifesto</a></li>
+</ul>
+</section>
+</section>
+<section id="exported-functions" class="level1">
+<h1>Exported Functions</h1>
+<p>The following functions are exported and available for use:</p>
+</section>
+<section id="build-complete-design-system-for-multi-platform-deployment" class="level1">
+<h1>Build Complete Design System for Multi-Platform Deployment</h1>
+<section id="description" class="level2">
+<h2 class="anchored" data-anchor-id="description">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Master function that orchestrates CSS compilation and asset distribution for web applications. This function provides R-first workflows that wrap Node.js tooling for rapid application development.</p>
+</section>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">build_design_system</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">force_rebuild =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_sri =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">update_extension =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments" class="level2">
+<h2 class="anchored" data-anchor-id="arguments">Arguments</h2>
+<ul>
+<li><code>force_rebuild</code>: Logical. Force rebuild even if assets appear up-to-date. Default: FALSE</li>
+<li><code>include_sri</code>: Logical. Generate SRI hashes for CDN distribution. Default: TRUE</li>
+<li><code>update_extension</code>: Logical. Update Quarto extension with compiled assets. Default: TRUE</li>
+<li><code>verbose</code>: Logical. Print detailed progress information. Default: TRUE</li>
+</ul>
+</section>
+<section id="details" class="level2">
+<h2 class="anchored" data-anchor-id="details">Details</h2>
+<p>This function implements dataimago’s framework approach to asset compilation by providing R-first workflows that wrap modern web development tools. The build process includes: <strong><em>System Requirements:</em></strong></p>
+<ul>
+<li>Node.js 18+ and pnpm installed globally</li>
+<li>Write permissions to package directories</li>
+<li>OpenSSL for SRI hash generation (usually pre-installed on macOS/Linux)</li>
+</ul>
+<p><strong><em>Build Process:</em></strong></p>
+<ol type="1">
+<li><strong><em>Node.js Dependency Check</em></strong>: Verifies pnpm is available via <code>which pnpm</code></li>
+<li><strong><em>Dependency Installation</em></strong>: Runs <code>pnpm install</code> in ui/ directory to install Style Dictionary, Sass, etc.</li>
+<li><strong><em>SCSS Compilation</em></strong>: Executes <code>pnpm run build</code> to convert design tokens and SCSS to minified CSS</li>
+<li><strong><em>Asset Distribution</em></strong>: Copies built <code>dataimago.min.css</code> to multiple locations:</li>
+</ol>
+<ul>
+<li><code>ui/www/_extensions/dataimago/ai-native/assets/css/</code> for Quarto extension distribution</li>
+<li><code>inst/quarto-assets/</code> for R package CDN distribution</li>
+<li><code>ui/www/assets/css/</code> for local website development</li>
+</ul>
+<ol type="1">
+<li><strong><em>SRI Hash Generation</em></strong>: Uses <code>openssl dgst -sha384 -binary | openssl base64 -A</code> for subresource integrity</li>
+<li><strong><em>Build Manifest</em></strong>: Creates JSON metadata with paths, versions, checksums, and build timestamp</li>
+</ol>
+<p><strong><em>Design Token Philosophy:</em></strong>The ui/ workspace uses Style Dictionary to convert semantic design tokens (color.json, typography.json, spacing.json) into CSS custom properties. This ensures design consistency across Quarto websites, R Shiny apps, and future Next.js applications while maintaining the ethical AI principles embedded in dataimago’s visual identity. <strong><em>Error Handling:</em></strong></p>
+<ul>
+<li>Validates Node.js/pnpm availability before attempting build</li>
+<li>Checks for required ui/ directory structure</li>
+<li>Provides clear error messages with suggested remediation</li>
+<li>Rolls back partial builds on failure</li>
+</ul>
+</section>
+<section id="mcp-tool-integration" class="level2">
+<h2 class="anchored" data-anchor-id="mcp-tool-integration">MCP Tool Integration</h2>
+<p>This function is designed for Model Context Protocol (MCP) integration, providing structured output that AI agents can parse and reason about:</p>
+<ul>
+<li><strong><em>Deterministic Output</em></strong>: Same inputs always produce same outputs</li>
+<li><strong><em>Machine Readable</em></strong>: JSON-compatible result structure</li>
+<li><strong><em>Error Context</em></strong>: Detailed error messages for debugging</li>
+<li><strong><em>Build Metadata</em></strong>: Complete provenance information for reproducibility</li>
+</ul>
+</section>
+<section id="philosophical-context" class="level2">
+<h2 class="anchored" data-anchor-id="philosophical-context">Philosophical Context</h2>
+<p>This function embodies dataimago’s principle of “R as source of truth” while embracing modern web development practices. Rather than forcing R developers to learn Node.js toolchains, it wraps industry-standard CSS preprocessing in familiar R function calls with comprehensive documentation of every system interaction.</p>
+</section>
+<section id="seealso" class="level2">
+<h2 class="anchored" data-anchor-id="seealso">Seealso</h2>
+<p><code>[update_quarto_extension](update_quarto_extension)</code> for extension asset management, <code>[generate_cdn_assets](generate_cdn_assets)</code> for CDN preparation, <code>[create_ui_workspace](create_ui_workspace)</code> for UI workspace initialization</p>
+</section>
+<section id="concept" class="level2">
+<h2 class="anchored" data-anchor-id="concept">Concept</h2>
+<p>dataimago r-first-development MCP-compatible</p>
+</section>
+<section id="keyword" class="level2">
+<h2 class="anchored" data-anchor-id="keyword">Keyword</h2>
+<p>build-tools</p>
+</section>
+<section id="keyword-1" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-1">Keyword</h2>
+<p>css</p>
+</section>
+<section id="keyword-2" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-2">Keyword</h2>
+<p>design-system</p>
+</section>
+<section id="keyword-3" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-3">Keyword</h2>
+<p>ethical-ai</p>
+</section>
+<section id="value" class="level2">
+<h2 class="anchored" data-anchor-id="value">Value</h2>
+<p>List containing build results:</p>
+<ul>
+<li>success: Logical indicating overall build success</li>
+<li>assets: Character vector of generated asset paths</li>
+<li>sri_hashes: Named list of SRI hashes for each CSS file</li>
+<li>build_time: POSIXct timestamp of build completion</li>
+<li>metadata: List containing build configuration and system information</li>
+<li>errors: Character vector of any error messages (empty if successful)</li>
+</ul>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<p><em>Examples using dataimago’s ethical AI framework:</em></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic build - compile all assets</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">build_design_system</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if build succeeded</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (result<span class="sc">$</span>success) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Success: Built assets:"</span>, <span class="fu">paste</span>(result<span class="sc">$</span>assets, <span class="at">collapse =</span> <span class="st">", "</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"SRI hashes:"</span>, <span class="fu">length</span>(result<span class="sc">$</span>sri_hashes), <span class="st">"generated</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"ERROR: Build failed:"</span>, <span class="fu">paste</span>(result<span class="sc">$</span>errors, <span class="at">collapse =</span> <span class="st">"; "</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Force rebuild with verbose output (useful for debugging)</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">build_design_system</span>(<span class="at">force_rebuild =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Build for CDN distribution only (skip local copying)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">build_design_system</span>(</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_sri =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">update_extension =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect build metadata</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(result<span class="sc">$</span>metadata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="check-quarto-render-asset-status" class="level1">
+<h1>Check Quarto Render Asset Status</h1>
+<section id="description-1" class="level2">
+<h2 class="anchored" data-anchor-id="description-1">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Analyzes what happens to assets during <code>quarto render</code> and identifies potential issues with asset copying to the docs/ directory.</p>
+</section>
+<section id="usage-1" class="level2">
+<h2 class="anchored" data-anchor-id="usage-1">Usage</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_quarto_asset_status</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-1" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-1">Arguments</h2>
+<ul>
+<li><code>verbose</code>: Logical. Print detailed analysis. Default: TRUE</li>
+</ul>
+</section>
+<section id="details-1" class="level2">
+<h2 class="anchored" data-anchor-id="details-1">Details</h2>
+<p>This function helps understand the Quarto rendering process: <strong><em>CSS Files</em></strong>:</p>
+<ul>
+<li>Quarto copies CSS files from <code>assets/css/</code> to <code>docs/assets/css/</code></li>
+<li>CSS files referenced in YAML frontmatter are automatically included</li>
+</ul>
+<p><strong><em>JavaScript Files</em></strong>:</p>
+<ul>
+<li>JS files in <code>assets/js/</code> are NOT automatically copied to <code>docs/assets/js/</code></li>
+<li>JS files must be referenced in <code>include-after</code> or <code>include-before</code> YAML</li>
+<li>Only files referenced in HTML <code>&lt;script&gt;</code> tags get copied</li>
+</ul>
+<p><strong><em>Extensions</em></strong>:</p>
+<ul>
+<li>Extension assets are used during rendering but may not be copied to docs/</li>
+<li>Extensions provide a way to package assets for reuse across projects</li>
+</ul>
+</section>
+<section id="concept-1" class="level2">
+<h2 class="anchored" data-anchor-id="concept-1">Concept</h2>
+<p>dataimago quarto-rendering asset-analysis</p>
+</section>
+<section id="keyword-4" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-4">Keyword</h2>
+<p>analysis</p>
+</section>
+<section id="keyword-5" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-5">Keyword</h2>
+<p>quarto</p>
+</section>
+<section id="keyword-6" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-6">Keyword</h2>
+<p>render</p>
+</section>
+<section id="value-1" class="level2">
+<h2 class="anchored" data-anchor-id="value-1">Value</h2>
+<p>List containing analysis of asset status across directories</p>
+</section>
+<section id="examples-1" class="level2">
+<h2 class="anchored" data-anchor-id="examples-1">Examples</h2>
+<p><em>Examples using dataimago’s ethical AI framework:</em></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze asset status</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">check_quarto_asset_status</span>()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what files are missing after render</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(status<span class="sc">$</span>missing_in_docs) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Files not copied to docs:"</span>, <span class="fu">paste</span>(status<span class="sc">$</span>missing_in_docs, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="generate-professional-application-documentation" class="level1">
+<h1>Generate Professional Application Documentation</h1>
+<section id="description-2" class="level2">
+<h2 class="anchored" data-anchor-id="description-2">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Converts R package documentation (.Rd files) and metadata (DESCRIPTION) into Quarto-compatible .qmd files for professional website generation. Applies dataimago framework branding and integrates development patterns.</p>
+</section>
+<section id="usage-2" class="level2">
+<h2 class="anchored" data-anchor-id="usage-2">Usage</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">package_path =</span> <span class="st">"."</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_path =</span> <span class="st">"ui/www"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_description =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_foundation_links =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">template =</span> <span class="st">"dataimago"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-2" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-2">Arguments</h2>
+<ul>
+<li><code>package_path</code>: Character. Path to the R package root directory. Must contain DESCRIPTION file and man/ directory with .Rd files. Default: “.” (current directory)</li>
+<li><code>output_path</code>: Character. Path to quarto website directory where .qmd files will be generated. Directory will be created if it doesn’t exist. Default: “ui/www”</li>
+<li><code>include_description</code>: Logical. Whether to include full DESCRIPTION file content in the generated API reference. Useful for package metadata display. Default: TRUE</li>
+<li><code>include_foundation_links</code>: Logical. Whether to add automatic links to dataimago philosophical foundation documents in the generated documentation. Default: TRUE</li>
+<li><code>template</code>: Character. Documentation template to use for styling and structure. Currently supports “dataimago” template with ethical AI branding. Default: “dataimago”</li>
+</ul>
+</section>
+<section id="details-2" class="level2">
+<h2 class="anchored" data-anchor-id="details-2">Details</h2>
+<p>This function implements dataimago’s framework approach to documentation generation:</p>
+<ul>
+<li><strong><em>Automated Processing</em></strong>: Parses package DESCRIPTION and converts .Rd files to Quarto markdown</li>
+<li><strong><em>Framework Integration</em></strong>: Uses Rd2md for technical conversion with dataimago branding</li>
+<li><strong><em>Professional Styling</em></strong>: Applies consistent visual identity and development patterns</li>
+<li><strong><em>Multi-Platform Output</em></strong>: Generates documentation suitable for web deployment</li>
+<li><strong><em>AI-Compatibility</em></strong>: Creates machine-readable annotations for MCP integration</li>
+<li><strong><em>Rapid Generation</em></strong>: One-command documentation creation for development workflows</li>
+</ul>
+<p>The generated documentation structure includes:</p>
+<ul>
+<li><code>_quarto.yml</code> configuration file for website project setup</li>
+<li><code>api_reference.qmd</code> with YAML frontmatter and package metadata</li>
+<li>Full DESCRIPTION file content (if requested)</li>
+<li>Links to dataimago foundation documents</li>
+<li>Function documentation with ethical context boxes</li>
+<li>dataimago branding footer on each function</li>
+</ul>
+<p>For AI agents and MCP tools, this function provides structured documentation generation that embeds philosophical context into technical reference material, enabling AI systems to understand both the “what” and “why” of each function.</p>
+</section>
+<section id="mcp-tool-integration-1" class="level2">
+<h2 class="anchored" data-anchor-id="mcp-tool-integration-1">MCP Tool Integration</h2>
+<p>This function is designed for Model Context Protocol (MCP) integration:</p>
+<ul>
+<li><strong><em>Input Validation</em></strong>: Checks for required package structure</li>
+<li><strong><em>Structured Output</em></strong>: Generates consistent .qmd file format</li>
+<li><strong><em>Error Handling</em></strong>: Provides clear error messages for debugging</li>
+<li><strong><em>Asset Management</em></strong>: Handles file copying and directory creation</li>
+<li><strong><em>Status Reporting</em></strong>: Uses colored console output for progress tracking</li>
+</ul>
+</section>
+<section id="philosophical-context-1" class="level2">
+<h2 class="anchored" data-anchor-id="philosophical-context-1">Philosophical Context</h2>
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes. Rather than treating documentation as mere technical reference, it creates living documents that connect computational tools to their ethical foundations and societal purposes.</p>
+</section>
+<section id="seealso-1" class="level2">
+<h2 class="anchored" data-anchor-id="seealso-1">Seealso</h2>
+<p><code>[parse_description_file](parse_description_file)</code> for DESCRIPTION parsing, <code>[convert_rd_files_to_qmd](convert_rd_files_to_qmd)</code> for .Rd conversion, <code>[update_dataimago_assets](update_dataimago_assets)</code> for asset management</p>
+</section>
+<section id="concept-2" class="level2">
+<h2 class="anchored" data-anchor-id="concept-2">Concept</h2>
+<p>dataimago ethical-documentation MCP-compatible</p>
+</section>
+<section id="keyword-7" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-7">Keyword</h2>
+<p>documentation</p>
+</section>
+<section id="keyword-8" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-8">Keyword</h2>
+<p>ethical-ai</p>
+</section>
+<section id="keyword-9" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-9">Keyword</h2>
+<p>generation</p>
+</section>
+<section id="keyword-10" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-10">Keyword</h2>
+<p>quarto</p>
+</section>
+<section id="value-2" class="level2">
+<h2 class="anchored" data-anchor-id="value-2">Value</h2>
+<p>Character (invisible). File path to the generated api_reference.qmd file. Side effects: Creates .qmd files and _quarto.yml in output_path directory and copies dataimago assets (logos, etc.) to assets/img/ subdirectory.</p>
+</section>
+<section id="examples-2" class="level2">
+<h2 class="anchored" data-anchor-id="examples-2">Examples</h2>
+<p><em>Examples using dataimago’s ethical AI framework:</em></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic usage - generate documentation for current package</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate for specific package with custom output location</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>(</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">package_path =</span> <span class="st">"/path/to/my/package"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_path =</span> <span class="st">"docs/website"</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate minimal documentation without foundation links</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">create_quarto_documentation</span>(</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_foundation_links =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_description =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># For MCP/AI usage - capture output path</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>doc_path <span class="ot">&lt;-</span> <span class="fu">create_quarto_documentation</span>()</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Generated documentation at:"</span>, doc_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="create-ui-workspace-for-design-system" class="level1">
+<h1>Create UI Workspace for Design System</h1>
+<section id="description-3" class="level2">
+<h2 class="anchored" data-anchor-id="description-3">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Sets up the Node.js workspace structure and configuration files needed for CSS compilation and design token processing. This function creates the complete ui/ directory structure with package.json, build scripts, and source files.</p>
+</section>
+<section id="usage-3" class="level2">
+<h2 class="anchored" data-anchor-id="usage-3">Usage</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_ui_workspace</span>(<span class="at">force_overwrite =</span> <span class="cn">FALSE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-3" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-3">Arguments</h2>
+<ul>
+<li><code>force_overwrite</code>: Logical. Overwrite existing ui/ directory if it exists. Default: FALSE</li>
+<li><code>verbose</code>: Logical. Print detailed progress information. Default: TRUE</li>
+</ul>
+</section>
+<section id="details-3" class="level2">
+<h2 class="anchored" data-anchor-id="details-3">Details</h2>
+<p><strong><em>Created Directory Structure:</em></strong></p>
+<pre><code>ui/
++-- package.json              # Node.js dependencies (Style Dictionary, Sass, etc.)
++-- build.js                  # Custom build script for compilation
++-- src/
+|   +-- tokens/
+|   |   +-- colors.json       # dataimago color palette
+|   |   +-- typography.json   # Font definitions and scales
+|   |   +-- spacing.json      # Spacing scale and dimensions
+|   +-- styles/
+|       +-- base.scss         # Base styles using design tokens
+|       +-- components.scss   # UI component styles
+|       +-- utilities.scss    # Utility classes
++-- dist/                     # Build output directory (created by build process)</code></pre>
+<p><strong><em>Design Token Philosophy:</em></strong>The design tokens follow dataimago’s ethical AI principles:</p>
+<ul>
+<li><strong><em>Semantic Naming</em></strong>: Colors like <code>primary</code>, <code>accent</code>, <code>ethical-highlight</code></li>
+<li><strong><em>Accessibility First</em></strong>: WCAG AA contrast ratios and reduced motion support</li>
+<li><strong><em>Cultural Sensitivity</em></strong>: Avoid culturally-biased color assumptions</li>
+<li><strong><em>Future-Proof</em></strong>: JSON structure enables multiple output formats</li>
+</ul>
+<p><strong><em>Build Tool Configuration:</em></strong></p>
+<ul>
+<li><strong><em>Style Dictionary</em></strong>: Converts design tokens to CSS custom properties</li>
+<li><strong><em>Sass/SCSS</em></strong>: Compiles component styles with token integration</li>
+<li><strong><em>PostCSS</em></strong>: Adds vendor prefixes and optimizations</li>
+<li><strong><em>CSSnano</em></strong>: Minification for production distribution</li>
+</ul>
+</section>
+<section id="value-3" class="level2">
+<h2 class="anchored" data-anchor-id="value-3">Value</h2>
+<p>List containing setup results:</p>
+<ul>
+<li>success: Logical indicating setup success</li>
+<li>created_files: Character vector of files created</li>
+<li>errors: Character vector of any error messages</li>
+</ul>
+</section>
+<section id="examples-3" class="level2">
+<h2 class="anchored" data-anchor-id="examples-3">Examples</h2>
+<p><em>Examples using dataimago’s ethical AI framework:</em></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create new ui workspace</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">create_ui_workspace</span>()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Force recreate existing workspace</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">create_ui_workspace</span>(<span class="at">force_overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what was created</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (result<span class="sc">$</span>success) {</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Created files:"</span>, <span class="fu">paste</span>(result<span class="sc">$</span>created_files, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">  "</span>))</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="dataimago-ai-native-web-application-development-framework-for-data-science" class="level1">
+<h1>dataimago: AI-Native Web-Application Development Framework for Data Science</h1>
+<section id="description-4" class="level2">
+<h2 class="anchored" data-anchor-id="description-4">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>The <code>dataimago</code> package is a comprehensive development framework that accelerates the creation of data science web applications for both human developers and AI agents. It provides complete design system compilation, multi-platform deployment (Quarto, Shiny, Next.js), MCP-compatible tooling, and embedded ethical AI principles. Features R-first workflows that wrap modern web development tools in familiar interfaces, enabling rapid application scaffolding with consistent branding and best practices.</p>
+</section>
+<section id="details-4" class="level2">
+<h2 class="anchored" data-anchor-id="details-4">Details</h2>
+<section id="framework-philosophy" class="level3">
+<h3 class="anchored" data-anchor-id="framework-philosophy">Framework Philosophy</h3>
+<p>dataimago is an AI-native development framework that embeds ethical principles and consistent patterns into every aspect of application development. Rather than requiring developers to manually implement best practices, the framework provides pre-built components, automated tooling, and structured workflows that ensure applications are scalable, accessible, and aligned with human flourishing.</p>
+</section>
+<section id="framework-components" class="level3">
+<h3 class="anchored" data-anchor-id="framework-components">Framework Components</h3>
+<section id="application-development-tools" class="level4">
+<h4 class="anchored" data-anchor-id="application-development-tools">Application Development Tools</h4>
+<ul>
+<li><code>[create_quarto_documentation](create_quarto_documentation)</code>: Generate professional documentation websites with consistent branding and ethical AI annotations</li>
+<li><code>[build_design_system](build_design_system)</code>: Complete CSS compilation pipeline from design tokens to production-ready assets</li>
+<li><code>[create_ui_workspace](create_ui_workspace)</code>: Set up Node.js development environment with modern web tooling</li>
+<li>Multi-platform deployment to Quarto extensions, CDN, and Next.js applications</li>
+</ul>
+</section>
+<section id="design-system-asset-management" class="level4">
+<h4 class="anchored" data-anchor-id="design-system-asset-management">Design System &amp; Asset Management</h4>
+<ul>
+<li><strong><em>Design Tokens</em></strong>: JSON-based design system with CSS custom properties</li>
+<li><strong><em>SCSS Compilation</em></strong>: Style Dictionary + Sass pipeline for consistent styling</li>
+<li><strong><em>CDN Distribution</em></strong>: jsDelivr-ready assets with SRI hashes for security</li>
+<li><strong><em>Visual Identity</em></strong>: SVG-based logos with automatic theme switching</li>
+</ul>
+</section>
+<section id="framework-documentation-instdataimago" class="level4">
+<h4 class="anchored" data-anchor-id="framework-documentation-instdataimago">Framework Documentation (<code>inst/dataimago/</code>)</h4>
+<ul>
+<li><strong><em>01_Foundations/</em></strong>: Framework philosophy and governance principles</li>
+<li><strong><em>02_Manifesto/</em></strong>: Ethical AI approach and paradigm differentiation</li>
+<li><strong><em>03_Application_Architecture/</em></strong>: Technical implementation patterns and best practices</li>
+<li><strong><em>04_dataimago_Content/</em></strong>: Complete design system assets and branding guidelines</li>
+</ul>
+</section>
+</section>
+<section id="ai-native-development-features" class="level3">
+<h3 class="anchored" data-anchor-id="ai-native-development-features">AI-Native Development Features</h3>
+<p>This framework is designed from the ground up for both human developers and AI agents:</p>
+<section id="mcp-compatible-tooling" class="level4">
+<h4 class="anchored" data-anchor-id="mcp-compatible-tooling">MCP-Compatible Tooling</h4>
+<ul>
+<li><strong><em>Structured APIs</em></strong>: All functions use consistent parameter patterns and return structured results</li>
+<li><strong><em>Comprehensive Documentation</em></strong>: Detailed roxygen2 docs with examples and error handling</li>
+<li><strong><em>Machine-Readable Outputs</em></strong>: JSON-compatible results for programmatic consumption</li>
+<li><strong><em>Agent Context Files</em></strong>: <code>inst/CLAUDE.md</code> and <code>inst/AGENT_INDEX.md</code> provide persistent AI context</li>
+</ul>
+</section>
+<section id="rapid-development-workflow" class="level4">
+<h4 class="anchored" data-anchor-id="rapid-development-workflow">Rapid Development Workflow</h4>
+<ul>
+<li><strong><em>One-Command Setup</em></strong>: <code>create_ui_workspace()</code> initializes complete development environment</li>
+<li><strong><em>Automated Asset Pipeline</em></strong>: <code>build_design_system()</code> handles design token compilation to production CSS</li>
+<li><strong><em>Multi-Platform Deployment</em></strong>: Single source generates assets for Quarto, Shiny, Next.js, and CDN</li>
+<li><strong><em>Consistent Branding</em></strong>: Automatic application of design system and ethical AI principles</li>
+</ul>
+</section>
+<section id="ai-agent-integration" class="level4">
+<h4 class="anchored" data-anchor-id="ai-agent-integration">AI Agent Integration</h4>
+<p>Framework functions are optimized for AI-driven development:</p>
+<ul>
+<li><strong><em>Deterministic Operations</em></strong>: Same inputs always produce same outputs</li>
+<li><strong><em>Clear Error Messages</em></strong>: Detailed failure information for debugging and remediation</li>
+<li><strong><em>Incremental Builds</em></strong>: Smart dependency detection avoids unnecessary rebuilds</li>
+<li><strong><em>Validation Pipelines</em></strong>: Built-in checks ensure output quality and consistency</li>
+</ul>
+</section>
+</section>
+<section id="code-as-philosophy-commitments" class="level3">
+<h3 class="anchored" data-anchor-id="code-as-philosophy-commitments">Code-as-Philosophy Commitments</h3>
+<ul>
+<li><strong><em>Hermeneutic Transparency</em></strong>: All modeling assumptions documented and interpretable</li>
+<li><strong><em>Positivistic Rigor</em></strong>: Empirical operations robust, efficient, and replicable</li>
+<li><strong><em>Ethical Reflexivity</em></strong>: Tools include affordances for users to interrogate usage</li>
+<li><strong><em>Iterative Design</em></strong>: Each commit is dialectical step toward future aspirations</li>
+</ul>
+</section>
+<section id="quick-start---application-development-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="quick-start---application-development-workflow">Quick Start - Application Development Workflow</h3>
+<p>Set up development environment and build your first application:</p>
+<pre><code>library(dataimago)
+
+# 1. Initialize development workspace
+create_ui_workspace()
+
+# 2. Build design system assets
+result &lt;- build_design_system()
+
+# 3. Generate professional documentation
+create_quarto_documentation()
+
+# 4. Deploy to multiple platforms
+# - Quarto extension: Available automatically
+# - CDN assets: Available via jsDelivr
+# - Next.js: Use generated tailwind-preset.js</code></pre>
+<p>Access framework documentation (planned):</p>
+<pre><code>get_foundation_document("architecture_patterns")
+get_design_system_tokens("colors")</code></pre>
+<p>Generate application scaffolding (planned):</p>
+<pre><code>create_dataimago_app(name = "my-data-app", type = "quarto+shiny")
+scaffold_nextjs_integration(path = "my-project")</code></pre>
+</section>
+</section>
+<section id="package-metadata" class="level2">
+<h2 class="anchored" data-anchor-id="package-metadata">Package Metadata</h2>
+<ul>
+<li><strong><em>Version</em></strong>: 0.0-0.3 (using dataimago semantic versioning)</li>
+<li><strong><em>License</em></strong>: MIT</li>
+<li><strong><em>Maintainer</em></strong>: Damian W. Betebenner <a href="mailto:dbetebenner@nciea.org">dbetebenner@nciea.org</a></li>
+<li><strong><em>Website</em></strong>: https://dataimago.github.io/dataimago/</li>
+<li><strong><em>Repository</em></strong>: https://github.com/dataimago/dataimago/</li>
+</ul>
+</section>
+<section id="citation" class="level2">
+<h2 class="anchored" data-anchor-id="citation">Citation</h2>
+<p>To cite dataimago in publications:</p>
+<pre><code>citation("dataimago")</code></pre>
+</section>
+<section id="philosophy-in-practice" class="level2">
+<h2 class="anchored" data-anchor-id="philosophy-in-practice">Philosophy in Practice</h2>
+<p>“Would this object help an AI understand, improve, or operationalize emancipatory thinking? If yes, it belongs.” - dataimago development philosophy</p>
+</section>
+<section id="seealso-2" class="level2">
+<h2 class="anchored" data-anchor-id="seealso-2">Seealso</h2>
+<p>Useful links:</p>
+<ul>
+<li><a href="https://dataimago.github.io/dataimago/">https://dataimago.github.io/dataimago/</a></li>
+<li>Report bugs at <a href="https://github.com/dataimago/dataimago/issues/">https://github.com/dataimago/dataimago/issues/</a></li>
+</ul>
+</section>
+<section id="author" class="level2">
+<h2 class="anchored" data-anchor-id="author">Author</h2>
+<p><strong><em>Maintainer</em></strong>: Damian W. Betebenner <a href="mailto:dbetebenner@gmail.com">dbetebenner@gmail.com</a> (<a href="https://orcid.org/0000-0003-0476-5599">ORCID</a>)</p>
+</section>
+<section id="concept-3" class="level2">
+<h2 class="anchored" data-anchor-id="concept-3">Concept</h2>
+<p>dataimago emancipatory-ai MCP-compatible foundation-package</p>
+</section>
+<section id="keyword-11" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-11">Keyword</h2>
+<p>critical-theory</p>
+</section>
+<section id="keyword-12" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-12">Keyword</h2>
+<p>documentation-generation</p>
+</section>
+<section id="keyword-13" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-13">Keyword</h2>
+<p>ethical-ai</p>
+</section>
+<section id="keyword-14" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-14">Keyword</h2>
+<p>package</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="generate-cdn-distribution-assets" class="level1">
+<h1>Generate CDN Distribution Assets</h1>
+<section id="description-5" class="level2">
+<h2 class="anchored" data-anchor-id="description-5">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Prepares assets for CDN distribution with versioning, SRI hashes, and metadata. Creates jsDelivr-compatible structure in inst/quarto-assets/ for R package distribution.</p>
+</section>
+<section id="usage-4" class="level2">
+<h2 class="anchored" data-anchor-id="usage-4">Usage</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_cdn_assets</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-4" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-4">Arguments</h2>
+<ul>
+<li><code>verbose</code>: Logical. Print detailed progress information. Default: TRUE</li>
+</ul>
+</section>
+<section id="details-5" class="level2">
+<h2 class="anchored" data-anchor-id="details-5">Details</h2>
+<p>This function creates CDN-ready assets by:</p>
+<ol type="1">
+<li><strong><em>Copying Built Assets</em></strong>: Moves <code>ui/dist/*.css</code> to <code>inst/quarto-assets/</code></li>
+<li><strong><em>Generating Metadata</em></strong>: Creates manifest.json with build info and SRI hashes</li>
+<li><strong><em>Creating Usage Examples</em></strong>: Generates HTML snippets showing CDN usage</li>
+<li><strong><em>Validating File Integrity</em></strong>: Ensures all copied files are complete and uncorrupted</li>
+</ol>
+<p><strong><em>CDN Distribution Strategy:</em></strong>Files in <code>inst/quarto-assets/</code> become available via jsDelivr once the package is tagged and released on GitHub:</p>
+<pre><code>https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css</code></pre>
+<p><strong><em>SRI (Subresource Integrity) Hashes:</em></strong>Each CSS file gets a SHA-384 hash for security:</p>
+<pre><code>&lt;link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/.../dataimago.min.css"
+      integrity="sha384-..."
+      crossorigin="anonymous"&gt;</code></pre>
+<p><strong><em>Generated Files:</em></strong></p>
+<ul>
+<li><code>inst/quarto-assets/dataimago.min.css</code> - Main compiled CSS</li>
+<li><code>inst/quarto-assets/tokens.css</code> - CSS custom properties (if built)</li>
+<li><code>inst/quarto-assets/manifest.json</code> - Build metadata and SRI hashes</li>
+<li><code>inst/quarto-assets/README.md</code> - Usage instructions and examples</li>
+</ul>
+</section>
+<section id="value-4" class="level2">
+<h2 class="anchored" data-anchor-id="value-4">Value</h2>
+<p>List containing CDN preparation results:</p>
+<ul>
+<li>success: Logical indicating preparation success</li>
+<li>assets: Character vector of CDN-ready asset paths</li>
+<li>errors: Character vector of any error messages</li>
+</ul>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="update-quarto-extension-assets" class="level1">
+<h1>Update Quarto Extension Assets</h1>
+<section id="description-6" class="level2">
+<h2 class="anchored" data-anchor-id="description-6">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Copies compiled CSS and other assets from ui/dist/ into the Quarto extension structure. Maintains proper extension.yml configuration and ensures asset linking works correctly.</p>
+</section>
+<section id="usage-5" class="level2">
+<h2 class="anchored" data-anchor-id="usage-5">Usage</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">update_quarto_extension</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-5" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-5">Arguments</h2>
+<ul>
+<li><code>verbose</code>: Logical. Print detailed progress information. Default: TRUE</li>
+</ul>
+</section>
+<section id="details-6" class="level2">
+<h2 class="anchored" data-anchor-id="details-6">Details</h2>
+<p>This function performs the following operations:</p>
+<ol type="1">
+<li><strong><em>Validates Extension Structure</em></strong>: Checks that <code>ui/www/_extensions/dataimago/ai-native/</code> exists</li>
+<li><strong><em>Copies Main CSS</em></strong>: Copies <code>ui/dist/dataimago.min.css</code> to extension assets</li>
+<li><strong><em>Updates Asset References</em></strong>: Ensures extension.yml references the correct CSS files</li>
+<li><strong><em>Preserves Extension Config</em></strong>: Maintains existing Lua filters, shortcodes, etc.</li>
+</ol>
+<p><strong><em>Extension Asset Mapping:</em></strong></p>
+<ul>
+<li><code>ui/dist/dataimago.min.css</code> -&gt; <code>ui/www/_extensions/dataimago/ai-native/assets/css/dataimago.min.css</code> and <code>ui/www/_extensions/dataimago/ai-native/assets/css/tokens.css</code> (if exists)</li>
+<li>Source maps and development files are excluded from extension distribution</li>
+</ul>
+<p><strong><em>File Operations:</em></strong>All file copying uses R’s <code>fs::file_copy()</code> with overwrite protection and atomic operations to prevent corrupted assets during development. The function will not overwrite extension configuration files (like _extension.yml) unless they become corrupted.</p>
+</section>
+<section id="value-5" class="level2">
+<h2 class="anchored" data-anchor-id="value-5">Value</h2>
+<p>List containing update results:</p>
+<ul>
+<li>success: Logical indicating update success</li>
+<li>updated_files: Character vector of files updated in extension</li>
+<li>errors: Character vector of any error messages</li>
+</ul>
+</section>
+<section id="examples-4" class="level2">
+<h2 class="anchored" data-anchor-id="examples-4">Examples</h2>
+<p><em>Examples using dataimago’s ethical AI framework:</em></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Update extension after building CSS</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">build_design_system</span>()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">update_quarto_extension</span>()</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what was updated</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (result<span class="sc">$</span>success) {</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Updated files:"</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(result<span class="sc">$</span>updated_files, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">  "</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="internal-functions" class="level1">
+<h1>Internal Functions</h1>
+<p>The following functions are internal to the package:</p>
+</section>
+<section id="add-function-documentation-sections-with-exportednon-exported-structure" class="level1">
+<h1>Add Function Documentation Sections with Exported/Non-exported Structure</h1>
+<section id="description-7" class="level2">
+<h2 class="anchored" data-anchor-id="description-7">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Add Function Documentation Sections with Exported/Non-exported Structure</p>
+</section>
+<section id="usage-6" class="level2">
+<h2 class="anchored" data-anchor-id="usage-6">Usage</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add_function_docs_sections</span>(rd_content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-6" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-6">Arguments</h2>
+<ul>
+<li><code>rd_content</code>: List of converted .Rd content</li>
+</ul>
+</section>
+<section id="keyword-15" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-15">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-6" class="level2">
+<h2 class="anchored" data-anchor-id="value-6">Value</h2>
+<p>Character vector with structured function documentation</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="convert-.rd-files-to-qmd-format-using-rd2md" class="level1">
+<h1>Convert .Rd Files to QMD Format using Rd2md</h1>
+<section id="description-8" class="level2">
+<h2 class="anchored" data-anchor-id="description-8">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Convert .Rd Files to QMD Format using Rd2md</p>
+</section>
+<section id="usage-7" class="level2">
+<h2 class="anchored" data-anchor-id="usage-7">Usage</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">convert_rd_files_to_qmd</span>(rd_files)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-7" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-7">Arguments</h2>
+<ul>
+<li><code>rd_files</code>: Character vector of paths to .Rd files</li>
+</ul>
+</section>
+<section id="keyword-16" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-16">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-7" class="level2">
+<h2 class="anchored" data-anchor-id="value-7">Value</h2>
+<p>List containing converted documentation for each function</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="extract-field-from-description-lines" class="level1">
+<h1>Extract Field from DESCRIPTION Lines</h1>
+<section id="description-9" class="level2">
+<h2 class="anchored" data-anchor-id="description-9">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Extract Field from DESCRIPTION Lines</p>
+</section>
+<section id="usage-8" class="level2">
+<h2 class="anchored" data-anchor-id="usage-8">Usage</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_desc_field</span>(desc_lines, field_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-8" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-8">Arguments</h2>
+<ul>
+<li><code>desc_lines</code>: Character vector of DESCRIPTION file lines</li>
+<li><code>field_name</code>: Name of field to extract</li>
+</ul>
+</section>
+<section id="keyword-17" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-17">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-8" class="level2">
+<h2 class="anchored" data-anchor-id="value-8">Value</h2>
+<p>Character string with field value or NULL if not found</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="format-description-fields-for-quarto-display" class="level1">
+<h1>Format DESCRIPTION Fields for Quarto Display</h1>
+<section id="description-10" class="level2">
+<h2 class="anchored" data-anchor-id="description-10">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Format DESCRIPTION Fields for Quarto Display</p>
+</section>
+<section id="usage-9" class="level2">
+<h2 class="anchored" data-anchor-id="usage-9">Usage</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format_description_fields</span>(desc_content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-9" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-9">Arguments</h2>
+<ul>
+<li><code>desc_content</code>: Parsed DESCRIPTION content list</li>
+</ul>
+</section>
+<section id="keyword-18" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-18">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-9" class="level2">
+<h2 class="anchored" data-anchor-id="value-9">Value</h2>
+<p>Character vector with formatted DESCRIPTION fields</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="generate-api-reference-qmd-content" class="level1">
+<h1>Generate API Reference QMD Content</h1>
+<section id="description-11" class="level2">
+<h2 class="anchored" data-anchor-id="description-11">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Generate API Reference QMD Content</p>
+</section>
+<section id="usage-10" class="level2">
+<h2 class="anchored" data-anchor-id="usage-10">Usage</h2>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_api_reference_qmd</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  desc_content,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  rd_content,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_description =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_foundation_links =</span> <span class="cn">TRUE</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-10" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-10">Arguments</h2>
+<ul>
+<li><code>desc_content</code>: Parsed DESCRIPTION content</li>
+<li><code>rd_content</code>: Converted .Rd content</li>
+<li><code>include_description</code>: Include DESCRIPTION section</li>
+<li><code>include_foundation_links</code>: Include dataimago foundation links</li>
+</ul>
+</section>
+<section id="keyword-19" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-19">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-10" class="level2">
+<h2 class="anchored" data-anchor-id="value-10">Value</h2>
+<p>Character vector with complete qmd content</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="generate-_quarto.yml-configuration-file" class="level1">
+<h1>Generate _quarto.yml Configuration File</h1>
+<section id="description-12" class="level2">
+<h2 class="anchored" data-anchor-id="description-12">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Generate _quarto.yml Configuration File</p>
+</section>
+<section id="usage-11" class="level2">
+<h2 class="anchored" data-anchor-id="usage-11">Usage</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_quarto_yml</span>(desc_content, <span class="at">template =</span> <span class="st">"dataimago"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-11" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-11">Arguments</h2>
+<ul>
+<li><code>desc_content</code>: Parsed DESCRIPTION content</li>
+<li><code>template</code>: Template type (currently supports “dataimago”)</li>
+</ul>
+</section>
+<section id="keyword-20" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-20">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-11" class="level2">
+<h2 class="anchored" data-anchor-id="value-11">Value</h2>
+<p>Character vector with _quarto.yml content</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="parse-description-file" class="level1">
+<h1>Parse DESCRIPTION File</h1>
+<section id="description-13" class="level2">
+<h2 class="anchored" data-anchor-id="description-13">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Parse DESCRIPTION File</p>
+</section>
+<section id="usage-12" class="level2">
+<h2 class="anchored" data-anchor-id="usage-12">Usage</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parse_description_file</span>(desc_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-12" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-12">Arguments</h2>
+<ul>
+<li><code>desc_file</code>: Path to DESCRIPTION file</li>
+</ul>
+</section>
+<section id="keyword-21" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-21">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-12" class="level2">
+<h2 class="anchored" data-anchor-id="value-12">Value</h2>
+<p>List containing parsed DESCRIPTION fields</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="post-process-markdown-to-qmd-format-with-dataimago-customizations" class="level1">
+<h1>Post-Process Markdown to QMD Format with dataimago Customizations</h1>
+<section id="description-14" class="level2">
+<h2 class="anchored" data-anchor-id="description-14">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Post-Process Markdown to QMD Format with dataimago Customizations</p>
+</section>
+<section id="usage-13" class="level2">
+<h2 class="anchored" data-anchor-id="usage-13">Usage</h2>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">post_process_md_to_qmd</span>(md_content, func_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-13" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-13">Arguments</h2>
+<ul>
+<li><code>md_content</code>: Character vector of markdown content from Rd2md</li>
+<li><code>func_name</code>: Function name for customization</li>
+</ul>
+</section>
+<section id="keyword-22" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-22">Keyword</h2>
+<p>internal</p>
+</section>
+<section id="value-13" class="level2">
+<h2 class="anchored" data-anchor-id="value-13">Value</h2>
+<p>Character vector with qmd-formatted content</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+</section>
+</section>
+<section id="update-dataimago-assets-in-quarto-website" class="level1">
+<h1>Update dataimago Assets in Quarto Website</h1>
+<section id="description-15" class="level2">
+<h2 class="anchored" data-anchor-id="description-15">Description</h2>
+<div class="ethical-note">
+<p>This function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.</p>
+</div>
+<p>Update dataimago Assets in Quarto Website</p>
+</section>
+<section id="usage-14" class="level2">
+<h2 class="anchored" data-anchor-id="usage-14">Usage</h2>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">update_dataimago_assets</span>(output_path, package_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="arguments-14" class="level2">
+<h2 class="anchored" data-anchor-id="arguments-14">Arguments</h2>
+<ul>
+<li><code>output_path</code>: Path to quarto website directory</li>
+<li><code>package_path</code>: Path to package root</li>
+</ul>
+</section>
+<section id="keyword-23" class="level2">
+<h2 class="anchored" data-anchor-id="keyword-23">Keyword</h2>
+<p>internal</p>
+<hr>
+<p><em>This function is part of the dataimago ethical AI framework.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/dataimago\.github\.io\/dataimago\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://dataimago.github.io/" target="_blank">
+<p><img src="./assets/img/ai_monogram_grey-light.svg" class="footer-img-icon" title="dataimago.ai" label="dataimago.ai" alt="dataimago.ai" style="height:28px; vertical-align:middle; padding-right: 4px;"></p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://dataimago.github.io/dataimago/">
+<p><i class="bi bi-info-square-fill" style="font-size: 28px;" title="About dataimago"></i></p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/dataimago/dataimago/" target="_blank">
+<p><i class="bi bi-github" style="font-size: 28px;" title="dataimago GitHub Repo"></i></p>
+</a>
+  </li>  
+</ul>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dataimago/dataimago/edit/main/r_package.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/dataimago/dataimago/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<meta name="dataimago-skip-links" content="false">
+<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,600" rel="stylesheet" type="text/css">
+<script src="https://unpkg.com/lenis@1.3.8/dist/lenis.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="./assets/js/jquery.sticky-kit.min.js"></script>
+<script type="text/javascript" src="./assets/js/lenis-integration.js"></script>
+<script type="text/javascript" src="./assets/js/logo-switch.js"></script>
+<script type="text/javascript" src="./assets/js/custom-anchors.js"></script>
+<script type="text/javascript" src="./assets/js/accessibility.js"></script>
+
+
+
+
+</body></html>

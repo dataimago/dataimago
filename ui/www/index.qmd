@@ -149,7 +149,7 @@ Multi-platform deployment from single source with automated optimization
 
 <!-- Learn more links START -->
 ::: {.learn-more-links}
-[**API Reference**](api_reference.qmd)  
+[**API Reference**](r_package.qmd)  
 Complete function documentation and examples
 
 [**Framework Documentation**](mission.qmd)  
