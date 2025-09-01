@@ -263,10 +263,10 @@ ${tokensContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
   --theme-text-primary: rgb(237, 237, 235);
   --theme-text-secondary: #83838f;
   --theme-text-hover: rgb(237, 237, 235);
-  --theme-dropdown-bg: rgb(28, 28, 30);
-  --theme-dropdown-border: rgb(33, 33, 35);
-  --theme-dropdown-hover-bg: rgb(18, 18, 20);
-  --theme-dropdown-hover-shadow: rgba(33, 33, 35, 0.8);
+  --theme-dropdown-bg: rgb(32, 32, 34);
+  --theme-dropdown-border: rgb(37, 37, 39);
+  --theme-dropdown-hover-bg: rgb(20, 20, 16);
+  --theme-dropdown-hover-shadow: rgba(37, 37, 39, 0.8);
 }
 
 // === SHARED COMPONENTS (from shared-components.scss) ===
