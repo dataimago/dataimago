@@ -226,6 +226,10 @@ ${tokensContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
   --theme-text-primary: #000000;
   --theme-text-secondary: #7c7c7c;
   --theme-text-hover: #000000;
+  --theme-dropdown-bg: rgb(225, 225, 223);
+  --theme-dropdown-border: rgb(220, 220, 218);
+  --theme-dropdown-hover-bg: rgb(237, 237, 235);
+  --theme-dropdown-hover-shadow: rgba(220, 220, 218, 0.8);
 }
 
 // === SHARED COMPONENTS (from shared-components.scss) ===
@@ -259,6 +263,10 @@ ${tokensContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
   --theme-text-primary: rgb(237, 237, 235);
   --theme-text-secondary: #83838f;
   --theme-text-hover: rgb(237, 237, 235);
+  --theme-dropdown-bg: rgb(28, 28, 30);
+  --theme-dropdown-border: rgb(33, 33, 35);
+  --theme-dropdown-hover-bg: rgb(18, 18, 20);
+  --theme-dropdown-hover-shadow: rgba(33, 33, 35, 0.8);
 }
 
 // === SHARED COMPONENTS (from shared-components.scss) ===

@@ -41,6 +41,12 @@
   --theme-carousel-nav-button-hover: rgb(20, 20, 16);
   --theme-carousel-progress-bg: rgba(220, 220, 218, 0.5);
   --theme-carousel-progress-bar: linear-gradient(90deg, #7c7c7c, #a8a8a8);
+  
+  // Dropdown menu colors (light theme)
+  --theme-dropdown-bg: rgb(225, 225, 223);
+  --theme-dropdown-border: rgb(220, 220, 218);
+  --theme-dropdown-hover-bg: rgb(237, 237, 235);
+  --theme-dropdown-hover-shadow: rgba(220, 220, 218, 0.8);
 }
 
 [data-bs-theme="dark"] {
@@ -82,6 +88,12 @@
   --theme-carousel-nav-button-hover: rgb(237, 237, 235);
   --theme-carousel-progress-bg: rgba(40, 40, 37, 0.6);
   --theme-carousel-progress-bar: linear-gradient(90deg, #83838f, #a8a8b0);
+  
+  // Dropdown menu colors (dark theme)
+  --theme-dropdown-bg: rgb(28, 28, 30);
+  --theme-dropdown-border: rgb(33, 33, 35);
+  --theme-dropdown-hover-bg: rgb(18, 18, 20);
+  --theme-dropdown-hover-shadow: rgba(33, 33, 35, 0.8);
 }
 
 // CSS overrides to ensure our custom theme variables are applied

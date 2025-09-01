@@ -45,6 +45,10 @@
   --theme-carousel-nav-button-hover: rgb(20, 20, 16);
   --theme-carousel-progress-bg: rgba(220, 220, 218, 0.5);
   --theme-carousel-progress-bar: linear-gradient(90deg, #7c7c7c, #a8a8a8);
+  --theme-dropdown-bg: rgb(225, 225, 223);
+  --theme-dropdown-border: rgb(220, 220, 218);
+  --theme-dropdown-hover-bg: rgb(237, 237, 235);
+  --theme-dropdown-hover-shadow: rgba(220, 220, 218, 0.8);
 }
 
 [data-bs-theme=dark] {
@@ -77,6 +81,10 @@
   --theme-carousel-nav-button-hover: rgb(237, 237, 235);
   --theme-carousel-progress-bg: rgba(40, 40, 37, 0.6);
   --theme-carousel-progress-bar: linear-gradient(90deg, #83838f, #a8a8b0);
+  --theme-dropdown-bg: rgb(28, 28, 30);
+  --theme-dropdown-border: rgb(33, 33, 35);
+  --theme-dropdown-hover-bg: rgb(18, 18, 20);
+  --theme-dropdown-hover-shadow: rgba(33, 33, 35, 0.8);
 }
 
 body {
@@ -177,6 +185,151 @@ nav .nav-item:not(.compact) {
 .navbar-logo.transitioning {
   opacity: 0.8;
   transition: opacity 0.15s ease-in-out;
+}
+
+/* Ensure the effect works for dropdown menu triggers as well */
+.navbar-nav .nav-item.dropdown .nav-link {
+  position: relative;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: var(--theme-text-secondary);
+}
+
+.navbar-nav .nav-item.dropdown .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 0.5rem;
+  right: 0.5rem;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--theme-text-primary) 0%, var(--theme-text-secondary) 100%);
+  transition: width 0.4s ease;
+  transform-origin: left;
+}
+
+.navbar-nav .nav-item.dropdown .nav-link:hover {
+  color: var(--theme-text-primary);
+}
+
+.navbar-nav .nav-item.dropdown .nav-link:hover::after {
+  width: calc(100% - 1rem);
+}
+
+/* Dropdown arrow repositioning and rotation effect */
+/* Hide the default Bootstrap caret */
+.navbar-nav .dropdown-toggle .caret,
+.navbar-nav .dropdown-toggle::after {
+  display: none;
+}
+
+/* Create custom dropdown arrow on the left */
+.navbar-nav .dropdown .nav-link {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse; /* Reverses the order to put arrow first */
+}
+
+.navbar-nav .dropdown .nav-link::before {
+  content: "▲";
+  display: inline-block;
+  margin-left: 6px;
+  margin-right: 0;
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+  color: var(--theme-text-secondary);
+}
+
+/* Rotation and styling when dropdown is open - targeting the correct Bootstrap classes */
+/* Multiple approaches to ensure compatibility with different Bootstrap/Quarto versions */
+/* Bootstrap 3 style */
+.navbar-nav li.dropdown.open .nav-link::before {
+  transform: rotate(180deg);
+  color: var(--theme-text-primary);
+}
+
+.navbar-nav li.dropdown.open .nav-link {
+  color: var(--theme-text-primary) !important;
+}
+
+/* Bootstrap 4/5 style */
+.navbar-nav li.dropdown.show .nav-link::before {
+  transform: rotate(180deg);
+  color: var(--theme-text-primary);
+}
+
+.navbar-nav li.dropdown.show .nav-link {
+  color: var(--theme-text-primary) !important;
+}
+
+/* Alternative targeting using aria-expanded attribute */
+.navbar-nav .dropdown .nav-link[aria-expanded=true]::before {
+  transform: rotate(180deg);
+  color: var(--theme-text-primary);
+}
+
+.navbar-nav .dropdown .nav-link[aria-expanded=true] {
+  color: var(--theme-text-primary) !important;
+}
+
+/* Targeting via parent with show class */
+.navbar-nav .show > .nav-link::before {
+  transform: rotate(180deg);
+  color: var(--theme-text-primary);
+}
+
+.navbar-nav .show > .nav-link {
+  color: var(--theme-text-primary) !important;
+}
+
+/* Quarto specific targeting */
+.navbar-nav .nav-item.dropdown.show .nav-link::before,
+.navbar-nav .nav-item.dropdown.open .nav-link::before {
+  transform: rotate(180deg);
+  color: var(--theme-text-primary);
+}
+
+.navbar-nav .nav-item.dropdown.show .nav-link,
+.navbar-nav .nav-item.dropdown.open .nav-link {
+  color: var(--theme-text-primary) !important;
+}
+
+/* Dropdown menu styling - rounded corners */
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .dropdown-menu {
+    position: absolute;
+    border-radius: 7px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    background-color: var(--theme-dropdown-bg);
+    border-color: var(--theme-dropdown-border);
+    border-width: 1px;
+  }
+}
+/* Dropdown menu item hover styling */
+.navbar-nav .dropdown-menu > li > a:hover,
+.navbar-nav .dropdown-menu > li > a:focus {
+  background-color: var(--theme-dropdown-hover-bg) !important;
+  color: var(--theme-text-primary);
+  box-shadow: inset 0 2px 4px var(--theme-dropdown-hover-shadow), inset 0 1px 2px var(--theme-dropdown-hover-shadow), inset 0 -1px 2px var(--theme-dropdown-hover-shadow), inset 0 -2px 4px var(--theme-dropdown-hover-shadow) !important;
+  transition: all 0.2s ease;
+}
+
+/* Remove underlines from dropdown menu links */
+.navbar-nav .dropdown-menu a,
+.navbar-nav .dropdown-menu > li > a {
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  box-shadow: none;
+  color: var(--theme-text-secondary);
+}
+
+.navbar-nav .dropdown-menu a:hover,
+.navbar-nav .dropdown-menu > li > a:hover,
+.navbar-nav .dropdown-menu a:focus,
+.navbar-nav .dropdown-menu > li > a:focus {
+  text-decoration: none !important;
+  color: var(--theme-text-primary);
 }
 
 .navbar-brand-container {
