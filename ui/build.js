@@ -434,12 +434,17 @@ fs.writeFileSync(
 // Step 8: Distribute assets to all channels
 console.log('📦 Distributing assets to all channels...');
 
-// Collect all available files from dist directory
-const coreFiles = ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', 'website-light.scss', 'website-dark.scss'];
-const pageFiles = fs.existsSync(path.join(config.distDir))
-  ? fs.readdirSync(config.distDir)
-      .filter(file => (file.endsWith('.css') || file.endsWith('.scss')) && !coreFiles.includes(file))
-  : [];
+    // Collect all available files from dist directory
+    const coreFiles = ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', 'website-light.scss', 'website-dark.scss'];
+    const pageFiles = fs.existsSync(path.join(config.distDir))
+      ? fs.readdirSync(config.distDir)
+          .filter(file => (file.endsWith('.css') || file.endsWith('.scss')) && !coreFiles.includes(file))
+      : [];
+      
+    // Note: Page files now use descriptive names:
+    // - documentation.css (formerly r-package.css)  
+    // - landing.css (formerly index.css)
+    // - shared-enhanced-toc.css (unchanged)
 
 const distributionChannels = [
   {

@@ -1,6 +1,6 @@
 /**
  * logo-switch.js - dataimago Design System
- * Built: 2025-09-01T20:07:49.541Z
+ * Built: 2025-09-01T20:10:30.218Z
  * Source: ui/src/js/logo-switch.js
  */
 // AI Monogram SVG paths (for navbar/footer) - Local paths (switch to CDN after GitHub push)

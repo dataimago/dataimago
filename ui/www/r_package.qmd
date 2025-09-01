@@ -6,6 +6,9 @@ format:
   html:
     toc: true
     toc-depth: 3
+    css:
+      - assets/css/documentation.css
+      - assets/css/shared-enhanced-toc.css
 ---
 
 # Package Information
