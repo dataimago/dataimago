@@ -20,7 +20,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: inherit;
-  background-color: var(--color-background-page);
+  // background-color removed - handled by theme-aware styles in shared-components.scss
   color: var(--color-text-primary);
 }
 

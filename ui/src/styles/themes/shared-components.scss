@@ -11,7 +11,7 @@ body {
 }
 
 body.shrink {
-  background-color: var(--theme-navbar-bg-scrolled);
+  background-color: var(--theme-body-bg-scrolled, var(--theme-navbar-bg-scrolled)) !important;
 }
 
 // Navbar styling with proper nav-item positioning fix

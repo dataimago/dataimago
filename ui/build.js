@@ -186,38 +186,90 @@ try {
     execSync(websiteCmd, { stdio: 'inherit', cwd: __dirname });
     console.log('✅ Website theme compiled successfully');
     
-    // Read theme files from source and copy to dist (preserving our customizations)
-    const lightSourcePath = path.join(config.srcDir, 'styles', 'website-light.scss');
-    const darkSourcePath = path.join(config.srcDir, 'styles', 'website-dark.scss');
+    // BULLETPROOF BUILD: Auto-generate self-contained theme files from modular sources
+    console.log('🏗️ Generating self-contained theme files from modular sources...');
     
-    if (fs.existsSync(lightSourcePath) && fs.existsSync(darkSourcePath)) {
-      const lightContent = fs.readFileSync(lightSourcePath, 'utf8');
-      const darkContent = fs.readFileSync(darkSourcePath, 'utf8');
-      
-      // Write theme-specific files from source
-      fs.writeFileSync(path.join(config.distDir, 'website-light.scss'), lightContent);
-      fs.writeFileSync(path.join(config.distDir, 'website-dark.scss'), darkContent);
-      
-      console.log('✅ Light/Dark theme variants copied from source');
-    } else {
-      console.log('⚠️ Source theme files not found, using fallback generation');
-      
-      // Fallback to generated content if source files don't exist
-      const lightContent = `// dataimago Website Light Theme - Generated fallback
-@import 'website-theme';
+    // Read modular source files (single source of truth)
+    const tokensPath = path.join(config.srcDir, 'tokens.scss');
+    const themeVariablesPath = path.join(config.srcDir, 'styles', 'themes', 'theme-variables.scss');
+    const sharedComponentsPath = path.join(config.srcDir, 'styles', 'themes', 'shared-components.scss');
+    const websiteFeaturesPath = path.join(config.srcDir, 'styles', 'themes', 'website-features.scss');
+    
+    // Read all modular content
+    const tokensContent = fs.existsSync(tokensPath) ? fs.readFileSync(tokensPath, 'utf8') : '';
+    const themeVariablesContent = fs.existsSync(themeVariablesPath) ? fs.readFileSync(themeVariablesPath, 'utf8') : '';
+    const sharedComponentsContent = fs.existsSync(sharedComponentsPath) ? fs.readFileSync(sharedComponentsPath, 'utf8') : '';
+    const websiteFeaturesContent = fs.existsSync(websiteFeaturesPath) ? fs.readFileSync(websiteFeaturesPath, 'utf8') : '';
+    
+    // Generate self-contained light theme
+    const lightContent = `// dataimago Website Light Theme - Auto-generated from modular sources
+// This file is self-contained for Quarto compatibility
+// Source of truth: ui/src/styles/themes/ (modular files)
+
 /*-- scss:defaults --*/
+$h2-font-size: 1.6rem !default;
+$headings-font-weight: 500 !default;
 $body-bg: rgb(237, 237, 235) !default;
-/*-- scss:rules --*/`;
+$btn-code-copy-color: #7c7c7c !default;
+$btn-code-copy-color-active: #000 !default;
 
-      const darkContent = `// dataimago Website Dark Theme - Generated fallback
-@import 'website-theme';
-/*-- scss:defaults --*/  
+/*-- scss:rules --*/
+// === DESIGN TOKENS (from tokens.scss) ===
+${tokensContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
+
+// === LIGHT THEME VARIABLES ===
+:root {
+  --theme-body-bg: rgb(237, 237, 235);
+  --theme-navbar-bg: rgb(237, 237, 235);
+  --theme-navbar-bg-scrolled: rgb(237, 237, 238);
+  --theme-body-bg-scrolled: rgb(237, 237, 238);
+  --theme-text-primary: #000000;
+  --theme-text-secondary: #7c7c7c;
+  --theme-text-hover: #000000;
+}
+
+// === SHARED COMPONENTS (from shared-components.scss) ===
+${sharedComponentsContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
+
+// === WEBSITE FEATURES (from website-features.scss) ===
+${websiteFeaturesContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}`;
+
+    // Generate self-contained dark theme
+    const darkContent = `// dataimago Website Dark Theme - Auto-generated from modular sources
+// This file is self-contained for Quarto compatibility
+// Source of truth: ui/src/styles/themes/ (modular files)
+
+/*-- scss:defaults --*/
+$h2-font-size: 1.6rem !default;
+$headings-font-weight: 500 !default;
 $body-bg: rgb(20, 20, 16) !default;
-/*-- scss:rules --*/`;
+$btn-code-copy-color: #7c7c7c !default;
+$btn-code-copy-color-active: rgb(237, 237, 235) !default;
 
-      fs.writeFileSync(path.join(config.distDir, 'website-light.scss'), lightContent);
-      fs.writeFileSync(path.join(config.distDir, 'website-dark.scss'), darkContent);
-    }
+/*-- scss:rules --*/
+// === DESIGN TOKENS (from tokens.scss) ===
+${tokensContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
+
+// === DARK THEME VARIABLES ===
+:root {
+  --theme-body-bg: rgb(20, 20, 16);
+  --theme-navbar-bg: rgb(20, 20, 16);
+  --theme-navbar-bg-scrolled: rgb(20, 20, 22);
+  --theme-body-bg-scrolled: rgb(20, 20, 22);
+  --theme-text-primary: rgb(237, 237, 235);
+  --theme-text-secondary: #83838f;
+  --theme-text-hover: rgb(237, 237, 235);
+}
+
+// === SHARED COMPONENTS (from shared-components.scss) ===
+${sharedComponentsContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
+
+// === WEBSITE FEATURES (from website-features.scss) ===
+${websiteFeaturesContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}`;
+
+    // Write auto-generated self-contained files
+    fs.writeFileSync(path.join(config.distDir, 'website-light.scss'), lightContent);
+    fs.writeFileSync(path.join(config.distDir, 'website-dark.scss'), darkContent);
     
     console.log('✅ Light/Dark theme variants generated');
   } else {
