@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import '../dist/tokens.css';
+@import 'tokens.css';
 :root, [data-bs-theme=light] {
   --theme-body-bg: var(--color-surface-page-light, rgb(237, 237, 235));
   --theme-navbar-bg: var(--color-surface-page-light, rgb(237, 237, 235));

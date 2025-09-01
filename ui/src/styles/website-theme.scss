@@ -2,15 +2,21 @@
 // This file combines all theme components and replaces the separate light/dark files
 
 // Import design tokens first (provides CSS custom properties)
-@import '../dist/tokens.css';
+// Path: 'tokens.css' - RUNTIME CSS import, resolved by browser when website-theme.css loads
+// Must be relative to ui/www/assets/css/ where this compiled CSS will be deployed
+@import 'tokens.css';
 
-// Import theme variables (theme-aware CSS custom properties)
+// Import theme variables (theme-aware CSS custom properties)  
+// Path: 'themes/' - BUILD-TIME SCSS import, resolved during Sass compilation
+// Content gets inlined into final CSS, no runtime path resolution needed
 @import 'themes/theme-variables';
 
 // Import shared components (works across both themes using CSS vars)
+// Path: 'themes/' - BUILD-TIME SCSS import, compiled and inlined at build time
 @import 'themes/shared-components';
 
 // Import website-specific features
+// Path: 'themes/' - BUILD-TIME SCSS import, compiled and inlined at build time  
 @import 'themes/website-features';
 
 // Quarto-specific SCSS defaults that need to be duplicated for compatibility
