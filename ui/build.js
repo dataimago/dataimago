@@ -72,7 +72,10 @@ function processThemeTokens() {
   let lightThemeContent = ':root, [data-bs-theme="light"] {\n';
   
   // Dark theme variables  
-  let darkThemeContent = '[data-bs-theme="dark"], @media (prefers-color-scheme: dark) {\n';
+  let darkThemeContent = '[data-bs-theme="dark"] {\n';
+  
+  // Media query for automatic dark mode
+  let mediaQueryContent = '@media (prefers-color-scheme: dark) {\n  :root {\n';
   
   tokenFiles.forEach(filename => {
     const filepath = path.join(config.tokensDir, filename);
@@ -88,6 +91,7 @@ function processThemeTokens() {
             const varName = `--${prefix}${key}`.replace(/\./g, '-');
             lightThemeContent += `  ${varName}: ${obj[key].light};\n`;
             darkThemeContent += `  ${varName}: ${obj[key].dark};\n`;
+            mediaQueryContent += `    ${varName}: ${obj[key].dark};\n`;
           } else if (obj[key].value) {
             // Standard token
             const varName = `--${prefix}${key}`.replace(/\./g, '-');
@@ -106,9 +110,10 @@ function processThemeTokens() {
   cssContent += '}\n\n';
   lightThemeContent += '}\n\n';
   darkThemeContent += '}\n\n';
+  mediaQueryContent += '  }\n}\n\n';
   
   // Combine all CSS
-  const finalCss = cssContent + lightThemeContent + darkThemeContent;
+  const finalCss = cssContent + lightThemeContent + darkThemeContent + mediaQueryContent;
   
   // Write the enhanced tokens CSS
   fs.writeFileSync(path.join(config.distDir, 'tokens.css'), finalCss);
