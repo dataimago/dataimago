@@ -1,6 +1,6 @@
 
-// dataimago Website Dark Theme - Generated from single source
-@import '../../../src/styles/website-theme';
+// dataimago Website Dark Theme - Generated from single source  
+@import 'website-theme';
 
 /*-- scss:defaults --*/
 $h2-font-size: 1.6rem !default;
@@ -10,4 +10,4 @@ $btn-code-copy-color: #7c7c7c !default;
 $btn-code-copy-color-active: rgb(237, 237, 235) !default;
 
 /*-- scss:rules --*/
-// Theme styles handled by imported CSS above
+// Theme styles handled by imported SCSS above

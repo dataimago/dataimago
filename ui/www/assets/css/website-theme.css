@@ -1,5 +1,20 @@
 @charset "UTF-8";
-@import 'tokens.css';
+:root {
+  --dataimago-primary: #3498DB;
+  --dataimago-accent: #ff69b4;
+  --dataimago-ethical: #E74C3C;
+  --color-surface-page-light: rgb(237, 237, 235);
+  --color-surface-page-dark: rgb(20, 20, 16);
+  --color-content-primary-light: #000000;
+  --color-content-secondary-light: #7c7c7c;
+  --color-content-primary-dark: rgb(237, 237, 235);
+  --color-content-secondary-dark: #83838f;
+  --dataimago-success: #27AE60;
+  --dataimago-warning: #F39C12;
+  --dataimago-error: #E74C3C;
+  --dataimago-info: #3498DB;
+}
+
 :root, [data-bs-theme=light] {
   --theme-body-bg: var(--color-surface-page-light, rgb(237, 237, 235));
   --theme-navbar-bg: var(--color-surface-page-light, rgb(237, 237, 235));

@@ -50,7 +50,7 @@
   --navigation-active-background: rgba(0, 0, 0, 0.1);
 }
 
-[data-bs-theme="dark"], @media (prefers-color-scheme: dark) {
+[data-bs-theme="dark"] {
   --color-surface-page: rgb(20, 20, 16);
   --color-surface-page-scrolled: rgb(20, 20, 22);
   --color-surface-elevated: #2d2d2d;
@@ -90,5 +90,49 @@
   --border-focus: #4FC3F7;
   --navigation-hover-background: rgba(255, 255, 255, 0.05);
   --navigation-active-background: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-surface-page: rgb(20, 20, 16);
+    --color-surface-page-scrolled: rgb(20, 20, 22);
+    --color-surface-elevated: #2d2d2d;
+    --color-surface-sunken: #1a1a1a;
+    --color-content-primary: rgb(237, 237, 235);
+    --color-content-secondary: #83838f;
+    --color-content-muted: #83838f;
+    --color-content-inverse: #000000;
+    --color-interactive-primary: #3498DB;
+    --color-interactive-hover: #4FC3F7;
+    --color-interactive-accent: #ff69b4;
+    --color-interactive-focus: #4FC3F7;
+    --color-border-subtle: rgba(255, 255, 255, 0.1);
+    --color-border-moderate: rgba(255, 255, 255, 0.15);
+    --color-border-strong: rgba(255, 255, 255, 0.25);
+    --color-surface-page: rgb(20, 20, 16);
+    --color-surface-page-scrolled: rgb(20, 20, 22);
+    --color-surface-elevated: #2d2d2d;
+    --color-surface-navbar: rgb(20, 20, 16);
+    --color-surface-navbar-scrolled: rgb(20, 20, 22);
+    --color-content-primary: rgb(237, 237, 235);
+    --color-content-secondary: #83838f;
+    --color-content-muted: #83838f;
+    --color-content-inverse: #000000;
+    --color-interactive-primary: #3498DB;
+    --color-interactive-accent: #ff69b4;
+    --color-interactive-hover: #4FC3F7;
+    --contrast-high: rgb(237, 237, 235);
+    --contrast-readable: rgb(237, 237, 235);
+    --contrast-medium: #83838f;
+    --contrast-subtle: #83838f;
+    --shadow-subtle: 0 1px 2px 0 rgb(255 255 255 / 0.03);
+    --shadow-moderate: 0 4px 6px -1px rgb(255 255 255 / 0.05);
+    --shadow-prominent: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+    --border-subtle: rgba(255, 255, 255, 0.1);
+    --border-moderate: rgba(255, 255, 255, 0.15);
+    --border-focus: #4FC3F7;
+    --navigation-hover-background: rgba(255, 255, 255, 0.05);
+    --navigation-active-background: rgba(255, 255, 255, 0.1);
+  }
 }
 

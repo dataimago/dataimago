@@ -1,6 +1,6 @@
 /**
  * landing-page-enhanced.js - dataimago Design System
- * Built: 2025-08-31T17:59:34.666Z
+ * Built: 2025-09-01T17:06:30.385Z
  * Source: ui/src/js/pages/landing-page-enhanced.js
  */
 /**
