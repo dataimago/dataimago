@@ -138,9 +138,12 @@ dataimago/
 │   ├── dataimago/              # Foundation documents and assets
 │   └── quarto-assets/          # CDN-ready CSS files (CRITICAL)
 ├── ui/                         # Node.js design system workspace
-│   ├── src/                    # Design tokens and SCSS source
+│   ├── src/                    # SOURCE OF TRUTH - Design tokens and SCSS
+│   │   ├── tokens/             # JSON design tokens (colors, typography, etc.)
+│   │   ├── styles/             # SCSS source files with proper imports
+│   │   └── tokens.scss         # SCSS version of design tokens
 │   ├── dist/                   # Built CSS assets (regenerable)
-│   ├── build.js               # Sophisticated build script
+│   ├── build.js               # Sophisticated build script with SCSS imports
 │   └── package.json           # Node.js dependencies
 ├── ui/www/                    # Complete Quarto website structure
 │   ├── _extensions/           # dataimago Quarto extension
@@ -152,7 +155,7 @@ dataimago/
 
 ### 🔄 Build Flow & Dependencies
 
-The package uses a sophisticated build system that maintains "R as source of truth" while leveraging modern web tooling:
+The package uses a sophisticated build system that maintains "R as source of truth" while leveraging modern web tooling. **Recent Update**: Established complete SCSS source-of-truth pipeline eliminating 404 errors and enabling confident asset management.
 
 ```mermaid
 flowchart TD
@@ -320,7 +323,7 @@ library(dataimago)
 # 1. Initialize development workspace (one-time setup)
 create_ui_workspace()
 
-# 2. Build complete design system
+# 2. Build complete design system (UPDATED: now with SCSS source-of-truth)
 result <- build_design_system(verbose = TRUE)
 
 # 3. Generate professional documentation
@@ -329,8 +332,9 @@ create_quarto_documentation()
 # Check results
 if (result$success) {
   cat("✅ Framework ready! Generated", length(result$assets), "assets")
-  cat("🔐 Security: SRI hashes generated")
+  cat("🔐 Security: SRI hashes generated") 
   cat("🚀 Deploy: Assets available for Quarto, Shiny, Next.js")
+  cat("✅ Source-of-Truth: All changes in /ui/src/ propagate automatically")
 }
 ```
 
@@ -344,6 +348,31 @@ build_design_system(force_rebuild = FALSE)  # Smart incremental builds
 build_design_system(update_extension = TRUE)  # Update Quarto extension
 # CDN assets automatically updated via GitHub releases
 ```
+
+### ✅ Confident Asset Management Workflow
+
+**The following workflow now works end-to-end:**
+
+```r
+# 1. EDIT SOURCE FILES in /ui/src/
+#    - Modify design tokens: ui/src/tokens/*.json
+#    - Update styles: ui/src/styles/*.scss
+#    - Adjust theme colors: ui/src/styles/themes/theme-variables.scss
+
+# 2. RUN BUILD SYSTEM from R
+result <- build_design_system(verbose = TRUE)
+
+# 3. AUTOMATIC PROPAGATION to all deployment targets:
+#    ✅ ui/dist/ (compiled development assets)
+#    ✅ ui/www/assets/css/ (website development)  
+#    ✅ ui/www/_extensions/dataimago/ai-native/assets/css/ (Quarto extension)
+#    ✅ inst/quarto-assets/ (CDN distribution)
+#    ✅ docs/ (rendered website)
+
+# 4. NO BREAKAGE - Quarto render/preview work without 404 errors
+```
+
+**Key Achievement**: Fixed SCSS import chain eliminates runtime CSS import requests that caused 404 errors. Now everything compiles properly and distributes automatically.
 
 ### Deploy Design System
 
@@ -485,9 +514,11 @@ This framework is designed from the ground up for both human developers and AI a
 
 ### ✅ Phase 3: R-First Design System (COMPLETE)
 - `create_ui_workspace()` - Node.js workspace setup
-- `build_design_system()` - CSS compilation pipeline
-- `update_quarto_extension()` - Extension asset management
+- `build_design_system()` - **FIXED**: Complete SCSS compilation with proper imports
+- `update_quarto_extension()` - Extension asset management  
 - `generate_cdn_assets()` - Multi-platform distribution
+- **✅ Source-of-Truth Architecture**: Fixed 404 errors, established `/ui/src/` as authoritative
+- **✅ Asset Propagation**: Single source → multiple deployment targets working perfectly
 
 ### ✅ Phase 4: CI/CD Automation (COMPLETE)
 - **Multi-platform testing**: R CMD check across Windows, macOS, Linux

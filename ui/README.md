@@ -10,6 +10,8 @@
 
 This directory contains the Node.js workspace for compiling the dataimago ethical AI design system. It's controlled entirely through R functions in `R/design_system.R`, maintaining the "R as source of truth" philosophy.
 
+**✅ RECENTLY UPDATED**: Established complete SCSS source-of-truth pipeline eliminating 404 errors and enabling confident asset management from `/ui/src/` to all deployment targets.
+
 > 📋 **See [../ARCHITECTURE.md](../ARCHITECTURE.md) for comprehensive system diagrams** that show how this UI workspace integrates with the broader dataimago package architecture.
 
 ## \U0001F3D7\UFE0F Architecture
@@ -142,9 +144,15 @@ Create SCSS in `src/styles/components.scss`:
 ```
 
 ### After Changes
-Always rebuild through R:
+Always rebuild through R - now with guaranteed propagation:
 ```r
-build_design_system(force_rebuild = TRUE)
+result <- build_design_system(force_rebuild = TRUE)
+
+# Verify automatic propagation
+if (result$success) {
+  cat("✅ Changes propagated to", length(result$assets), "locations")
+  cat("✅ Quarto render/preview will work without 404 errors")
+}
 ```
 
 ## \U0001F9E0 Accessibility Features

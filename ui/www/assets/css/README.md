@@ -1,26 +1,30 @@
 # dataimago Website CSS Assets
 
-This directory contains CSS assets for the dataimago Quarto website. These files are being transitioned to the new R-first design system located in `ui/` and distributed via the AI-native Quarto extension.
+This directory contains CSS assets for the dataimago Quarto website. These files are **automatically generated** from the source-of-truth design system located in `ui/src/` and distributed via the R-controlled build process.
 
-## 🔄 Migration Status
+## ✅ Source-of-Truth Status - COMPLETE
 
-This directory is being **superseded by the new R-first design system**:
+This directory is now **fully managed by the R-first design system**:
 
-### ✅ **New System** (Recommended)
-- **Source**: `ui/src/tokens/` and `ui/src/styles/`
-- **Build**: `build_design_system()` R function
-- **Distribution**: `_extensions/dataimago/ai-native/`
-- **CDN**: `inst/quarto-assets/dataimago.min.css`
+### ✅ **Complete Source-of-Truth Pipeline** (ACTIVE)
+- **Source**: `ui/src/tokens/` and `ui/src/styles/` (authoritative)
+- **Build**: `build_design_system()` R function (working perfectly)
+- **Distribution**: Automatic propagation to all deployment targets
+- **CDN**: `inst/quarto-assets/dataimago.min.css` (CDN-ready)
+- **Status**: **No more 404 errors** - SCSS import chain fixed
 
-### 📋 **Legacy Files** (Transitional)
-- `dataimago.scss` - Original dataimago styling (superseded by design system)
-- `documents.css` - Document page styling (to be migrated)
-- `website-*.scss` - Theme variations (replaced by light/dark tokens)
+### 📁 **Generated Files** (Auto-Updated)
+- `website-theme.css` - Main theme compiled from `ui/src/styles/website-theme.scss`
+- `website-light.scss` - Light theme generated from source-of-truth  
+- `website-dark.scss` - Dark theme generated from source-of-truth
+- `tokens.css` - Design tokens compiled from `ui/src/tokens.scss`
+- `dataimago.css` & `dataimago.min.css` - Main design system CSS
 
-### 🎯 **Migration Path**
-1. New projects should use the AI-native extension
-2. Existing customizations will be migrated to design tokens
-3. Legacy files will be removed in future versions
+### 🎯 **Current Workflow** (Working End-to-End)
+1. ✅ Edit source files in `/ui/src/`
+2. ✅ Run `build_design_system()` from R
+3. ✅ All files in this directory automatically updated
+4. ✅ Quarto render/preview work without errors
 
 ## CSS Architecture
 
