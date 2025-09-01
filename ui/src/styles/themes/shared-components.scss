@@ -16,10 +16,31 @@ body.shrink {
 
 // Navbar styling with proper nav-item positioning fix
 .navbar {
-  background-color: var(--theme-navbar-bg);
-  border-color: var(--theme-navbar-bg);
+  background-color: var(--theme-navbar-bg) !important;
+  border-color: var(--theme-navbar-bg) !important;
   min-height: 50px;
   transition: all 0.25s ease-in-out;
+}
+
+// Override Bootstrap's navbar theming to use our CSS custom properties
+// This ensures navbar colors follow our theme system regardless of data-bs-theme attribute
+.navbar,
+.navbar[data-bs-theme="dark"],
+.navbar[data-bs-theme="light"] {
+  background-color: var(--theme-navbar-bg) !important;
+  border-color: var(--theme-navbar-bg) !important;
+}
+
+// Navbar text colors that respond to our theme system
+.navbar .navbar-brand,
+.navbar .navbar-nav .nav-link {
+  color: var(--theme-text-secondary) !important;
+}
+
+.navbar .navbar-brand:hover,
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link:focus {
+  color: var(--theme-text-primary) !important;
 }
 
 .navbar.shrink {

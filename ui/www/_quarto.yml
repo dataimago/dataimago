@@ -1,6 +1,6 @@
 project:
   type: website
-  title: "dataimago: Ethical AI-Native Data Science"
+  title: "dataimago: An AI-Native Application Development Framework for Data Science"
   output-dir: ../../docs
   render:
    - "*.qmd"      # Render all .qmd files by default
@@ -38,12 +38,11 @@ website:
     title-href: "https://dataimago.github.io/dataimago/"
     search: false
     pinned: true
-    foreground: "#7c7c7c"
     left:
       - href: index.qmd
         text: Home
       - href: r_package.qmd
-        text: API Reference
+        text: R Package
       - text: Foundation
         menu:
           - href: mission.qmd
