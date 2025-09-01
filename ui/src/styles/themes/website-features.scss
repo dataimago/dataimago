@@ -533,3 +533,73 @@ img {
     transition: none;
   }
 }
+
+/* ——— Lenis Slide Navigation (from HelloWorld POC) ——— */
+.lenis-slide-nav {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    pointer-events: all;
+}
+
+.slide-indicators {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.slide-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--theme-text-secondary);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0;
+}
+
+.slide-indicator::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--theme-text-secondary);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+}
+
+.slide-indicator:hover {
+    border-color: var(--theme-text-primary);
+    transform: scale(1.2);
+}
+
+.slide-indicator.active {
+    border-color: var(--theme-text-secondary);
+}
+
+.slide-indicator.active::before {
+    transform: scale(1);
+}
+
+/* Responsive adjustments for slide navigation */
+@media (max-width: 768px) {
+    .lenis-slide-nav {
+        right: 1rem;
+    }
+    
+    .slide-indicators {
+        gap: 0.75rem;
+    }
+    
+    .slide-indicator {
+        width: 10px;
+        height: 10px;
+    }
+}
