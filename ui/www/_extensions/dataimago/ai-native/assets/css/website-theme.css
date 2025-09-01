@@ -78,6 +78,18 @@
 }
 
 body {
+  background-color: var(--theme-body-bg) !important;
+}
+
+:root, [data-bs-theme=light] {
+  --bs-body-bg: var(--theme-body-bg);
+}
+
+[data-bs-theme=dark] {
+  --bs-body-bg: var(--theme-body-bg);
+}
+
+body {
   background-color: var(--theme-body-bg);
   transition: background-color 0.35s ease;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

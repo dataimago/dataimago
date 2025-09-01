@@ -82,20 +82,19 @@
   --theme-carousel-progress-bar: linear-gradient(90deg, #83838f, #a8a8b0);
 }
 
-// Quarto-specific SCSS variables (for compatibility)
-$h2-font-size: 1.6rem !default;
-$headings-font-weight: 500 !default;
+// CSS overrides to ensure our custom theme variables are applied
+// This forces Bootstrap to use our theme-specific colors
 
-// Light theme SCSS defaults
-:root, [data-bs-theme="light"] {
-  $body-bg: var(--theme-body-bg) !default;
-  $btn-code-copy-color: var(--theme-text-secondary) !default;
-  $btn-code-copy-color-active: var(--theme-text-primary) !default;
+// Force body background to follow our theme system
+body {
+  background-color: var(--theme-body-bg) !important;
 }
 
-// Dark theme SCSS defaults  
+// Ensure Bootstrap's body background variable updates with theme
+:root, [data-bs-theme="light"] {
+  --bs-body-bg: var(--theme-body-bg);
+}
+
 [data-bs-theme="dark"] {
-  $body-bg: var(--theme-body-bg) !default;
-  $btn-code-copy-color: var(--theme-text-secondary) !default;
-  $btn-code-copy-color-active: var(--theme-text-primary) !default;
+  --bs-body-bg: var(--theme-body-bg);
 }

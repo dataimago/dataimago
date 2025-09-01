@@ -122,6 +122,17 @@ pre code {
   color: inherit;
 }
 
+/* dataimago Font System - Correct hierarchy */
+:root {
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-brand: "Josefin Sans", sans-serif;
+}
+
+/* TOC uses readable system fonts */
+.toc-right, .mobile-toc {
+  font-family: var(--font-family-sans) !important;
+}
+
 /* dataimago Enhanced Right TOC - Perfect Right Sidebar Navigation */
 /* ========================================
    ENHANCED RIGHT TABLE OF CONTENTS

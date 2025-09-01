@@ -186,40 +186,38 @@ try {
     execSync(websiteCmd, { stdio: 'inherit', cwd: __dirname });
     console.log('✅ Website theme compiled successfully');
     
-    // Also create light/dark specific versions for Quarto compatibility
-    const lightContent = `
-// dataimago Website Light Theme - Generated from single source
+    // Read theme files from source and copy to dist (preserving our customizations)
+    const lightSourcePath = path.join(config.srcDir, 'styles', 'website-light.scss');
+    const darkSourcePath = path.join(config.srcDir, 'styles', 'website-dark.scss');
+    
+    if (fs.existsSync(lightSourcePath) && fs.existsSync(darkSourcePath)) {
+      const lightContent = fs.readFileSync(lightSourcePath, 'utf8');
+      const darkContent = fs.readFileSync(darkSourcePath, 'utf8');
+      
+      // Write theme-specific files from source
+      fs.writeFileSync(path.join(config.distDir, 'website-light.scss'), lightContent);
+      fs.writeFileSync(path.join(config.distDir, 'website-dark.scss'), darkContent);
+      
+      console.log('✅ Light/Dark theme variants copied from source');
+    } else {
+      console.log('⚠️ Source theme files not found, using fallback generation');
+      
+      // Fallback to generated content if source files don't exist
+      const lightContent = `// dataimago Website Light Theme - Generated fallback
 @import 'website-theme';
-
 /*-- scss:defaults --*/
-$h2-font-size: 1.6rem !default;
-$headings-font-weight: 500 !default;
 $body-bg: rgb(237, 237, 235) !default;
-$btn-code-copy-color: #7c7c7c !default;
-$btn-code-copy-color-active: #000 !default;
+/*-- scss:rules --*/`;
 
-/*-- scss:rules --*/
-// Theme styles handled by imported SCSS above
-`;
-
-    const darkContent = `
-// dataimago Website Dark Theme - Generated from single source  
+      const darkContent = `// dataimago Website Dark Theme - Generated fallback
 @import 'website-theme';
-
-/*-- scss:defaults --*/
-$h2-font-size: 1.6rem !default;
-$headings-font-weight: 500 !default;
+/*-- scss:defaults --*/  
 $body-bg: rgb(20, 20, 16) !default;
-$btn-code-copy-color: #7c7c7c !default;
-$btn-code-copy-color-active: rgb(237, 237, 235) !default;
+/*-- scss:rules --*/`;
 
-/*-- scss:rules --*/
-// Theme styles handled by imported SCSS above
-`;
-
-    // Write theme-specific files
-    fs.writeFileSync(path.join(config.distDir, 'website-light.scss'), lightContent);
-    fs.writeFileSync(path.join(config.distDir, 'website-dark.scss'), darkContent);
+      fs.writeFileSync(path.join(config.distDir, 'website-light.scss'), lightContent);
+      fs.writeFileSync(path.join(config.distDir, 'website-dark.scss'), darkContent);
+    }
     
     console.log('✅ Light/Dark theme variants generated');
   } else {

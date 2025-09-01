@@ -19,23 +19,15 @@
 // Path: 'themes/' - BUILD-TIME SCSS import, compiled and inlined at build time  
 @import 'themes/website-features';
 
-// Quarto-specific SCSS defaults that need to be duplicated for compatibility
+// Quarto-specific SCSS defaults that need to be set at the top level
 /*-- scss:defaults --*/
 $h2-font-size: 1.6rem !default;
 $headings-font-weight: 500 !default;
 
-// Theme-aware body background (Quarto requires SCSS variable)
-:root, [data-bs-theme="light"] {
-  $body-bg: rgb(237, 237, 235) !default;
-  $btn-code-copy-color: #7c7c7c !default;
-  $btn-code-copy-color-active: #000 !default;
-}
-
-[data-bs-theme="dark"] {
-  $body-bg: rgb(20, 20, 16) !default;
-  $btn-code-copy-color: #7c7c7c !default;
-  $btn-code-copy-color-active: rgb(237, 237, 235) !default;
-}
+// Set default body background for light theme (Quarto/Bootstrap requirement)
+$body-bg: rgb(237, 237, 235) !default;
+$btn-code-copy-color: #7c7c7c !default;
+$btn-code-copy-color-active: #000 !default;
 
 /*-- scss:rules --*/
 // All styling is now handled via the imported files above
