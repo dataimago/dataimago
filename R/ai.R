@@ -98,15 +98,15 @@ ai <- function(project_name,
   }
   
   if (verbose) {
-    ui_info(glue::glue("🎯 Creating AI-native application: {crayon::bold(project_name)}"))
-    ui_info(glue::glue("📁 Location: {full_project_path}"))
-    ui_info(glue::glue("🏗️  Framework: {framework}"))
-    ui_info(glue::glue("🎨 Theme: {theme}"))
+    ui_info(glue::glue("\\U0001F3AF Creating AI-native application: {crayon::bold(project_name)}"))
+    ui_info(glue::glue("\\U0001F4C1 Location: {full_project_path}"))
+    ui_info(glue::glue("\\U0001F3D7\\uFE0F Framework: {framework}"))
+    ui_info(glue::glue("\\U0001F3A8 Theme: {theme}"))
     if (!is.null(features)) {
-      ui_info(glue::glue("⚡ Features: {paste(features, collapse = ', ')}"))
+      ui_info(glue::glue("\\u26A1 Features: {paste(features, collapse = ', ')}"))
     }
     if (!is.null(ai_providers)) {
-      ui_info(glue::glue("🤖 AI Providers: {paste(ai_providers, collapse = ', ')}"))
+      ui_info(glue::glue("\\U0001F916 AI Providers: {paste(ai_providers, collapse = ', ')}"))
     }
   }
   
@@ -127,7 +127,7 @@ ai <- function(project_name,
   
   tryCatch({
     # PHASE 1: Build Design Framework
-    if (verbose) ui_info("🏗️  Phase 1: Building design framework...")
+    if (verbose) ui_info("\\U0001F3D7\\uFE0F Phase 1: Building design framework...")
     
     framework_result <- build_design_framework(
       project_path = full_project_path,
@@ -138,7 +138,7 @@ ai <- function(project_name,
     results$framework_result <- framework_result
     
     # PHASE 2: Build Design Components  
-    if (verbose) ui_info("📦 Phase 2: Building design components...")
+    if (verbose) ui_info("\\U0001F4E6 Phase 2: Building design components...")
     
     components_result <- build_design_components(
       project_path = full_project_path,
@@ -154,7 +154,7 @@ ai <- function(project_name,
     
     # PHASE 3: Build Design System (if framework created UI workspace)
     if (framework_result$has_ui_workspace) {
-      if (verbose) ui_info("🎨 Phase 3: Building design system...")
+      if (verbose) ui_info("\\U0001F3A8 Phase 3: Building design system...")
       
       # Change to project directory for build_design_system
       original_wd <- getwd()
@@ -171,16 +171,16 @@ ai <- function(project_name,
     results$success <- TRUE
     
     if (verbose) {
-      ui_done(glue::glue("🎉 AI-native application '{project_name}' created successfully!"))
-      ui_info(glue::glue("📁 Location: {full_project_path}"))
+      ui_done(glue::glue("\\U0001F389 AI-native application '{project_name}' created successfully!"))
+      ui_info(glue::glue("\\U0001F4C1 Location: {full_project_path}"))
       
       # Provide next steps based on framework
       if (framework == "quarto") {
-        ui_info("🚀 Next steps:")
+        ui_info("\\U0001F680 Next steps:")
         ui_info(glue::glue("   cd {project_name}"))
         ui_info("   quarto preview")
       } else if (framework == "shiny") {
-        ui_info("🚀 Next steps:")
+        ui_info("\\U0001F680 Next steps:")
         ui_info(glue::glue("   cd {project_name}"))
         ui_info("   R -e \"shiny::runApp()\"")
       }

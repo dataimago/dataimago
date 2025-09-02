@@ -75,14 +75,14 @@ build_design_components <- function(project_path,
   theme <- rlang::arg_match(theme)
   
   if (verbose) {
-    ui_info(glue::glue("📦 Building design components and content"))
-    ui_info(glue::glue("📁 Path: {project_path}"))
-    ui_info(glue::glue("🎨 Theme: {theme}"))
+    ui_info(glue::glue("\U0001F4E6 Building design components and content"))
+    ui_info(glue::glue("\U0001F4C1 Path: {project_path}"))
+    ui_info(glue::glue("\U0001F3A8 Theme: {theme}"))
     if (!is.null(features)) {
-      ui_info(glue::glue("⚡ Features: {paste(features, collapse = ', ')}"))
+      ui_info(glue::glue("\u26A1 Features: {paste(features, collapse = ', ')}"))
     }
     if (!is.null(ai_providers)) {
-      ui_info(glue::glue("🤖 AI Providers: {paste(ai_providers, collapse = ', ')}"))
+      ui_info(glue::glue("\U0001F916 AI Providers: {paste(ai_providers, collapse = ', ')}"))
     }
   }
   
@@ -111,7 +111,7 @@ build_design_components <- function(project_path,
     
     # STUB IMPLEMENTATION: Basic content scaffolding
     if (verbose) {
-      ui_info("🚧 Stub Implementation: Basic content scaffolding")
+      ui_info("\U0001F6A7 Stub Implementation: Basic content scaffolding")
       ui_warn("Full AI component generation will be implemented in future versions")
     }
     
@@ -164,10 +164,10 @@ build_design_components <- function(project_path,
     results$success <- TRUE
     
     if (verbose) {
-      ui_done("🎉 Design components scaffolding completed!")
-      ui_info(glue::glue("📄 Created {length(results$files_created)} files"))
-      ui_info(glue::glue("🧩 Generated {length(results$components_generated)} components"))
-      ui_warn("🚧 This is a stub implementation - full AI components coming in future versions")
+      ui_done("\U0001F389 Design components scaffolding completed!")
+      ui_info(glue::glue("\U0001F4C4 Created {length(results$files_created)} files"))
+      ui_info(glue::glue("\U0001F9E9 Generated {length(results$components_generated)} components"))
+      ui_warn("\U0001F6A7 This is a stub implementation - full AI components coming in future versions")
     }
     
   }, error = function(e) {
@@ -219,7 +219,7 @@ create_basic_index_qmd <- function(theme, features, verbose) {
     "",
     "---",
     "",
-    "*Built with ❤️ using dataimago - ethical AI-native development*"
+    "*Built with \u2764\uFE0F using dataimago - ethical AI-native development*"
   )
 }
 
@@ -350,7 +350,7 @@ create_feature_stub_content <- function(feature, theme) {
     "data-viz" = "Data Visualization",
     "streaming" = "Real-time Streaming",
     "model-management" = "AI Model Management",
-    stringr::str_to_title(gsub("-", " ", feature))
+    tools::toTitleCase(gsub("-", " ", feature))
   )
   
   c(
@@ -361,7 +361,7 @@ create_feature_stub_content <- function(feature, theme) {
     "",
     glue::glue("# {feature_title}"),
     "",
-    "🚧 **Stub Implementation**",
+    "\U0001F6A7 **Stub Implementation**",
     "",
     glue::glue("This {feature} component is currently a placeholder."),
     "Full implementation will include:",

@@ -22,6 +22,18 @@ body.shrink {
   transition: all 0.25s ease-in-out;
 }
 
+/* Navbar typography - site-wide font hierarchy */
+.navbar-title {
+  font-family: var(--font-family-brand) !important;
+  font-weight: 400;
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+  font-family: var(--font-family-sans) !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
 // Override Bootstrap's navbar theming to use our CSS custom properties
 // This ensures navbar colors follow our theme system regardless of data-bs-theme attribute
 .navbar,

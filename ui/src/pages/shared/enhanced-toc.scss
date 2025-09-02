@@ -4,13 +4,7 @@
 @import "../../tokens";
 @import "../../styles/base";
 
-/* dataimago Font System - Correct hierarchy */
-:root {
-  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-family-brand: "Josefin Sans", sans-serif;
-}
-
-/* TOC uses readable system fonts */
+/* TOC uses readable system fonts - inherits from global typography */
 .toc-right, .mobile-toc {
   font-family: var(--font-family-sans) !important;
 }

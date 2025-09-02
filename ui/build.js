@@ -64,7 +64,7 @@ const styleDictionaryConfig = {
 console.log('🎨 Processing theme-aware tokens...');
 
 function processThemeTokens() {
-  const tokenFiles = ['colors.json', 'theme-colors.json', 'frequent.json', 'effects.json', 'components.json'];
+  const tokenFiles = ['colors.json', 'theme-colors.json', 'frequent.json', 'effects.json', 'components.json', 'typography.json'];
   let cssContent = ':root {\n';
   let themeCssContent = '';
   
@@ -190,7 +190,7 @@ try {
     console.log('🏗️ Generating self-contained theme files from modular sources...');
     
     // Read modular source files (single source of truth)
-    const tokensPath = path.join(config.srcDir, 'tokens.scss');
+    const tokensPath = path.join(config.distDir, 'tokens.css');
     const themeVariablesPath = path.join(config.srcDir, 'styles', 'themes', 'theme-variables.scss');
     const sharedComponentsPath = path.join(config.srcDir, 'styles', 'themes', 'shared-components.scss');
     const websiteFeaturesPath = path.join(config.srcDir, 'styles', 'themes', 'website-features.scss');

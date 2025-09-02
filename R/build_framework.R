@@ -68,9 +68,9 @@ build_design_framework <- function(project_path,
   node_package_manager <- rlang::arg_match(node_package_manager)
   
   if (verbose) {
-    ui_info(glue::glue("🏗️  Building design framework infrastructure"))
-    ui_info(glue::glue("📁 Path: {project_path}"))
-    ui_info(glue::glue("🎯 Framework: {framework}"))
+    ui_info(glue::glue("\U0001F3D7\uFE0F Building design framework infrastructure"))
+    ui_info(glue::glue("\U0001F4C1 Path: {project_path}"))
+    ui_info(glue::glue("\U0001F3AF Framework: {framework}"))
   }
   
   # Initialize results
@@ -166,9 +166,9 @@ build_design_framework <- function(project_path,
     results$success <- TRUE
     
     if (verbose) {
-      ui_done("🎉 Design framework infrastructure created successfully!")
-      ui_info(glue::glue("📁 Created {length(results$directories_created)} directories"))
-      ui_info(glue::glue("📄 Created {length(results$files_created)} files"))
+      ui_done("\U0001F389 Design framework infrastructure created successfully!")
+      ui_info(glue::glue("\U0001F4C1 Created {length(results$directories_created)} directories"))
+      ui_info(glue::glue("\U0001F4C4 Created {length(results$files_created)} files"))
     }
     
   }, error = function(e) {
