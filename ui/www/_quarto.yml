@@ -52,7 +52,7 @@ website:
           - href: critical_theory_manifesto.qmd
             text: Critical Theory Manifesto
     right:
-      - icon: github
+      - text: "<img src='/assets/img/github_logo_grey-light.svg' class='navbar-github-logo' title='GitHub' alt='GitHub' style='height:32px; vertical-align:middle; padding-right: 2px; margin-top: 0px;'/>"
         menu:
           - href: "https://github.com/dataimago/dataimago"
             text: Source Code
@@ -76,15 +76,22 @@ website:
            - critical_theory_manifesto.qmd
 
   page-footer:
+    left:
+      - text: "<img src='/assets/img/quarto_logo_grey-light.svg' class='footer-quarto-logo' title='quarto.org' alt='quarto.org' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
+        href: https://quarto.org/
+        target: _blank
+      - text: "<img src='/assets/img/netlify_logo_grey-light.svg' class='footer-netlify-logo' title='netlify.com' alt='netlify.com' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
+        href: https://www.netlify.com/
+        target: _blank
     center:
-      - text: "<img src='/assets/img/ai_monogram_grey-light.svg' class='footer-img-icon' title='dataimago.ai' label='dataimago.ai' alt='dataimago.ai' style='height:28px; vertical-align:middle; padding-right: 4px;'/>" 
-        href: https://dataimago.github.io/
+      - text: "<img src='/assets/img/ai_monogram_grey-light.svg' class='footer-img-icon' title='dataimago.ai' alt='dataimago.ai' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
+        href: https://dataimago.ai/
         target: _blank
-      - text: "<i class='bi bi-info-square-fill' style='font-size: 28px;' title='About dataimago'></i>"
+      - text: "<img src='/assets/img/package_hex_logo_grey-light.svg' class='footer-package-logo' title='dataimago R Package' alt='dataimago R Package' style='height: 32px; margin-top: 3px;'/>"
         href: https://dataimago.github.io/dataimago/
-      - text: "<i class='bi bi-github' style='font-size: 28px;' title='dataimago GitHub Repo'></i>"
-        href: https://github.com/dataimago/dataimago/
-        target: _blank
+      - text: "<img src='/assets/img/bluesky_logo_grey-light.svg' class='footer-bluesky-logo' title='Bluesky' style='height: 28px; margin-top: 5px;' title='Bluesky'></i>"
+        href: https://bsky.app/intent/compose?text=dataimago%20%28R%20package%29%3A%20An%20AI-native%20application%20development%20framework%20for%20data%20science.%20%23dataimago%20%23rstats%20https%3A%2F%2Fdataimago.github.io%2Fdataimago
+        target: _blank 
 
 metadata:
   image: /assets/img/ai_monogram_supreme_COLOR.png  # must be a valid URL or relative path
