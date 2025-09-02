@@ -26,7 +26,7 @@ website:
   title: "dataimago: Ethical AI-Native Data Science Foundation Package"
   description: "An emancipatory AI-aligned performance management system built on flow-based analytics and critical theory principles"
   favicon: /assets/img/ai_monogram_supreme_favicon.png
-  repo-actions: [edit, issue]
+  repo-actions: none
   page-navigation: false
   bread-crumbs: false
 
