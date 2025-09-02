@@ -728,8 +728,10 @@ a:not(.nav-link):not(.navbar-brand):not(.dropdown-toggle):not([role=doc-toc] a):
 
 .nav-footer {
   min-height: 2.5em !important;
-  padding-top: 0.4rem !important;
-  padding-bottom: 0.4rem !important;
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+  border-top: none !important;
+  color: none !important;
 }
 
 .nav-footer-left .footer-items,
