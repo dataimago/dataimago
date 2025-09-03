@@ -201,6 +201,50 @@ try {
     const sharedComponentsContent = fs.existsSync(sharedComponentsPath) ? fs.readFileSync(sharedComponentsPath, 'utf8') : '';
     const websiteFeaturesContent = fs.existsSync(websiteFeaturesPath) ? fs.readFileSync(websiteFeaturesPath, 'utf8') : '';
     
+    // Extract light and dark theme sections from theme-variables.scss
+    const lightThemeMatch = themeVariablesContent.match(/:root, \[data-bs-theme="light"\] \{([^}]+)\}/s);
+    const darkThemeMatch = themeVariablesContent.match(/\[data-bs-theme="dark"\] \{([^}]+)\}/s);
+    
+    const lightThemeVars = lightThemeMatch ? lightThemeMatch[1].trim() : '';
+    const darkThemeVars = darkThemeMatch ? darkThemeMatch[1].trim() : '';
+    
+    // Extract theme-specific sections from shared-components.scss
+    const lightComponentsRegex = /\/\/ Light theme.*?(?=\/\/ Dark theme|\/\/ ===== SVG|$)/gs;
+    const darkComponentsRegex = /\/\/ Dark theme.*?(?=\/\/ Light theme|\/\/ ===== SVG|$)/gs;
+    
+    const lightComponentsMatch = sharedComponentsContent.match(lightComponentsRegex);
+    const darkComponentsMatch = sharedComponentsContent.match(darkComponentsRegex);
+    
+    // Get base shared components (everything before theme-specific overrides)
+    const baseComponentsMatch = sharedComponentsContent.match(/^([\s\S]*?)\/\/ ===== THEME-SPECIFIC OVERRIDES =====/);
+    const baseComponents = baseComponentsMatch ? baseComponentsMatch[1].trim() : sharedComponentsContent;
+    
+    // Get SVG effects section (after theme overrides)
+    const svgEffectsMatch = sharedComponentsContent.match(/\/\/ ===== SVG INLINE HOVER EFFECTS =====[\s\S]*$/);
+    const svgEffects = svgEffectsMatch ? svgEffectsMatch[0].trim() : '';
+    
+    const lightComponents = baseComponents + '\n\n' + 
+                           (lightComponentsMatch ? lightComponentsMatch.join('\n') : '') + 
+                           '\n\n' + svgEffects;
+    const darkComponents = baseComponents + '\n\n' + 
+                          (darkComponentsMatch ? darkComponentsMatch.join('\n') : '') + 
+                          '\n\n' + svgEffects;
+    
+    // Split tokens.scss into theme-specific sections
+    const lightTokens = tokensContent
+      .replace(/--color-surface-page-dark[^;]+;/g, '') // Remove dark-specific tokens
+      .replace(/--color-content-primary-dark[^;]+;/g, '')
+      .replace(/--color-content-secondary-dark[^;]+;/g, '')
+      .replace(/-light/g, '') // Convert -light suffixed tokens to base tokens
+      .replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim();
+    
+    const darkTokens = tokensContent
+      .replace(/--color-surface-page-light[^;]+;/g, '') // Remove light-specific tokens  
+      .replace(/--color-content-primary-light[^;]+;/g, '')
+      .replace(/--color-content-secondary-light[^;]+;/g, '')
+      .replace(/-dark/g, '') // Convert -dark suffixed tokens to base tokens
+      .replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim();
+    
     // Generate self-contained light theme
     const lightContent = `// dataimago Website Light Theme - Auto-generated from modular sources
 // This file is self-contained for Quarto compatibility
@@ -215,25 +259,15 @@ $btn-code-copy-color-active: #000 !default;
 
 /*-- scss:rules --*/
 // === DESIGN TOKENS (from tokens.scss) ===
-${tokensContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
+${lightTokens}
 
 // === LIGHT THEME VARIABLES ===
-:root {
-  --theme-body-bg: rgb(237, 237, 235);
-  --theme-navbar-bg: rgb(237, 237, 235);
-  --theme-navbar-bg-scrolled: rgb(237, 237, 238);
-  --theme-body-bg-scrolled: rgb(237, 237, 238);
-  --theme-text-primary: #000000;
-  --theme-text-secondary: #7c7c7c;
-  --theme-text-hover: #000000;
-  --theme-dropdown-bg: rgb(225, 225, 223);
-  --theme-dropdown-border: rgb(220, 220, 218);
-  --theme-dropdown-hover-bg: rgb(237, 237, 235);
-  --theme-dropdown-hover-shadow: rgba(220, 220, 218, 0.8);
+:root, [data-bs-theme="light"] {
+${lightThemeVars}
 }
 
 // === SHARED COMPONENTS (from shared-components.scss) ===
-${sharedComponentsContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
+${lightComponents.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
 
 // === WEBSITE FEATURES (from website-features.scss) ===
 ${websiteFeaturesContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}`;
@@ -252,25 +286,15 @@ $btn-code-copy-color-active: rgb(237, 237, 235) !default;
 
 /*-- scss:rules --*/
 // === DESIGN TOKENS (from tokens.scss) ===
-${tokensContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
+${darkTokens}
 
 // === DARK THEME VARIABLES ===
-:root {
-  --theme-body-bg: rgb(20, 20, 16);
-  --theme-navbar-bg: rgb(20, 20, 16);
-  --theme-navbar-bg-scrolled: rgb(20, 20, 22);
-  --theme-body-bg-scrolled: rgb(20, 20, 22);
-  --theme-text-primary: rgb(237, 237, 235);
-  --theme-text-secondary: #83838f;
-  --theme-text-hover: rgb(237, 237, 235);
-  --theme-dropdown-bg: rgb(32, 32, 34);
-  --theme-dropdown-border: rgb(37, 37, 39);
-  --theme-dropdown-hover-bg: rgb(20, 20, 16);
-  --theme-dropdown-hover-shadow: rgba(37, 37, 39, 0.8);
+[data-bs-theme="dark"] {
+${darkThemeVars}
 }
 
 // === SHARED COMPONENTS (from shared-components.scss) ===
-${sharedComponentsContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
+${darkComponents.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
 
 // === WEBSITE FEATURES (from website-features.scss) ===
 ${websiteFeaturesContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}`;

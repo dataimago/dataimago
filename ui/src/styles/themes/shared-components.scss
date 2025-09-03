@@ -1,17 +1,11 @@
 // dataimago Shared Theme Components
 // Common styling that works across light and dark themes using CSS custom properties
 
-// Body and base styling
+// body and base styling with theme-specific overrides
 body {
-  background-color: var(--theme-body-bg);
   transition: background-color 0.35s ease;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
-  color: var(--theme-text-primary);
-}
-
-body.shrink {
-  background-color: var(--theme-body-bg-scrolled, var(--theme-navbar-bg-scrolled)) !important;
 }
 
 // Navbar styling with proper nav-item positioning fix
@@ -524,14 +518,51 @@ blockquote {
 // CSS-based logo hover effects using design tokens
 
 
-// ===== TEST: SVG INLINE HOVER EFFECTS =====
-// Test hover effect for inlined Quarto logo
+// ===== THEME-SPECIFIC OVERRIDES =====
+// Override Bootstrap's default CSS variables and body colors with higher specificity
+
+// Dark theme CSS variable overrides
+html[data-bs-theme="dark"] {
+  --bs-body-color: rgb(237, 237, 235) !important;
+  --bs-body-bg: var(--theme-body-bg) !important;
+}
+
+// Light theme CSS variable overrides  
+html[data-bs-theme="light"] {
+  --bs-body-color: #000000 !important;
+  --bs-body-bg: var(--theme-body-bg) !important;
+}
+
+// Dark theme body overrides
+[data-bs-theme="dark"] body {
+  background-color: var(--theme-body-bg) !important;
+  color: rgb(237, 237, 235) !important;
+}
+
+[data-bs-theme="dark"] body.shrink {
+  background-color: var(--theme-body-bg-scrolled, var(--theme-navbar-bg-scrolled)) !important;
+  color: rgb(237, 237, 235) !important;
+}
+
+// Light theme body overrides for consistency
+[data-bs-theme="light"] body {
+  background-color: var(--theme-body-bg) !important;
+  color: #000000 !important;
+}
+
+[data-bs-theme="light"] body.shrink {
+  background-color: var(--theme-body-bg-scrolled, var(--theme-navbar-bg-scrolled)) !important;
+  color: #000000 !important;
+}
+
+// ===== SVG INLINE HOVER EFFECTS =====
+// Theme-aware hover effects for inlined logos
 
 .footer-quarto-logo path {
-  transition: fill 0.3s ease;
+  transition: fill var(--logo-transition-duration) ease;
 }
 
 .footer-quarto-logo:hover path,
 a:hover .footer-quarto-logo path {
-  fill: #0ea5e9 !important; /* Test color - bright blue */
+  fill: var(--logo-hover-fill);
 }

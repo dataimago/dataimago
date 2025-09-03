@@ -17,38 +17,6 @@
   align-items: center;
 }
 
-.vision-mission-section {
-  background: color-mix(in srgb, var(--bs-body-bg) 98%, var(--bs-primary));
-}
-
-.package-overview-section {
-  background: linear-gradient(45deg, var(--bs-body-bg) 0%, color-mix(in srgb, var(--bs-body-bg) 97%, var(--bs-info)) 100%);
-}
-
-.features-section {
-  background: var(--bs-body-bg);
-}
-
-.visual-identity-section {
-  background: color-mix(in srgb, var(--bs-body-bg) 98%, var(--bs-success));
-}
-
-.technical-section {
-  background: linear-gradient(135deg, var(--bs-body-bg) 0%, color-mix(in srgb, var(--bs-body-bg) 96%, var(--bs-secondary)) 100%);
-}
-
-.getting-started-section {
-  background: color-mix(in srgb, var(--bs-body-bg) 99%, var(--bs-warning));
-}
-
-.philosophy-section {
-  background: linear-gradient(45deg, var(--bs-body-bg) 0%, color-mix(in srgb, var(--bs-body-bg) 95%, var(--bs-danger)) 100%);
-}
-
-.learn-more-section {
-  background: linear-gradient(135deg, var(--bs-body-bg) 0%, color-mix(in srgb, var(--bs-body-bg) 92%, var(--bs-primary)) 100%);
-}
-
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;

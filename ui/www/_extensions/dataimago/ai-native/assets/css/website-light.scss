@@ -170,14 +170,68 @@ $btn-code-copy-color-active: #000 !default;
 }
 
 // === LIGHT THEME VARIABLES ===
-:root {
+:root, [data-bs-theme="light"] {
+// Light theme variables
   --theme-body-bg: rgb(237, 237, 235);
+  --bs-body-bg: rgb(237, 237, 235);  // Align with Bootstrap variable
+  --bs-body-color: #000000;
+  --bs-border-color: rgba(0, 0, 0, 0.15);
+  --bs-border-color-rgb: 0, 0, 0;
+  --bs-primary: #3498DB;
+  --bs-secondary-color: var(--color-content-secondary-light, #7c7c7c);
+  --bs-info: #3498DB;
+  --bs-info-text-emphasis: #1e6091;
+  --bs-dark: #212529;
   --theme-navbar-bg: rgb(237, 237, 235);
   --theme-navbar-bg-scrolled: rgb(237, 237, 238);
   --theme-body-bg-scrolled: rgb(237, 237, 238);
   --theme-text-primary: #000000;
-  --theme-text-secondary: #7c7c7c;
+  --theme-text-secondary: var(--color-content-secondary-light, #7c7c7c);
   --theme-text-hover: #000000;
+  
+  // Code styling
+  --theme-code-bg: rgb(225, 225, 223);
+  --theme-code-border: rgb(220, 220, 218);
+  --theme-code-color: #cf2976;
+  
+  // Logo colors (specific grey for default, design tokens for hover)
+  --logo-default-fill: #83838F;
+  --logo-hover-fill: #000000;
+  --logo-hover-stroke: #000000;
+  --logo-transition-duration: 0.3s;
+  
+  // Special logo colors
+  --bluesky-logo-fill-default: #83838F;
+  --bluesky-logo-fill-hover: #1185fe;
+  --bluesky-logo-stroke-default: transparent;
+  --bluesky-logo-stroke-hover: #000000;
+  
+  // Logo paths (legacy - will be deprecated)
+  --theme-logo-grey: url('/assets/img/ai_monogram_grey-light.svg');
+  --theme-logo-color: url('/assets/img/ai_monogram_dark-light.svg');
+  
+  // Dropdown styling
+  --theme-dropdown-bg: rgb(225, 225, 223);
+  --theme-dropdown-shadow: rgba(220, 220, 218, 0.9);
+  --theme-dropdown-border: rgb(210, 210, 208);
+  --theme-dropdown-hover-bg: rgb(237, 237, 235);
+  --theme-dropdown-hover-shadow: rgba(220, 220, 218, 0.8);
+  
+  // Content carousel
+  --theme-carousel-bg: rgb(225, 225, 223);
+  --theme-carousel-viewport-bg: rgb(234, 234, 232);
+  --theme-carousel-border: rgba(220, 220, 218, 0.3);
+  --theme-carousel-shadow: rgba(124, 124, 124, 0.1);
+  --theme-carousel-title-color: #343a40;
+  --theme-carousel-desc-color: #495057;
+  --theme-carousel-nav-bg: rgb(234, 234, 232);
+  --theme-carousel-nav-button-bg: rgb(225, 225, 223);
+  --theme-carousel-nav-button-color: #495057;
+  --theme-carousel-nav-button-hover: rgb(20, 20, 16);
+  --theme-carousel-progress-bg: rgba(220, 220, 218, 0.5);
+  --theme-carousel-progress-bar: linear-gradient(90deg, #7c7c7c, #a8a8a8);
+  
+  // Dropdown menu colors (light theme)
   --theme-dropdown-bg: rgb(225, 225, 223);
   --theme-dropdown-border: rgb(220, 220, 218);
   --theme-dropdown-hover-bg: rgb(237, 237, 235);
@@ -186,15 +240,9 @@ $btn-code-copy-color-active: #000 !default;
 
 // === SHARED COMPONENTS (from shared-components.scss) ===
 body {
-  background-color: var(--theme-body-bg);
   transition: background-color 0.35s ease;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
-  color: var(--theme-text-primary);
-}
-
-body.shrink {
-  background-color: var(--theme-body-bg-scrolled, var(--theme-navbar-bg-scrolled)) !important;
 }
 
 .navbar {
@@ -681,13 +729,28 @@ blockquote {
   font-style: italic;
 }
 
+html[data-bs-theme="light"] {
+  --bs-body-color: #000000 !important;
+  --bs-body-bg: var(--theme-body-bg) !important;
+}
+
+[data-bs-theme="light"] body {
+  background-color: var(--theme-body-bg) !important;
+  color: #000000 !important;
+}
+
+[data-bs-theme="light"] body.shrink {
+  background-color: var(--theme-body-bg-scrolled, var(--theme-navbar-bg-scrolled)) !important;
+  color: #000000 !important;
+}
+
 .footer-quarto-logo path {
-  transition: fill 0.3s ease;
+  transition: fill var(--logo-transition-duration) ease;
 }
 
 .footer-quarto-logo:hover path,
 a:hover .footer-quarto-logo path {
-  fill: #0ea5e9 !important; /* Test color - bright blue */
+  fill: var(--logo-hover-fill);
 }
 
 // === WEBSITE FEATURES (from website-features.scss) ===

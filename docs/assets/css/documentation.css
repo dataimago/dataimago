@@ -23,17 +23,10 @@ html {
   font-family: var(--font-family-sans);
   font-size: var(--font-size-base);
   line-height: var(--font-lineHeight-normal);
-  color: var(--color-text-primary);
-  background-color: var(--color-background-page);
+  color: var(--theme-text-primary);
+  background-color: var(--theme-body-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-family-sans) !important;
-  color: var(--theme-text-primary) !important;
 }
 
 /* Global typography hierarchy */

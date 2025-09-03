@@ -170,31 +170,79 @@ $btn-code-copy-color-active: rgb(237, 237, 235) !default;
 }
 
 // === DARK THEME VARIABLES ===
-:root {
+[data-bs-theme="dark"] {
+// Dark theme variables
   --theme-body-bg: rgb(20, 20, 16);
+  --bs-body-bg: rgb(20, 20, 16);  // Align with Bootstrap variable
+  --bs-body-color: rgb(237, 237, 235);
+  --bs-border-color: rgba(255, 255, 255, 0.15);
+  --bs-border-color-rgb: 255, 255, 255;
+  --bs-primary: #4FC3F7;  // Lighter blue for dark theme
+  --bs-secondary-color: var(--color-content-secondary-dark, #83838f);
+  --bs-info: #4FC3F7;
+  --bs-info-text-emphasis: #9dd9f3;
+  --bs-dark: #000000;
   --theme-navbar-bg: rgb(20, 20, 16);
   --theme-navbar-bg-scrolled: rgb(20, 20, 22);
   --theme-body-bg-scrolled: rgb(20, 20, 22);
   --theme-text-primary: rgb(237, 237, 235);
-  --theme-text-secondary: #83838f;
+  --theme-text-secondary: var(--color-content-secondary-dark, #83838f);
   --theme-text-hover: rgb(237, 237, 235);
-  --theme-dropdown-bg: rgb(32, 32, 34);
-  --theme-dropdown-border: rgb(37, 37, 39);
-  --theme-dropdown-hover-bg: rgb(20, 20, 16);
-  --theme-dropdown-hover-shadow: rgba(37, 37, 39, 0.8);
+  
+  // Code styling
+  --theme-code-bg: rgb(35, 35, 32);
+  --theme-code-border: rgb(40, 40, 37);
+  --theme-code-color: #ff79c6;
+  
+  // Logo colors (specific grey for default, design tokens for hover) - dark theme specific
+  --logo-default-fill: #83838F;
+  --logo-hover-fill: rgb(237, 237, 235);
+  --logo-hover-stroke: rgb(237, 237, 235);
+  --logo-transition-duration: 0.3s;
+  
+  // Special logo colors
+  --bluesky-logo-fill-default: #83838F;
+  --bluesky-logo-fill-hover: #1185fe;
+  --bluesky-logo-stroke-default: transparent;
+  --bluesky-logo-stroke-hover: rgb(237, 237, 235);
+  
+  // Logo paths (legacy - will be deprecated)
+  --theme-logo-grey: url('/assets/img/ai_monogram_grey-dark.svg');
+  --theme-logo-color: url('/assets/img/ai_monogram_light-dark.svg');
+  
+  // Dropdown styling
+  --theme-dropdown-bg: rgb(28, 28, 30);
+  --theme-dropdown-shadow: rgba(33, 33, 35, 0.9);
+  --theme-dropdown-border: rgb(47, 47, 49);
+  --theme-dropdown-hover-bg: rgb(18, 18, 20);
+  --theme-dropdown-hover-shadow: rgba(33, 33, 35, 0.8);
+  
+  // Content carousel
+  --theme-carousel-bg: rgb(20, 20, 16);
+  --theme-carousel-viewport-bg: rgb(20, 20, 16);
+  --theme-carousel-border: rgba(40, 40, 37, 0.4);
+  --theme-carousel-shadow: rgba(0, 0, 0, 0.3);
+  --theme-carousel-title-color: #e8eaf6;
+  --theme-carousel-desc-color: #b8bcc0;
+  --theme-carousel-nav-bg: rgb(20, 20, 16);
+  --theme-carousel-nav-button-bg: rgb(20, 20, 16);
+  --theme-carousel-nav-button-color: #7C7C7C;
+  --theme-carousel-nav-button-hover: rgb(237, 237, 235);
+  --theme-carousel-progress-bg: rgba(40, 40, 37, 0.6);
+  --theme-carousel-progress-bar: linear-gradient(90deg, #83838f, #a8a8b0);
+  
+  // Dropdown menu colors (dark theme)
+  --theme-dropdown-bg: rgb(28, 28, 30);
+  --theme-dropdown-border: rgb(33, 33, 35);
+  --theme-dropdown-hover-bg: rgb(18, 18, 20);
+  --theme-dropdown-hover-shadow: rgba(33, 33, 35, 0.8);
 }
 
 // === SHARED COMPONENTS (from shared-components.scss) ===
 body {
-  background-color: var(--theme-body-bg);
   transition: background-color 0.35s ease;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
-  color: var(--theme-text-primary);
-}
-
-body.shrink {
-  background-color: var(--theme-body-bg-scrolled, var(--theme-navbar-bg-scrolled)) !important;
 }
 
 .navbar {
@@ -681,13 +729,28 @@ blockquote {
   font-style: italic;
 }
 
+html[data-bs-theme="dark"] {
+  --bs-body-color: rgb(237, 237, 235) !important;
+  --bs-body-bg: var(--theme-body-bg) !important;
+}
+
+[data-bs-theme="dark"] body {
+  background-color: var(--theme-body-bg) !important;
+  color: rgb(237, 237, 235) !important;
+}
+
+[data-bs-theme="dark"] body.shrink {
+  background-color: var(--theme-body-bg-scrolled, var(--theme-navbar-bg-scrolled)) !important;
+  color: rgb(237, 237, 235) !important;
+}
+
 .footer-quarto-logo path {
-  transition: fill 0.3s ease;
+  transition: fill var(--logo-transition-duration) ease;
 }
 
 .footer-quarto-logo:hover path,
 a:hover .footer-quarto-logo path {
-  fill: #0ea5e9 !important; /* Test color - bright blue */
+  fill: var(--logo-hover-fill);
 }
 
 // === WEBSITE FEATURES (from website-features.scss) ===
