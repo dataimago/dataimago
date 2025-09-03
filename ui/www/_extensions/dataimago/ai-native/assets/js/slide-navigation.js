@@ -1,6 +1,6 @@
 /**
  * slide-navigation.js - dataimago Design System
- * Built: 2025-09-03T19:39:37.990Z
+ * Built: 2025-09-03T20:40:08.441Z
  * Source: ui/src/js/slide-navigation.js
  */
 /**

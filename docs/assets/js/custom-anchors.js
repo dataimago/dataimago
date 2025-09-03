@@ -1,6 +1,6 @@
 /**
  * custom-anchors.js - dataimago Design System
- * Built: 2025-09-03T19:39:37.989Z
+ * Built: 2025-09-03T20:40:08.440Z
  * Source: ui/src/js/custom-anchors.js
  */
 // Apply anchor links to all headings (h1, h2, h3, etc.)

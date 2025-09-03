@@ -107,8 +107,8 @@ metadata:
 format:
   html:
     theme:
-      light: [cosmo, assets/css/website-light.scss]
-      dark: [cosmo, assets/css/website-dark.scss]
+      light: assets/css/website-light.scss
+      dark: assets/css/website-dark.scss
     css:
       - assets/css/tokens.css
     toc: true
