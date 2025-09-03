@@ -32,7 +32,7 @@ website:
 
   navbar:
     title: "dataimago"
-    logo: /assets/img/ai_monogram_grey-light.svg
+    logo: /assets/img/ai_monogram.svg
     logo-alt: "dataimago AI-Native Data Science"
     logo-href: "https://dataimago.github.io/dataimago/"
     title-href: "https://dataimago.github.io/dataimago/"
@@ -52,7 +52,7 @@ website:
           - href: critical_theory_manifesto.qmd
             text: Critical Theory Manifesto
     right:
-      - text: "<img src='/assets/img/github_logo_grey-light.svg' class='navbar-github-logo' title='GitHub' alt='GitHub' style='height:32px; vertical-align:middle; padding-right: 2px; margin-top: 0px;'/>"
+      - text: "<img src='/assets/img/github_logo.svg' class='navbar-github-logo' title='GitHub' alt='GitHub' style='height:32px; vertical-align:middle; padding-right: 2px; margin-top: 0px;'/>"
         menu:
           - href: "https://github.com/dataimago/dataimago"
             text: Source Code
@@ -77,19 +77,19 @@ website:
 
   page-footer:
     left:
-      - text: "<img src='/assets/img/quarto_logo_grey-light.svg' class='footer-quarto-logo' title='quarto.org' alt='quarto.org' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
+      - text: "<img src='/assets/img/quarto_logo.svg' class='footer-quarto-logo' title='quarto.org' alt='quarto.org' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
         href: https://quarto.org/
         target: _blank
-      - text: "<img src='/assets/img/netlify_logo_grey-light.svg' class='footer-netlify-logo' title='netlify.com' alt='netlify.com' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
+      - text: "<img src='/assets/img/netlify_logo.svg' class='footer-netlify-logo' title='netlify.com' alt='netlify.com' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
         href: https://www.netlify.com/
         target: _blank
     center:
-      - text: "<img src='/assets/img/ai_monogram_grey-light.svg' class='footer-img-icon' title='dataimago.ai' alt='dataimago.ai' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
+      - text: "<img src='/assets/img/ai_monogram.svg' class='footer-ai-monogram-logo' title='dataimago.ai' alt='dataimago.ai' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
         href: https://dataimago.ai/
         target: _blank
-      - text: "<img src='/assets/img/package_hex_logo_grey-light.svg' class='footer-package-logo' title='dataimago R Package' alt='dataimago R Package' style='height: 32px; margin-top: 3px;'/>"
+      - text: "<img src='/assets/img/package_hex_logo.svg' class='footer-package-hex-logo' title='dataimago R Package' alt='dataimago R Package' style='height: 32px; margin-top: 3px;'/>"
         href: https://dataimago.github.io/dataimago/
-      - text: "<img src='/assets/img/bluesky_logo_grey-light.svg' class='footer-bluesky-logo' title='Bluesky' style='height: 28px; margin-top: 5px;' title='Bluesky'></i>"
+      - text: "<img src='/assets/img/bluesky_logo.svg' class='footer-bluesky-logo' title='Bluesky' style='height: 28px; margin-top: 5px;' alt='Bluesky'/>"
         href: https://bsky.app/intent/compose?text=dataimago%20%28R%20package%29%3A%20An%20AI-native%20application%20development%20framework%20for%20data%20science.%20%23dataimago%20%23rstats%20https%3A%2F%2Fdataimago.github.io%2Fdataimago
         target: _blank 
 
@@ -118,6 +118,6 @@ format:
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
       <script type="text/javascript" src="/assets/js/jquery.sticky-kit.min.js"></script>
       <script type="text/javascript" src="/assets/js/lenis-integration.js"></script>
-      <script type="text/javascript" src="/assets/js/logo-switch.js"></script>
+      <!-- Logo hover effects now handled by CSS -->
       <script type="text/javascript" src="/assets/js/custom-anchors.js"></script>
       <script type="text/javascript" src="/assets/js/accessibility.js"></script>

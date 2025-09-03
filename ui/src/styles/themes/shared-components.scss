@@ -94,7 +94,7 @@ nav .nav-item:not(.compact) {
   background-size: contain;
   background-repeat: no-repeat;
   max-height: 36px;
-  transition: max-height 0.25s ease-in-out, transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
+  transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
   will-change: max-height, transform, opacity;
 }
 
@@ -260,7 +260,7 @@ nav .nav-item:not(.compact) {
 }
 
 .navbar-brand-container {
-  padding: 0 0 0 60px;
+  padding: 0 0 0 10px;
 }
 
 .navbar-brand-logo {
@@ -518,4 +518,177 @@ blockquote {
   margin-left: 0;
   color: var(--theme-text-secondary);
   font-style: italic;
+}
+
+// ===== LOGO COMPONENT SYSTEM =====
+// CSS-based logo hover effects using design tokens
+
+// Base logo styling for all logos (targeting actual HTML classes)
+.navbar-github-logo,
+.footer-quarto-logo,
+.footer-netlify-logo,
+.footer-ai-monogram-logo,
+.footer-package-hex-logo {
+  fill: var(--logo-default-fill);
+  stroke: var(--logo-stroke-default, transparent);
+  stroke-width: var(--logo-stroke-width-default, 0);
+  transition: fill var(--logo-transition-duration) ease,
+              stroke var(--logo-transition-duration) ease,
+              stroke-width var(--logo-transition-duration) ease,
+              transform var(--logo-transition-duration) ease;
+  will-change: fill, stroke, stroke-width, transform;
+}
+
+// Special styling for package hex logo elements
+.footer-package-hex-logo .hexagon {
+  stroke: var(--logo-default-fill);
+  fill: none;
+  transition: stroke var(--logo-transition-duration) ease;
+}
+
+.footer-package-hex-logo .monogram-a,
+.footer-package-hex-logo .monogram-i {
+  fill: var(--logo-default-fill);
+  transition: fill var(--logo-transition-duration) ease;
+}
+
+// Hover effects for standard logos (targeting actual HTML classes)
+.navbar-github-logo:hover,
+.footer-quarto-logo:hover,
+.footer-netlify-logo:hover,
+.footer-ai-monogram-logo:hover,
+.footer-package-hex-logo:hover,
+.navbar-brand:hover .navbar-logo,
+a:hover .navbar-github-logo,
+a:hover .footer-quarto-logo,
+a:hover .footer-netlify-logo,
+a:hover .footer-ai-monogram-logo,
+a:hover .footer-package-hex-logo {
+  fill: var(--logo-hover-fill);
+  stroke: var(--logo-hover-stroke, transparent);
+  stroke-width: var(--logo-stroke-width-hover, 0);
+  transform: scale(1.05);
+}
+
+// Hover effects for package hex logo elements
+.footer-package-hex-logo:hover .hexagon,
+a:hover .footer-package-hex-logo .hexagon {
+  stroke: var(--logo-hover-fill);
+}
+
+.footer-package-hex-logo:hover .monogram-a,
+.footer-package-hex-logo:hover .monogram-i,
+a:hover .footer-package-hex-logo .monogram-a,
+a:hover .footer-package-hex-logo .monogram-i {
+  fill: var(--logo-hover-fill);
+}
+
+// Special styling for Bluesky logo (grey default, blue + border on hover)
+.bluesky-logo,
+.footer-bluesky-logo {
+  fill: var(--bluesky-logo-fill-default);
+  stroke: var(--bluesky-logo-stroke-default);
+  stroke-width: 0;
+  transition: fill var(--logo-transition-duration) ease,
+              stroke var(--logo-transition-duration) ease,
+              stroke-width var(--logo-transition-duration) ease,
+              transform var(--logo-transition-duration) ease;
+  will-change: fill, stroke, stroke-width, transform;
+}
+
+.bluesky-logo:hover,
+.footer-bluesky-logo:hover,
+a:hover .bluesky-logo,
+a:hover .footer-bluesky-logo {
+  fill: var(--bluesky-logo-fill-hover);
+  stroke: var(--bluesky-logo-stroke-hover);
+  stroke-width: 2;
+  transform: scale(1.05);
+}
+
+// Navbar logo hover effects (for color changes)
+.navbar-logo:hover {
+  fill: var(--logo-hover-fill);
+  stroke: var(--logo-hover-stroke, transparent);
+  stroke-width: var(--logo-stroke-width-hover, 0);
+}
+
+// Navbar icon logos (GitHub, etc.)
+.navbar-github-logo {
+  height: 32px;
+  vertical-align: middle;
+  padding-right: 2px;
+  margin-top: 0px;
+}
+
+// Footer icon logos
+.footer-quarto-logo,
+.footer-netlify-logo,
+.footer-ai-monogram-logo,
+.footer-bluesky-logo {
+  height: 28px;
+  vertical-align: middle;
+  padding-right: 4px;
+  margin-top: 6px;
+}
+
+.footer-package-hex-logo {
+  height: 32px;
+  margin-top: 3px;
+}
+
+// Logo container for grouped hover effects
+.logo-container {
+  display: inline-block;
+  transition: transform var(--logo-transition-duration) ease;
+}
+
+// Accessibility: Ensure logos maintain proper contrast
+@media (prefers-contrast: high) {
+  .navbar-github-logo,
+  .footer-quarto-logo,
+  .footer-netlify-logo,
+  .footer-ai-monogram-logo,
+  .footer-package-hex-logo {
+    --logo-default-fill: var(--contrast-high);
+    --logo-hover-fill: var(--contrast-high);
+    --logo-hover-stroke: var(--contrast-high);
+  }
+  
+  .bluesky-logo,
+  .footer-bluesky-logo {
+    --bluesky-logo-stroke-hover: var(--contrast-high);
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .navbar-github-logo,
+  .footer-quarto-logo,
+  .footer-netlify-logo,
+  .footer-ai-monogram-logo,
+  .footer-package-hex-logo,
+  .bluesky-logo,
+  .footer-bluesky-logo {
+    transition: none;
+    transform: none !important;
+  }
+  
+  .navbar-github-logo:hover,
+  .footer-quarto-logo:hover,
+  .footer-netlify-logo:hover,
+  .footer-ai-monogram-logo:hover,
+  .footer-package-hex-logo:hover,
+  .navbar-brand:hover .navbar-logo,
+  a:hover .navbar-github-logo,
+  a:hover .footer-quarto-logo,
+  a:hover .footer-netlify-logo,
+  a:hover .footer-ai-monogram-logo,
+  a:hover .footer-package-hex-logo,
+  .bluesky-logo:hover,
+  .footer-bluesky-logo:hover,
+  a:hover .bluesky-logo,
+  a:hover .footer-bluesky-logo {
+    transform: none !important;
+  }
 }

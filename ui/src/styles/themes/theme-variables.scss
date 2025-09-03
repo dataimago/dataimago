@@ -17,7 +17,19 @@
   --theme-code-border: rgb(220, 220, 218);
   --theme-code-color: #cf2976;
   
-  // Logo paths
+  // Logo colors (specific grey for default, design tokens for hover)
+  --logo-default-fill: #83838F;
+  --logo-hover-fill: var(--color-content-primary);
+  --logo-hover-stroke: var(--color-content-primary);
+  --logo-transition-duration: 0.3s;
+  
+  // Special logo colors
+  --bluesky-logo-fill-default: #83838F;
+  --bluesky-logo-fill-hover: #1185fe;
+  --bluesky-logo-stroke-default: transparent;
+  --bluesky-logo-stroke-hover: var(--color-content-primary);
+  
+  // Logo paths (legacy - will be deprecated)
   --theme-logo-grey: url('/assets/img/ai_monogram_grey-light.svg');
   --theme-logo-color: url('/assets/img/ai_monogram_dark-light.svg');
   
@@ -64,7 +76,19 @@
   --theme-code-border: rgb(40, 40, 37);
   --theme-code-color: #ff79c6;
   
-  // Logo paths
+  // Logo colors (specific grey for default, design tokens for hover) - same as light theme
+  --logo-default-fill: #83838F;
+  --logo-hover-fill: var(--color-content-primary);
+  --logo-hover-stroke: var(--color-content-primary);
+  --logo-transition-duration: 0.3s;
+  
+  // Special logo colors
+  --bluesky-logo-fill-default: #83838F;
+  --bluesky-logo-fill-hover: #1185fe;
+  --bluesky-logo-stroke-default: transparent;
+  --bluesky-logo-stroke-hover: var(--color-content-primary);
+  
+  // Logo paths (legacy - will be deprecated)
   --theme-logo-grey: url('/assets/img/ai_monogram_grey-dark.svg');
   --theme-logo-color: url('/assets/img/ai_monogram_light-dark.svg');
   
