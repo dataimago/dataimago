@@ -14,6 +14,10 @@ execute:
 extensions:
   - dataimago/ai-native
 
+# Test filters configuration
+filters:
+  - svg-inline-test
+
 # Define your package documentation
 references:
   - type: r
@@ -77,7 +81,7 @@ website:
 
   page-footer:
     left:
-      - text: "<img src='/assets/img/quarto_logo.svg' class='footer-quarto-logo' title='quarto.org' alt='quarto.org' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
+      - text: "<img src='/assets/img/quarto_logo.svg' class='footer-quarto-logo' title='quarto.org' alt='quarto.org' style='width:28px; height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
         href: https://quarto.org/
         target: _blank
       - text: "<img src='/assets/img/netlify_logo.svg' class='footer-netlify-logo' title='netlify.com' alt='netlify.com' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
