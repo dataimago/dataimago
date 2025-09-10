@@ -20,7 +20,7 @@ format:
 :::: {.g-col-12 .g-col-md-4 .logo-column}
 <!-- Logo/left container START -->
 ::: {.logo-container}
-![](assets/img/package_hex_logo_grey-light.svg){width=500 .hero-logo}
+![](assets/img/package_hex_logo.svg){width=500 .hero-logo}
 <!-- Logo/left container END -->
 :::
 <!-- Logo/left column END -->
@@ -120,8 +120,8 @@ JSON-compatible results for seamless programmatic integration
 
 <!-- Logo showcase START -->
 ::: {.logo-showcase}
-![AI Monogram](assets/img/ai_monogram_grey-light.svg){width=60 .showcase-logo}
-![Package Logo](assets/img/package_hex_logo_grey-light.svg){width=60 .showcase-logo}
+![AI Monogram](assets/img/ai_monogram.svg){width=60 .showcase-logo}
+![Package Logo](assets/img/package_hex_logo.svg){width=60 .showcase-logo}
 <!-- Logo showcase END -->
 :::
 <!-- Card 2: AI-Native Features END -->

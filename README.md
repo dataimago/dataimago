@@ -533,11 +533,19 @@ Repomix is a tool that consolidates repository contents into a structured format
 
 Generate an AI-readable package of the codebase:
 
-```bash
-# From repository root
-npx repomix@latest
+```r
+# R-first approach (recommended)
+library(dataimago)
+result <- generate_ai_context()
 
-# Output: repomix-output.xml containing the packaged codebase
+# Output: dataimago-repomix.xml with comprehensive codebase context
+```
+
+```bash
+# Direct command line usage
+npx repomix@latest --output dataimago-repomix.xml
+
+# Output: dataimago-repomix.xml containing the packaged codebase
 ```
 
 ### Configuration
@@ -548,21 +556,39 @@ The `.repomixignore` file is configured to:
 
 ### Usage Examples
 
-#### Code Review & Architecture Analysis
+#### R Function Approach (Recommended)
+```r
+# Standard AI context generation
+result <- generate_ai_context()
+if (result$success) {
+  cat("✅ Generated:", result$output_file)
+  cat("📊 Token count:", format(result$token_count, big.mark = ','))
+}
+
+# Markdown format for documentation  
+generate_ai_context(style = "markdown")  # → dataimago-repomix.md
+
+# Minimal output for faster processing
+generate_ai_context(
+  include_token_count = FALSE,
+  min_token_threshold = 500,
+  verbose = FALSE
+)
+```
+
+#### AI Assistant Prompts
 ```
 This file contains the dataimago R package codebase.
 Review the architecture and suggest improvements aligned with 
 the philosophical principles in inst/dataimago/ and CLAUDE.md.
 ```
 
-#### Function Implementation
 ```
 Based on existing patterns in R/ and philosophy in inst/dataimago/,
 implement the planned function get_foundation_document() for
 programmatic access to philosophical content.
 ```
 
-#### Documentation Generation
 ```
 Using function documentation in man/ and philosophical context
 in inst/dataimago/, generate vignettes connecting technical

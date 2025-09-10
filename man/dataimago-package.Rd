@@ -24,13 +24,21 @@ applications are scalable, accessible, and aligned with human flourishing.
 }
 
 \subsection{Framework Components}{
+\subsection{AI-Native Application Generation}{
+
+\itemize{
+\item \code{\link{ai}}: Meta-orchestration function for complete AI-native application creation
+\item \code{\link{build_design_framework}}: Create foundational infrastructure and directory scaffolding
+\item \code{\link{build_design_components}}: Generate content, AI components, and ethical frameworks
+\item \code{\link{build_design_system}}: Complete CSS compilation pipeline from design tokens to production assets
+}
+}
+
 \subsection{Application Development Tools}{
 
 \itemize{
 \item \code{\link{create_quarto_documentation}}: Generate professional documentation
 websites with consistent branding and ethical AI annotations
-\item \code{\link{build_design_system}}: Complete CSS compilation pipeline
-from design tokens to production-ready assets
 \item \code{\link{create_ui_workspace}}: Set up Node.js development environment
 with modern web tooling
 \item Multi-platform deployment to Quarto extensions, CDN, and Next.js applications

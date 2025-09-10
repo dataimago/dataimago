@@ -410,11 +410,18 @@ svg {
 }
 
 .theme-svg path, .theme-svg circle, .theme-svg rect, .theme-svg polygon {
-  fill: var(--theme-svg-fill, currentColor);
+  fill: var(--logo-default-fill);
   transition: fill var(--logo-transition-duration) ease;
 }
-.theme-svg:hover path, .theme-svg:hover circle, .theme-svg:hover rect, .theme-svg:hover polygon {
-  fill: var(--theme-svg-hover-fill, var(--theme-text-hover));
+.theme-svg.svg-hover path, .theme-svg.svg-hover circle, .theme-svg.svg-hover rect, .theme-svg.svg-hover polygon, .theme-svg:hover path, .theme-svg:hover circle, .theme-svg:hover rect, .theme-svg:hover polygon {
+  fill: var(--logo-hover-fill);
+  stroke: var(--logo-hover-stroke, transparent);
+}
+.theme-svg.logo-navbar path, .theme-svg.logo-navbar circle, .theme-svg.logo-navbar rect, .theme-svg.logo-navbar polygon {
+  fill: var(--logo-default-fill);
+}
+.theme-svg.logo-hex path, .theme-svg.logo-hex circle, .theme-svg.logo-hex rect, .theme-svg.logo-hex polygon {
+  fill: var(--logo-default-fill);
 }
 
 [data-bs-theme=light] .theme-adaptive-svg {

@@ -184,8 +184,8 @@
   --bluesky-logo-fill-hover: #1185fe;
   --bluesky-logo-stroke-default: transparent;
   --bluesky-logo-stroke-hover: #000000;
-  --theme-logo-grey: url("/assets/img/ai_monogram_grey-light.svg");
-  --theme-logo-color: url("/assets/img/ai_monogram_dark-light.svg");
+  --theme-logo-base: url("/assets/img/ai_monogram.svg");
+  --theme-logo-hex: url("/assets/img/package_hex_logo.svg");
   --theme-dropdown-bg: rgb(225, 225, 223);
   --theme-dropdown-shadow: rgba(220, 220, 218, 0.9);
   --theme-dropdown-border: rgb(210, 210, 208);
@@ -237,8 +237,8 @@
   --bluesky-logo-fill-hover: #1185fe;
   --bluesky-logo-stroke-default: transparent;
   --bluesky-logo-stroke-hover: rgb(237, 237, 235);
-  --theme-logo-grey: url("/assets/img/ai_monogram_grey-dark.svg");
-  --theme-logo-color: url("/assets/img/ai_monogram_light-dark.svg");
+  --theme-logo-base: url("/assets/img/ai_monogram.svg");
+  --theme-logo-hex: url("/assets/img/package_hex_logo.svg");
   --theme-dropdown-bg: rgb(28, 28, 30);
   --theme-dropdown-shadow: rgba(33, 33, 35, 0.9);
   --theme-dropdown-border: rgb(47, 47, 49);

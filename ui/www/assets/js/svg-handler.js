@@ -1,6 +1,6 @@
 /**
  * svg-handler.js - dataimago Design System
- * Built: 2025-09-09T17:35:53.380Z
+ * Built: 2025-09-10T19:28:13.009Z
  * Source: ui/src/js/svg-handler.js
  */
 /**
@@ -20,26 +20,26 @@
     debugMode: false
   };
 
-  // SVG asset paths
+  // SVG asset paths - Updated for token-based system
   const svgAssets = {
     navbar: {
       light: {
-        default: 'ai_monogram_grey-light.svg',
-        hover: 'ai_monogram_dark-light.svg'
+        default: 'ai_monogram.svg',
+        hover: 'ai_monogram.svg'
       },
       dark: {
-        default: 'ai_monogram_grey-dark.svg',
-        hover: 'ai_monogram_light-dark.svg'
+        default: 'ai_monogram.svg',
+        hover: 'ai_monogram.svg'
       }
     },
     hexLogo: {
       light: {
-        default: 'package_hex_logo_grey-light.svg',
-        hover: 'package_hex_logo_dark-light.svg'
+        default: 'package_hex_logo.svg',
+        hover: 'package_hex_logo.svg'
       },
       dark: {
-        default: 'package_hex_logo_grey-dark.svg',
-        hover: 'package_hex_logo_light-dark.svg'
+        default: 'package_hex_logo.svg',
+        hover: 'package_hex_logo.svg'
       }
     }
   };
@@ -76,7 +76,7 @@
       }
     },
     
-    injectSVG: (container, svgContent) => {
+    injectSVG: (container, svgContent, options = {}) => {
       if (!container || !svgContent) return false;
       
       // Clear existing content
@@ -90,8 +90,24 @@
       const svg = temp.querySelector('svg');
       if (!svg) return false;
       
-      // Add classes for styling
+      // Add classes for styling and theming
       svg.classList.add('theme-svg');
+      
+      // Add theme-specific class
+      const currentTheme = utils.getCurrentTheme();
+      svg.classList.add(`theme-${currentTheme}`);
+      
+      // Add hover state class if specified
+      if (options.isHover) {
+        svg.classList.add('svg-hover');
+      } else {
+        svg.classList.remove('svg-hover');
+      }
+      
+      // Add logo type class for specific styling
+      if (options.logoType) {
+        svg.classList.add(`logo-${options.logoType}`);
+      }
       
       // Append to container
       container.appendChild(svg);
@@ -142,7 +158,7 @@
       } else {
         const svgContent = await this.getCachedSVG(svgPath);
         if (svgContent) {
-          utils.injectSVG(navbarLogo, svgContent);
+          utils.injectSVG(navbarLogo, svgContent, { logoType: 'navbar' });
           this.setupLogoHover(navbarLogo, 'navbar');
         }
       }
@@ -161,7 +177,7 @@
         } else {
           const svgContent = await this.getCachedSVG(svgPath);
           if (svgContent) {
-            utils.injectSVG(container, svgContent);
+            utils.injectSVG(container, svgContent, { logoType: 'hex' });
             this.setupLogoHover(container, 'hexLogo');
           }
         }
@@ -183,40 +199,26 @@
     setupLogoHover(element, type) {
       if (!element) return;
       
-      let isHovering = false;
-      const theme = this.currentTheme;
-      
-      element.addEventListener('mouseenter', async () => {
-        isHovering = true;
-        element.classList.add('transitioning');
+      element.addEventListener('mouseenter', () => {
+        element.classList.add('transitioning', 'logo-hover');
         
-        const hoverPath = `${utils.getBasePath()}${svgAssets[type][theme].hover}`;
-        
-        if (element.tagName === 'IMG') {
-          element.src = hoverPath;
-        } else {
-          const svgContent = await this.getCachedSVG(hoverPath);
-          if (svgContent && isHovering) {
-            utils.injectSVG(element, svgContent);
-          }
+        // For inline SVG, add hover class to SVG element
+        const svg = element.querySelector('svg');
+        if (svg) {
+          svg.classList.add('svg-hover');
         }
         
         setTimeout(() => element.classList.remove('transitioning'), config.transitionDuration);
       });
       
-      element.addEventListener('mouseleave', async () => {
-        isHovering = false;
+      element.addEventListener('mouseleave', () => {
         element.classList.add('transitioning');
+        element.classList.remove('logo-hover');
         
-        const defaultPath = `${utils.getBasePath()}${svgAssets[type][theme].default}`;
-        
-        if (element.tagName === 'IMG') {
-          element.src = defaultPath;
-        } else {
-          const svgContent = await this.getCachedSVG(defaultPath);
-          if (svgContent && !isHovering) {
-            utils.injectSVG(element, svgContent);
-          }
+        // For inline SVG, remove hover class from SVG element
+        const svg = element.querySelector('svg');
+        if (svg) {
+          svg.classList.remove('svg-hover');
         }
         
         setTimeout(() => element.classList.remove('transitioning'), config.transitionDuration);

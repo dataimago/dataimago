@@ -147,6 +147,16 @@ docs/robots.txt
 vignettes/*.html
 vignettes/*.pdf
 
+# Additional generated documentation
+docs/*.html
+docs/search.json
+docs/sitemap.xml
+ui/www/docs/*.html
+
+# Temporary repomix outputs (avoid recursive inclusion)
+repomix-output.*
+**/repomix-output.*
+
 # ====================================================================
 # NOTES ON PRESERVED CONTENT
 # ====================================================================

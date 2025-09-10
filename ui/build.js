@@ -312,7 +312,8 @@ ${darkThemeVars}
 ${darkComponents.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
 
 // === WEBSITE FEATURES (from website-features.scss) ===
-${websiteFeaturesContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}`;
+${websiteFeaturesContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()}
+`;
 
     // Write auto-generated self-contained files
     fs.writeFileSync(path.join(config.distDir, 'website-light.scss'), lightContent);

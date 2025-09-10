@@ -1178,3 +1178,226 @@ generate_cdn_assets <- function(verbose = TRUE) {
     errors = errors
   ))
 }
+
+#' Generate AI-Optimized Repository Context
+#'
+#' Creates a comprehensive, AI-friendly representation of the dataimago codebase using Repomix.
+#' This function wraps the repomix tool to generate structured context files that can be uploaded
+#' to AI assistants for comprehensive project understanding, including philosophical foundations,
+#' technical architecture, and implementation patterns.
+#'
+#' @param output_file Character. Output filename (default: NULL, auto-generates as "PACKAGE_NAME-repomix.xml")
+#' @param style Character. Output style: "xml", "markdown", or "plain" (default: "xml")
+#' @param include_token_count Logical. Include token count analysis (default: TRUE)
+#' @param min_token_threshold Numeric. Minimum token count for tree display (default: 100)
+#' @param verbose Logical. Print detailed progress information (default: TRUE)
+#'
+#' @details
+#' This function implements dataimago's AI-native development philosophy by providing
+#' comprehensive codebase context for AI assistants. The generated artifact includes:
+#'
+#' **Philosophical Context:**
+#' - Complete foundation documents from `inst/dataimago/`
+#' - Ethical AI principles and critical theory frameworks
+#' - Mission, vision, and architectural blueprints
+#'
+#' **Technical Architecture:**
+#' - All R functions with roxygen2 documentation
+#' - Design system source of truth (`ui/src/dataimago-design/`)
+#' - Build system patterns and multi-platform distribution
+#' - Git submodule integration and workflow patterns
+#'
+#' **AI Agent Context:**
+#' - `CLAUDE.md` and `AGENT_INDEX.md` coordination files
+#' - Structured metadata for semantic interoperability
+#' - Development patterns aligned with emancipatory AI principles
+#'
+#' **System Requirements:**
+#' - Node.js 18+ with npx available globally
+#' - Repomix tool (automatically installed via npx if not present)
+#' - Write permissions to package directory
+#'
+#' **Usage Patterns:**
+#' ```r
+#' # Standard AI context generation
+#' generate_ai_context()
+#' 
+#' # Markdown format for documentation
+#' generate_ai_context(style = "markdown")  # -> dataimago-repomix.md
+#' 
+#' # Custom filename
+#' generate_ai_context(output_file = "custom-context.xml")
+#' 
+#' # Minimal output for faster processing
+#' generate_ai_context(include_token_count = FALSE, min_token_threshold = 500)
+#' ```
+#'
+#' **AI Assistant Integration:**
+#' Upload the generated file to your AI assistant (Claude Projects, ChatGPT, etc.) 
+#' to provide complete codebase context including philosophical foundations and 
+#' technical implementation patterns.
+#'
+#' @return List with success status, output file path, token count, and any errors
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Generate standard AI context
+#' result <- generate_ai_context()
+#' if (result$success) {
+#'   cat("AI context generated:", result$output_file)
+#' }
+#' 
+#' # Generate markdown version for documentation
+#' generate_ai_context(style = "markdown")  # -> dataimago-repomix.md
+#' }
+generate_ai_context <- function(output_file = NULL,
+                               style = "xml",
+                               include_token_count = TRUE,
+                               min_token_threshold = 100,
+                               verbose = TRUE) {
+  
+  # Validate inputs
+  if (!style %in% c("xml", "markdown", "plain")) {
+    stop("style must be one of: 'xml', 'markdown', 'plain'")
+  }
+  
+  if (!is.numeric(min_token_threshold) || min_token_threshold < 0) {
+    stop("min_token_threshold must be a non-negative number")
+  }
+  
+  errors <- character(0)
+  
+  # Generate default filename if not provided
+  if (is.null(output_file)) {
+    # Extract package name from DESCRIPTION file
+    desc_path <- "DESCRIPTION"
+    if (fs::file_exists(desc_path)) {
+      desc_content <- readLines(desc_path)
+      package_line <- grep("^Package:", desc_content, value = TRUE)
+      if (length(package_line) > 0) {
+        package_name <- trimws(sub("^Package:\\s*", "", package_line[1]))
+        # Generate filename based on style
+        file_ext <- switch(style, 
+                          "xml" = "xml", 
+                          "markdown" = "md", 
+                          "plain" = "txt")
+        output_file <- glue("{package_name}-repomix.{file_ext}")
+      } else {
+        output_file <- glue("package-repomix.{switch(style, 'xml' = 'xml', 'markdown' = 'md', 'plain' = 'txt')}")
+      }
+    } else {
+      output_file <- glue("package-repomix.{switch(style, 'xml' = 'xml', 'markdown' = 'md', 'plain' = 'txt')}")
+    }
+  }
+  
+  if (verbose) {
+    ui_info("Generating AI-optimized repository context with Repomix...")
+    ui_info(glue("Output format: {style}"))
+    ui_info(glue("Output file: {output_file}"))
+  }
+  
+  # Check if npx is available
+  npx_check <- tryCatch({
+    processx::run("npx", "--version", stdout = NULL, stderr = NULL)
+    TRUE
+  }, error = function(e) {
+    FALSE
+  })
+  
+  if (!npx_check) {
+    errors <- c(errors, "npx not available. Please install Node.js 18+ with npm/npx")
+    if (verbose) {
+      ui_oops("npx not available")
+      ui_info("Install Node.js from: https://nodejs.org/")
+      ui_info("Or via package manager: brew install node")
+    }
+    return(list(
+      success = FALSE,
+      output_file = output_file,
+      token_count = 0,
+      errors = errors
+    ))
+  }
+  
+  # Build repomix command arguments
+  cmd_args <- c("repomix@latest", "--output", output_file, "--style", style)
+  
+  if (include_token_count) {
+    cmd_args <- c(cmd_args, "--token-count-tree", as.character(min_token_threshold))
+  }
+  
+  if (verbose) {
+    cmd_args <- c(cmd_args, "--verbose")
+  } else {
+    cmd_args <- c(cmd_args, "--quiet")
+  }
+  
+  # Execute repomix
+  if (verbose) {
+    ui_info("Running repomix... (this may take a moment)")
+  }
+  
+  result <- tryCatch({
+    processx::run("npx", cmd_args, stdout_line_callback = if (verbose) function(line, proc) {
+      cat(crayon::silver(line), "\n")
+    } else NULL)
+  }, error = function(e) {
+    errors <<- c(errors, glue("Repomix execution failed: {e$message}"))
+    list(status = 1)
+  })
+  
+  # Check if output file was created
+  output_exists <- fs::file_exists(output_file)
+  
+  # Extract token count if available (from repomix output)
+  token_count <- 0
+  if (output_exists && include_token_count) {
+    # Try to extract token count from repomix summary
+    # This is a best-effort extraction from typical repomix output format
+    if (!is.null(result$stdout)) {
+      token_match <- regexpr("Total Tokens: ([0-9,]+)", result$stdout)
+      if (token_match > 0) {
+        token_str <- regmatches(result$stdout, token_match)
+        token_count <- as.numeric(gsub("[^0-9]", "", token_str))
+      }
+    }
+  }
+  
+  success <- (result$status == 0) && output_exists
+  
+  if (verbose) {
+    if (success) {
+      ui_done(glue("AI context generated successfully: {output_file}"))
+      ui_info("Upload this file to your AI assistant for comprehensive codebase context")
+      ui_info("The file includes:")
+      ui_info("  - Complete philosophical foundations (inst/dataimago/)")
+      ui_info("  - All R functions and documentation") 
+      ui_info("  - Design system source of truth")
+      ui_info("  - AI agent coordination files (CLAUDE.md, AGENT_INDEX.md)")
+      ui_info("  - Build system architecture and patterns")
+      if (token_count > 0) {
+        ui_info(glue("  - Token count: {format(token_count, big.mark = ',')}"))
+      }
+    } else {
+      ui_oops("Failed to generate AI context")
+      if (!output_exists) {
+        errors <- c(errors, "Output file was not created")
+      }
+      for (error in errors) {
+        ui_oops(glue("  - {error}"))
+      }
+      ui_info("Troubleshooting:")
+      ui_info("  - Ensure Node.js 18+ is installed")
+      ui_info("  - Check write permissions in current directory")
+      ui_info("  - Verify .repomixignore configuration")
+    }
+  }
+  
+  return(list(
+    success = success,
+    output_file = output_file,
+    token_count = token_count,
+    errors = errors
+  ))
+}

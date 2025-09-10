@@ -350,13 +350,26 @@ The dataimago package uses [Repomix](https://repomix.com) to provide comprehensi
 
 ### How to Use Repomix
 
-1. **Generate Context File**:
-   ```bash
-   npx repomix@latest
-   # Creates repomix-output.xml with complete codebase
+1. **Generate Context File (R-First Approach - RECOMMENDED)**:
+   ```r
+   # Load dataimago package
+   library(dataimago)
+   
+   # Generate comprehensive AI context
+   result <- generate_ai_context()
+   # Creates dataimago-repomix.xml with complete codebase
+   
+   # Alternative formats
+   generate_ai_context(style = "markdown")  # → dataimago-repomix.md
    ```
 
-2. **Configuration**: The `.repomixignore` file preserves:
+2. **Direct Command Line Usage**:
+   ```bash
+   npx repomix@latest --output dataimago-repomix.xml
+   # Creates dataimago-repomix.xml with complete codebase
+   ```
+
+3. **Configuration**: The `.repomixignore` file preserves:
    - All foundation documents (`inst/dataimago/`)
    - AI context files (this CLAUDE.md, AGENT_INDEX.md)
    - Source design system (`ui/src/`)
@@ -367,8 +380,8 @@ The dataimago package uses [Repomix](https://repomix.com) to provide comprehensi
    - Version control metadata (`.git/`)
    - Large binary files
 
-3. **AI Development Workflow**:
-   - Upload `repomix-output.xml` to your AI assistant
+4. **AI Development Workflow**:
+   - Upload generated context file to your AI assistant
    - Reference philosophical foundations when requesting changes
    - Ensure generated code aligns with existing patterns
    - Validate against ethical checkpoints
@@ -376,10 +389,11 @@ The dataimago package uses [Repomix](https://repomix.com) to provide comprehensi
 ### Example Prompts with Repomix Context
 
 ```
-Using the dataimago codebase in repomix-output.xml:
+Using the dataimago codebase context file:
 1. Review how build_design_system() implements the R-first philosophy
 2. Suggest improvements that maintain semantic interoperability
 3. Ensure changes align with foundation documents in inst/dataimago/
+4. Analyze the generate_ai_context() function for enhancement opportunities
 ```
 
 ### Benefits for AI Agents

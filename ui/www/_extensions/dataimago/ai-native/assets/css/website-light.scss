@@ -206,9 +206,9 @@ $btn-code-copy-color-active: #000 !default;
   --bluesky-logo-stroke-default: transparent;
   --bluesky-logo-stroke-hover: #000000;
   
-  // Logo paths (legacy - will be deprecated)
-  --theme-logo-grey: url('/assets/img/ai_monogram_grey-light.svg');
-  --theme-logo-color: url('/assets/img/ai_monogram_dark-light.svg');
+  // Logo paths - Updated for token-based system
+  --theme-logo-base: url('/assets/img/ai_monogram.svg');
+  --theme-logo-hex: url('/assets/img/package_hex_logo.svg');
   
   // Dropdown styling
   --theme-dropdown-bg: rgb(225, 225, 223);

@@ -27,6 +27,7 @@
 
 # Exclude Node.js artifacts but include built CSS
 ^ui/node_modules$
+^ui/node_modules/
 ^ui/package-lock\.json$
 ^ui/pnpm-lock\.yaml$
 ^ui/\.npmrc$
@@ -61,3 +62,14 @@
 # Exclude large binary files
 .*\.pdf$
 .*\.key$
+
+# Exclude repomix AI context files
+.*-repomix\..*$
+
+# Exclude hidden files and directories
+^\.repomixignore$
+^ui/src/dataimago-design/\.git$
+^ui/src/dataimago-design/\.npmrc$
+\.git$
+\.git/
+/\.[^/]*$
