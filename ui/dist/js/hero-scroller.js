@@ -1,14 +1,14 @@
 /**
  * hero-scroller.js - dataimago Design System
- * Built: 2025-09-03T20:40:08.440Z
+ * Built: 2025-09-09T17:35:53.378Z
  * Source: ui/src/js/hero-scroller.js
  */
 /**
- * Dataimago AI-Native Extension - Hero Scroller
+ * dataimago AI-Native Extension - Hero Scroller
  * Handles smooth scrolling hero content areas (carousel replacement)
  */
 
-class DataimagoHeroScroller {
+class dataimagoHeroScroller {
     constructor() {
         this.scrollers = new Map();
         this.init();
@@ -24,7 +24,7 @@ class DataimagoHeroScroller {
     }
 
     setup() {
-        console.log('🎠 Initializing Dataimago Hero Scrollers');
+        console.log('🎠 Initializing dataimago Hero Scrollers');
         
         // Find all hero scroller containers
         const scrollerContainers = document.querySelectorAll(
@@ -297,9 +297,9 @@ class DataimagoHeroScroller {
 }
 
 // Auto-initialize when script loads
-const dataimagoHeroScroller = new DataimagoHeroScroller();
+const dataimagoHeroScroller = new dataimagoHeroScroller();
 
 // Expose to global scope for external control
 window.dataimagoHeroScroller = dataimagoHeroScroller;
 
-console.log('📜 Dataimago Hero Scroller Script Loaded');
+console.log('📜 dataimago Hero Scroller Script Loaded');

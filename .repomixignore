@@ -1,0 +1,173 @@
+# ====================================================================
+# REPOMIX IGNORE FILE FOR DATAIMAGO R PACKAGE
+# ====================================================================
+# This file defines exclusions for Repomix code packaging
+# Aligned with dataimago's philosophy of "code-as-philosophy"
+# while excluding build artifacts and sensitive data
+# ====================================================================
+
+# ====================================================================
+# BUILD ARTIFACTS & GENERATED FILES (as per CLAUDE.md)
+# ====================================================================
+
+# CSS build outputs (regenerable via build_design_system())
+ui/dist/
+
+# Node.js dependencies (regenerable via pnpm install)
+ui/node_modules/
+node_modules/
+**/node_modules/
+
+# Package lock files (dependencies tracked in package.json)
+ui/package-lock.json
+ui/pnpm-lock.yaml
+ui/yarn.lock
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+.pnpm-workspace-state.json
+.modules.yaml
+
+# Quarto/website build outputs
+ui/www/_site/
+ui/www/.quarto/
+docs/site_libs/
+**/_site/
+**/.quarto/
+.quarto/
+
+# R package build artifacts
+*.Rproj
+.Rproj.user/
+.Rhistory
+.RData
+*.Ruserdata
+.Rapp.history
+
+# ====================================================================
+# VERSION CONTROL & CI/CD
+# ====================================================================
+
+# Git directory (version control metadata)
+.git/
+.gitignore
+.gitattributes
+
+# GitHub CI/CD workflows (implementation details)
+.github/workflows/
+
+# ====================================================================
+# TEMPORARY & CACHE FILES
+# ====================================================================
+
+# Temporary test directories
+test-docs/
+temp/
+tmp/
+cache/
+.cache/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-*
+.project
+.classpath
+
+# ====================================================================
+# SENSITIVE OR LARGE BINARY FILES
+# ====================================================================
+
+# Large binary files (as defined in .Rbuildignore)
+*.pdf
+*.key
+*.pptx
+*.docx
+*.xlsx
+
+# Image files (except essential SVGs for branding)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.bmp
+*.tiff
+# Note: SVG files in inst/quarto-assets/ and inst/dataimago/assets/img/ 
+# are preserved as they are essential branding elements
+
+# Compiled binaries
+*.so
+*.dylib
+*.dll
+*.o
+*.a
+*.lib
+*.exe
+
+# ====================================================================
+# DOCUMENTATION BUILD OUTPUTS
+# ====================================================================
+
+# Generated documentation (preserving source .qmd files)
+docs/*.html
+docs/search.json
+docs/sitemap.xml
+docs/robots.txt
+
+# LaTeX intermediate files
+*.aux
+*.log
+*.out
+*.toc
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+
+# ====================================================================
+# R PACKAGE SPECIFIC
+# ====================================================================
+
+# R package check results
+*.Rcheck/
+*-Ex.R
+
+# RStudio project files
+*.Rproj
+
+# Vignette outputs (but keep source)
+vignettes/*.html
+vignettes/*.pdf
+
+# ====================================================================
+# NOTES ON PRESERVED CONTENT
+# ====================================================================
+# The following are INTENTIONALLY INCLUDED for AI context:
+#
+# - inst/dataimago/        Foundation documents (philosophical core)
+# - inst/CLAUDE.md         AI agent context document
+# - inst/AGENT_INDEX.md    Agent coordination document
+# - ui/src/                Design tokens and SCSS (source of truth)
+# - R/                     Core R functions
+# - man/                   Function documentation
+# - DESCRIPTION            Package metadata
+# - NAMESPACE              Package exports
+# - README.md              Project overview
+# - ARCHITECTURE.md        System design
+# - IMPLEMENTATION_ROADMAP.md  Development plans
+# - ui/www/*.qmd           Quarto source documents
+# - ui/www/_quarto.yml     Quarto configuration
+# - _extensions/dataimago/ Quarto extension (distribution)
+#
+# These files contain the philosophical, architectural, and
+# functional essence of the dataimago project and are essential
+# for AI-assisted development and understanding.
+# ====================================================================

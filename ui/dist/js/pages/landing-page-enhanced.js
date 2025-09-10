@@ -1,6 +1,6 @@
 /**
  * landing-page-enhanced.js - dataimago Design System
- * Built: 2025-09-03T20:40:08.441Z
+ * Built: 2025-09-09T17:35:53.379Z
  * Source: ui/src/js/pages/landing-page-enhanced.js
  */
 /**
@@ -8,7 +8,7 @@
  * Enhanced mobile-responsive scrollytelling with touch gestures and progress tracking
  */
 
-class DataimagoLandingPageEnhanced {
+class dataimagoLandingPageEnhanced {
     constructor() {
         this.currentSlide = 0;
         this.slides = [];
@@ -419,7 +419,7 @@ class DataimagoLandingPageEnhanced {
 }
 
 // Initialize when script loads
-const dataimagoLandingEnhanced = new DataimagoLandingPageEnhanced();
+const dataimagoLandingEnhanced = new dataimagoLandingPageEnhanced();
 
 // Expose to global scope for debugging
 window.dataimagoLandingEnhanced = dataimagoLandingEnhanced;

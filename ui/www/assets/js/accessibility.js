@@ -1,14 +1,14 @@
 /**
  * accessibility.js - dataimago Design System
- * Built: 2025-09-03T20:40:08.440Z
+ * Built: 2025-09-09T17:35:53.378Z
  * Source: ui/src/js/accessibility.js
  */
 /**
- * Dataimago AI-Native Extension - Accessibility Enhancements
+ * dataimago AI-Native Extension - Accessibility Enhancements
  * Provides enhanced accessibility features for the AI-native website
  */
 
-class DataimagoAccessibility {
+class dataimagoAccessibility {
     constructor() {
         this.prefersReducedMotion = false;
         this.highContrastMode = false;
@@ -27,7 +27,7 @@ class DataimagoAccessibility {
     }
 
     setup() {
-        console.log('♿ Initializing Dataimago Accessibility Features');
+        console.log('♿ Initializing dataimago Accessibility Features');
         
         // Detect user preferences
         this.detectUserPreferences();
@@ -461,12 +461,12 @@ class DataimagoAccessibility {
 }
 
 // Auto-initialize when script loads
-const dataimagoAccessibility = new DataimagoAccessibility();
+const dataimagoAccessibility = new dataimagoAccessibility();
 
 // Expose to global scope for external control
 window.dataimagoAccessibility = dataimagoAccessibility;
 
-console.log('📜 Dataimago Accessibility Script Loaded');
+console.log('📜 dataimago Accessibility Script Loaded');
 
 // Add CSS for screen reader only content and focus indicators
 const accessibilityCSS = `

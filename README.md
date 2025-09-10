@@ -138,12 +138,15 @@ dataimago/
 │   ├── dataimago/              # Foundation documents and assets
 │   └── quarto-assets/          # CDN-ready CSS files (CRITICAL)
 ├── ui/                         # Node.js design system workspace
-│   ├── src/                    # SOURCE OF TRUTH - Design tokens and SCSS
-│   │   ├── tokens/             # JSON design tokens (colors, typography, etc.)
-│   │   ├── styles/             # SCSS source files with proper imports
-│   │   └── tokens.scss         # SCSS version of design tokens
+│   ├── src/                    
+│   │   └── dataimago-design/   # Git submodule - SOURCE OF TRUTH
+│   │       ├── src/
+│   │       │   ├── tokens/     # JSON design tokens (colors, typography, etc.)
+│   │       │   ├── styles/     # SCSS source files with proper imports
+│   │       │   └── js/         # JavaScript modules
+│   │       └── packages/       # npm workspace packages
 │   ├── dist/                   # Built CSS assets (regenerable)
-│   ├── build.js               # Sophisticated build script with SCSS imports
+│   ├── build.js               # Build script adapted for submodule paths
 │   └── package.json           # Node.js dependencies
 ├── ui/www/                    # Complete Quarto website structure
 │   ├── _extensions/           # dataimago Quarto extension
@@ -313,6 +316,18 @@ flowchart TD
 devtools::load_all()
 ```
 
+### Git Submodule Setup
+
+The design system is managed as a git submodule. When cloning for development:
+
+```bash
+# Clone with submodules
+git clone --recursive https://github.com/dataimago/dataimago-rpkg
+
+# OR if already cloned, initialize submodules
+git submodule update --init --recursive
+```
+
 ## Quick Start - Application Development Workflow
 
 ### Complete Setup and First Build
@@ -422,8 +437,12 @@ dataimago/
 │   └── design_system.R         # R-first CSS build pipeline
 ├── ui/                         # Complete frontend development workspace
 │   ├── src/
-│   │   ├── tokens/             # Design tokens (JSON) - SOURCE OF TRUTH
-│   │   └── styles/             # SCSS source files - SOURCE OF TRUTH
+│   │   └── dataimago-design/   # Git submodule - design system repository
+│   │       ├── src/
+│   │       │   ├── tokens/     # Design tokens (JSON) - SOURCE OF TRUTH
+│   │       │   ├── styles/     # SCSS source files - SOURCE OF TRUTH
+│   │       │   └── js/         # JavaScript modules - SOURCE OF TRUTH
+│   │       └── packages/       # npm workspace packages
 │   ├── dist/                   # Built CSS assets (regenerable)
 │   └── www/                    # Quarto website project
 │       └── _extensions/dataimago/ai-native/ # Quarto extension
@@ -497,6 +516,74 @@ This framework is designed from the ground up for both human developers and AI a
   }
 }
 ```
+
+## AI-Powered Development with Repomix
+
+The dataimago package integrates [Repomix](https://repomix.com) to enhance AI-assisted development workflows. Repomix packages the entire codebase into a single, AI-friendly file that provides complete context for Large Language Models (LLMs).
+
+### What is Repomix?
+
+Repomix is a tool that consolidates repository contents into a structured format optimized for AI consumption. This enables:
+- **Complete Context**: AI assistants understand the entire codebase architecture
+- **Philosophical Alignment**: Foundation documents are included for value-aligned suggestions
+- **Efficient Collaboration**: Single file upload provides comprehensive project knowledge
+- **Token Optimization**: Smart exclusion of build artifacts keeps token usage manageable
+
+### Quick Start
+
+Generate an AI-readable package of the codebase:
+
+```bash
+# From repository root
+npx repomix@latest
+
+# Output: repomix-output.xml containing the packaged codebase
+```
+
+### Configuration
+
+The `.repomixignore` file is configured to:
+- **Include**: Core R functions, foundation documents, design sources, documentation
+- **Exclude**: Build artifacts (`ui/dist/`, `node_modules/`), git metadata, binary files
+
+### Usage Examples
+
+#### Code Review & Architecture Analysis
+```
+This file contains the dataimago R package codebase.
+Review the architecture and suggest improvements aligned with 
+the philosophical principles in inst/dataimago/ and CLAUDE.md.
+```
+
+#### Function Implementation
+```
+Based on existing patterns in R/ and philosophy in inst/dataimago/,
+implement the planned function get_foundation_document() for
+programmatic access to philosophical content.
+```
+
+#### Documentation Generation
+```
+Using function documentation in man/ and philosophical context
+in inst/dataimago/, generate vignettes connecting technical
+implementation to ethical foundations.
+```
+
+### Integration with AI Workflows
+
+- **Claude Projects**: Upload `repomix-output.xml` to project knowledge base
+- **ChatGPT**: Include in conversation for comprehensive context
+- **GitHub Copilot**: Use as context file for enhanced suggestions
+- **Local LLMs**: Feed complete codebase for offline development
+
+### Best Practices
+
+1. **Regenerate after significant changes**: `npx repomix@latest`
+2. **Monitor token usage**: `npx repomix@latest --include-token-count`
+3. **Security checks**: `npx repomix@latest --check-security`
+4. **Custom output**: `npx repomix@latest --output dataimago-context.xml`
+
+For detailed integration guidance, see [REPOMIX_INTEGRATION.md](REPOMIX_INTEGRATION.md).
 
 ## Development Status
 

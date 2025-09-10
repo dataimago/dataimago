@@ -480,6 +480,195 @@ graph TB
     class VERSIONING,INTEGRITY,FALLBACK security
 ```
 
+## 🤖 AI-Assisted Development & Repomix Integration
+
+The dataimago package integrates [Repomix](https://repomix.com) to enable comprehensive AI-assisted development while preserving philosophical foundations and architectural principles.
+
+### Repomix Architecture Integration
+
+```mermaid
+graph TB
+    %% Repomix Integration Architecture
+    subgraph "Repository Structure"
+        REPO[dataimago Repository]
+        REPO --> R_CODE[R/ Functions]
+        REPO --> INST[inst/ Foundations]
+        REPO --> UI_SRC[ui/src/ Design System]
+        REPO --> DOCS[Documentation]
+        REPO --> CONFIG[Configuration Files]
+    end
+
+    subgraph "Repomix Processing"
+        REPOMIX[Repomix Tool]
+        IGNORE[.repomixignore<br/>Exclusion Rules]
+        SECURITY[Security Scanning]
+        TOKEN_COUNT[Token Analysis]
+    end
+
+    subgraph "AI Context Generation"
+        XML_OUT[repomix-output.xml<br/>Structured Codebase]
+        MD_OUT[Markdown Output<br/>Human-Readable]
+        CONTEXT[Complete Context<br/>AI-Friendly Format]
+    end
+
+    subgraph "AI Workflow Integration"
+        CLAUDE[Claude Projects<br/>Knowledge Base]
+        COPILOT[GitHub Copilot<br/>Enhanced Context]
+        CHATGPT[ChatGPT<br/>Custom Instructions]
+        AGENTS[AI Agents<br/>Specialized Tasks]
+    end
+
+    subgraph "Development Use Cases"
+        CODE_REVIEW[Code Review<br/>Architecture Analysis]
+        REFACTORING[Refactoring<br/>Pattern Consistency]
+        DOCUMENTATION[Documentation<br/>Philosophical Integration]
+        IMPLEMENTATION[Feature Implementation<br/>Aligned with Principles]
+        DEBUG[Bug Investigation<br/>System-Wide Analysis]
+    end
+
+    subgraph "Philosophical Alignment"
+        HERMENEUTIC[Hermeneutic Transparency<br/>Complete Codebase Visibility]
+        SEMANTIC[Semantic Interoperability<br/>Structured AI Consumption]
+        CODE_PHIL[Code-as-Philosophy<br/>Context Preservation]
+        EMANCIPATORY[Emancipatory Logic<br/>AI Agent Collaboration]
+    end
+
+    %% Flow connections
+    REPO --> REPOMIX
+    IGNORE --> REPOMIX
+    REPOMIX --> SECURITY
+    REPOMIX --> TOKEN_COUNT
+    REPOMIX --> XML_OUT
+    REPOMIX --> MD_OUT
+    XML_OUT --> CONTEXT
+    MD_OUT --> CONTEXT
+    
+    CONTEXT --> CLAUDE
+    CONTEXT --> COPILOT
+    CONTEXT --> CHATGPT
+    CONTEXT --> AGENTS
+    
+    CLAUDE --> CODE_REVIEW
+    COPILOT --> REFACTORING
+    CHATGPT --> DOCUMENTATION
+    AGENTS --> IMPLEMENTATION
+    AGENTS --> DEBUG
+    
+    %% Philosophical integration
+    HERMENEUTIC --> XML_OUT
+    SEMANTIC --> CONTEXT
+    CODE_PHIL --> CLAUDE
+    EMANCIPATORY --> AGENTS
+
+    %% Styling
+    classDef repo fill:#3498db,stroke:#2c3e50,stroke-width:2px,color:#fff
+    classDef processing fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
+    classDef output fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#fff
+    classDef ai fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    classDef usecase fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+    classDef philosophy fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+
+    class REPO,R_CODE,INST,UI_SRC,DOCS,CONFIG repo
+    class REPOMIX,IGNORE,SECURITY,TOKEN_COUNT processing
+    class XML_OUT,MD_OUT,CONTEXT output
+    class CLAUDE,COPILOT,CHATGPT,AGENTS ai
+    class CODE_REVIEW,REFACTORING,DOCUMENTATION,IMPLEMENTATION,DEBUG usecase
+    class HERMENEUTIC,SEMANTIC,CODE_PHIL,EMANCIPATORY philosophy
+```
+
+### Strategic Exclusions & Inclusions
+
+The `.repomixignore` configuration aligns with the package's architectural principles:
+
+#### Excluded (Regenerable Artifacts)
+- **Build Outputs**: `ui/dist/`, `docs/site_libs/`, `.quarto/`
+- **Dependencies**: `ui/node_modules/`
+- **Version Control**: `.git/`, `.github/workflows/`
+- **Large Binaries**: `*.pdf`, `*.key`, `*.pptx`
+
+#### Preserved (Essential Context)
+- **Philosophical Core**: `inst/dataimago/` - Foundation documents
+- **AI Instructions**: `inst/CLAUDE.md`, `inst/AGENT_INDEX.md`
+- **Source Code**: `R/` functions, `ui/src/` design system
+- **Documentation**: `man/`, `README.md`, architecture guides
+- **Configuration**: Build scripts, package metadata
+
+### AI Workflow Patterns
+
+#### 1. Architecture Review & Enhancement
+```bash
+npx repomix@latest --output dataimago-context.xml
+```
+*Usage*: "Analyze the complete architecture and suggest improvements aligned with the philosophical principles in `inst/dataimago/`"
+
+#### 2. Feature Implementation
+```bash
+npx repomix@latest --include-token-count
+```
+*Usage*: "Based on existing patterns in `R/` and philosophy in `inst/dataimago/`, implement the planned `get_foundation_document()` function"
+
+#### 3. Design System Extension
+```bash
+npx repomix@latest --include "ui/src/**,inst/dataimago/**"
+```
+*Usage*: "Analyze `ui/src/tokens/` and propose new CSS components aligned with ethical AI styling principles"
+
+#### 4. Documentation Generation
+```bash
+npx repomix@latest --output-format markdown
+```
+*Usage*: "Generate comprehensive vignettes connecting technical implementation to ethical foundations"
+
+### Integration with Existing Architecture
+
+The Repomix integration enhances each architectural layer:
+
+- **R Package Core**: Functions gain AI-assisted development and review
+- **Foundation Layer**: Philosophical documents provide context for AI agents
+- **Design System**: Complete source visibility enables intelligent suggestions
+- **Documentation System**: AI can generate contextually-aware documentation
+- **CI/CD Pipeline**: Automated context generation for continuous AI assistance
+
+### Security & Best Practices
+
+#### Token Optimization
+```bash
+npx repomix@latest --include-token-count
+```
+Monitor output size for LLM context limits while preserving essential philosophical context.
+
+#### Security Scanning
+```bash
+npx repomix@latest --check-security
+```
+Automated detection of sensitive information before AI processing.
+
+#### Custom Configuration
+```json
+{
+  "output": {
+    "format": "xml",
+    "includeTokenCount": true
+  },
+  "include": [
+    "**/*.R",
+    "**/*.qmd", 
+    "inst/dataimago/**"
+  ]
+}
+```
+
+### Philosophical Alignment
+
+The Repomix integration embodies dataimago's core principles:
+
+- **Hermeneutic Transparency**: Complete codebase visibility for AI interpretation
+- **Semantic Interoperability**: Structured output optimized for LLM consumption  
+- **Code-as-Philosophy**: Preserving philosophical context alongside technical implementation
+- **Emancipatory Logic**: AI agents collaborating to advance human flourishing
+
+This integration transforms the dataimago package into a comprehensive AI-collaborative development environment while maintaining its foundational commitment to ethical AI development.
+
 ## 🎯 Key Design Principles
 
 ### Ethical AI Integration

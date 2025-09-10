@@ -107,8 +107,8 @@ metadata:
 format:
   html:
     theme:
-      light: assets/css/website-light.scss
-      dark: assets/css/website-dark.scss
+      light: _extensions/dataimago/ai-native/assets/css/website-light.scss
+      dark: _extensions/dataimago/ai-native/assets/css/website-dark.scss
     css:
       - assets/css/tokens.css
     toc: true

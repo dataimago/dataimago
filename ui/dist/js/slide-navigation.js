@@ -1,14 +1,14 @@
 /**
  * slide-navigation.js - dataimago Design System
- * Built: 2025-09-03T20:40:08.441Z
+ * Built: 2025-09-09T17:35:53.380Z
  * Source: ui/src/js/slide-navigation.js
  */
 /**
- * Dataimago AI-Native Extension - Slide Navigation
+ * dataimago AI-Native Extension - Slide Navigation
  * Handles slide-based navigation and visual indicators
  */
 
-class DataimagoSlideNavigation {
+class dataimagoSlideNavigation {
     constructor() {
         this.currentSlide = 0;
         this.slides = [];
@@ -28,7 +28,7 @@ class DataimagoSlideNavigation {
     }
 
     setup() {
-        console.log('🧭 Initializing Dataimago Slide Navigation');
+        console.log('🧭 Initializing dataimago Slide Navigation');
         
         // Find all slides
         this.slides = document.querySelectorAll('.dataimago-slide, .lenis-slide');
@@ -285,9 +285,9 @@ class DataimagoSlideNavigation {
 }
 
 // Auto-initialize when script loads
-const dataimagoSlideNav = new DataimagoSlideNavigation();
+const dataimagoSlideNav = new dataimagoSlideNavigation();
 
 // Expose to global scope for external control
 window.dataimagoSlideNav = dataimagoSlideNav;
 
-console.log('📜 Dataimago Slide Navigation Script Loaded');
+console.log('📜 dataimago Slide Navigation Script Loaded');
