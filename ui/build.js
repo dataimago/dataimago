@@ -320,6 +320,381 @@ ${websiteFeaturesContent.replace(/\/\/ .*$/gm, '').replace(/^\s*$/gm, '').trim()
     fs.writeFileSync(path.join(config.distDir, 'website-dark.scss'), darkContent);
     
     console.log('✅ Light/Dark theme variants generated');
+    
+    // PARSIMONIOUS BUILD: Generate token-driven minimal theme files
+    console.log('🎯 Generating token-driven parsimonious Dataimago theme files...');
+    
+    // Generate parsimonious files from design tokens
+    function generateParsimoniousThemes() {
+      // Read all token files to extract values
+      const tokenFiles = ['theme-colors.json', 'frequent.json', 'typography.json'];
+      let tokens = {};
+      
+      tokenFiles.forEach(filename => {
+        const filepath = path.join(config.tokensDir, filename);
+        if (fs.existsSync(filepath)) {
+          const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+          tokens = { ...tokens, ...data };
+        }
+      });
+      
+      // Extract theme-specific values
+      const lightTheme = {
+        bodyBg: tokens.color?.surface?.page?.light || 'rgb(237, 237, 235)',
+        bodyColor: tokens.contrast?.readable?.light || 'rgb(20, 20, 16)',
+        headingsColor: tokens.contrast?.high?.light || 'rgb(20, 20, 16)',
+        navbarBg: tokens.color?.surface?.navbar?.light || 'rgb(237, 237, 235)',
+        linkColor: tokens.contrast?.medium?.light || '#7c7c7c',
+        codeColor: '#cf2976', // Keep existing brand color
+        codeBg: 'rgb(225, 225, 223)', // Derived from bodyBg
+        codeBlockBg: 'rgb(225, 225, 223)',
+        cardBorderColor: 'rgba(20, 20, 16, 0.15)', // Based on readable color
+        navbarBgScrolled: 'rgb(237, 237, 238)', // Slightly darker
+        bodyBgScrolled: 'rgb(237, 237, 238)',
+        logoDefaultFill: tokens.contrast?.medium?.light || '#83838F',
+        logoHoverFill: tokens.contrast?.high?.light || '#000000'
+      };
+      
+      const darkTheme = {
+        bodyBg: tokens.color?.surface?.page?.dark || 'rgb(20, 20, 16)',
+        bodyColor: tokens.contrast?.readable?.dark || 'rgb(237, 237, 235)',
+        headingsColor: tokens.contrast?.high?.dark || 'rgb(237, 237, 235)',
+        navbarBg: tokens.color?.surface?.navbar?.dark || 'rgb(20, 20, 16)',
+        linkColor: tokens.contrast?.medium?.dark || '#83838f',
+        codeColor: '#ff69b4', // Adjusted for dark theme
+        codeBg: 'rgb(30, 30, 26)', // Derived from bodyBg
+        codeBlockBg: 'rgb(30, 30, 26)',
+        cardBorderColor: 'rgba(237, 237, 235, 0.15)', // Based on readable color
+        navbarBgScrolled: 'rgb(25, 25, 21)', // Slightly lighter
+        bodyBgScrolled: 'rgb(25, 25, 21)',
+        logoDefaultFill: tokens.contrast?.medium?.dark || '#83838f',
+        logoHoverFill: tokens.contrast?.high?.dark || 'rgb(237, 237, 235)'
+      };
+      
+      // Typography tokens
+      const typography = {
+        headingsFontFamily: tokens.font?.family?.brand?.value || '"Josefin Sans", sans-serif',
+        headingsFontWeight: tokens.font?.weight?.medium?.value || '500',
+        h2FontSize: tokens.font?.size?.['heading-medium']?.value || '1.6rem'
+      };
+      
+      // Generate light theme content
+      const lightContent = `// Dataimago Light Theme for Quarto - Auto-generated from Design Tokens
+// Generated: ${new Date().toISOString()}
+// Source: Design tokens in /ui/src/dataimago-design/src/tokens/
+
+/*-- scss:defaults --*/
+
+// Core colors from design tokens
+$body-bg:                                 ${lightTheme.bodyBg} !default;
+$body-color:                              ${lightTheme.bodyColor} !default;
+$headings-color:                          ${lightTheme.headingsColor} !default;
+$navbar-bg:                               ${lightTheme.navbarBg} !default;
+
+// Link styling
+$link-color:                              ${lightTheme.linkColor} !default;
+$link-shade-percentage:                   30% !default;
+$link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
+
+// Code styling
+$code-color:                              ${lightTheme.codeColor} !default;
+$code-bg:                                 ${lightTheme.codeBg} !default;
+$code-block-bg:                           ${lightTheme.codeBlockBg} !default;
+
+// UI elements
+$card-border-color:                       ${lightTheme.cardBorderColor} !default;
+$form-select-border-color:                ${lightTheme.cardBorderColor} !default;
+
+// Typography
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
+$headings-font-family:                    ${typography.headingsFontFamily} !default;
+$headings-font-weight:                    ${typography.headingsFontWeight} !default;
+$h2-font-size:                           ${typography.h2FontSize} !default;
+
+// Code copy button
+$btn-code-copy-color:                     ${lightTheme.linkColor} !default;
+$btn-code-copy-color-active:              ${lightTheme.headingsColor} !default;
+
+/*-- scss:rules --*/
+
+// Minimal navbar branding
+.navbar-brand > img {
+    max-height: 36px;
+}
+
+.navbar-title {
+    font-family: ${typography.headingsFontFamily};
+    font-weight: 400;
+}
+
+// Essential logo system (dataimago's unique feature)
+.navbar-logo, .footer-logo {
+    transition: opacity 0.3s ease;
+}
+
+// Theme-specific visibility classes
+.light-mode { display: block; }
+.dark-mode { display: none; }
+
+// Code block borders
+pre {
+    border: 1px solid rgb(220, 220, 218);
+}
+
+// Link underlines in content
+.content a, main a, article a {
+    text-decoration: underline;
+}
+
+// Minimal navbar styling
+.navbar {
+    transition: background-color 0.25s ease;
+    min-height: 50px;
+}
+
+// Navbar scroll effects (shrink on scroll)
+.navbar.shrink {
+    background-color: ${lightTheme.navbarBgScrolled}; // Token-driven scrolled color
+    min-height: 0;
+    padding: 0 0;
+}
+
+.navbar-title {
+    font-size: 38px;
+    line-height: 55px;
+    transition: font-size 0.25s ease;
+}
+
+.navbar-title.shrink {
+    font-size: 32px;
+}
+
+.navbar-logo {
+    max-height: 36px;
+    transition: max-height 0.25s ease;
+}
+
+.navbar-logo.shrink {
+    max-height: 28px;
+}
+
+body.shrink {
+    background-color: ${lightTheme.bodyBgScrolled};
+    transition: background-color 0.35s ease;
+}
+
+// Custom properties for logo system and theme colors
+:root {
+    --logo-default-fill: ${lightTheme.logoDefaultFill};
+    --logo-hover-fill: ${lightTheme.logoHoverFill};
+    --navbar-bg-scrolled: ${lightTheme.navbarBgScrolled};
+}
+
+// ——— Lenis Smooth Scrolling Integration ——— 
+html.lenis, 
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+// Lenis slide system
+.dataimago-slide {
+    min-height: 100vh;
+    padding: 0;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+}
+
+// Performance optimizations
+.dataimago-slide {
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 100vh;
+}`;
+
+      // Generate dark theme content
+      const darkContent = `// Dataimago Dark Theme for Quarto - Auto-generated from Design Tokens
+// Generated: ${new Date().toISOString()}
+// Source: Design tokens in /ui/src/dataimago-design/src/tokens/
+
+/*-- scss:defaults --*/
+
+// Core colors from design tokens
+$body-bg:                                 ${darkTheme.bodyBg} !default;
+$body-color:                              ${darkTheme.bodyColor} !default;
+$headings-color:                          ${darkTheme.headingsColor} !default;
+$navbar-bg:                               ${darkTheme.navbarBg} !default;
+
+// Link styling
+$link-color:                              ${darkTheme.linkColor} !default;
+$link-shade-percentage:                   30% !default;
+$link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
+
+// Code styling
+$code-color:                              ${darkTheme.codeColor} !default;
+$code-bg:                                 ${darkTheme.codeBg} !default;
+$code-block-bg:                           ${darkTheme.codeBlockBg} !default;
+
+// UI elements
+$card-border-color:                       ${darkTheme.cardBorderColor} !default;
+$form-select-border-color:                ${darkTheme.cardBorderColor} !default;
+
+// Typography
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
+$headings-font-family:                    ${typography.headingsFontFamily} !default;
+$headings-font-weight:                    ${typography.headingsFontWeight} !default;
+$h2-font-size:                           ${typography.h2FontSize} !default;
+
+// Code copy button
+$btn-code-copy-color:                     ${darkTheme.linkColor} !default;
+$btn-code-copy-color-active:              ${darkTheme.headingsColor} !default;
+
+/*-- scss:rules --*/
+
+// Minimal navbar branding
+.navbar-brand > img {
+    max-height: 36px;
+}
+
+.navbar-title {
+    font-family: ${typography.headingsFontFamily};
+    font-weight: 400;
+}
+
+// Essential logo system (dataimago's unique feature)
+.navbar-logo, .footer-logo {
+    transition: opacity 0.3s ease;
+}
+
+// Theme-specific visibility classes
+.light-mode { display: none; }
+.dark-mode { display: block; }
+
+// Code block borders
+pre {
+    border: 1px solid rgb(40, 40, 36);
+}
+
+// Link underlines in content
+.content a, main a, article a {
+    text-decoration: underline;
+}
+
+// Minimal navbar styling
+.navbar {
+    transition: background-color 0.25s ease;
+    min-height: 50px;
+}
+
+// Navbar scroll effects (shrink on scroll)
+.navbar.shrink {
+    background-color: ${darkTheme.navbarBgScrolled}; // Token-driven scrolled color
+    min-height: 0;
+    padding: 0 0;
+}
+
+.navbar-title {
+    font-size: 38px;
+    line-height: 55px;
+    transition: font-size 0.25s ease;
+}
+
+.navbar-title.shrink {
+    font-size: 32px;
+}
+
+.navbar-logo {
+    max-height: 36px;
+    transition: max-height 0.25s ease;
+}
+
+.navbar-logo.shrink {
+    max-height: 28px;
+}
+
+body.shrink {
+    background-color: ${darkTheme.bodyBgScrolled};
+    transition: background-color 0.35s ease;
+}
+
+// Custom properties for logo system and theme colors
+:root {
+    --logo-default-fill: ${darkTheme.logoDefaultFill};
+    --logo-hover-fill: ${darkTheme.logoHoverFill};
+    --navbar-bg-scrolled: ${darkTheme.navbarBgScrolled};
+}
+
+// ——— Lenis Smooth Scrolling Integration ——— 
+html.lenis, 
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+// Lenis slide system
+.dataimago-slide {
+    min-height: 100vh;
+    padding: 0;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+}
+
+// Performance optimizations
+.dataimago-slide {
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 100vh;
+}`;
+
+      // Write the auto-generated parsimonious files
+      fs.writeFileSync(path.join(config.distDir, 'dataimago-light.scss'), lightContent);
+      fs.writeFileSync(path.join(config.distDir, 'dataimago-dark.scss'), darkContent);
+      
+      // Also update the source files for reference (optional)
+      const sourceLightPath = path.join(config.stylesDir, 'themes', 'dataimago-light.scss');
+      const sourceDarkPath = path.join(config.stylesDir, 'themes', 'dataimago-dark.scss');
+      
+      if (fs.existsSync(path.dirname(sourceLightPath))) {
+        fs.writeFileSync(sourceLightPath, lightContent);
+        fs.writeFileSync(sourceDarkPath, darkContent);
+      }
+      
+      return { lightContent, darkContent };
+    }
+    
+    try {
+      const { lightContent, darkContent } = generateParsimoniousThemes();
+      console.log('✅ Token-driven parsimonious theme files generated successfully');
+    } catch (error) {
+      console.error('❌ Parsimonious theme generation failed:', error.message);
+      console.log('⚠️ Falling back to existing files if available...');
+      
+      // Fallback to existing files
+      const dataimagoLightPath = path.join(config.stylesDir, 'themes', 'dataimago-light.scss');
+      const dataimagoDarkPath = path.join(config.stylesDir, 'themes', 'dataimago-dark.scss');
+      
+      if (fs.existsSync(dataimagoLightPath) && fs.existsSync(dataimagoDarkPath)) {
+        fs.copyFileSync(dataimagoLightPath, path.join(config.distDir, 'dataimago-light.scss'));
+        fs.copyFileSync(dataimagoDarkPath, path.join(config.distDir, 'dataimago-dark.scss'));
+        console.log('✅ Fallback: Existing parsimonious files copied');
+      }
+    }
   } else {
     console.log('⚠️ Website theme not found, skipping...');
   }
@@ -532,6 +907,7 @@ fs.writeFileSync(
 // Step 8: Distribute assets to all channels
 console.log('📦 Distributing assets to all channels...');
 
+try {
     // Collect all available files from dist directory
     const coreFiles = ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', 'website-light.scss', 'website-dark.scss'];
     const pageFiles = fs.existsSync(path.join(config.distDir))
@@ -672,11 +1048,22 @@ if (fs.existsSync(path.join(config.distDir, 'js'))) {
   });
 }
 
-console.log('✅ Asset distribution complete');
+// Copy SCSS files to CDN assets (for Quarto users)
+const projectRoot = path.join(__dirname, '..');
+const scssFilesToCdn = ['dataimago-light.scss', 'dataimago-dark.scss'];
+scssFilesToCdn.forEach(file => {
+  const srcPath = path.join(config.distDir, file);
+  const destPath = path.join(projectRoot, 'inst', 'quarto-assets', file);
+  if (fs.existsSync(srcPath) && fs.existsSync(path.dirname(destPath))) {
+    fs.copyFileSync(srcPath, destPath);
+    console.log(`   ✓ CDN SCSS: ${file} copied to inst/quarto-assets/`);
+  }
+});
 
-// Clean up temporary files
-if (fs.existsSync(mainScssPath)) {
-  fs.unlinkSync(mainScssPath);
+console.log('✅ Asset distribution complete');
+} catch (error) {
+  console.error('❌ Asset distribution failed:', error.message);
+  process.exit(1);
 }
 
 console.log('🎉 dataimago design system build complete!');

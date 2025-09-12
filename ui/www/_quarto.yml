@@ -107,10 +107,8 @@ metadata:
 format:
   html:
     theme:
-      light: _extensions/dataimago/ai-native/assets/css/website-light.scss
-      dark: _extensions/dataimago/ai-native/assets/css/website-dark.scss
-    css:
-      - assets/css/tokens.css
+      light: _extensions/dataimago/ai-native/assets/css/dataimago-light.scss
+      dark: _extensions/dataimago/ai-native/assets/css/dataimago-dark.scss
     toc: true
     toc-depth: 3
     code-copy: true

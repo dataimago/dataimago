@@ -1,0 +1,140 @@
+// Dataimago Light Theme for Quarto - Auto-generated from Design Tokens
+// Generated: 2025-09-12T19:38:17.903Z
+// Source: Design tokens in /ui/src/dataimago-design/src/tokens/
+
+/*-- scss:defaults --*/
+
+// Core colors from design tokens
+$body-bg:                                 rgb(237, 237, 235) !default;
+$body-color:                              rgb(20, 20, 16) !default;
+$headings-color:                          rgb(20, 20, 16) !default;
+$navbar-bg:                               rgb(237, 237, 235) !default;
+
+// Link styling
+$link-color:                              #7c7c7c !default;
+$link-shade-percentage:                   30% !default;
+$link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
+
+// Code styling
+$code-color:                              #cf2976 !default;
+$code-bg:                                 rgb(225, 225, 223) !default;
+$code-block-bg:                           rgb(225, 225, 223) !default;
+
+// UI elements
+$card-border-color:                       rgba(20, 20, 16, 0.15) !default;
+$form-select-border-color:                rgba(20, 20, 16, 0.15) !default;
+
+// Typography
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
+$headings-font-family:                    Josefin Sans, Inter, system-ui, sans-serif !default;
+$headings-font-weight:                    500 !default;
+$h2-font-size:                           1.875rem !default;
+
+// Code copy button
+$btn-code-copy-color:                     #7c7c7c !default;
+$btn-code-copy-color-active:              rgb(20, 20, 16) !default;
+
+/*-- scss:rules --*/
+
+// Minimal navbar branding
+.navbar-brand > img {
+    max-height: 36px;
+}
+
+.navbar-title {
+    font-family: Josefin Sans, Inter, system-ui, sans-serif;
+    font-weight: 400;
+}
+
+// Essential logo system (dataimago's unique feature)
+.navbar-logo, .footer-logo {
+    transition: opacity 0.3s ease;
+}
+
+// Theme-specific visibility classes
+.light-mode { display: block; }
+.dark-mode { display: none; }
+
+// Code block borders
+pre {
+    border: 1px solid rgb(220, 220, 218);
+}
+
+// Link underlines in content
+.content a, main a, article a {
+    text-decoration: underline;
+}
+
+// Minimal navbar styling
+.navbar {
+    transition: background-color 0.25s ease;
+    min-height: 50px;
+}
+
+// Navbar scroll effects (shrink on scroll)
+.navbar.shrink {
+    background-color: rgb(237, 237, 238); // Token-driven scrolled color
+    min-height: 0;
+    padding: 0 0;
+}
+
+.navbar-title {
+    font-size: 38px;
+    line-height: 55px;
+    transition: font-size 0.25s ease;
+}
+
+.navbar-title.shrink {
+    font-size: 32px;
+}
+
+.navbar-logo {
+    max-height: 36px;
+    transition: max-height 0.25s ease;
+}
+
+.navbar-logo.shrink {
+    max-height: 28px;
+}
+
+body.shrink {
+    background-color: rgb(237, 237, 238);
+    transition: background-color 0.35s ease;
+}
+
+// Custom properties for logo system and theme colors
+:root {
+    --logo-default-fill: #7c7c7c;
+    --logo-hover-fill: rgb(20, 20, 16);
+    --navbar-bg-scrolled: rgb(237, 237, 238);
+}
+
+// ——— Lenis Smooth Scrolling Integration ——— 
+html.lenis, 
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+// Lenis slide system
+.dataimago-slide {
+    min-height: 100vh;
+    padding: 0;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+}
+
+// Performance optimizations
+.dataimago-slide {
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 100vh;
+}

@@ -1,6 +1,6 @@
 /**
  * hero-scroller.js - dataimago Design System
- * Built: 2025-09-10T19:28:13.008Z
+ * Built: 2025-09-12T19:38:18.449Z
  * Source: ui/src/js/hero-scroller.js
  */
 /**
