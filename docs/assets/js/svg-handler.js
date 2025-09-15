@@ -1,6 +1,6 @@
 /**
  * svg-handler.js - dataimago Design System
- * Built: 2025-09-12T19:38:18.450Z
+ * Built: 2025-09-15T09:06:13.329Z
  * Source: ui/src/js/svg-handler.js
  */
 /**

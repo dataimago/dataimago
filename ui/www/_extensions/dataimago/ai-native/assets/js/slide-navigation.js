@@ -1,11 +1,10 @@
 /**
  * slide-navigation.js - dataimago Design System
- * Built: 2025-09-12T19:38:18.450Z
- * Source: ui/src/js/slide-navigation.js
+ * Source: src/js/slide-navigation.js
  */
 /**
- * dataimago AI-Native Extension - Slide Navigation
- * Handles slide-based navigation and visual indicators
+ * dataimago AI-Native Extension - Navigation Enhancements
+ * Handles slide-based navigation, visual indicators, and dropdown interactions
  */
 
 class dataimagoSlideNavigation {
@@ -48,6 +47,9 @@ class dataimagoSlideNavigation {
         
         // Setup keyboard navigation
         this.setupKeyboardNavigation();
+        
+        // Setup dropdown navigation enhancements
+        this.setupDropdownNavigation();
         
         console.log('✅ Slide Navigation initialized');
     }
@@ -249,6 +251,75 @@ class dataimagoSlideNavigation {
                           `Section ${slideIndex + 1}`;
         
         liveRegion.textContent = `Now viewing: ${slideTitle}. Slide ${slideIndex + 1} of ${this.slides.length}`;
+    }
+
+    setupDropdownNavigation() {
+        console.log('🔽 Setting up dropdown navigation enhancements');
+        
+        // Wait for jQuery if not available yet
+        if (typeof $ === 'undefined') {
+            console.warn('⚠️ jQuery not available, dropdown enhancements disabled');
+            return;
+        }
+        
+        // Use MutationObserver to watch for changes in dropdown state
+        const observeDropdownChanges = () => {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes') {
+                        const $target = $(mutation.target);
+                        if ($target.hasClass('dropdown-toggle')) {
+                            const $dropdown = $target.closest('.dropdown, .nav-item');
+                            const isExpanded = $target.attr('aria-expanded') === 'true';
+                            
+                            if (isExpanded) {
+                                $dropdown.addClass('open');
+                            } else {
+                                $dropdown.removeClass('open');
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // Observe all dropdown toggles for aria-expanded changes
+            $('.navbar-nav .dropdown-toggle').each(function() {
+                observer.observe(this, { 
+                    attributes: true, 
+                    attributeFilter: ['aria-expanded'] 
+                });
+            });
+        };
+        
+        // Initialize observer
+        observeDropdownChanges();
+        
+        // Fallback: Listen for click events and check state after a brief delay
+        $('.navbar-nav .dropdown-toggle').on('click', function() {
+            const $this = $(this);
+            const $dropdown = $this.closest('.dropdown, .nav-item');
+            
+            // Check state after Quarto/Bootstrap has processed the click
+            setTimeout(() => {
+                const isExpanded = $this.attr('aria-expanded') === 'true';
+                if (isExpanded) {
+                    $dropdown.addClass('open');
+                } else {
+                    $dropdown.removeClass('open');
+                }
+            }, 50);
+        });
+        
+        // Handle Bootstrap dropdown events if they exist
+        $('.navbar-nav .dropdown, .navbar-nav .nav-item').on('show.bs.dropdown', function() {
+            $(this).addClass('open');
+        });
+        
+        $('.navbar-nav .dropdown, .navbar-nav .nav-item').on('hide.bs.dropdown', function() {
+            $(this).removeClass('open');
+        });
+        
+        console.log('✅ Dropdown navigation enhancements initialized');
     }
 
     // Public API methods

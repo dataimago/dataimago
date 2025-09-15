@@ -1,140 +1,21 @@
-// Dataimago Dark Theme for Quarto - Auto-generated from Design Tokens
-// Generated: 2025-09-12T19:38:17.904Z
-// Source: Design tokens in /ui/src/dataimago-design/src/tokens/
+// Dataimago Dark Theme for Quarto - Generated from Design Tokens
 
 /*-- scss:defaults --*/
-
-// Core colors from design tokens
-$body-bg:                                 rgb(20, 20, 16) !default;
-$body-color:                              rgb(237, 237, 235) !default;
-$headings-color:                          rgb(237, 237, 235) !default;
-$navbar-bg:                               rgb(20, 20, 16) !default;
-
-// Link styling
-$link-color:                              #83838f !default;
-$link-shade-percentage:                   30% !default;
-$link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
-
-// Code styling
-$code-color:                              #ff69b4 !default;
-$code-bg:                                 rgb(30, 30, 26) !default;
-$code-block-bg:                           rgb(30, 30, 26) !default;
-
-// UI elements
-$card-border-color:                       rgba(237, 237, 235, 0.15) !default;
-$form-select-border-color:                rgba(237, 237, 235, 0.15) !default;
-
-// Typography
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
-$headings-font-family:                    Josefin Sans, Inter, system-ui, sans-serif !default;
-$headings-font-weight:                    500 !default;
-$h2-font-size:                           1.875rem !default;
-
-// Code copy button
-$btn-code-copy-color:                     #83838f !default;
-$btn-code-copy-color-active:              rgb(237, 237, 235) !default;
+$body-bg: rgb(20, 20, 16) !default;
+$body-color: rgb(237, 237, 235) !default;
+$headings-color: rgb(237, 237, 235) !default;
+$navbar-bg: rgb(20, 20, 16) !default;
+$link-color: #83838f !default;
+$code-color: #ff69b4 !default;
+$code-bg: rgb(30, 30, 26) !default;
+$headings-font-family: Josefin Sans, Inter, system-ui, sans-serif !default;
+$headings-font-weight: 500 !default;
+$h2-font-size: 1.875rem !default;
 
 /*-- scss:rules --*/
-
-// Minimal navbar branding
-.navbar-brand > img {
-    max-height: 36px;
-}
-
-.navbar-title {
-    font-family: Josefin Sans, Inter, system-ui, sans-serif;
-    font-weight: 400;
-}
-
-// Essential logo system (dataimago's unique feature)
-.navbar-logo, .footer-logo {
-    transition: opacity 0.3s ease;
-}
-
-// Theme-specific visibility classes
+.navbar-logo { max-height: 36px; transition: max-height 0.25s ease; }
+.navbar-title { font-family: Josefin Sans, Inter, system-ui, sans-serif; font-weight: 400; }
 .light-mode { display: none; }
 .dark-mode { display: block; }
-
-// Code block borders
-pre {
-    border: 1px solid rgb(40, 40, 36);
-}
-
-// Link underlines in content
-.content a, main a, article a {
-    text-decoration: underline;
-}
-
-// Minimal navbar styling
-.navbar {
-    transition: background-color 0.25s ease;
-    min-height: 50px;
-}
-
-// Navbar scroll effects (shrink on scroll)
-.navbar.shrink {
-    background-color: rgb(25, 25, 21); // Token-driven scrolled color
-    min-height: 0;
-    padding: 0 0;
-}
-
-.navbar-title {
-    font-size: 38px;
-    line-height: 55px;
-    transition: font-size 0.25s ease;
-}
-
-.navbar-title.shrink {
-    font-size: 32px;
-}
-
-.navbar-logo {
-    max-height: 36px;
-    transition: max-height 0.25s ease;
-}
-
-.navbar-logo.shrink {
-    max-height: 28px;
-}
-
-body.shrink {
-    background-color: rgb(25, 25, 21);
-    transition: background-color 0.35s ease;
-}
-
-// Custom properties for logo system and theme colors
-:root {
-    --logo-default-fill: #83838f;
-    --logo-hover-fill: rgb(237, 237, 235);
-    --navbar-bg-scrolled: rgb(25, 25, 21);
-}
-
-// ——— Lenis Smooth Scrolling Integration ——— 
-html.lenis, 
-html.lenis body {
-    height: auto;
-}
-
-.lenis.lenis-smooth {
-    scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-    overscroll-behavior: contain;
-}
-
-// Lenis slide system
-.dataimago-slide {
-    min-height: 100vh;
-    padding: 0;
-    scroll-snap-align: start;
-    position: relative;
-    overflow: hidden;
-}
-
-// Performance optimizations
-.dataimago-slide {
-    contain: layout style paint;
-    content-visibility: auto;
-    contain-intrinsic-size: 100vh;
-}
+pre { border: 1px solid rgb(40, 40, 36); }
+:root { --logo-default-fill: #83838f; --logo-hover-fill: rgb(237, 237, 235); }

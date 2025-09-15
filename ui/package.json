@@ -2,9 +2,10 @@
   "name": "@dataimago/design-system",
   "private": true,
   "version": "0.1.0",
-  "description": "dataimago ethical AI design system - CSS compilation workspace",
+  "description": "dataimago AI-native application development framework design system - CSS compilation workspace",
   "scripts": {
     "build": "node build.js",
+    "build-legacy": "node build-legacy.js",
     "watch": "node build.js --watch",
     "clean": "rm -rf dist/*",
     "tokens": "style-dictionary build"

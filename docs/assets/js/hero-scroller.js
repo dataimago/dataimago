@@ -1,7 +1,6 @@
 /**
  * hero-scroller.js - dataimago Design System
- * Built: 2025-09-12T19:38:18.449Z
- * Source: ui/src/js/hero-scroller.js
+ * Source: src/js/hero-scroller.js
  */
 /**
  * dataimago AI-Native Extension - Hero Scroller
