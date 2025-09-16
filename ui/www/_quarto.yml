@@ -27,7 +27,7 @@ references:
 website:
   site-url: "https://dataimago.github.io/dataimago/"
   repo-url: "https://github.com/dataimago/dataimago"
-  title: "dataimago: Ethical AI-Native Data Science Foundation Package"
+  title: "dataimago: An AI-Native Application Development Framework for Data Science"
   description: "An emancipatory AI-aligned performance management system built on flow-based analytics and critical theory principles"
   favicon: /assets/img/ai_monogram_supreme_favicon.png
   repo-actions: none
@@ -114,7 +114,6 @@ format:
     code-copy: true
     code-overflow: wrap
     include-after: |
-      <meta name="dataimago-skip-links" content="false">
       <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,600" rel="stylesheet" type="text/css">
       <script src="https://unpkg.com/lenis@1.3.8/dist/lenis.min.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

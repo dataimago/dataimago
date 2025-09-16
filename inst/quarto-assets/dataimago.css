@@ -1,11 +1,28 @@
+/*
+ * dataimago Design Tokens - P3/OKLCH Enhanced
+ * 
+ * This CSS includes wide-gamut color support:
+ * - sRGB fallbacks for compatibility
+ * - OKLCH values for modern displays
+ * - Automatic browser detection and fallback
+ * 
+ * Browsers automatically use the most capable color space available.
+ */
 :root {
-  --color-brand-dataimago-primary: #3498DB;
-  --color-brand-dataimago-accent: #ff69b4;
-  --color-brand-dataimago-ethical: #E74C3C;
-  --color-functional-success: #27AE60;
-  --color-functional-warning: #F39C12;
-  --color-functional-error: #E74C3C;
-  --color-functional-info: #3498DB;
+  --color-brand-dataimago-primary: #3498DB; /* sRGB fallback */
+  --color-brand-dataimago-primary: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
+  --color-brand-dataimago-accent: #ff69b4; /* sRGB fallback */
+  --color-brand-dataimago-accent: oklch(0.655 0.434 350.6); /* OKLCH enhanced */
+  --color-brand-dataimago-ethical: #E74C3C; /* sRGB fallback */
+  --color-brand-dataimago-ethical: oklch(0.545 0.485 35.9); /* OKLCH enhanced */
+  --color-functional-success: #27AE60; /* sRGB fallback */
+  --color-functional-success: oklch(0.630 0.405 150.3); /* OKLCH enhanced */
+  --color-functional-warning: #F39C12; /* sRGB fallback */
+  --color-functional-warning: oklch(0.715 0.516 72.1); /* OKLCH enhanced */
+  --color-functional-error: #E74C3C; /* sRGB fallback */
+  --color-functional-error: oklch(0.545 0.485 35.9); /* OKLCH enhanced */
+  --color-functional-info: #3498DB; /* sRGB fallback */
+  --color-functional-info: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
   --font-family-sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --font-family-mono: JetBrains Mono, SF Mono, Monaco, Inconsolata, monospace;
   --font-family-display: Inter, system-ui, sans-serif;
@@ -29,36 +46,66 @@
 }
 
 :root, [data-bs-theme=light] {
-  --color-surface-page: rgb(237, 237, 235);
-  --color-surface-page-scrolled: rgb(237, 237, 235);
-  --color-surface-elevated: rgba(237, 237, 235, 0.9);
-  --color-surface-sunken: rgba(237, 237, 235, 0.9);
-  --color-content-primary: rgb(20, 20, 16);
-  --color-content-secondary: #7c7c7c;
-  --color-content-muted: #7c7c7c;
-  --color-content-inverse: rgb(20, 20, 16);
-  --color-interactive-primary: #3498DB;
-  --color-interactive-hover: #2980B9;
-  --color-interactive-accent: #ff69b4;
-  --color-interactive-focus: #3498DB;
-  --color-border-subtle: rgba(20, 20, 16, 0.1);
-  --color-border-moderate: rgba(20, 20, 16, 0.15);
-  --color-border-strong: rgba(20, 20, 16, 0.25);
-  --color-surface-page: rgb(237, 237, 235);
-  --color-surface-page-scrolled: rgb(237, 237, 235);
-  --color-surface-elevated: rgba(237, 237, 235, 0.9);
-  --color-surface-navbar: rgb(237, 237, 235);
-  --color-surface-navbar-scrolled: rgb(237, 237, 235);
-  --color-surface-code: rgb(225, 225, 223);
-  --color-border-card: rgba(20, 20, 16, 0.15);
-  --color-border-code: rgb(220, 220, 218);
-  --color-content-primary: rgb(20, 20, 16);
-  --color-content-secondary: #7c7c7c;
-  --color-content-muted: #7c7c7c;
-  --color-content-inverse: rgb(237, 237, 235);
-  --color-interactive-primary: #3498DB;
-  --color-interactive-accent: #ff69b4;
-  --color-interactive-hover: rgb(20, 20, 16);
+  --color-surface-page: rgb(237, 237, 235); /* sRGB fallback */
+  --color-surface-page: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-surface-page-scrolled: rgb(237, 237, 235); /* sRGB fallback */
+  --color-surface-page-scrolled: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-surface-elevated: rgba(237, 237, 235, 0.9); /* sRGB fallback */
+  --color-surface-elevated: oklch(0.937 0.007 110.1 / 0.9); /* OKLCH enhanced */
+  --color-surface-sunken: rgba(237, 237, 235, 0.9); /* sRGB fallback */
+  --color-surface-sunken: oklch(0.937 0.007 110.1 / 0.9); /* OKLCH enhanced */
+  --color-content-primary: rgb(20, 20, 16); /* sRGB fallback */
+  --color-content-primary: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-content-secondary: #7c7c7c; /* sRGB fallback */
+  --color-content-secondary: oklch(0.520 0.000 158.2); /* OKLCH enhanced */
+  --color-content-muted: #7c7c7c; /* sRGB fallback */
+  --color-content-muted: oklch(0.520 0.000 158.2); /* OKLCH enhanced */
+  --color-content-inverse: rgb(20, 20, 16); /* sRGB fallback */
+  --color-content-inverse: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-interactive-primary: #3498DB; /* sRGB fallback */
+  --color-interactive-primary: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
+  --color-interactive-hover: #2980B9; /* sRGB fallback */
+  --color-interactive-hover: oklch(0.512 0.251 261.3); /* OKLCH enhanced */
+  --color-interactive-accent: #ff69b4; /* sRGB fallback */
+  --color-interactive-accent: oklch(0.655 0.434 350.6); /* OKLCH enhanced */
+  --color-interactive-focus: #3498DB; /* sRGB fallback */
+  --color-interactive-focus: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
+  --color-border-subtle: rgba(20, 20, 16, 0.1); /* sRGB fallback */
+  --color-border-subtle: oklch(0.062 0.016 110.2 / 0.1); /* OKLCH enhanced */
+  --color-border-moderate: rgba(20, 20, 16, 0.15); /* sRGB fallback */
+  --color-border-moderate: oklch(0.062 0.016 110.2 / 0.15); /* OKLCH enhanced */
+  --color-border-strong: rgba(20, 20, 16, 0.25); /* sRGB fallback */
+  --color-border-strong: oklch(0.062 0.016 110.2 / 0.25); /* OKLCH enhanced */
+  --color-surface-page: rgb(237, 237, 235); /* sRGB fallback */
+  --color-surface-page: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-surface-page-scrolled: rgb(237, 237, 235); /* sRGB fallback */
+  --color-surface-page-scrolled: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-surface-elevated: rgba(237, 237, 235, 0.9); /* sRGB fallback */
+  --color-surface-elevated: oklch(0.937 0.007 110.1 / 0.9); /* OKLCH enhanced */
+  --color-surface-navbar: rgb(237, 237, 235); /* sRGB fallback */
+  --color-surface-navbar: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-surface-navbar-scrolled: rgb(237, 237, 235); /* sRGB fallback */
+  --color-surface-navbar-scrolled: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-surface-code: rgb(225, 225, 223); /* sRGB fallback */
+  --color-surface-code: oklch(0.895 0.007 110.1); /* OKLCH enhanced */
+  --color-border-card: rgba(20, 20, 16, 0.15); /* sRGB fallback */
+  --color-border-card: oklch(0.062 0.016 110.2 / 0.15); /* OKLCH enhanced */
+  --color-border-code: rgb(220, 220, 218); /* sRGB fallback */
+  --color-border-code: oklch(0.877 0.007 110.1); /* OKLCH enhanced */
+  --color-content-primary: rgb(20, 20, 16); /* sRGB fallback */
+  --color-content-primary: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-content-secondary: #7c7c7c; /* sRGB fallback */
+  --color-content-secondary: oklch(0.520 0.000 158.2); /* OKLCH enhanced */
+  --color-content-muted: #7c7c7c; /* sRGB fallback */
+  --color-content-muted: oklch(0.520 0.000 158.2); /* OKLCH enhanced */
+  --color-content-inverse: rgb(237, 237, 235); /* sRGB fallback */
+  --color-content-inverse: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-interactive-primary: #3498DB; /* sRGB fallback */
+  --color-interactive-primary: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
+  --color-interactive-accent: #ff69b4; /* sRGB fallback */
+  --color-interactive-accent: oklch(0.655 0.434 350.6); /* OKLCH enhanced */
+  --color-interactive-hover: rgb(20, 20, 16); /* sRGB fallback */
+  --color-interactive-hover: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
   --contrast-high: rgb(20, 20, 16);
   --contrast-readable: rgb(20, 20, 16);
   --contrast-medium: #7c7c7c;
@@ -74,36 +121,66 @@
 }
 
 [data-bs-theme=dark] {
-  --color-surface-page: rgb(20, 20, 16);
-  --color-surface-page-scrolled: rgb(20, 20, 16);
-  --color-surface-elevated: rgba(20, 20, 16, 0.9);
-  --color-surface-sunken: rgba(20, 20, 16, 0.9);
-  --color-content-primary: rgb(237, 237, 235);
-  --color-content-secondary: #83838f;
-  --color-content-muted: #83838f;
-  --color-content-inverse: rgb(237, 237, 235);
-  --color-interactive-primary: #3498DB;
-  --color-interactive-hover: #4FC3F7;
-  --color-interactive-accent: #ff69b4;
-  --color-interactive-focus: #4FC3F7;
-  --color-border-subtle: rgba(237, 237, 235, 0.1);
-  --color-border-moderate: rgba(237, 237, 235, 0.15);
-  --color-border-strong: rgba(237, 237, 235, 0.25);
-  --color-surface-page: rgb(20, 20, 16);
-  --color-surface-page-scrolled: rgb(20, 20, 16);
-  --color-surface-elevated: rgba(20, 20, 16, 0.9);
-  --color-surface-navbar: rgb(20, 20, 16);
-  --color-surface-navbar-scrolled: rgb(20, 20, 16);
-  --color-surface-code: rgb(30, 30, 26);
-  --color-border-card: rgba(237, 237, 235, 0.15);
-  --color-border-code: rgb(40, 40, 36);
-  --color-content-primary: rgb(237, 237, 235);
-  --color-content-secondary: #83838f;
-  --color-content-muted: #83838f;
-  --color-content-inverse: rgb(20, 20, 16);
-  --color-interactive-primary: #3498DB;
-  --color-interactive-accent: #ff69b4;
-  --color-interactive-hover: rgb(237, 237, 235);
+  --color-surface-page: rgb(20, 20, 16); /* sRGB fallback */
+  --color-surface-page: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-surface-page-scrolled: rgb(20, 20, 16); /* sRGB fallback */
+  --color-surface-page-scrolled: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-surface-elevated: rgba(20, 20, 16, 0.9); /* sRGB fallback */
+  --color-surface-elevated: oklch(0.062 0.016 110.2 / 0.9); /* OKLCH enhanced */
+  --color-surface-sunken: rgba(20, 20, 16, 0.9); /* sRGB fallback */
+  --color-surface-sunken: oklch(0.062 0.016 110.2 / 0.9); /* OKLCH enhanced */
+  --color-content-primary: rgb(237, 237, 235); /* sRGB fallback */
+  --color-content-primary: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-content-secondary: #83838f; /* sRGB fallback */
+  --color-content-secondary: oklch(0.551 0.046 291.0); /* OKLCH enhanced */
+  --color-content-muted: #83838f; /* sRGB fallback */
+  --color-content-muted: oklch(0.551 0.046 291.0); /* OKLCH enhanced */
+  --color-content-inverse: rgb(237, 237, 235); /* sRGB fallback */
+  --color-content-inverse: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-interactive-primary: #3498DB; /* sRGB fallback */
+  --color-interactive-primary: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
+  --color-interactive-hover: #4FC3F7; /* sRGB fallback */
+  --color-interactive-hover: oklch(0.744 0.260 244.7); /* OKLCH enhanced */
+  --color-interactive-accent: #ff69b4; /* sRGB fallback */
+  --color-interactive-accent: oklch(0.655 0.434 350.6); /* OKLCH enhanced */
+  --color-interactive-focus: #4FC3F7; /* sRGB fallback */
+  --color-interactive-focus: oklch(0.744 0.260 244.7); /* OKLCH enhanced */
+  --color-border-subtle: rgba(237, 237, 235, 0.1); /* sRGB fallback */
+  --color-border-subtle: oklch(0.937 0.007 110.1 / 0.1); /* OKLCH enhanced */
+  --color-border-moderate: rgba(237, 237, 235, 0.15); /* sRGB fallback */
+  --color-border-moderate: oklch(0.937 0.007 110.1 / 0.15); /* OKLCH enhanced */
+  --color-border-strong: rgba(237, 237, 235, 0.25); /* sRGB fallback */
+  --color-border-strong: oklch(0.937 0.007 110.1 / 0.25); /* OKLCH enhanced */
+  --color-surface-page: rgb(20, 20, 16); /* sRGB fallback */
+  --color-surface-page: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-surface-page-scrolled: rgb(20, 20, 16); /* sRGB fallback */
+  --color-surface-page-scrolled: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-surface-elevated: rgba(20, 20, 16, 0.9); /* sRGB fallback */
+  --color-surface-elevated: oklch(0.062 0.016 110.2 / 0.9); /* OKLCH enhanced */
+  --color-surface-navbar: rgb(20, 20, 16); /* sRGB fallback */
+  --color-surface-navbar: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-surface-navbar-scrolled: rgb(20, 20, 16); /* sRGB fallback */
+  --color-surface-navbar-scrolled: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-surface-code: rgb(30, 30, 26); /* sRGB fallback */
+  --color-surface-code: oklch(0.111 0.019 109.2); /* OKLCH enhanced */
+  --color-border-card: rgba(237, 237, 235, 0.15); /* sRGB fallback */
+  --color-border-card: oklch(0.937 0.007 110.1 / 0.15); /* OKLCH enhanced */
+  --color-border-code: rgb(40, 40, 36); /* sRGB fallback */
+  --color-border-code: oklch(0.160 0.019 109.4); /* OKLCH enhanced */
+  --color-content-primary: rgb(237, 237, 235); /* sRGB fallback */
+  --color-content-primary: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+  --color-content-secondary: #83838f; /* sRGB fallback */
+  --color-content-secondary: oklch(0.551 0.046 291.0); /* OKLCH enhanced */
+  --color-content-muted: #83838f; /* sRGB fallback */
+  --color-content-muted: oklch(0.551 0.046 291.0); /* OKLCH enhanced */
+  --color-content-inverse: rgb(20, 20, 16); /* sRGB fallback */
+  --color-content-inverse: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+  --color-interactive-primary: #3498DB; /* sRGB fallback */
+  --color-interactive-primary: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
+  --color-interactive-accent: #ff69b4; /* sRGB fallback */
+  --color-interactive-accent: oklch(0.655 0.434 350.6); /* OKLCH enhanced */
+  --color-interactive-hover: rgb(237, 237, 235); /* sRGB fallback */
+  --color-interactive-hover: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
   --contrast-high: rgb(237, 237, 235);
   --contrast-readable: rgb(237, 237, 235);
   --contrast-medium: #83838f;
@@ -120,36 +197,66 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-surface-page: rgb(20, 20, 16);
-    --color-surface-page-scrolled: rgb(20, 20, 16);
-    --color-surface-elevated: rgba(20, 20, 16, 0.9);
-    --color-surface-sunken: rgba(20, 20, 16, 0.9);
-    --color-content-primary: rgb(237, 237, 235);
-    --color-content-secondary: #83838f;
-    --color-content-muted: #83838f;
-    --color-content-inverse: rgb(237, 237, 235);
-    --color-interactive-primary: #3498DB;
-    --color-interactive-hover: #4FC3F7;
-    --color-interactive-accent: #ff69b4;
-    --color-interactive-focus: #4FC3F7;
-    --color-border-subtle: rgba(237, 237, 235, 0.1);
-    --color-border-moderate: rgba(237, 237, 235, 0.15);
-    --color-border-strong: rgba(237, 237, 235, 0.25);
-    --color-surface-page: rgb(20, 20, 16);
-    --color-surface-page-scrolled: rgb(20, 20, 16);
-    --color-surface-elevated: rgba(20, 20, 16, 0.9);
-    --color-surface-navbar: rgb(20, 20, 16);
-    --color-surface-navbar-scrolled: rgb(20, 20, 16);
-    --color-surface-code: rgb(30, 30, 26);
-    --color-border-card: rgba(237, 237, 235, 0.15);
-    --color-border-code: rgb(40, 40, 36);
-    --color-content-primary: rgb(237, 237, 235);
-    --color-content-secondary: #83838f;
-    --color-content-muted: #83838f;
-    --color-content-inverse: rgb(20, 20, 16);
-    --color-interactive-primary: #3498DB;
-    --color-interactive-accent: #ff69b4;
-    --color-interactive-hover: rgb(237, 237, 235);
+    --color-surface-page: rgb(20, 20, 16); /* sRGB fallback */
+    --color-surface-page: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+    --color-surface-page-scrolled: rgb(20, 20, 16); /* sRGB fallback */
+    --color-surface-page-scrolled: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+    --color-surface-elevated: rgba(20, 20, 16, 0.9); /* sRGB fallback */
+    --color-surface-elevated: oklch(0.062 0.016 110.2 / 0.9); /* OKLCH enhanced */
+    --color-surface-sunken: rgba(20, 20, 16, 0.9); /* sRGB fallback */
+    --color-surface-sunken: oklch(0.062 0.016 110.2 / 0.9); /* OKLCH enhanced */
+    --color-content-primary: rgb(237, 237, 235); /* sRGB fallback */
+    --color-content-primary: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+    --color-content-secondary: #83838f; /* sRGB fallback */
+    --color-content-secondary: oklch(0.551 0.046 291.0); /* OKLCH enhanced */
+    --color-content-muted: #83838f; /* sRGB fallback */
+    --color-content-muted: oklch(0.551 0.046 291.0); /* OKLCH enhanced */
+    --color-content-inverse: rgb(237, 237, 235); /* sRGB fallback */
+    --color-content-inverse: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+    --color-interactive-primary: #3498DB; /* sRGB fallback */
+    --color-interactive-primary: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
+    --color-interactive-hover: #4FC3F7; /* sRGB fallback */
+    --color-interactive-hover: oklch(0.744 0.260 244.7); /* OKLCH enhanced */
+    --color-interactive-accent: #ff69b4; /* sRGB fallback */
+    --color-interactive-accent: oklch(0.655 0.434 350.6); /* OKLCH enhanced */
+    --color-interactive-focus: #4FC3F7; /* sRGB fallback */
+    --color-interactive-focus: oklch(0.744 0.260 244.7); /* OKLCH enhanced */
+    --color-border-subtle: rgba(237, 237, 235, 0.1); /* sRGB fallback */
+    --color-border-subtle: oklch(0.937 0.007 110.1 / 0.1); /* OKLCH enhanced */
+    --color-border-moderate: rgba(237, 237, 235, 0.15); /* sRGB fallback */
+    --color-border-moderate: oklch(0.937 0.007 110.1 / 0.15); /* OKLCH enhanced */
+    --color-border-strong: rgba(237, 237, 235, 0.25); /* sRGB fallback */
+    --color-border-strong: oklch(0.937 0.007 110.1 / 0.25); /* OKLCH enhanced */
+    --color-surface-page: rgb(20, 20, 16); /* sRGB fallback */
+    --color-surface-page: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+    --color-surface-page-scrolled: rgb(20, 20, 16); /* sRGB fallback */
+    --color-surface-page-scrolled: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+    --color-surface-elevated: rgba(20, 20, 16, 0.9); /* sRGB fallback */
+    --color-surface-elevated: oklch(0.062 0.016 110.2 / 0.9); /* OKLCH enhanced */
+    --color-surface-navbar: rgb(20, 20, 16); /* sRGB fallback */
+    --color-surface-navbar: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+    --color-surface-navbar-scrolled: rgb(20, 20, 16); /* sRGB fallback */
+    --color-surface-navbar-scrolled: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+    --color-surface-code: rgb(30, 30, 26); /* sRGB fallback */
+    --color-surface-code: oklch(0.111 0.019 109.2); /* OKLCH enhanced */
+    --color-border-card: rgba(237, 237, 235, 0.15); /* sRGB fallback */
+    --color-border-card: oklch(0.937 0.007 110.1 / 0.15); /* OKLCH enhanced */
+    --color-border-code: rgb(40, 40, 36); /* sRGB fallback */
+    --color-border-code: oklch(0.160 0.019 109.4); /* OKLCH enhanced */
+    --color-content-primary: rgb(237, 237, 235); /* sRGB fallback */
+    --color-content-primary: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
+    --color-content-secondary: #83838f; /* sRGB fallback */
+    --color-content-secondary: oklch(0.551 0.046 291.0); /* OKLCH enhanced */
+    --color-content-muted: #83838f; /* sRGB fallback */
+    --color-content-muted: oklch(0.551 0.046 291.0); /* OKLCH enhanced */
+    --color-content-inverse: rgb(20, 20, 16); /* sRGB fallback */
+    --color-content-inverse: oklch(0.062 0.016 110.2); /* OKLCH enhanced */
+    --color-interactive-primary: #3498DB; /* sRGB fallback */
+    --color-interactive-primary: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
+    --color-interactive-accent: #ff69b4; /* sRGB fallback */
+    --color-interactive-accent: oklch(0.655 0.434 350.6); /* OKLCH enhanced */
+    --color-interactive-hover: rgb(237, 237, 235); /* sRGB fallback */
+    --color-interactive-hover: oklch(0.937 0.007 110.1); /* OKLCH enhanced */
     --contrast-high: rgb(237, 237, 235);
     --contrast-readable: rgb(237, 237, 235);
     --contrast-medium: #83838f;
