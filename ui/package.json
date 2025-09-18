@@ -8,7 +8,9 @@
     "build-legacy": "node build-legacy.js",
     "watch": "node build.js --watch",
     "clean": "rm -rf dist/*",
-    "tokens": "style-dictionary build"
+    "tokens": "style-dictionary build",
+    "postcss": "postcss",
+    "optimize": "postcss dist/*.css --dir dist --config postcss.config.js"
   },
   "keywords": ["dataimago", "design-system", "css", "ai-native", "ethical-ai"],
   "devDependencies": {
@@ -17,6 +19,9 @@
     "postcss": "^8.4.0",
     "autoprefixer": "^10.4.0",
     "cssnano": "^6.0.0",
-    "postcss-cli": "^11.0.0"
+    "postcss-cli": "^11.0.0",
+    "@fullhuman/postcss-purgecss": "^5.0.0",
+    "postcss-custom-properties": "^13.0.0",
+    "postcss-color-function": "^4.1.0"
   }
 }

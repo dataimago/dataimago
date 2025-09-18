@@ -17,7 +17,6 @@ contributes:
           - assets/css/components.scss
         js:
           - assets/js/lenis-integration.js
-          - assets/js/slide-navigation.js
           - assets/js/hero-scroller.js
           - assets/js/accessibility.js
 

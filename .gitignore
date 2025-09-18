@@ -1,1 +1,294 @@
+# =============================================================================
+# dataimago R Package .gitignore
+# Comprehensive exclusions for R package + Node.js design system + Quarto
+# =============================================================================
+
+# =============================================================================
+# SYSTEM FILES
+# =============================================================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# =============================================================================
+# R PACKAGE SPECIFIC
+# =============================================================================
+# R session data
+.Rdata
+.RData
+.Rhistory
+.Rapp.history
+
+# R temporary files
+*.Rout
+*.Rcheck/
+*.tar.gz
+
+# R environment and project files
+.Renviron
+.Rprofile
+.Rproj.user/
+*.Rproj
+
+# R build artifacts
+/Meta/
+/doc/
+/src/*.o
+/src/*.so
+/src/*.dll
+
+# R package check directories
+*.Rcheck/
+
+# =============================================================================
+# NODE.JS / UI WORKSPACE
+# =============================================================================
+# Dependencies
+ui/node_modules/
+ui/src/dataimago-design/node_modules/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Package managers
+.pnpm-store/
+.yarn/
+.npm/
+
+# Build outputs (REGENERABLE - as noted in README)
+ui/dist/
+ui/build/
+
+# Temporary files
+ui/temp/
+ui/tmp/
+ui/.cache/
+ui/.temp/
+
+# Environment files
+ui/.env
+ui/.env.local
+ui/.env.development.local
+ui/.env.test.local
+ui/.env.production.local
+
+# =============================================================================
+# QUARTO DOCUMENTATION SYSTEM
+# =============================================================================
+# KEEP: docs/ - This is the rendered website for GitHub Pages!
+# Exclude alternative Quarto output directories
+_site/
+
+# Quarto internal directories
+/.quarto/
+.quarto/
+ui/www/.quarto/
+
+# Quarto freeze directory (computational cache)
+_freeze/
+
+# Quarto temporary files
+.quarto-cache/
+.quarto-uuid
+
+# =============================================================================
+# DESIGN SYSTEM BUILD ARTIFACTS
+# =============================================================================
+# PostCSS cache
+.postcssrc.js.cache
+
+# Sass cache
+.sass-cache/
+*.css.map
+
+# Style Dictionary cache
+.style-dictionary-cache/
+
+# Source maps (can be regenerated)
+*.map
+
+# =============================================================================
+# DEVELOPMENT TOOLS
+# =============================================================================
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Editor backup files
+*.bak
+*.orig
+*.tmp
+
+# =============================================================================
+# LOGS AND DEBUGGING
+# =============================================================================
+# Log files
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# =============================================================================
+# SECURITY AND CREDENTIALS
+# =============================================================================
+# API keys and secrets
+.env
+.env.local
+.env.*.local
+secrets.json
+config/secrets/
+
+# SSH keys
+*.pem
+*.key
+!*.key.example
+
+# =============================================================================
+# PERFORMANCE AND OPTIMIZATION
+# =============================================================================
+# Performance monitoring
+.clinic/
+.nyc_output/
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# =============================================================================
+# TESTING AND CI/CD
+# =============================================================================
+# Test outputs
+test-results/
+coverage/
+.coverage/
+junit.xml
+
+# GitHub Actions artifacts (local testing)
+.github/workflows/artifacts/
+
+# =============================================================================
+# DISTRIBUTION ARTIFACTS (Keep these - they're critical!)
+# =============================================================================
+# KEEP: docs/ - GitHub Pages website (CRITICAL FOR HOSTING)
+# KEEP: inst/quarto-assets/ - CDN distribution (as noted in README)
+# KEEP: ui/www/_extensions/ - Quarto extension (as noted in README)
+# KEEP: ui/src/ - Source of truth (as noted in README)
+
+# But exclude temporary build files within these directories
+inst/quarto-assets/*.tmp
+inst/quarto-assets/temp/
+ui/www/_extensions/temp/
+ui/www/_extensions/*/temp/
+
+# =============================================================================
+# PLATFORM SPECIFIC
+# =============================================================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# =============================================================================
+# PACKAGE MANAGERS AND TOOLS
+# =============================================================================
+# npm
+.npm/
+.npmrc
+
+# Yarn
+.yarn/
+.yarnrc
+yarn-error.log
+
+# pnpm
+.pnpm-store/
+.pnpm-debug.log*
+
+# Rush
+common/temp/
+
+# =============================================================================
+# DOCUMENTATION BUILD ARTIFACTS
+# =============================================================================
+# Rendered documentation (can be regenerated)
+man/*.html
+
+# Pkgdown site (if using pkgdown)
+docs/pkgdown/
+
+# Bookdown outputs
+_book/
+_bookdown_files/
+
+# =============================================================================
+# CUSTOM DATAIMAGO EXCLUSIONS
+# =============================================================================
+# Temporary design system files
+ui/temp-*.css
+ui/temp-*.scss
+ui/debug-*.json
+
+# Build metadata (regenerable)
+ui/build-info.json
+ui/last-build.timestamp
+
+# Development artifacts
+dev-notes.md
+TODO-*.md
+SCRATCH-*.md
+
+# Local configuration overrides
+local.config.js
+local.env
+
+# =============================================================================
+# IMPORTANT: WHAT TO KEEP (as per README.md)
+# =============================================================================
+# These directories are CRITICAL and should never be in .gitignore:
+# - docs/ - GitHub Pages website (CRITICAL FOR HOSTING)
+# - inst/quarto-assets/ - CDN distribution
+# - ui/src/ - Source of truth
+# - ui/www/_extensions/dataimago/ai-native/ - Quarto extension
+# 
+# These can be regenerated safely:
+# - ui/dist/ - Build outputs
+# - ui/node_modules/ - Dependencies
+# =============================================================================

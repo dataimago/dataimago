@@ -1,4 +1,9 @@
 // Dataimago Light Theme for Quarto - Generated from Design Tokens
+// Quarto 1.8.24 - OKLCH-Ready Mode
+// Generated in oklch-ready mode - Will auto-upgrade to native OKLCH when Quarto 1.9+ is available
+// Current: sRGB Sass variables + OKLCH CSS custom properties for browser visibility
+
+// @use "sass:color"; // Will be enabled automatically in Quarto 1.9+
 
 /*-- scss:defaults --*/
 $body-bg: rgb(237, 237, 235) !default;
@@ -12,10 +17,57 @@ $headings-font-family: Josefin Sans, Inter, system-ui, sans-serif !default;
 $headings-font-weight: 500 !default;
 $h2-font-size: 1.875rem !default;
 
+
+// Modern Sass functions ready for Quarto 1.9+
+// @function oklch-mix($color1, $color2, $weight: 50%) {
+//   @return color.mix($color1, $color2, $weight, $method: oklch);
+// }
+
 /*-- scss:rules --*/
 .navbar-logo { max-height: 36px; transition: max-height 0.25s ease; }
 .navbar-title { font-family: Josefin Sans, Inter, system-ui, sans-serif; font-weight: 400; }
 .light-mode { display: block; }
 .dark-mode { display: none; }
 pre { border: 1px solid rgb(220, 220, 218); }
-:root { --logo-default-fill: #7c7c7c; --logo-hover-fill: rgb(20, 20, 16); }
+:root { 
+  --logo-default-fill: #7c7c7c; 
+  --logo-hover-fill: rgb(20, 20, 16);
+  
+  /* OKLCH Enhanced Colors for Modern Browsers */
+  --dataimago-body-bg-oklch: oklch(0.937 0.007 110.1);
+  --dataimago-body-color-oklch: oklch(0.062 0.016 110.2);
+  --dataimago-headings-color-oklch: oklch(0.062 0.016 110.2);
+  --dataimago-navbar-bg-oklch: rgb(237, 237, 235);
+  --dataimago-link-color-oklch: oklch(0.520 0.000 158.2);
+  --dataimago-code-color-oklch: #ff69b4;
+  --dataimago-code-bg-oklch: rgb(225, 225, 223);
+  
+  /* Progressive Enhancement */
+  --dataimago-body-bg: var(--dataimago-body-bg-oklch);
+  
+  /* Version Metadata */
+  --dataimago-quarto-version: "1.8.24";
+  --dataimago-generation-mode: "oklch-ready";
+  --dataimago-oklch-native: false;
+}
+
+// ===== THEME TOGGLE STYLING =====
+// Light theme - show moon icon (switch to dark)
+
+.quarto-color-scheme-toggle .bi::before {
+  display: inline-block !important;
+  height: 1rem !important;
+  width: 1rem !important;
+  content: "" !important;
+  vertical-align: -0.125em !important;
+  background-repeat: no-repeat !important;
+  background-size: 1rem 1rem !important;
+  background-color: transparent !important;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%2383838F" class="bi bi-moon" viewBox="0 0 16 16"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/></svg>') !important;
+  transition: background-image 0.25s ease;
+}
+
+.quarto-color-scheme-toggle:hover .bi::before {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000000" class="bi bi-moon" viewBox="0 0 16 16"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/></svg>') !important;
+  transition: background-image 0.25s ease;
+}

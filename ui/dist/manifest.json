@@ -17,12 +17,16 @@
     "custom-anchors.js": "JavaScript component: custom-anchors",
     "hero-scroller.js": "JavaScript component: hero-scroller",
     "lenis-integration.js": "JavaScript component: lenis-integration",
-    "slide-navigation.js": "JavaScript component: slide-navigation",
     "vendor/jquery.sticky-kit.min.js": "JavaScript component: jquery.sticky-kit.min"
   },
   "pages": {
     "documentation.css": "Page-specific styles: documentation",
+    "documentation.min.css": "Page-specific styles: documentation.min",
     "landing.css": "Page-specific styles: landing",
-    "shared-enhanced-toc.css": "Page-specific styles: shared-enhanced-toc"
+    "landing.min.css": "Page-specific styles: landing.min",
+    "shared-enhanced-toc.css": "Page-specific styles: shared-enhanced-toc",
+    "shared-enhanced-toc.min.css": "Page-specific styles: shared-enhanced-toc.min",
+    "tokens.min.css": "Page-specific styles: tokens.min",
+    "website-theme.min.css": "Page-specific styles: website-theme.min"
   }
 }

@@ -2,8 +2,8 @@
 
 <!-- CDN Assets Badges -->
 [![jsDelivr CDN](https://img.shields.io/badge/CDN-jsDelivr%20Ready-orange.svg)](https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@main/inst/quarto-assets/)
-[![CSS Size](https://img.shields.io/badge/CSS%20Size-~6.1KB%20min-green.svg)](dataimago.min.css)
-[![Design Tokens](https://img.shields.io/badge/Tokens-~1.8KB-blue.svg)](tokens.css)
+[![CSS Size](https://img.shields.io/badge/CSS%20Size-~5.0KB%20min-green.svg)](dataimago.min.css)
+[![Design Tokens](https://img.shields.io/badge/Tokens-~16.7KB-blue.svg)](tokens.css)
 [![SRI Hashes](https://img.shields.io/badge/Security-SRI%20Ready-red.svg)](#-security--reliability)
 [![R Package Access](https://img.shields.io/badge/R%20Access-system.file()-purple.svg)](#r-package-access)
 [![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)](#-file-inventory)
@@ -27,62 +27,84 @@ These files enable:
 
 | File | Size | Purpose |
 |------|------|---------|
-| `dataimago.css` | ~6.1KB | **Unminified** CSS for development & debugging |
-| `dataimago.min.css` | ~6.1KB | **Minified** CSS for production use |
-| `tokens.css` | ~1.8KB | **Design tokens** as CSS custom properties |
-| `ai_monogram_*.svg` | 920B ea | **AI monogram** navbar logos (4 theme variants) |
-| `package_hex_logo_*.svg` | 1129B ea | **Hex logos** for package identity (4 theme variants) |
+| `dataimago.css` | ~29.4KB | **Complete design system** (unminified, with comments) |
+| `dataimago.min.css` | ~5.0KB | **Complete design system** (minified, production-ready) |
+| `dataimago-light.scss` | ~3.5KB | **Quarto light theme** (SCSS format) |
+| `dataimago-dark.scss` | ~4.1KB | **Quarto dark theme** (SCSS format) |
+| `tokens.css` | ~16.7KB | **Design tokens** as CSS custom properties |
+| `tokens.scss` | ~16.7KB | **Design tokens** as SCSS variables |
+| `website-theme.css` | ~40.8KB | **Unified website theme** (complete styling) |
+| `website-theme.min.css` | ~16.6KB | **Unified website theme** (minified) |
+| `ai_monogram.svg` | 920B | **AI monogram** logo asset |
+| `package_hex_logo.svg` | 1129B | **Package hex logo** for branding |
 
 ## 🌐 CDN Usage
 
 ### External Project Integration
 
 ```html
-<!-- Production (minified CSS) -->
+<!-- Complete Design System (Production) -->
 <link rel="stylesheet" 
       href="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css"
       integrity="sha384-[SRI-HASH]"
       crossorigin="anonymous">
 
-<!-- Development (with comments) -->
+<!-- Complete Design System (Development) -->
 <link rel="stylesheet" 
       href="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.css">
 
-<!-- Design tokens only -->
+<!-- Website Theme (Production) -->
+<link rel="stylesheet" 
+      href="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/website-theme.min.css"
+      integrity="sha384-[SRI-HASH]"
+      crossorigin="anonymous">
+
+<!-- Design Tokens Only -->
 <link rel="stylesheet" 
       href="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/tokens.css">
+```
+
+### Quarto Integration
+
+```yaml
+# _quarto.yml - Light/Dark Theme Configuration
+format:
+  html:
+    theme:
+      light: "https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago-light.scss"
+      dark: "https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago-dark.scss"
 ```
 
 ### SVG Logo Integration
 
 ```html
 <!-- AI Monogram (navbar branding) -->
-<img src="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/ai_monogram_grey-light.svg" 
-     alt="dataimago AI" class="navbar-logo light-mode">
-<img src="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/ai_monogram_grey-dark.svg" 
-     alt="dataimago AI" class="navbar-logo dark-mode">
+<img src="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/ai_monogram.svg" 
+     alt="dataimago AI" class="navbar-logo">
 
 <!-- Package Hex Logo (homepage/identity) -->
-<img src="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/package_hex_logo_grey-light.svg" 
-     alt="Package Logo" class="package-logo">
+<img src="https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/package_hex_logo.svg" 
+     alt="dataimago Package" class="package-logo">
 ```
 
-### Theme-Aware JavaScript Integration
+### SCSS Integration (Advanced)
 
-```js
-// Logo switching with theme awareness (corrected logic)
-const logoElement = document.querySelector('.navbar-logo');
-const currentTheme = document.documentElement.getAttribute('data-bs-theme');
-const isHovered = /* hover state */;
+```scss
+// Import design tokens in your SCSS
+@import "https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/tokens.scss";
 
-// Correct mapping: grey (non-hover) -> color (hover) for each theme
-const logoPath = `ai_monogram_${currentTheme === 'dark' ? 'grey-dark' : 'grey-light'}.svg`;
-const hoverPath = `ai_monogram_${currentTheme === 'dark' ? 'light-dark' : 'dark-light'}.svg`;
+// Use design tokens in your custom styles
+.my-component {
+  background: var(--color-surface-page-light);
+  color: var(--color-content-primary-light);
+  font-family: var(--font-family-brand);
+  transition: background-color 0.25s ease;
+}
 
-logoElement.src = `https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@main/inst/quarto-assets/${isHovered ? hoverPath : logoPath}`;
-
-// Note: Avoid CSS transitions on 'all' properties - use specific transitions:
-// transition: max-height 0.25s ease-in-out, transform 0.25s ease-in-out;
+[data-bs-theme="dark"] .my-component {
+  background: var(--color-surface-page-dark);
+  color: var(--color-content-primary-dark);
+}
 ```
 
 ### R Package Access
@@ -90,12 +112,21 @@ logoElement.src = `https://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@main/ins
 ```r
 # Find CSS files in installed package
 css_path <- system.file("quarto-assets/dataimago.min.css", package = "dataimago")
+website_theme_path <- system.file("quarto-assets/website-theme.min.css", package = "dataimago")
 tokens_path <- system.file("quarto-assets/tokens.css", package = "dataimago")
+quarto_light_path <- system.file("quarto-assets/dataimago-light.scss", package = "dataimago")
+quarto_dark_path <- system.file("quarto-assets/dataimago-dark.scss", package = "dataimago")
 
 # Programmatic access
 if (file.exists(css_path)) {
   cat("dataimago CSS available at:", css_path)
+  cat("\nFile size:", file.size(css_path), "bytes")
 }
+
+# Get all available assets
+assets <- list.files(system.file("quarto-assets", package = "dataimago"), 
+                    pattern = "\\.(css|scss|svg)$", full.names = TRUE)
+cat("Available assets:", length(assets), "files\n")
 ```
 
 ## 🔄 How These Files Are Generated
@@ -110,9 +141,11 @@ graph TB
     subgraph "Build System Output"
         BUILD[build_design_system]
         BUILD --> UI_DIST[ui/dist/<br/>Built Assets]
-        UI_DIST --> DEV_CSS[dataimago.css<br/>6.1KB Unminified]
-        UI_DIST --> PROD_CSS[dataimago.min.css<br/>6.1KB Minified]
-        UI_DIST --> TOKENS[tokens.css<br/>1.8KB Variables]
+        UI_DIST --> DEV_CSS[dataimago.css<br/>29.4KB Unminified]
+        UI_DIST --> PROD_CSS[dataimago.min.css<br/>5.0KB Minified]
+        UI_DIST --> TOKENS[tokens.css<br/>16.7KB Variables]
+        UI_DIST --> WEBSITE[website-theme.css<br/>40.8KB Complete]
+        UI_DIST --> QUARTO_THEMES[Quarto Themes<br/>SCSS Format]
     end
 
     subgraph "CDN Preparation"
@@ -149,6 +182,8 @@ graph TB
     DEV_CSS --> COPY
     PROD_CSS --> COPY
     TOKENS --> COPY
+    WEBSITE --> COPY
+    QUARTO_THEMES --> COPY
     COPY --> CDN_DIR
     
     CDN_DIR --> SRI
@@ -181,7 +216,7 @@ graph TB
     classDef usage fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
     classDef security fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
 
-    class BUILD,UI_DIST,DEV_CSS,PROD_CSS,TOKENS build
+    class BUILD,UI_DIST,DEV_CSS,PROD_CSS,TOKENS,WEBSITE,QUARTO_THEMES build
     class CDN_DIR,SRI,COPY cdn
     class JSDELIVR,R_ACCESS,DIRECT access
     class HTML,QUARTO,R_CODE integration
@@ -239,8 +274,10 @@ list.files("inst/quarto-assets/", full.names = TRUE)
 
 ```r
 # Check file sizes (should be substantial)
-file.info("inst/quarto-assets/dataimago.min.css")$size  # ~6KB
-file.info("inst/quarto-assets/tokens.css")$size        # ~1.8KB
+file.info("inst/quarto-assets/dataimago.min.css")$size     # ~5KB
+file.info("inst/quarto-assets/dataimago.css")$size         # ~29KB
+file.info("inst/quarto-assets/tokens.css")$size            # ~17KB
+file.info("inst/quarto-assets/website-theme.min.css")$size # ~17KB
 
 # Check content quality
 readLines("inst/quarto-assets/tokens.css", n = 5)  # Should show CSS variables
@@ -254,14 +291,18 @@ readLines("inst/quarto-assets/tokens.css", n = 5)  # Should show CSS variables
 build_design_system(force_rebuild = TRUE)
 ```
 
-### Problem: Files Are Too Small (< 1KB)
-This indicates a **minimal fallback system** was generated instead of the sophisticated build:
+### Problem: Files Are Too Small 
+This indicates build issues. Expected sizes:
+- `dataimago.min.css`: ~5KB (minified design system)
+- `dataimago.css`: ~29KB (complete design system)  
+- `tokens.css`: ~17KB (design tokens)
+- `website-theme.min.css`: ~17KB (minified website theme)
+
 ```r
 # Check if sophisticated UI system exists
-list.files("ui/src/", recursive = TRUE)  # Should show tokens/ and styles/
+list.files("ui/src/dataimago-design/", recursive = TRUE)  # Should show tokens/ and styles/
 
-# If missing, restore from backup or repository
-# Then rebuild
+# If missing or files too small, rebuild
 build_design_system(force_rebuild = TRUE)
 ```
 
@@ -290,18 +331,15 @@ These files are part of the larger dataimago design system:
 
 The included SVG assets implement a sophisticated theme-aware logo system:
 
-**Logo Variants:**
-- **AI Monogram** (navbar branding): 4 variants for complete theme integration
-  - `ai_monogram_grey-light.svg` → `ai_monogram_dark-light.svg` (light mode + hover)
-  - `ai_monogram_grey-dark.svg` → `ai_monogram_light-dark.svg` (dark mode + hover)
-- **Package Hex Logo** (identity): 4 variants for homepage/package branding
-  - Same naming pattern with `package_hex_logo_` prefix
+**Logo Assets:**
+- **AI Monogram** (`ai_monogram.svg`): 920 bytes - Optimized navbar branding logo
+- **Package Hex Logo** (`package_hex_logo.svg`): 1129 bytes - Package identity logo
 
 **Technical Quality:**
-- **Optimized SVGs**: 920-1129 bytes with CSS mask-based typography
-- **Smooth Transitions**: 0.3s hover animations with professional contrast switching
-- **Universal Compatibility**: Works across all modern browsers and CDN systems
-- **Theme Integration**: Perfect adaptation to Bootstrap 5.3+ theme system
+- **Optimized SVGs**: Minimal file sizes with clean vector graphics
+- **Universal Compatibility**: Works across all modern browsers and CDN systems  
+- **Theme Integration**: Adapts to light/dark themes via CSS styling
+- **Scalable Design**: Vector format ensures crisp display at any size
 
 ---
 
