@@ -318,25 +318,45 @@ class LenisIntegration {
                 // Direct DOM updates - no nested RAF needed (already in Lenis RAF context)
                 const navbar = document.querySelector('.navbar');
                 const navbarTitle = document.querySelector('.navbar-title');
-                const navbarLogo = document.querySelector('.navbar-logo');
+                const navbarLogos = document.querySelectorAll('.navbar-logo'); // Handle both light-content and dark-content
                 const body = document.body;
                 
                 if (shouldShrink) {
                     // Add shrink classes
                     navbar?.classList.add('shrink');
                     navbarTitle?.classList.add('shrink');
-                    navbarLogo?.classList.add('shrink');
                     body?.classList.add('shrink');
                     
-                    console.debug('📏 Navbar shrunk at scroll position:', scrollY);
+                    // Handle all navbar logos (both light-content and dark-content)
+                    navbarLogos.forEach(logo => {
+                        logo?.classList.add('shrink');
+                        
+                        // Handle inline SVG specifically
+                        if (logo && logo.classList.contains('inline-svg')) {
+                            const svgElement = logo.querySelector('svg');
+                            svgElement?.classList.add('shrink');
+                        }
+                    });
+                    
+                    console.debug('📏 Navbar shrunk at scroll position:', scrollY, `(${navbarLogos.length} logos)`);
                 } else {
                     // Remove shrink classes
                     navbar?.classList.remove('shrink');
                     navbarTitle?.classList.remove('shrink');
-                    navbarLogo?.classList.remove('shrink');
                     body?.classList.remove('shrink');
                     
-                    console.debug('📏 Navbar expanded at scroll position:', scrollY);
+                    // Handle all navbar logos (both light-content and dark-content)
+                    navbarLogos.forEach(logo => {
+                        logo?.classList.remove('shrink');
+                        
+                        // Handle inline SVG specifically
+                        if (logo && logo.classList.contains('inline-svg')) {
+                            const svgElement = logo.querySelector('svg');
+                            svgElement?.classList.remove('shrink');
+                        }
+                    });
+                    
+                    console.debug('📏 Navbar expanded at scroll position:', scrollY, `(${navbarLogos.length} logos)`);
                 }
             }
         });

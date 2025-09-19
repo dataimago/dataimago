@@ -13,7 +13,7 @@ $navbar-bg: rgb(237, 237, 235) !default;
 $link-color: #7c7c7c !default;
 $code-color: #ff69b4 !default;
 $code-bg: rgb(225, 225, 223) !default;
-$headings-font-family: Josefin Sans, Inter, system-ui, sans-serif !default;
+$headings-font-family: Poppins, system-ui, sans-serif !default;
 $headings-font-weight: 500 !default;
 $h2-font-size: 1.875rem !default;
 
@@ -24,14 +24,30 @@ $h2-font-size: 1.875rem !default;
 // }
 
 /*-- scss:rules --*/
-.navbar-logo { max-height: 36px; transition: max-height 0.25s ease; }
-.navbar-title { font-family: Josefin Sans, Inter, system-ui, sans-serif; font-weight: 400; }
+@import "shared-components.scss";
+
+// Theme-specific overrides
 .light-mode { display: block; }
 .dark-mode { display: none; }
 pre { border: 1px solid rgb(220, 220, 218); }
 :root { 
+  /* Font Family CSS Custom Properties */
+  --font-family-sans: Fira Sans Condensed, system-ui, sans-serif;
+  --font-family-mono: JetBrains Mono, SF Mono, Monaco, Inconsolata, monospace;
+  --font-family-display: Poppins, system-ui, sans-serif;
+  --font-family-brand: Josefin Sans, system-ui, sans-serif;
+  --font-family-math: Fira Math, Fira Sans Math, system-ui, sans-serif;
+  
   --logo-default-fill: #7c7c7c; 
   --logo-hover-fill: rgb(20, 20, 16);
+  
+  /* Theme CSS Custom Properties */
+  --theme-body-bg: rgb(237, 237, 235);
+  --theme-navbar-bg: rgb(237, 237, 235);
+  --theme-navbar-bg-scrolled: rgb(237, 237, 235);
+  --theme-text-primary: rgb(20, 20, 16);
+  --theme-text-secondary: #7c7c7c;
+  --theme-text-hover: rgb(20, 20, 16);
   
   /* OKLCH Enhanced Colors for Modern Browsers */
   --dataimago-body-bg-oklch: oklch(0.937 0.007 110.1);

@@ -24,10 +24,11 @@
   --color-functional-error: oklch(0.545 0.485 35.9); /* OKLCH enhanced */
   --color-functional-info: #3498DB; /* sRGB fallback */
   --color-functional-info: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
-  --font-family-sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-family-sans: Fira Sans Condensed, system-ui, sans-serif;
   --font-family-mono: JetBrains Mono, SF Mono, Monaco, Inconsolata, monospace;
-  --font-family-display: Inter, system-ui, sans-serif;
-  --font-family-brand: Josefin Sans, Inter, system-ui, sans-serif;
+  --font-family-display: Poppins, system-ui, sans-serif;
+  --font-family-brand: Josefin Sans, system-ui, sans-serif;
+  --font-family-math: Fira Math, Fira Sans Math, system-ui, sans-serif;
   --font-size-micro: 0.75rem;
   --font-size-small: 0.875rem;
   --font-size-base: 1rem;
@@ -398,7 +399,7 @@ nav .nav-item:not(.compact) {
 .navbar-title {
   font-family: var(--font-family-brand) !important;
   font-weight: 400;
-  font-size: 38px;
+  font-size: 2.5rem;
   padding: 0;
   height: 48px;
   line-height: 55px;
@@ -424,11 +425,11 @@ nav .nav-item:not(.compact) {
 }
 
 .navbar-logo {
-  background-size: contain;
-  background-repeat: no-repeat;
   max-height: 36px;
   transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
   will-change: max-height, transform, opacity;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .navbar-logo.shrink {
@@ -438,6 +439,37 @@ nav .nav-item:not(.compact) {
 .navbar-logo.transitioning {
   opacity: 0.8;
   transition: opacity 0.15s ease-in-out;
+}
+
+.navbar-logo.inline-svg,
+.navbar-logo svg {
+  max-height: 36px;
+  width: auto;
+  height: auto;
+  transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
+  will-change: max-height, transform, opacity;
+}
+
+.navbar-logo.inline-svg.shrink,
+.navbar-logo.shrink svg {
+  max-height: 28px;
+}
+
+.navbar-logo svg path,
+.navbar-logo.inline-svg path {
+  fill: var(--logo-default-fill);
+  transition: fill var(--logo-transition-duration) ease;
+}
+
+.navbar-logo:hover svg path,
+.navbar-logo.inline-svg:hover path {
+  fill: var(--logo-hover-fill);
+}
+
+.navbar-logo svg,
+.navbar-logo.inline-svg {
+  vertical-align: middle;
+  display: inline-block;
 }
 
 .navbar-brand-container {
@@ -753,13 +785,54 @@ body.quarto-dark .quarto-color-scheme-toggle:hover .bi::before {
   transition: background-image 0.25s ease;
 }
 
-.footer-quarto-logo path {
+.inline-svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.inline-svg path,
+.inline-svg svg path {
   transition: fill var(--logo-transition-duration) ease;
 }
 
-.footer-quarto-logo:hover path,
-a:hover .footer-quarto-logo path {
+.navbar-github-logo.inline-svg path,
+.navbar-github-logo svg path {
+  fill: var(--logo-default-fill);
+}
+
+.navbar-github-logo:hover path,
+.navbar-github-logo.inline-svg:hover path,
+a:hover .navbar-github-logo path {
   fill: var(--logo-hover-fill);
+}
+
+.footer-quarto-logo path,
+.footer-netlify-logo path,
+.footer-ai-monogram-logo path,
+.footer-package-hex-logo path,
+.footer-bluesky-logo path {
+  transition: fill var(--logo-transition-duration) ease;
+  fill: var(--logo-default-fill);
+}
+
+.footer-quarto-logo:hover path,
+.footer-netlify-logo:hover path,
+.footer-ai-monogram-logo:hover path,
+.footer-package-hex-logo:hover path,
+a:hover .footer-quarto-logo path,
+a:hover .footer-netlify-logo path,
+a:hover .footer-ai-monogram-logo path,
+a:hover .footer-package-hex-logo path {
+  fill: var(--logo-hover-fill);
+}
+
+.footer-bluesky-logo path {
+  fill: var(--bluesky-logo-fill-default);
+}
+
+.footer-bluesky-logo:hover path,
+a:hover .footer-bluesky-logo path {
+  fill: var(--bluesky-logo-fill-hover);
 }
 
 iconify-icon[icon="fa6-brands:bluesky"]:hover {
@@ -943,11 +1016,6 @@ a:not(.nav-link):not(.navbar-brand):not(.dropdown-toggle):not([role=doc-toc] a):
 .content-container {
   padding: clamp(1rem, 2vw, 2rem);
   height: 100%;
-}
-
-.navbar-brand {
-  font-weight: bold;
-  font-size: 1.2em;
 }
 
 .foundation-quote {
@@ -1135,7 +1203,5 @@ img {
     gap: 0.75rem;
   }
 }
-/*-- scss:defaults --*/
-/*-- scss:rules --*/
 
 /*# sourceMappingURL=website-theme.css.map */
