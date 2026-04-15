@@ -3,7 +3,7 @@ title: "CLAUDE.md: R Package Architecture Guide for dataimago"
 description: "Comprehensive technical and architectural guide for AI assistance with the dataimago R package"
 version: "0.1-0.0"
 author: "dataimago AI + Human Co-Creation"
-updated: "2026-04-13"
+updated: "2026-04-15"
 ---
 
 ## Session Start Protocol
@@ -76,6 +76,12 @@ Final Assets                              → Distribution   → 3 channels (ui/
 - **Light mode**: `grey-light` (non-hover) → `dark-light` (hover)
 - **Dark mode**: `grey-dark` (non-hover) → `light-dark` (hover)
 
+**Sticky-Header Shrink (`assets/js/scroll.js`):**
+- jQuery-based scroll handler toggling `.shrink` class on `.navbar`, `.navbar-title`, `.navbar-logo`, and `body`
+- Trigger threshold: 35px scroll distance
+- Uses CSS transitions for smooth shrink/expand animation
+- Ported from HelloWorld-rpkg, adapted for dataimago design tokens
+
 **Known Issues Fixed:**
 - CSS transitions on `transition: all` were causing visual glitches during logo swaps
 - Fixed by limiting transitions to `max-height` and `transform` only
@@ -134,6 +140,8 @@ All function names should reflect **modularity**, **clarity**, and **semanticall
 
 **Currently Implemented:**
 - `create_quarto_documentation()` - Generate ethical AI documentation with foundation links
+  - `scaffold_full_site = TRUE` scaffolds the complete Quarto website from `dataimago-design/templates/quarto_website/`
+  - `include_ethics = TRUE` creates ethics.qmd, design_system.qmd, governance.qmd from wiki content
 - `create_ui_workspace()` - Set up Node.js design system workspace (one-time)
 - `build_design_system()` - Master CSS build function wrapping modern tools in R
 - `update_quarto_extension()` - Sync built assets to Quarto extension
@@ -174,7 +182,7 @@ build_design_system()      # Compile design tokens + SCSS → CSS
 - **Quarto Extension**: `ui/www/_extensions/dataimago/ai-native/` (complete asset structure)
 - **CDN Distribution**: `inst/quarto-assets/` (jsDelivr-compatible)
 - **Next.js Integration**: `ui/dist/tailwind-preset.js`
-- **Website Output**: `docs/` (GitHub Pages deployment from ui/www render)
+- **Website Output**: `docs/` (GitHub Pages deployment from ui/www render -- 12 pages including ethics-first content)
 
 ### 5. **File System Standards**
 ```
@@ -193,10 +201,27 @@ dataimago/
 │   │       └── tools/        # Build and validation tools
 │   ├── dist/              # Built CSS assets (regenerable)
 │   └── www/               # Quarto website project with assets and extensions
-│       ├── assets/        # Website-specific assets (CSS, JS, images)
+│       ├── assets/
+│       │   ├── css/       # Custom SCSS overrides
+│       │   ├── js/
+│       │   │   ├── scroll.js       # Sticky-header shrink on scroll
+│       │   │   ├── logo-switch.js  # Theme-aware logo hover effects
+│       │   │   └── lenis.min.js    # Smooth scrolling library
+│       │   └── img/       # Images and logos
+│       ├── content/
+│       │   ├── documents/     # Downloadable documents
+│       │   └── presentations/ # Downloadable presentations
 │       ├── _extensions/   # Quarto extension with complete asset structure
 │       ├── _quarto.yml    # Website configuration
-│       └── *.qmd          # Content files
+│       ├── index.qmd      # Homepage
+│       ├── r_package.qmd  # API reference
+│       ├── ethics.qmd     # Ethical AI principles (sourced from design wiki)
+│       ├── design_system.qmd # Three-tier token architecture
+│       ├── governance.qmd # Democratic design governance
+│       ├── documents.qmd  # Documents landing page
+│       ├── presentations.qmd # Presentations landing page
+│       ├── news.qmd       # Release notes
+│       └── 404.qmd        # Custom error page
 ├── inst/
 │   ├── dataimago/          # Complete foundation documents
 │   │   ├── 01_Foundations/ # Mission, vision, philosophy
@@ -246,6 +271,9 @@ The package includes `create_quarto_documentation()` which:
 - Adds ethical AI annotations to every function
 - Links technical documentation to foundation documents
 - Generates complete websites with dataimago branding
+- **Full site scaffolding** (`scaffold_full_site = TRUE`): creates the entire Quarto website from `dataimago-design/templates/quarto_website/`, including ethics pages, content directories, JS assets, news, and 404
+- **Ethics pages** (`include_ethics = TRUE`): generates `ethics.qmd`, `design_system.qmd`, `governance.qmd` from the dataimago-design wiki
+- Template rendering uses Mustache via `whisker::whisker.render()` with package metadata from DESCRIPTION
 
 ### Documentation Standards
 - Every function gets ethical context via `post_process_md_to_qmd()`
@@ -435,10 +463,14 @@ See [REPOMIX_INTEGRATION.md](REPOMIX_INTEGRATION.md) for detailed usage patterns
 - MIT licensing and proper attribution
 
 ### Phase 2: Documentation Generation \u2705 COMPLETE
-- `create_quarto_documentation()` function
+- `create_quarto_documentation()` function with `scaffold_full_site` and `include_ethics` params
 - Rd2md integration for .Rd → .qmd conversion
 - Philosophical context injection
 - Complete Quarto website generation with dataimago branding
+- Full-site scaffolding from `dataimago-design/templates/quarto_website/` templates
+- Ethics-first content: ethics.qmd, design_system.qmd, governance.qmd
+- Utility pages: news.qmd, 404.qmd, documents.qmd, presentations.qmd
+- Sticky-header shrink and custom anchors ported from HelloWorld-rpkg
 
 ### Phase 3: R-First Design System \u2705 COMPLETE
 - `create_ui_workspace()` - Node.js workspace setup

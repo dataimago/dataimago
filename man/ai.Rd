@@ -7,12 +7,19 @@
 ai(
   project_name,
   project_path = getwd(),
+  source_pkg = NULL,
+  mode = c("local", "remote"),
+  api_url = "https://dataimago.ai/api/orchestrate",
+  api_key = NULL,
+  domain_type = c("research", "explorer", "framework"),
+  domain_name = project_name,
   framework = c("quarto", "shiny", "nextjs", "full"),
   features = NULL,
   theme = c("professional", "academic", "minimal", "ethical"),
   ai_providers = NULL,
   ethical_framework = TRUE,
   foundation_docs = TRUE,
+  export_static = TRUE,
   force_overwrite = FALSE,
   verbose = TRUE
 )
@@ -21,6 +28,25 @@ ai(
 \item{project_name}{Character. Name of the project/application to create}
 
 \item{project_path}{Character. Path where project should be created. Default: getwd()}
+
+\item{source_pkg}{Character. Path to the source R package whose exported
+functions should drive the generated application. This is the "R as Source
+of Truth" -- all APIs, MCP tools, types, and UI derive from this package.
+If NULL, creates scaffolding without the derivation pipeline.}
+
+\item{mode}{Character. Generation mode: "local" runs the full pipeline locally,
+"remote" delegates to the dataimago-ai platform API. Default: "local"}
+
+\item{api_url}{Character. URL of the dataimago-ai orchestration API.
+Default: "https://dataimago.ai/api/orchestrate"}
+
+\item{api_key}{Character. API key for remote mode. If NULL, reads from
+the DATAIMAGO_API_KEY environment variable.}
+
+\item{domain_type}{Character. Domain type: "research", "explorer", or "framework".
+Default: "research"}
+
+\item{domain_name}{Character. Human-readable domain name. Default: project_name}
 
 \item{framework}{Character. Target framework: "quarto", "shiny", "nextjs", or "full". Default: "quarto"}
 
@@ -47,6 +73,9 @@ ai(
 
 \item{foundation_docs}{Logical. Include philosophical foundation documents. Default: TRUE}
 
+\item{export_static}{Logical. Pre-compute API responses as static JSON for
+serverless deployment. Only applies when source_pkg is provided. Default: TRUE}
+
 \item{force_overwrite}{Logical. Overwrite existing project directory. Default: FALSE}
 
 \item{verbose}{Logical. Print detailed progress information. Default: TRUE}
@@ -60,19 +89,31 @@ AI-native web applications with a single command. Embodies the dataimago
 philosophy of "R as source of truth" for modern web development.
 }
 \details{
+When a source R package is provided, executes the full meta-tool pipeline:
+R functions -> REST API -> MCP tools -> TypeScript types -> Web Application.
+The generated application inherits dataimago's ethical constraints structurally.
+
 The ai() function implements dataimago's complete application generation pipeline:
 
-\strong{Architecture Pipeline:}
+\strong{Meta-Tool Pipeline (when source_pkg provided):}
 \enumerate{
 \item \code{build_design_framework()} - Creates directory structure, configs, workflows
-\item \code{build_design_components()} - Populates with content, R package files, templates
-\item \code{build_design_system()} - Compiles assets, optimizes for production
+\item \code{build_design_components()} - Generates API, MCP tools, types from R package
+\item \code{build_design_system()} - Compiles design assets
+\item \code{export_static_api()} - Pre-computes JSON for serverless deployment
+}
+
+\strong{Scaffold Pipeline (when source_pkg is NULL):}
+\enumerate{
+\item \code{build_design_framework()} - Creates directory structure, configs, workflows
+\item \code{build_design_components()} - Populates with templates and documentation
+\item \code{build_design_system()} - Compiles design assets
 }
 
 \strong{Ethical AI Integration:}
 Every generated application includes dataimago's ethical AI principles embedded
-at the code, design, and architectural level. This ensures responsible AI development
-practices are built-in rather than bolted-on.
+at the code, design, and architectural level. Ethical constraints propagate
+structurally from dataimago-design through the build pipeline.
 
 \strong{System Requirements:}
 \itemize{
@@ -84,14 +125,20 @@ practices are built-in rather than bolted-on.
 }
 \examples{
 \dontrun{
+# Full meta-tool pipeline from an R package
+ai("my-analysis-app",
+   source_pkg = "path/to/my-rpkg",
+   framework = "nextjs")
+
 # Minimal Quarto website with chat interface
-ai("my-research-site", 
+ai("my-research-site",
    framework = "quarto",
    features = "chat-interface")
 
-# Full-featured AI application  
+# Full-featured AI application
 ai("intelligent-dashboard",
-   framework = "full", 
+   framework = "full",
+   source_pkg = "path/to/rpkg",
    features = c("chat-interface", "data-viz", "streaming"),
    ai_providers = c("openai", "anthropic"),
    theme = "professional")

@@ -35,6 +35,11 @@ NULL
 #' @param template Character. Documentation template to use for styling and
 #'   structure.  Currently supports "dataimago" template with ethical
 #'   AI branding.  Default: "dataimago"
+#' @param scaffold_full_site Logical. When TRUE, scaffolds the complete site
+#'   structure from dataimago-design templates including ethics pages, content
+#'   directories, JS assets, news, and 404 pages. Default: FALSE
+#' @param include_ethics Logical. When TRUE and scaffold_full_site is TRUE,
+#'   generates ethics.qmd from dataimago-design wiki content. Default: TRUE
 #'
 #' @return Character (invisible). File path to the generated api_reference.qmd file.
 #'   Side effects: Creates .qmd files and _quarto.yml in output_path directory
@@ -118,7 +123,9 @@ create_quarto_documentation <- function(package_path = ".",
                                         output_path = "ui/www",
                                         include_description = TRUE,
                                         include_foundation_links = TRUE,
-                                        template = "dataimago") {
+                                        template = "dataimago",
+                                        scaffold_full_site = FALSE,
+                                        include_ethics = TRUE) {
   # Validate inputs
   if (!dir.exists(package_path)) {
     stop("Package path does not exist: ", package_path)
@@ -170,9 +177,21 @@ create_quarto_documentation <- function(package_path = ".",
     update_dataimago_assets(output_path, package_path)
   }
 
+  if (scaffold_full_site && template == "dataimago") {
+    scaffold_full_quarto_site(
+      output_path = output_path,
+      package_path = package_path,
+      desc_content = desc_content,
+      include_ethics = include_ethics
+    )
+  }
+
   cat(crayon::green("\u2713 Quarto documentation generated successfully\n"))
   cat(crayon::silver("  API reference: "), api_file, "\n")
   cat(crayon::silver("  Quarto config: "), quarto_yml_file, "\n")
+  if (scaffold_full_site) {
+    cat(crayon::silver("  Full site scaffolded with ethics pages and content directories\n"))
+  }
 
   invisible(api_file)
 }
@@ -693,4 +712,303 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
   }
 
   yml_content
+}
+
+
+#' Scaffold Full Quarto Website from Templates
+#'
+#' Creates the complete site structure including ethics pages, content
+#' directories, JS assets, news, and 404 pages from dataimago-design
+#' templates via the submodule.
+#'
+#' @param output_path Character. Path to quarto website directory.
+#' @param package_path Character. Path to the R package root.
+#' @param desc_content List. Parsed DESCRIPTION content.
+#' @param include_ethics Logical. Whether to include ethics pages.
+#' @keywords internal
+scaffold_full_quarto_site <- function(output_path, package_path,
+                                      desc_content, include_ethics = TRUE) {
+  ui_info("Scaffolding full Quarto website structure...")
+
+  template_vars <- build_quarto_template_vars(desc_content)
+
+  submodule_templates <- file.path(
+    package_path, "ui", "src", "dataimago-design",
+    "templates", "quarto_website"
+  )
+
+  if (include_ethics) {
+    scaffold_ethics_pages(output_path, submodule_templates, template_vars)
+  }
+
+  scaffold_content_directories(output_path)
+  scaffold_js_assets(output_path, submodule_templates)
+  scaffold_utility_pages(output_path, template_vars)
+
+  ui_done("Full site scaffolding complete")
+}
+
+
+#' Build Template Variables from DESCRIPTION
+#' @param desc_content List from parse_description_file
+#' @return Named list of template variables
+#' @keywords internal
+build_quarto_template_vars <- function(desc_content) {
+  repo_url <- desc_content$bug_reports
+  if (!is.null(repo_url)) {
+    repo_url <- sub("/issues/?$", "", repo_url)
+  }
+
+  list(
+    PACKAGE_NAME = desc_content$package %||% "MyPackage",
+    PACKAGE_TITLE = paste0(
+      desc_content$package %||% "MyPackage", ": ",
+      desc_content$title %||% "R Package"
+    ),
+    PACKAGE_DESCRIPTION = desc_content$description %||% "",
+    PACKAGE_AUTHOR = desc_content$maintainer %||% "",
+    PACKAGE_LICENSE = desc_content$license %||% "MIT",
+    SITE_URL = desc_content$url %||% "",
+    REPO_URL = repo_url %||% ""
+  )
+}
+
+
+#' Render a Template with Mustache Variables
+#' @param template_text Character. Template content with Mustache placeholders.
+#' @param vars Named list of variable values.
+#' @return Character. Rendered template.
+#' @keywords internal
+render_quarto_template <- function(template_text, vars) {
+  whisker::whisker.render(template_text, vars)
+}
+
+
+#' Load Template from Submodule or Use Fallback
+#' @param submodule_dir Character. Path to submodule templates dir.
+#' @param filename Character. Template filename.
+#' @param fallback Character. Fallback content if submodule unavailable.
+#' @return Character. Template content.
+#' @keywords internal
+load_quarto_template <- function(submodule_dir, filename, fallback = "") {
+  template_path <- file.path(submodule_dir, filename)
+  if (file.exists(template_path)) {
+    paste(readLines(template_path, warn = FALSE), collapse = "\n")
+  } else {
+    fallback
+  }
+}
+
+
+#' Scaffold Ethics Pages
+#' @keywords internal
+scaffold_ethics_pages <- function(output_path, submodule_dir, vars) {
+  ethics_file <- file.path(output_path, "ethics.qmd")
+  if (!file.exists(ethics_file)) {
+    fallback <- paste(c(
+      "---",
+      "title: \"Ethical AI Principles\"",
+      "subtitle: \"Superalignment Through Design Architecture\"",
+      "format:",
+      "  html:",
+      "    toc: true",
+      "---",
+      "",
+      paste0(vars$PACKAGE_NAME, " is built on dataimago's ethical AI framework."),
+      "",
+      "## Core Commitments",
+      "",
+      "1. **Emancipation over efficiency**",
+      "2. **AI in culture, not culture in AI**",
+      "3. **Democratic participation**",
+      "4. **Reflexive practice**",
+      "5. **Dialectical thinking**"
+    ), collapse = "\n")
+
+    template <- load_quarto_template(submodule_dir, "ethics.qmd.template", fallback)
+    content <- render_quarto_template(template, vars)
+    writeLines(content, ethics_file)
+    ui_done("Created ethics.qmd")
+  }
+
+  design_file <- file.path(output_path, "design_system.qmd")
+  if (!file.exists(design_file)) {
+    content <- paste(c(
+      "---",
+      "title: \"Design System\"",
+      "subtitle: \"Three-Tier Token Architecture\"",
+      "format:",
+      "  html:",
+      "    toc: true",
+      "---",
+      "",
+      "The dataimago design system materializes philosophical commitments through",
+      "a three-tier token hierarchy: Primitive, Semantic, and Ethical tokens.",
+      "",
+      "## Token Hierarchy",
+      "",
+      "- **Primitive** -- Culturally-informed base values",
+      "- **Semantic** -- Purpose-driven mappings",
+      "- **Ethical** -- Non-negotiable guardrails (7.0:1 contrast, 300ms motion, 48px touch)"
+    ), collapse = "\n")
+    writeLines(content, design_file)
+    ui_done("Created design_system.qmd")
+  }
+
+  governance_file <- file.path(output_path, "governance.qmd")
+  if (!file.exists(governance_file)) {
+    content <- paste(c(
+      "---",
+      "title: \"Democratic Design Governance\"",
+      "subtitle: \"Ethics as Infrastructure\"",
+      "format:",
+      "  html:",
+      "    toc: true",
+      "---",
+      "",
+      "Design decisions follow a four-stage governance process:",
+      "",
+      "1. Impact assessment",
+      "2. Community consultation (2-4 weeks)",
+      "3. Ethical review board analysis",
+      "4. Monitored implementation with appeal rights"
+    ), collapse = "\n")
+    writeLines(content, governance_file)
+    ui_done("Created governance.qmd")
+  }
+}
+
+
+#' Scaffold Content Directories
+#' @keywords internal
+scaffold_content_directories <- function(output_path) {
+  dirs <- c(
+    file.path(output_path, "content", "documents", "assets", "css"),
+    file.path(output_path, "content", "presentations", "assets", "css")
+  )
+  for (d in dirs) {
+    if (!dir.exists(d)) {
+      dir.create(d, recursive = TRUE)
+    }
+  }
+
+  docs_readme <- file.path(output_path, "content", "documents", "README.md")
+  if (!file.exists(docs_readme)) {
+    writeLines("# Documents\n\nPlace .qmd document files in this directory.", docs_readme)
+  }
+
+  pres_readme <- file.path(output_path, "content", "presentations", "README.md")
+  if (!file.exists(pres_readme)) {
+    writeLines("# Presentations\n\nPlace RevealJS .qmd presentation files here.", pres_readme)
+  }
+
+  ui_done("Created content directory scaffolding")
+}
+
+
+#' Scaffold JavaScript Assets
+#' @keywords internal
+scaffold_js_assets <- function(output_path, submodule_dir) {
+  js_dir <- file.path(output_path, "assets", "js")
+  if (!dir.exists(js_dir)) {
+    dir.create(js_dir, recursive = TRUE)
+  }
+
+  js_files <- c("scroll.js", "custom-anchors.js", "logo-switch.js")
+  submodule_js <- file.path(submodule_dir, "assets", "js")
+
+  for (js_file in js_files) {
+    dest <- file.path(js_dir, js_file)
+    if (!file.exists(dest)) {
+      src <- file.path(submodule_js, js_file)
+      if (file.exists(src)) {
+        file.copy(src, dest)
+        ui_done(paste("Copied", js_file))
+      }
+    }
+  }
+}
+
+
+#' Scaffold Utility Pages (news, 404, documents, presentations)
+#' @keywords internal
+scaffold_utility_pages <- function(output_path, vars) {
+  news_file <- file.path(output_path, "news.qmd")
+  if (!file.exists(news_file)) {
+    content <- paste(c(
+      "---",
+      "title: \"News\"",
+      "subtitle: \"Release Notes and Updates\"",
+      "format:",
+      "  html:",
+      "    toc: true",
+      "---",
+      "",
+      paste0("## ", vars$PACKAGE_NAME, " (development)"),
+      "",
+      "- Initial release"
+    ), collapse = "\n")
+    writeLines(content, news_file)
+    ui_done("Created news.qmd")
+  }
+
+  four04_file <- file.path(output_path, "404.qmd")
+  if (!file.exists(four04_file)) {
+    content <- paste(c(
+      "---",
+      "title: \"Page Not Found\"",
+      "format:",
+      "  html:",
+      "    page-layout: full",
+      "    toc: false",
+      "    sidebar: false",
+      "---",
+      "",
+      "::: {style=\"text-align: center; padding: 4rem 2rem;\"}",
+      "",
+      "# 404",
+      "",
+      "The page you're looking for doesn't exist or has been moved.",
+      "",
+      "[Return Home](index.qmd){.btn .btn-primary}",
+      "",
+      ":::"
+    ), collapse = "\n")
+    writeLines(content, four04_file)
+    ui_done("Created 404.qmd")
+  }
+
+  docs_landing <- file.path(output_path, "documents.qmd")
+  if (!file.exists(docs_landing)) {
+    content <- paste(c(
+      "---",
+      "title: \"Documents\"",
+      "subtitle: \"Technical Reports and Articles\"",
+      "format:",
+      "  html:",
+      "    toc: false",
+      "---",
+      "",
+      "Technical documents and articles will appear here as the project matures."
+    ), collapse = "\n")
+    writeLines(content, docs_landing)
+    ui_done("Created documents.qmd")
+  }
+
+  pres_landing <- file.path(output_path, "presentations.qmd")
+  if (!file.exists(pres_landing)) {
+    content <- paste(c(
+      "---",
+      "title: \"Presentations\"",
+      "subtitle: \"Talks, Slides, and Demos\"",
+      "format:",
+      "  html:",
+      "    toc: false",
+      "---",
+      "",
+      "Presentations and slide decks will appear here."
+    ), collapse = "\n")
+    writeLines(content, pres_landing)
+    ui_done("Created presentations.qmd")
+  }
 }

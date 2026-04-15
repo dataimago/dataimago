@@ -2,22 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://dataimago.github.io/dataimago/r_package.html</loc>
-    <lastmod>2025-09-01T20:17:18.094Z</lastmod>
+    <lastmod>2026-04-15T18:13:59.766Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dataimago.github.io/dataimago/philosophy.html</loc>
+    <lastmod>2025-09-24T19:18:22.310Z</lastmod>
   </url>
   <url>
     <loc>https://dataimago.github.io/dataimago/mission.html</loc>
     <lastmod>2025-09-24T19:18:16.796Z</lastmod>
   </url>
   <url>
+    <loc>https://dataimago.github.io/dataimago/governance.html</loc>
+    <lastmod>2026-04-15T18:17:03.624Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dataimago.github.io/dataimago/documents.html</loc>
+    <lastmod>2026-04-15T18:17:52.263Z</lastmod>
+  </url>
+  <url>
     <loc>https://dataimago.github.io/dataimago/critical_theory_manifesto.html</loc>
     <lastmod>2025-09-24T19:18:09.668Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dataimago.github.io/dataimago/design_system.html</loc>
+    <lastmod>2026-04-15T18:16:42.673Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dataimago.github.io/dataimago/ethics.html</loc>
+    <lastmod>2026-04-15T18:16:18.191Z</lastmod>
   </url>
   <url>
     <loc>https://dataimago.github.io/dataimago/index.html</loc>
     <lastmod>2025-09-29T14:42:11.784Z</lastmod>
   </url>
   <url>
-    <loc>https://dataimago.github.io/dataimago/philosophy.html</loc>
-    <lastmod>2025-09-24T19:18:22.310Z</lastmod>
+    <loc>https://dataimago.github.io/dataimago/news.html</loc>
+    <lastmod>2026-04-15T18:18:00.608Z</lastmod>
+  </url>
+  <url>
+    <loc>https://dataimago.github.io/dataimago/presentations.html</loc>
+    <lastmod>2026-04-15T18:17:54.990Z</lastmod>
   </url>
 </urlset>

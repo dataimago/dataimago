@@ -6,6 +6,7 @@
 \usage{
 build_design_components(
   project_path,
+  source_pkg = NULL,
   features = NULL,
   ai_providers = NULL,
   theme = c("professional", "academic", "minimal", "ethical"),
@@ -17,6 +18,10 @@ build_design_components(
 }
 \arguments{
 \item{project_path}{Character. Root directory containing framework}
+
+\item{source_pkg}{Character. Path to the source R package whose functions
+should be exposed as API endpoints and MCP tools. If NULL, only basic
+scaffolding is created.}
 
 \item{features}{Character vector. Components to include:
 \itemize{
@@ -51,39 +56,36 @@ List with generated components, R functions, and content metadata
 \description{
 Populates the framework with R package essentials, content templates,
 AI components, and foundation documents aligned with dataimago principles.
-This function embeds ethical AI considerations into every generated component.
+When a source R package is provided, generates REST API scaffolding, MCP
+tool definitions, and TypeScript utilities from the package's exported
+functions -- implementing the "R as Source of Truth" pipeline.
 }
 \details{
 \strong{Components Generated:}
 \itemize{
-\item \strong{R Package Structure}: DESCRIPTION, NAMESPACE, roxygen documentation
+\item \strong{REST API scaffolding} (api.R): RestRserve endpoints for each exported R function
+\item \strong{MCP tool definitions} (mcp-schema.json): AI agent tool schemas from roxygen docs
+\item \strong{TypeScript utilities} (shared-utils/): Types + dual-mode API client
 \item \strong{Foundation Documents}: Mission, philosophy, ethical guidelines as .qmd files
-\item \strong{AI Interface Components}: Chat interfaces, streaming components, model selectors
 \item \strong{Content Templates}: Page layouts, component libraries, design patterns
-\item \strong{Data Structures}: Foundation documents accessible as R data objects
-\item \strong{Testing Framework}: testthat setup with ethical AI testing patterns
 }
 
-\strong{Ethical AI Integration:}
-Every generated component includes ethical considerations, bias mitigation
-patterns, and responsible AI development practices as embedded documentation.
-
-\strong{Implementation Status:}
-This is currently a stub implementation that provides basic content scaffolding.
-Full AI component generation will be implemented in future versions.
+\strong{Meta-Tool Pipeline:}
+When \code{source_pkg} is provided, the full dataimago derivation chain is
+executed: R functions -> REST API -> MCP tools -> TypeScript types -> React components.
+Each generated artifact inherits the ethical constraints from dataimago-design.
 }
 \examples{
 \dontrun{
-# Basic content scaffolding
-build_design_components("./my-project", 
-                       features = "chat-interface",
+# Generate full pipeline from an R package
+build_design_components("./my-project",
+                       source_pkg = "path/to/my-rpkg",
                        theme = "professional")
 
-# Full component suite
-build_design_components("./my-app",
-                       features = c("chat-interface", "data-viz", "streaming"),
-                       ai_providers = c("openai", "anthropic"),
-                       theme = "ethical")
+# Basic scaffolding without source package
+build_design_components("./my-project",
+                       features = "chat-interface",
+                       theme = "professional")
 }
 
 }

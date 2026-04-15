@@ -71,7 +71,7 @@ comprehensive codebase context for AI assistants. The generated artifact include
 generate_ai_context()
 
 # Markdown format for documentation
-generate_ai_context(style = "markdown")  # → dataimago-repomix.md
+generate_ai_context(style = "markdown")  # -> dataimago-repomix.md
 
 # Custom filename
 generate_ai_context(output_file = "custom-context.xml")
@@ -94,6 +94,6 @@ if (result$success) {
 }
 
 # Generate markdown version for documentation
-generate_ai_context(style = "markdown")  # → dataimago-repomix.md
+generate_ai_context(style = "markdown")  # -> dataimago-repomix.md
 }
 }

@@ -2,17 +2,18 @@
 #' @importFrom glue glue
 #' @importFrom jsonlite toJSON
 #' @importFrom crayon green silver yellow red bold blue
+#' @importFrom utils getFromNamespace
 NULL
 
 # ============================================================================
-# export_static.R — Pre-compute R Analysis Results as Static JSON
+# export_static.R -- Pre-compute R Analysis Results as Static JSON
 # ============================================================================
 #
 # Enables serverless deployment (e.g., Vercel) by pre-computing all R
 # analysis results as static JSON files. The dual-mode API client reads
 # these files in production instead of hitting a live R server.
 #
-# Pattern: R functions × parameter combinations → public/api/*.json
+# Pattern: R functions x parameter combinations -> public/api/*.json
 # Reference: dissertation framework's static export workflow
 # ============================================================================
 
@@ -48,13 +49,13 @@ NULL
 #' 5. Create a manifest file listing all exported endpoints
 #'
 #' File naming convention:
-#' \code{output_dir/<endpoint>/default.json} — default parameters
-#' \code{output_dir/<endpoint>/<param1>-<val1>_<param2>-<val2>.json} — specific params
+#' \code{output_dir/<endpoint>/default.json} -- default parameters
+#' \code{output_dir/<endpoint>/<param1>-<val1>_<param2>-<val2>.json} -- specific params
 #'
 #' @section Performance Equity:
 #' Static JSON files are typically much smaller than dynamic responses because
 #' they can be pre-compressed and cached at the CDN edge. This aligns with
-#' dataimago's performance equity principle — users on constrained connections
+#' dataimago's performance equity principle -- users on constrained connections
 #' get the same quality of data access.
 #'
 #' @export
@@ -89,7 +90,7 @@ export_static_api <- function(pkg_path,
   exports <- parse_roxygen_exports(pkg_path, verbose = FALSE)
 
   if (length(exports) == 0) {
-    if (verbose) ui_warn("No exported functions found — nothing to export")
+    if (verbose) ui_warn("No exported functions found -- nothing to export")
     return(invisible(list(files_created = 0, total_size_kb = 0)))
   }
 
@@ -113,7 +114,7 @@ export_static_api <- function(pkg_path,
     }
 
     if (verbose) {
-      ui_info(glue::glue("  Exporting: {fn_name} → /{endpoint}/"))
+      ui_info(glue::glue("  Exporting: {fn_name} -> /{endpoint}/"))
     }
 
     # Generate parameter combinations

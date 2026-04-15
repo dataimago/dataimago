@@ -85,6 +85,13 @@ nav .nav-item:not(.compact) {
   transition: opacity 0.15s ease-in-out;
 }
 
+.navbar-logo.logo-hover,
+.footer-ai-monogram-logo.logo-hover {
+  filter: brightness(1.2) saturate(1.3);
+  transform: scale(1.05);
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
 // ===== INLINE SVG NAVBAR LOGO STYLING =====
 
 .navbar-logo.inline-svg,
@@ -743,4 +750,28 @@ a:hover .footer-package-hex-logo .hexagon {
 .theme-svg.logo-hex rect, 
 .theme-svg.logo-hex polygon {
   fill: var(--logo-default-fill, #7c7c7c);
+}
+
+// ===== ETHICAL NOTE CALLOUT =====
+
+.ethical-note {
+  border-left: 4px solid var(--dataimago-brand-ethical, #E74C3C);
+  background-color: var(--theme-surface-hover, rgba(231, 76, 60, 0.06));
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0 var(--radius-sm, 4px) var(--radius-sm, 4px) 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  strong:first-child {
+    color: var(--dataimago-brand-ethical, #E74C3C);
+  }
+
+  ul, ol {
+    margin-bottom: 0.5rem;
+  }
 }

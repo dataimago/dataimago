@@ -10,7 +10,7 @@ NULL
 #' AI components, and foundation documents aligned with dataimago principles.
 #' When a source R package is provided, generates REST API scaffolding, MCP
 #' tool definitions, and TypeScript utilities from the package's exported
-#' functions — implementing the "R as Source of Truth" pipeline.
+#' functions -- implementing the "R as Source of Truth" pipeline.
 #'
 #' @param project_path Character. Root directory containing framework
 #' @param source_pkg Character. Path to the source R package whose functions
@@ -45,7 +45,7 @@ NULL
 #'
 #' **Meta-Tool Pipeline:**
 #' When \code{source_pkg} is provided, the full dataimago derivation chain is
-#' executed: R functions → REST API → MCP tools → TypeScript types → React components.
+#' executed: R functions -> REST API -> MCP tools -> TypeScript types -> React components.
 #' Each generated artifact inherits the ethical constraints from dataimago-design.
 #'
 #' @examples
@@ -123,7 +123,7 @@ build_design_components <- function(project_path,
       }
 
       if (verbose) {
-        ui_info("\U0001F310 Running meta-tool derivation pipeline: R → API → MCP → TypeScript")
+        ui_info("\U0001F310 Running meta-tool derivation pipeline: R -> API -> MCP -> TypeScript")
       }
 
       # Step 1: Generate REST API scaffolding

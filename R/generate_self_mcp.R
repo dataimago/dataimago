@@ -50,7 +50,7 @@ generate_self_mcp <- function(output_path = NULL, verbose = TRUE) {
       list(
         uri = "dataimago://wiki",
         name = "dataimago Knowledge Wiki",
-        description = "The dataimago design system knowledge base — 70+ pages covering critical theory, ethical AI, design tokens, implementation patterns, and architectural decisions.",
+        description = "The dataimago design system knowledge base -- 70+ pages covering critical theory, ethical AI, design tokens, implementation patterns, and architectural decisions.",
         mimeType = "text/markdown"
       ),
       list(
@@ -114,7 +114,7 @@ build_scaffold_tool <- function() {
           type = "string",
           description = paste0(
             "Path to the source R package whose exported functions drive the generated application. ",
-            "This is the 'R as Source of Truth' — all APIs, MCP tools, types, and UI derive from this package. ",
+            "This is the 'R as Source of Truth' -- all APIs, MCP tools, types, and UI derive from this package. ",
             "If not provided, creates scaffolding without the derivation pipeline."
           )
         ),

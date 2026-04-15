@@ -42,9 +42,9 @@ format:
 
 This package is built on dataimago's ethical AI framework:
 
-- [Mission & Vision](../foundations/mission.html)
-- [Philosophy](../foundations/philosophy.html)
-- [Critical Theory Manifesto](../manifesto/critical_theory_manifesto.html)
+- [Mission & Vision](mission.html)
+- [Philosophy](philosophy.html)
+- [Critical Theory Manifesto](critical_theory_manifesto.html)
 
 # Exported Functions
 

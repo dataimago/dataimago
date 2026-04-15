@@ -12,9 +12,7 @@ contributes:
         theme:
           light: [cosmo, assets/css/dataimago-light.scss]
           dark: [cosmo, assets/css/dataimago-dark.scss]
-        css:
-          - assets/css/lenis-integration.scss
-          - assets/css/components.scss
+        css: []
         js:
           - assets/js/lenis-integration.js
           - assets/js/hero-scroller.js

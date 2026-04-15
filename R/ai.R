@@ -12,14 +12,14 @@ NULL
 #' philosophy of "R as source of truth" for modern web development.
 #'
 #' When a source R package is provided, executes the full meta-tool pipeline:
-#' R functions → REST API → MCP tools → TypeScript types → Web Application.
+#' R functions -> REST API -> MCP tools -> TypeScript types -> Web Application.
 #' The generated application inherits dataimago's ethical constraints structurally.
 #'
 #' @param project_name Character. Name of the project/application to create
 #' @param project_path Character. Path where project should be created. Default: getwd()
 #' @param source_pkg Character. Path to the source R package whose exported
 #'   functions should drive the generated application. This is the "R as Source
-#'   of Truth" — all APIs, MCP tools, types, and UI derive from this package.
+#'   of Truth" -- all APIs, MCP tools, types, and UI derive from this package.
 #'   If NULL, creates scaffolding without the derivation pipeline.
 #' @param mode Character. Generation mode: "local" runs the full pipeline locally,
 #'   "remote" delegates to the dataimago-ai platform API. Default: "local"
@@ -244,7 +244,7 @@ ai <- function(project_name,
       }, error = function(e) {
         if (verbose) {
           ui_warn(glue::glue("Static export encountered issues: {e$message}"))
-          ui_info("Static export is optional — the app will work in live API mode")
+          ui_info("Static export is optional -- the app will work in live API mode")
         }
       })
     }

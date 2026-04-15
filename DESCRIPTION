@@ -1,6 +1,6 @@
 Package: dataimago
-Version: 0.0-1.0
-Date: 2026-4-13
+Version: 0.0-2.0
+Date: 2026-4-15
 Title: AI-Native Web-Application Development Framework for Data Science
 Description: A comprehensive development framework that accelerates the creation
     of data science web applications for both human developers and AI agents.
@@ -41,5 +41,5 @@ License: MIT + file LICENSE
 LazyData: Yes
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Config/testthat/edition: 3

@@ -3,9 +3,9 @@ project:
   title: "dataimago: An AI-Native Application Development Framework for Data Science"
   output-dir: ../../docs
   render:
-   - "*.qmd"      # Render all .qmd files by default
-   - "!content/presentations/**"  # Exclude presentations directory
-   - "content/documents/**"       # Include documents directory
+   - "*.qmd"
+   - "!content/presentations/**"
+   - "content/documents/**"
 
 execute:
   freeze: auto
@@ -47,6 +47,14 @@ website:
         text: Home
       - href: r_package.qmd
         text: R Package
+      - text: Ethics
+        menu:
+          - href: ethics.qmd
+            text: Ethical AI Principles
+          - href: design_system.qmd
+            text: Design System
+          - href: governance.qmd
+            text: Democratic Governance
       - text: Foundation
         menu:
           - href: mission.qmd
@@ -55,6 +63,14 @@ website:
             text: Philosophy
           - href: critical_theory_manifesto.qmd
             text: Critical Theory Manifesto
+      - text: Resources
+        menu:
+          - href: documents.qmd
+            text: Documents
+          - href: presentations.qmd
+            text: Presentations
+      - href: news.qmd
+        text: News
     right:
       - text: "<img src='/assets/img/github_logo.svg' class='navbar-github-logo' title='GitHub' alt='GitHub' style='height:32px; vertical-align:middle; padding-right: 2px; margin-top: 0px;'/>"
         menu:
@@ -73,11 +89,21 @@ website:
        - section: "Getting Started"
          contents:
            - r_package.qmd
+       - section: "Ethics & Design"
+         contents:
+           - ethics.qmd
+           - design_system.qmd
+           - governance.qmd
        - section: "Foundation"
          contents:
            - mission.qmd
            - philosophy.qmd
            - critical_theory_manifesto.qmd
+       - section: "Resources"
+         contents:
+           - documents.qmd
+           - presentations.qmd
+           - news.qmd
 
   page-footer:
     left:
@@ -117,7 +143,8 @@ format:
       <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&family=Fredoka:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Fira+Sans:wght@300;400;500;600;700&family=Fira+Math&display=swap" rel="stylesheet">
       <script src="https://unpkg.com/lenis@1.3.8/dist/lenis.min.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-      <script type="text/javascript" src="/assets/js/jquery.sticky-kit.min.js"></script>
+      <script type="text/javascript" src="/assets/js/scroll.js"></script>
+      <script type="text/javascript" src="/assets/js/logo-switch.js"></script>
       <script type="text/javascript" src="/assets/js/lenis-integration.js"></script>
       <script type="text/javascript" src="/assets/js/custom-anchors.js"></script>
       <script type="text/javascript" src="/assets/js/accessibility.js"></script>
