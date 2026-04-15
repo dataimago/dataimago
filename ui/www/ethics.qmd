@@ -1,0 +1,97 @@
+---
+title: "Ethical AI Principles"
+subtitle: "Superalignment Through Design Architecture"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+dataimago treats every design token, animation curve, and color choice as a moral decision with consequences for human agency. Ethics is not bolted on after design --- it is embedded in the system architecture from the foundation, making ethical violations technically difficult rather than merely discouraged.
+
+## Core Commitments
+
+Every aspect of dataimago is evaluated against five philosophical commitments:
+
+1. **Emancipation over efficiency** --- When efficiency and emancipation conflict, emancipation always wins. Design must prioritize expanding human agency, freedom, and capacity for self-determination over maximizing system throughput, user retention, or operational cost.
+
+2. **AI in culture, not culture in AI** --- Technology serves lived human contexts, not the reverse. Instead of asking "How do we get humans to fit the system?", we ask "How does the system respect and adapt to how humans actually live?"
+
+3. **Democratic participation** --- Communities affected by design decisions must have majority representation in governance structures, with enforceable veto power over changes that impact their digital experience. Consultation without authority is tokenism.
+
+4. **Reflexive practice** --- The system questions its own power relations. Design decisions are not neutral; they reproduce or challenge existing patterns of domination.
+
+5. **Dialectical thinking** --- The system embraces productive tension over false simplicity. When principles appear to conflict, the tension is investigated rather than resolved through convenient compromise.
+
+## The Ten Design Principles
+
+### Emancipation Over Efficiency
+
+Technology must serve human liberation from domination, not optimize efficiency at the expense of agency. When efficiency and emancipation conflict, emancipation always wins.
+
+### AI in Culture
+
+AI must be embedded in human culture, not culture adapted to AI constraints. dataimago inverts the dominant AI paradigm: the system adapts to how humans actually live.
+
+### Accessibility Beyond Compliance
+
+Accessibility is human dignity, not regulatory checkbox. WCAG compliance is a floor, not a ceiling. dataimago targets accessibility excellence that serves all users equally, making the most excluded users the design baseline.
+
+### Ethical Tokens First-Class
+
+Accessibility, dignity, equity, and safety are first-class design tokens at the same architectural level as brand and functional tokens, enforced at build time. The three-tier hierarchy (Primitive, Semantic, Ethical) ensures ethical tokens validate upward and cannot be overridden.
+
+### Motion Dignity
+
+Animation is embodied communication affecting human nervous systems. Motion must be designed with vestibular safety, trauma awareness, and cognitive accessibility as non-negotiable constraints. Users must have architectural control over motion.
+
+### Color Democracy
+
+Color is communication technology serving community meaning-making, not brand commodity. Design must respect diverse color symbolism, prioritize legibility over aesthetics, and ensure information never relies on color alone.
+
+### Democratic Participation
+
+Affected communities must have binding authority over design decisions that shape their digital experiences, not merely consultative input.
+
+### Performance Equity
+
+Speed is access. A system that loads in 5 seconds on fiber but 45 seconds on 2G creates a two-tier experience. dataimago designs for the most constrained users: 2G networks, single-core processors, 1GB RAM devices.
+
+### Cultural Adaptation
+
+Design must respect and adapt to diverse cultural contexts rather than imposing Western defaults. "Global design" that applies identical interfaces across cultures is colonization.
+
+### Redundant Encoding
+
+Any meaning conveyed by color, motion, icon, or spatial position must also be conveyed by text, pattern, or structure. Users must understand the interface using only one input channel without losing critical information.
+
+## How Ethics Are Enforced
+
+dataimago does not rely on guidelines or best-practice documents alone. Ethics is enforced through architecture:
+
+::: {.ethical-note}
+**Build-time validation:** Three automated validators gate every deployment:
+
+- **Contrast checking** --- 7.0:1 minimum ratio (exceeding WCAG AAA requirements)
+- **Motion linting** --- 300ms maximum duration, `prefers-reduced-motion` support required
+- **Bundle size checking** --- Performance equity for low-bandwidth users (CSS max 150KB)
+
+If any validator fails, the build fails. Developers cannot ship unethical designs.
+:::
+
+### Superalignment Through Design
+
+AI alignment is fundamentally a cultural and design challenge, not merely a technical problem. Ethical constraints built into the token hierarchy make contrast violations, motion oversights, and accessibility failures cause build failures. Superalignment happens through:
+
+- **Participatory governance** where affected communities define values
+- **Transparent reasoning** that communities can interrogate
+- **Technical enforcement** that makes ethical drift impossible
+
+### Avoiding Ethics Washing
+
+dataimago explicitly guards against performative ethics:
+
+- Measurable outcomes, not aspirational statements
+- Community accountability with enforcement mechanisms
+- Philosophical audits connecting decisions to principles
+- Democratic oversight preventing technocratic imposition

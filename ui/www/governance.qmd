@@ -1,0 +1,99 @@
+---
+title: "Democratic Design Governance"
+subtitle: "Ethics as Infrastructure, Not Aspiration"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+dataimago governs design decisions through a formal democratic process. All design decisions are moral decisions --- every choice affects human dignity and agency. The governance process ensures communities affected by decisions have binding authority, not merely consultative input.
+
+## Priority Hierarchy
+
+When principles conflict, dataimago resolves them in explicit order:
+
+1. **Human dignity** --- non-negotiable, cannot be overridden
+2. **Democratic input** --- community voice takes precedence
+3. **Philosophical consistency** --- alignment with core commitments
+4. **Technical feasibility** --- engineering constraints
+5. **Aesthetic preference** --- visual design choices
+
+An accessibility compromise fails even if technically simpler. A beautiful interface that excludes disabled users is a failed interface.
+
+## Four-Stage Review Process
+
+### Stage 1: Impact Assessment
+
+Every proposed change undergoes structured analysis examining potential harms across five dimensions:
+
+- **Accessibility** --- Does this change affect users with disabilities?
+- **Equity** --- Does this create or reinforce disparities?
+- **Digital justice** --- Does this impact users on constrained devices or networks?
+- **Cultural sensitivity** --- Does this impose Western defaults or respect diverse contexts?
+- **Democratic participation** --- Were affected communities involved in this decision?
+
+### Stage 2: Community Consultation
+
+A 2--4 week open consultation period surfaces concerns from affected groups. Consultation is not advisory --- community input carries binding weight in the final decision.
+
+### Stage 3: Ethical Review Board
+
+A multi-stakeholder committee evaluates the proposal. The board includes:
+
+- Disability justice representatives
+- Cultural experts from diverse backgrounds
+- Accessibility specialists
+- Community representatives from affected groups
+- Technical reviewers (in advisory capacity only)
+
+The review board's composition ensures that those most affected by design decisions have the strongest voice.
+
+### Stage 4: Monitored Implementation
+
+Approved changes are implemented with scheduled reviews:
+
+- **3-month review** --- Early impact assessment
+- **6-month review** --- Medium-term consequences
+- **12-month review** --- Long-term effects and unintended outcomes
+
+A 6-month appeal window allows communities to request reconsideration if harms emerge that were not anticipated during the review process.
+
+## Democratic Transparency
+
+::: {.ethical-note}
+**Transparency without accountability is performance.** Public documentation must enable community oversight, not merely signal openness.
+:::
+
+### Transparency Principles
+
+- **Accessible language** --- All governance summaries at 8th-grade reading level so non-specialists can understand and participate
+- **Public decision records** --- All rationales, alternatives considered, and dissents are publicly documented
+- **Community ombudsperson** --- An independent advocate with binding authority investigates complaints and enforces accountability
+- **Copyleft licensing** --- The design system remains commons and cannot be privatized or used to concentrate power
+
+### What Gets Published
+
+Every governance decision produces a public record containing:
+
+- The original proposal and its stated goals
+- Impact assessment findings
+- Community consultation responses (anonymized where requested)
+- Ethical review board deliberation summary
+- The final decision with full rationale
+- Any dissenting opinions
+- Scheduled review dates
+
+## Design System as Public Commons
+
+Design systems are public infrastructure comparable to water systems or roads. They should be governed as commons, not corporate assets. dataimago's copyleft licensing ensures the design system remains open and benefits marginalized communities. Data cost consciousness recognizes that \$0.15/MB in sub-Saharan Africa makes every kilobyte an equity decision.
+
+## Evolutionary Design
+
+The knowledge base itself is a living system:
+
+- Design principles function as hypotheses tested through community experience
+- Core values (dignity, accessibility, democratic participation) are immutable
+- Implementations adapt through evidence-based evolution with 75% community consensus
+- Cross-cultural learning incorporates indigenous knowledge, global south perspectives, and intergenerational wisdom
+- Developer education develops critical consciousness --- the ability to analyze the political dimensions of technical choices

@@ -1,0 +1,25 @@
+---
+title: "Documents"
+subtitle: "Technical Reports and Articles"
+format:
+  html:
+    toc: false
+    css:
+      - assets/css/documentation.css
+---
+
+Technical documents, articles, and reports related to the dataimago framework.
+
+::: {.cards-container}
+::: {.cards-grid}
+
+::: {.feature-card}
+### Coming Soon
+
+Technical documentation and articles about dataimago's approach to AI-native data science application development will appear here as the project matures.
+
+[View R Package Documentation](r_package.qmd)
+:::
+
+:::
+:::

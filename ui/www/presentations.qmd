@@ -1,0 +1,23 @@
+---
+title: "Presentations"
+subtitle: "Talks, Slides, and Demos"
+format:
+  html:
+    toc: false
+---
+
+Presentations and slide decks related to the dataimago framework.
+
+::: {.cards-container}
+::: {.cards-grid}
+
+::: {.feature-card}
+### Coming Soon
+
+Presentations demonstrating dataimago's ethical AI framework, design system architecture, and R-first development workflows will appear here.
+
+[Learn About the Design System](design_system.qmd)
+:::
+
+:::
+:::

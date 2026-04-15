@@ -1,0 +1,18 @@
+---
+title: "Page Not Found"
+format:
+  html:
+    page-layout: full
+    toc: false
+    sidebar: false
+---
+
+::: {.error-404-container style="text-align: center; padding: 4rem 2rem; max-width: 600px; margin: 0 auto;"}
+
+# 404
+
+The page you're looking for doesn't exist or has been moved.
+
+[Return Home](index.qmd){.btn .btn-primary style="margin-top: 1.5rem; display: inline-block; padding: 0.75rem 2rem;"}
+
+:::

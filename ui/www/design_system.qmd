@@ -1,0 +1,104 @@
+---
+title: "Design System"
+subtitle: "Three-Tier Token Architecture"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+---
+
+The dataimago design system materializes philosophical commitments through a three-tier token hierarchy. Every color, spacing value, and animation parameter carries ethical intent enforced at build time.
+
+## The Central Inversion
+
+dataimago operates on a philosophical inversion: **AI embedded in culture, not culture embedded in AI**. Where most technology projects adapt human complexity to fit technical constraints, dataimago embeds its tools within the rich, lived contexts of the communities it serves. This principle cascades from abstract philosophy through design tokens, governance processes, and practical implementation.
+
+## Three-Tier Token Hierarchy
+
+Traditional design token systems treat tokens as neutral key-value pairs. This creates a false separation between design decisions and ethical implications. dataimago structures tokens in three hierarchical layers, each validating the tier below while constrained by the tier above.
+
+### Primitive Tokens
+
+Culturally-informed base values (colors, spacing, typography) with regional variants. A color like "trust blue" has cultural variants --- what signifies trust in Western financial contexts differs from East Asian contexts. Primitives acknowledge this rather than imposing universals.
+
+```json
+{
+  "color": {
+    "brand": {
+      "dataimago": {
+        "primary": { "value": "#3498DB" },
+        "accent": { "value": "#ff69b4" },
+        "ethical": { "value": "#E74C3C" }
+      }
+    }
+  }
+}
+```
+
+### Semantic Tokens
+
+Purpose-driven mappings that connect primitives to use cases. `content-text-primary` maps to a primitive that guarantees 7.0:1 contrast against `background-neutral-default`. Semantic tokens enforce constraints --- you cannot build an accessible UI with inaccessible semantic tokens.
+
+### Ethical Tokens
+
+Non-negotiable guardrails that constrain semantic tokens:
+
+- All link colors must meet WCAG AAA contrast
+- Motion must not exceed 300ms
+- Bundle size must not exceed performance budgets
+- Touch targets minimum 48px
+
+::: {.ethical-note}
+Ethical tokens are the highest tier. They validate downward and cannot be overridden by semantic or primitive tokens. Ethics is architecture, not aspiration.
+:::
+
+## Enforcement Thresholds
+
+| Constraint | dataimago Standard | WCAG Minimum | Rationale |
+|---|---|---|---|
+| Contrast ratio | 7.0:1 | 4.5:1 (AA) | Compliance is a floor |
+| Motion duration | 300ms max | No standard | Vestibular safety |
+| Touch targets | 48px | 44px | Inclusive input |
+| CSS bundle | 150KB max | No standard | Performance equity |
+| Device baseline | 1-core, 1GB RAM | No standard | Digital justice |
+
+## Build Pipeline
+
+The build pipeline includes three validators that gate every deployment:
+
+1. **`contrast-check.mjs`** --- Validates 7.0:1 minimum contrast across all token combinations
+2. **`motion-lint.mjs`** --- Enforces 300ms maximum duration and `prefers-reduced-motion` support
+3. **`bundle-check.mjs`** --- Enforces file size budgets for performance equity
+
+Build fails if any tier violates constraints. This prevents ethical erosion under deadline pressure.
+
+## Multi-Platform Distribution
+
+The design system serves four primary platforms with consistent ethical enforcement:
+
+- **R packages** --- for data science workflows
+- **Quarto documents** --- for reproducible reporting and websites
+- **Web applications** --- Next.js, D3.js interactive visualizations
+- **LaTeX/PDF** --- Academic publishing and archival output via `dataimago.sty`
+
+The two-stage build system produces universal assets in standalone mode and optimized, PurgeCSS-reduced assets when consumed as a submodule.
+
+## Typography as Democratic Infrastructure
+
+Font choices prioritize reading accessibility over brand personality:
+
+- System font stacks for universal access
+- Dyslexia-friendly character spacing
+- Multilingual architecture: CJK (1.7 line-height), Arabic (2.0), Indic scripts (1.8)
+- Cultural adaptation extends to color, motion, and semantic token naming
+
+## Token Files
+
+Source tokens are defined in the dataimago-design repository:
+
+- `src/tokens/colors.json` --- Brand, functional, and ethical color values
+- `src/tokens/typography.json` --- Font stacks and sizing scales
+- `src/tokens/spacing.json` --- Layout and spacing values
+- `src/tokens/effects.json` --- Shadow, motion, and transition definitions
+- `src/styles/` --- SCSS compilation from tokens to platform-specific output
+- `tools/` --- Ethical validators (contrast, motion, bundle size)

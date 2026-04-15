@@ -1,0 +1,29 @@
+---
+title: "News"
+subtitle: "Release Notes and Updates"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+## dataimago 0.0-2.0
+
+*April 2026*
+
+- Wiki LLM Unification: unified generation contract across dataimago-rpkg and dataimago-ai
+- Canonical KNOWLEDGE templates consumed from dataimago-design
+- Remote orchestration mode via dataimago-ai API
+- Full raw/ directory scaffolding for three-layer Karpathy pattern
+- CI guardrails for wiki protocol compliance
+- Ethics-first Quarto website with design system documentation
+
+## dataimago 0.0-1.0
+
+*Initial release*
+
+- Core R package framework for AI-native web application development
+- Design system compilation pipeline (tokens to CSS)
+- Multi-platform deployment (Quarto, Shiny, Next.js)
+- MCP-compatible tooling
+- Ethical AI build-time validation
