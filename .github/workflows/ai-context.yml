@@ -20,35 +20,39 @@ on:
           - markdown
           - both
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   generate-ai-context:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
-          fetch-depth: 0  # Full history for comprehensive context
-      
+          token: ${{ secrets.SUBMODULE_PAT }}
+          fetch-depth: 0
+
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '18'
-      
+          node-version: '22'
+
       - name: Setup R (for comprehensive context)
         uses: r-lib/actions/setup-r@v2
         with:
           r-version: 'release'
           use-public-rspm: true
-      
+
       - name: Install R package (for metadata)
         run: |
           R CMD INSTALL .
           Rscript -e "cat('Package version:', packageVersion('dataimago'), '\n')"
-      
+
       - name: Generate XML context
         if: inputs.output_format == 'xml' || inputs.output_format == 'both' || github.event_name == 'release'
         run: |
@@ -58,7 +62,7 @@ jobs:
             --token-count-tree 100 \
             --verbose \
             --header-text "dataimago R Package - AI-Native Web-Application Development Framework for Data Science"
-      
+
       - name: Generate Markdown context
         if: inputs.output_format == 'markdown' || inputs.output_format == 'both' || github.event_name == 'release'
         run: |
@@ -68,52 +72,52 @@ jobs:
             --token-count-tree 100 \
             --verbose \
             --header-text "# dataimago R Package - AI Context\n\nAI-Native Web-Application Development Framework for Data Science"
-      
+
       - name: Generate context summary
         run: |
           cat > context-summary.txt << 'EOF'
           # dataimago AI Context Files
-          
+
           Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
           Package Version: $(Rscript -e "cat(as.character(packageVersion('dataimago')))")
           Repository: https://github.com/dataimago/dataimago-rpkg
-          
+
           ## Contents
-          
+
           These files contain comprehensive context for AI assistants including:
-          
+
           ### Philosophical Foundations
           - Complete mission, vision, and ethical AI principles (inst/dataimago/)
           - Critical theory frameworks and emancipatory AI alignment
           - Architectural blueprints and implementation roadmaps
-          
+
           ### Technical Architecture
           - All R functions with complete roxygen2 documentation
           - Design system source of truth (ui/src/dataimago-design/)
           - Multi-platform build system (Quarto, CDN, Next.js integration)
           - Git submodule workflow and CI/CD patterns
-          
+
           ### AI Agent Context
           - CLAUDE.md and AGENT_INDEX.md coordination files
           - Structured metadata for semantic interoperability
           - Development patterns aligned with ethical AI principles
-          
+
           ## Usage
-          
+
           Upload these files to your AI assistant for:
           - Code review and architectural analysis
           - Function implementation aligned with dataimago philosophy
           - Documentation generation with ethical context
           - Development workflow optimization
-          
+
           ## File Formats
-          
+
           - **XML**: Structured format optimized for LLM parsing
           - **Markdown**: Human-readable format for documentation
-          
+
           Both formats contain identical content organized for AI consumption.
           EOF
-      
+
       - name: Upload XML as release asset
         if: (inputs.output_format == 'xml' || inputs.output_format == 'both' || github.event_name == 'release') && (github.event_name == 'release' || inputs.include_in_release == 'true')
         uses: softprops/action-gh-release@v1
@@ -124,7 +128,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Upload Markdown as release asset
         if: (inputs.output_format == 'markdown' || inputs.output_format == 'both' || github.event_name == 'release') && (github.event_name == 'release' || inputs.include_in_release == 'true')
         uses: softprops/action-gh-release@v1
@@ -135,7 +139,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Upload artifacts (for workflow_dispatch)
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
@@ -145,22 +149,10 @@ jobs:
             dataimago-repomix.*
             context-summary.txt
           retention-days: 30
-      
+
       - name: Display context summary
         run: |
-          echo "🎉 AI Context Generation Complete!"
+          echo "AI Context Generation Complete!"
           echo ""
-          echo "📊 File Summary:"
+          echo "File Summary:"
           ls -la dataimago-repomix.* context-summary.txt 2>/dev/null || echo "Files not found"
-          echo ""
-          echo "📋 Next Steps:"
-          echo "1. Download the generated context files"
-          echo "2. Upload to your AI assistant (Claude Projects, ChatGPT, etc.)"
-          echo "3. Use for comprehensive codebase understanding and development"
-          echo ""
-          echo "💡 The context includes:"
-          echo "   • Complete philosophical foundations"
-          echo "   • All R functions and documentation"
-          echo "   • Design system architecture"
-          echo "   • AI coordination files"
-          echo "   • Build system patterns"

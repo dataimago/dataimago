@@ -2,7 +2,6 @@ name: Dependency Management
 
 on:
   schedule:
-    # Check for dependency updates weekly
     - cron: '0 6 * * 1'
   push:
     paths:
@@ -10,11 +9,14 @@ on:
       - 'ui/package.json'
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   check-r-dependencies:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -23,10 +25,8 @@ jobs:
       - name: Check for outdated R packages
         run: |
           Rscript -e "
-          # Install tools for checking dependencies
           if (!require('pak', quietly = TRUE)) install.packages('pak')
 
-          # Check for outdated packages
           deps <- pak::local_deps()
           outdated <- pak::pkg_status(deps[['ref']])
 
@@ -41,12 +41,12 @@ jobs:
   check-node-dependencies:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '18'
+          node-version: '22'
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -56,13 +56,11 @@ jobs:
           cd ui
           pnpm outdated || true
 
-          # Check for security vulnerabilities
           pnpm audit --audit-level moderate
 
       - name: Check for Node.js security issues
         run: |
           cd ui
-          # Run security audit
           if ! pnpm audit --audit-level high; then
             echo "High-severity security vulnerabilities found in Node.js dependencies"
             exit 1
@@ -72,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -81,9 +79,9 @@ jobs:
           use-public-rspm: true
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '18'
+          node-version: '22'
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -93,7 +91,6 @@ jobs:
           cd ui
           pnpm update
 
-          # Check if changes were made
           if git diff --quiet package.json pnpm-lock.yaml; then
             echo "No Node.js dependency updates available"
             echo "node_updates=false" >> $GITHUB_ENV
@@ -108,7 +105,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: update Node.js dependencies"
-          title: "🔄 Automated dependency updates"
+          title: "Automated dependency updates"
           body: |
             ## Automated Dependency Updates
 

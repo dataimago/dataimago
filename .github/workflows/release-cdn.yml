@@ -11,6 +11,9 @@ on:
         required: true
         default: 'v0.1.0'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -19,7 +22,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+          token: ${{ secrets.SUBMODULE_PAT }}
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
@@ -31,9 +37,9 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '18'
+          node-version: '22'
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -56,7 +62,6 @@ jobs:
             cat('Build failed:', paste(result[['errors']], collapse = '; '))
             quit(status = 1)
           }
-          # Save build metadata for release notes
           jsonlite::write_json(result[['metadata']], 'build-metadata.json', pretty = TRUE)
           "
 
@@ -71,23 +76,19 @@ jobs:
 
       - name: Create Release Archive
         run: |
-          # Create versioned CDN package
           mkdir -p release-assets
           cp -r inst/quarto-assets/* release-assets/
-          
-          # Copy tailwind preset if it exists
+
           if [ -f "ui/dist/tailwind-preset.js" ]; then
             cp ui/dist/tailwind-preset.js release-assets/
           else
             echo "Warning: tailwind-preset.js not found, skipping..."
           fi
 
-          # Create integrity file for SRI hashes
           echo "# dataimago CDN Assets - Subresource Integrity Hashes" > release-assets/INTEGRITY.md
           echo "Generated: $(date -u)" >> release-assets/INTEGRITY.md
           echo "" >> release-assets/INTEGRITY.md
 
-          # Add file hashes
           cd release-assets
           for file in *.css *.js; do
             if [ -f "$file" ]; then
@@ -100,7 +101,6 @@ jobs:
           done
           cd ..
 
-          # Create archive with proper version
           tar -czf dataimago-cdn-${VERSION}.tar.gz -C release-assets .
 
       - name: Generate Release Notes
@@ -108,7 +108,7 @@ jobs:
           cat > release-notes.md << EOF
           # dataimago Design System Release ${VERSION}
 
-          ## 📦 CDN Assets
+          ## CDN Assets
 
           **jsDelivr URLs:**
           \`\`\`
@@ -126,17 +126,16 @@ jobs:
 
           **Next.js Integration:**
           \`\`\`js
-          // Download and use tailwind-preset.js
           module.exports = {
             presets: [require('./dataimago-tailwind-preset.js')]
           };
           \`\`\`
 
-          ## 🔐 Security
+          ## Security
 
           All assets include SHA-384 integrity hashes. See \`INTEGRITY.md\` in the release archive for complete hash listing.
 
-          ## 🎨 Features
+          ## Features
 
           - WCAG AA accessibility compliance
           - Reduced motion preference support
@@ -144,10 +143,9 @@ jobs:
           - Semantic color system with ethical AI principles
           EOF
 
-          # Add build metadata if available
           if [ -f build-metadata.json ]; then
             echo "" >> release-notes.md
-            echo "## 🏗️ Build Information" >> release-notes.md
+            echo "## Build Information" >> release-notes.md
             echo '```json' >> release-notes.md
             cat build-metadata.json >> release-notes.md
             echo '```' >> release-notes.md
@@ -169,7 +167,6 @@ jobs:
 
       - name: Trigger jsDelivr Cache Purge
         run: |
-          # Purge jsDelivr cache for new release
           curl -X POST "https://purge.jsdelivr.net/gh/dataimago/dataimago@${VERSION}/inst/quarto-assets/dataimago.min.css"
           curl -X POST "https://purge.jsdelivr.net/gh/dataimago/dataimago@${VERSION}/inst/quarto-assets/tokens.css"
           echo "jsDelivr cache purged for version ${VERSION}"

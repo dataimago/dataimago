@@ -11,13 +11,19 @@ on:
       - 'inst/dataimago/**'
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+          token: ${{ secrets.SUBMODULE_PAT }}
 
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -34,9 +40,9 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: Setup Node.js for Design System
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '18'
+          node-version: '22'
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -45,11 +51,9 @@ jobs:
         run: |
           R CMD INSTALL .
           Rscript -e "
-          # Create UI workspace first
           result <- dataimago::create_ui_workspace()
           if (!result[['success']]) quit(status = 1)
-          
-          # Build design system
+
           result <- dataimago::build_design_system(verbose = TRUE)
           if (!result[['success']]) quit(status = 1)
           "
@@ -67,7 +71,7 @@ jobs:
       - name: Render Quarto Website
         run: |
           cd ui/www
-          quarto render --output-dir ../netlify-build
+          quarto render --output-dir ../../netlify-build
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0

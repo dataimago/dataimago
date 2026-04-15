@@ -6,8 +6,10 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    # Run weekly to catch upstream changes
     - cron: '0 8 * * 1'
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   R-CMD-check:
@@ -30,9 +32,10 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
+          token: ${{ secrets.SUBMODULE_PAT }}
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -49,11 +52,9 @@ jobs:
 
       - name: Setup Node.js for Design System
         if: runner.os == 'Linux'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: ui/package.json
+          node-version: '22'
 
       - name: Install pnpm
         if: runner.os == 'Linux'

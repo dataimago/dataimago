@@ -6,13 +6,17 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   lint-and-style:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
+          token: ${{ secrets.SUBMODULE_PAT }}
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -47,9 +51,10 @@ jobs:
   test-design-system:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
+          token: ${{ secrets.SUBMODULE_PAT }}
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -58,9 +63,9 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '18'
+          node-version: '22'
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -69,14 +74,12 @@ jobs:
         run: |
           R CMD INSTALL .
           Rscript -e "
-          # Test workspace creation (preserve existing sophisticated system)
           result <- dataimago::create_ui_workspace()
           if (!result[['success']]) {
             cat('UI workspace creation failed:', paste(result[['errors']], collapse = '; '), '\n')
             quit(status = 1)
           }
 
-          # Test full build pipeline
           result <- dataimago::build_design_system(
             force_rebuild = TRUE,
             include_sri = TRUE,
@@ -87,7 +90,6 @@ jobs:
             quit(status = 1)
           }
 
-          # Verify assets exist
           required_assets <- c(
             'ui/dist/dataimago.min.css',
             'inst/quarto-assets/dataimago.min.css',
@@ -106,7 +108,10 @@ jobs:
   test-documentation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+          token: ${{ secrets.SUBMODULE_PAT }}
 
       - uses: quarto-dev/quarto-actions/setup@v2
 
@@ -120,14 +125,12 @@ jobs:
         run: |
           R CMD INSTALL .
           Rscript -e "
-          # Test Quarto documentation generation
           dataimago::create_quarto_documentation(
             package_path = '.',
             output_path = 'test-docs',
             include_foundation_links = TRUE
           )
 
-          # Verify critical files were generated
           required_files <- c(
             'test-docs/api_reference.qmd',
             'test-docs/_quarto.yml'
@@ -147,7 +150,6 @@ jobs:
           cd test-docs
           quarto render --to html
 
-          # Verify website was generated
           if [ ! -f "_site/index.html" ]; then
             echo "Quarto rendering failed - no index.html generated"
             exit 1
