@@ -245,7 +245,84 @@ build_design_system <- function(force_rebuild = FALSE,
 
   assets <- c(assets, main_css)
 
-  # 5. Generate SRI hashes if requested
+  # 5. Distribute LaTeX assets from design system submodule
+  if (verbose) {
+    ui_info("Distributing LaTeX assets from design system...")
+  }
+
+  # Source location in design system submodule
+  design_system_dir <- file.path(ui_dir, "src", "dataimago-design")
+  latex_source <- file.path(design_system_dir, "src", "latex")
+
+  if (dir_exists(latex_source)) {
+    # Define all distribution channels (relative to package root)
+    latex_channels <- list(
+      cdn = file.path("inst", "quarto-assets"),
+      extension = file.path("ui", "www", "_extensions", "dataimago", "ai-native", "assets", "latex"),
+      website = file.path("ui", "www", "assets", "latex"),
+      docs = file.path("docs", "assets", "latex")
+    )
+
+    latex_files_distributed <- 0
+
+    # Distribute dataimago.sty to all channels
+    sty_source <- file.path(latex_source, "dataimago.sty")
+    if (file_exists(sty_source)) {
+      for (channel_name in names(latex_channels)) {
+        channel_dir <- latex_channels[[channel_name]]
+        tryCatch(
+          {
+            if (!dir_exists(channel_dir)) {
+              dir_create(channel_dir, recursive = TRUE)
+            }
+            sty_target <- file.path(channel_dir, "dataimago.sty")
+            file_copy(sty_source, sty_target, overwrite = TRUE)
+            latex_files_distributed <- latex_files_distributed + 1
+            if (verbose) {
+              ui_info(glue("   dataimago.sty -> {channel_name}"))
+            }
+          },
+          error = function(e) {
+            errors <- c(errors, glue("Failed to copy dataimago.sty to {channel_name}: {e$message}"))
+          }
+        )
+      }
+    } else {
+      if (verbose) {
+        ui_warn("dataimago.sty not found in design system submodule")
+      }
+    }
+
+    # Copy README.md to CDN distribution only (with different name to avoid conflicts)
+    readme_source <- file.path(latex_source, "README.md")
+    if (file_exists(readme_source)) {
+      cdn_dir <- latex_channels$cdn
+      tryCatch(
+        {
+          readme_target <- file.path(cdn_dir, "README-latex.md")
+          file_copy(readme_source, readme_target, overwrite = TRUE)
+          latex_files_distributed <- latex_files_distributed + 1
+          if (verbose) {
+            ui_info("   README.md -> cdn (as README-latex.md)")
+          }
+        },
+        error = function(e) {
+          errors <- c(errors, glue("Failed to copy README.md to CDN: {e$message}"))
+        }
+      )
+    }
+
+    if (verbose && latex_files_distributed > 0) {
+      ui_done(glue("Distributed LaTeX assets to {length(latex_channels)} channels"))
+    }
+  } else {
+    if (verbose) {
+      ui_warn(glue("LaTeX source directory not found: {latex_source}"))
+      ui_info("   LaTeX assets will not be distributed (design system submodule may need initialization)")
+    }
+  }
+
+  # 6. Generate SRI hashes if requested
   if (include_sri) {
     if (verbose) {
       ui_info("Generating SRI hashes for CDN security...")
@@ -289,7 +366,7 @@ build_design_system <- function(force_rebuild = FALSE,
     }
   }
 
-  # 6. Update Quarto extension if requested
+  # 7. Update Quarto extension if requested
   if (update_extension) {
     if (verbose) {
       ui_info("Updating Quarto extension assets...")
@@ -301,7 +378,7 @@ build_design_system <- function(force_rebuild = FALSE,
     }
   }
 
-  # 7. Generate CDN assets
+  # 8. Generate CDN assets
   cdn_result <- generate_cdn_assets(verbose = verbose)
   if (!cdn_result$success) {
     errors <- c(errors, cdn_result$errors)
@@ -309,7 +386,7 @@ build_design_system <- function(force_rebuild = FALSE,
     assets <- c(assets, cdn_result$assets)
   }
 
-  # 8. Synchronize Quarto assets (ensure consistency across directories)
+  # 9. Synchronize Quarto assets (ensure consistency across directories)
   if (verbose) {
     ui_info("Synchronizing Quarto assets across directories...")
   }
@@ -328,7 +405,7 @@ build_design_system <- function(force_rebuild = FALSE,
     errors <- c(errors, glue("Asset synchronization failed: {e$message}"))
   })
 
-  # 9. Create build metadata
+  # 10. Create build metadata
   build_time <- Sys.time()
   metadata <- list(
     package_manager = package_manager,
@@ -343,7 +420,7 @@ build_design_system <- function(force_rebuild = FALSE,
     sri_hashes_generated = length(sri_hashes)
   )
 
-  # 10. Final status
+  # 11. Final status
   success <- length(errors) == 0
 
   if (verbose) {

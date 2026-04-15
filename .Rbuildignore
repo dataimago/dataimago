@@ -9,6 +9,7 @@
 ^\.Rproj\.user$
 ^\.git$
 ^\.gitignore$
+^\.gitmodules$
 ^\.github$
 ^_pkgdown\.yml$
 ^docs$
@@ -25,23 +26,80 @@
 # Exclude old quarto_website directory if it exists
 ^quarto_website$
 
-# Exclude Node.js artifacts but include built CSS
-^ui/node_modules$
-^ui/node_modules/
-^ui/package-lock\.json$
-^ui/pnpm-lock\.yaml$
-^ui/\.npmrc$
-
-# Exclude any Node.js artifacts at package root (should not exist)
+# ===== NODE.JS AND BUILD ARTIFACTS =====
+# Exclude Node.js artifacts at package root (should not exist)
 ^package-lock\.json$
 ^yarn\.lock$
 ^pnpm-lock\.yaml$
 ^node_modules$
 ^\.npmrc$
 
+# Exclude Node.js artifacts in ui/ directory
+^ui/node_modules$
+^ui/node_modules/
+^ui/package-lock\.json$
+^ui/pnpm-lock\.yaml$
+^ui/\.npmrc$
+
+# ===== GIT SUBMODULE EXCLUSIONS =====
+# Exclude ALL node_modules in the git submodule
+^ui/src/dataimago-design/node_modules$
+^ui/src/dataimago-design/node_modules/
+
+# Exclude git artifacts in submodule
+^ui/src/dataimago-design/\.git$
+^ui/src/dataimago-design/\.git/
+^ui/src/dataimago-design/\.gitignore$
+
+# Exclude package management files in submodule
+^ui/src/dataimago-design/package-lock\.json$
+^ui/src/dataimago-design/pnpm-lock\.yaml$
+^ui/src/dataimago-design/\.npmrc$
+
+# Exclude build configuration files in submodule
+^ui/src/dataimago-design/postcss\.config\.js$
+
+# ===== DEVELOPMENT AND DOCUMENTATION FILES =====
+# Exclude development documentation in submodule
+^ui/src/dataimago-design/AGENTS\.md$
+^ui/src/dataimago-design/INTEGRATION\.md$
+^ui/src/dataimago-design/PHASE.*\.md$
+^ui/src/dataimago-design/SYSTEM-COMPARISON\.md$
+^ui/src/dataimago-design/TODO\.md$
+^ui/src/dataimago-design/TOKEN_ARCHITECTURE\.md$
+^ui/src/dataimago-design/README\.md$
+
+# Exclude development guides in ui/
+^ui/P3-OKLCH-Testing-Guide\.md$
+^ui/Phase.*-Implementation-Plan\.md$
+^ui/PostCSS-Implementation-Guide\.md$
+^ui/README\.md$
+
+# Exclude foundations documentation (development-only)
+^ui/src/dataimago-design/foundations$
+^ui/src/dataimago-design/foundations/
+
+# Exclude examples and reports (development-only)
+^ui/src/dataimago-design/examples$
+^ui/src/dataimago-design/examples/
+^ui/src/dataimago-design/reports$
+^ui/src/dataimago-design/reports/
+
+# Exclude build tools and scripts
+^ui/src/dataimago-design/tools$
+^ui/src/dataimago-design/tools/
+^ui/src/dataimago-design/scripts$
+^ui/src/dataimago-design/scripts/
+
+# ===== QUARTO AND WEB DEVELOPMENT =====
 # Exclude any Quarto extensions at package root (should only be in ui/www/)
 ^_extensions$
 
+# Exclude Quarto development files
+^ui/www/_extensions/dataimago/ai-native/docs$
+^ui/www/_extensions/dataimago/ai-native/examples$
+
+# ===== R PACKAGE STRUCTURE =====
 # Exclude README files in R/ and man/ directories (not allowed in R packages)
 ^R/README\.md$
 ^man/README\.md$
@@ -54,22 +112,41 @@
 ^tests/?$
 ^vignettes/?$
 
-# Exclude empty quarto extension directories (if they exist)  
-^ui/www/_extensions/dataimago/ai-native/docs$
-^ui/www/_extensions/dataimago/ai-native/examples$
-^ui/www/_extensions/dataimago/ai-native/assets/img$
-
+# ===== BINARY AND TEMPORARY FILES =====
 # Exclude large binary files
 .*\.pdf$
 .*\.key$
 
+# Exclude CSS source maps (development artifacts)
+.*\.css\.map$
+
+# Exclude temporary files
+.*\.tmp$
+.*\.temp$
+
+# ===== AI AND DEVELOPMENT CONTEXT FILES =====
 # Exclude repomix AI context files
 .*-repomix\..*$
-
-# Exclude hidden files and directories
 ^\.repomixignore$
-^ui/src/dataimago-design/\.git$
-^ui/src/dataimago-design/\.npmrc$
+
+# ===== HIDDEN FILES AND DIRECTORIES =====
+# Exclude hidden files and directories (but allow specific ones we need)
+^\.repomixignore$
 \.git$
 \.git/
 /\.[^/]*$
+
+# ===== ADDITIONAL SAFETY EXCLUSIONS =====
+# Exclude any backup files
+.*~$
+.*\.bak$
+.*\.backup$
+
+# Exclude OS-specific files
+\.DS_Store$
+Thumbs\.db$
+
+# Exclude editor files
+.*\.swp$
+.*\.swo$
+.*\.orig$

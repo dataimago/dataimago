@@ -5,13 +5,12 @@ format:
     page-layout: full
     toc: false
     sidebar: false
-    css: assets/css/landing.css
 ---
 
 <!-- ###################################### -->
 <!-- SLIDE 1: Hero with scrollable content START -->
 <!-- ###################################### -->
-::::::::: {.lenis-slide .dataimago-slide .hero-slide}
+::::::::: {.lenis-slide}
 <!-- Hero section START -->
 ::::::: {.hero-section}
 <!-- Grid container START -->
@@ -72,7 +71,7 @@ From concept to deployment in minimal time, with built-in design systems ensurin
 <!-- ###################################### -->
 <!-- SLIDE 2: Cards section START -->
 <!-- ###################################### -->
-:::::: {.lenis-slide .dataimago-slide .cards-slide}
+:::::: {.lenis-slide}
 <!-- Cards container START -->
 :::: {.cards-container}
 

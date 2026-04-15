@@ -48,6 +48,22 @@ const config = {
       path: path.join(__dirname, '..', 'docs', 'assets', 'css'),
       files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'documentation.css', 'landing.css']
     }
+  ],
+  
+  // SVG Icon distribution channels
+  iconChannels: [
+    {
+      name: 'Website Icons (ui/www/assets/img/)',
+      path: path.join(__dirname, 'www', 'assets', 'img')
+    },
+    {
+      name: 'Extension Icons (ui/www/_extensions/dataimago/ai-native/assets/img/)',
+      path: path.join(__dirname, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'img')
+    },
+    {
+      name: 'Docs Icons (docs/assets/img/)',
+      path: path.join(__dirname, '..', 'docs', 'assets', 'img')
+    }
   ]
 };
 
@@ -189,6 +205,41 @@ config.distributionChannels.forEach(channel => {
   
   console.log(`   ✓ ${channel.name} (${copiedCount} assets)`);
 });
+
+// Step 4.5: Distribute SVG icon assets
+console.log('🎨 Distributing SVG icons to consumer repository locations...');
+
+const iconsSourceDir = path.join(config.distDir, 'icons');
+if (fs.existsSync(iconsSourceDir)) {
+  config.iconChannels.forEach(channel => {
+    // Ensure target directory exists
+    if (!fs.existsSync(channel.path)) {
+      fs.mkdirSync(channel.path, { recursive: true });
+    }
+    
+    let copiedCount = 0;
+    
+    // Copy SVG icons from dist/icons/ to target, flattening structure for web use
+    function copyIconsFlat(src, dest) {
+      const items = fs.readdirSync(src);
+      items.forEach(item => {
+        const srcPath = path.join(src, item);
+        const stats = fs.statSync(srcPath);
+        if (stats.isDirectory()) {
+          copyIconsFlat(srcPath, dest); // Recurse but keep flat structure
+        } else if (item.endsWith('.svg')) {
+          fs.copyFileSync(srcPath, path.join(dest, item));
+          copiedCount++;
+        }
+      });
+    }
+    
+    copyIconsFlat(iconsSourceDir, channel.path);
+    console.log(`   ✓ ${channel.name} (${copiedCount} SVG icons)`);
+  });
+} else {
+  console.log('⚠️  No icons found in dist/ - SVG assets may not have been built');
+}
 
 // Step 5: Handle JavaScript assets separately
 const jsChannels = [

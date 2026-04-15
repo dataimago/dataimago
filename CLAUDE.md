@@ -1,12 +1,31 @@
 ---
 title: "CLAUDE.md: R Package Architecture Guide for dataimago"
 description: "Comprehensive technical and architectural guide for AI assistance with the dataimago R package"
-version: "0.0-0.3"
+version: "0.1-0.0"
 author: "dataimago AI + Human Co-Creation"
-updated: "2025-08-26"
+updated: "2026-04-13"
 ---
 
-## 🏗️ CRITICAL ARCHITECTURE GUIDE
+## Session Start Protocol
+
+At the start of every session:
+1. Read this file (CLAUDE.md)
+2. Read `ui/src/dataimago-design/wiki/index.md` for framework context
+3. Read the last 5 entries of `ui/src/dataimago-design/wiki/log.md` for recent framework activity
+4. Ask the user what they want to work on
+
+## Generation Architecture: Local and Remote Modes
+
+The `ai()` function supports two generation modes:
+
+- **Local mode** (`mode = "local"`, default): Runs the full Phase 1-5 pipeline locally. Requires Node.js, pnpm, and git. Produces the application directly on disk.
+- **Remote mode** (`mode = "remote"`): Delegates generation to the dataimago-ai platform API at `/api/orchestrate`. Requires a `DATAIMAGO_API_KEY` environment variable. Falls back to local mode if the API is unreachable.
+
+Remote mode makes dataimago-ai the canonical generation authority — the platform assembles files using canonical templates from dataimago-design and returns them for the R package to write to disk.
+
+---
+
+## CRITICAL ARCHITECTURE GUIDE
 
 ### ⚠️ Essential Directory Understanding
 

@@ -26,5 +26,5 @@
   </defs>
 
   <!-- Apply the mask to a filled rectangle -->
-  <rect width="100%" height="100%" rx="40" ry="40" fill="#83838F" mask="url(#aiMask)" />
+  <rect width="100%" height="100%" rx="40" ry="40" mask="url(#aiMask)" />
 </svg>

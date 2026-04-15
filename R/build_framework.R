@@ -184,13 +184,42 @@ build_design_framework <- function(project_path,
 # Helper function: Get framework-specific directories
 get_framework_directories <- function(framework) {
   base_dirs <- c("inst", "inst/dataimago")
-  
+
   switch(framework,
     "quarto" = c(base_dirs, "ui", "ui/src", "ui/src/styles", "ui/src/js", "ui/src/tokens", "ui/www", "docs"),
     "shiny" = c(base_dirs, "R", "man", "tests", "tests/testthat", "inst/shiny-app"),
-    "nextjs" = c(base_dirs, "ui", "ui/src", "ui/src/styles", "ui/src/js", "ui/src/tokens", "ui/www", "app"),
-    "full" = c(base_dirs, "ui", "ui/src", "ui/src/styles", "ui/src/js", "ui/src/tokens", "ui/www", 
-               "R", "man", "tests", "tests/testthat", "docs", "app")
+    "nextjs" = c(base_dirs,
+      # R analysis layer
+      "R", "man", "data",
+      # NextJS application
+      "app", "app/api", "app/components", "app/lib",
+      # Shared utilities (generated)
+      "shared-utils",
+      # Static API data (for serverless deployment)
+      "public", "public/api",
+      # MCP tools
+      "mcp-tools",
+      # Design system
+      "ui", "ui/src", "ui/src/styles", "ui/src/js", "ui/src/tokens",
+      # Documentation
+      "docs", "ui/www"
+    ),
+    "full" = c(base_dirs,
+      # R analysis layer
+      "R", "man", "data", "tests", "tests/testthat",
+      # NextJS application
+      "app", "app/api", "app/components", "app/lib",
+      # Shared utilities (generated)
+      "shared-utils",
+      # Static API data
+      "public", "public/api",
+      # MCP tools
+      "mcp-tools",
+      # Design system
+      "ui", "ui/src", "ui/src/styles", "ui/src/js", "ui/src/tokens", "ui/www",
+      # Documentation
+      "docs"
+    )
   )
 }
 

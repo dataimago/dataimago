@@ -22,6 +22,7 @@
     "postcss-cli": "^11.0.0",
     "@fullhuman/postcss-purgecss": "^5.0.0",
     "postcss-custom-properties": "^13.0.0",
-    "postcss-color-function": "^4.1.0"
+    "postcss-color-function": "^4.1.0",
+    "read-cache": "^1.0.0"
   }
 }

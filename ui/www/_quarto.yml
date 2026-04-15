@@ -84,16 +84,16 @@ website:
       - text: "<img src='/assets/img/quarto_logo.svg' class='footer-quarto-logo inline-svg' title='quarto.org' alt='quarto.org' style='width:28px; height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
         href: https://quarto.org/
         target: _blank
-      - text: "<img src='/assets/img/netlify_logo.svg' class='footer-netlify-logo' title='netlify.com' alt='netlify.com' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
+      - text: "<img src='/assets/img/netlify_logo.svg' class='footer-netlify-logo inline-svg' title='netlify.com' alt='netlify.com' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
         href: https://www.netlify.com/
         target: _blank
     center:
-      - text: "<img src='/assets/img/ai_monogram.svg' class='footer-ai-monogram-logo' title='dataimago.ai' alt='dataimago.ai' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
+      - text: "<img src='/assets/img/ai_monogram.svg' class='footer-ai-monogram-logo inline-svg' title='dataimago.ai' alt='dataimago.ai' style='height:28px; vertical-align:middle; padding-right: 4px; margin-top: 6px;'/>" 
         href: https://dataimago.ai/
         target: _blank
-      - text: "<img src='/assets/img/package_hex_logo.svg' class='footer-package-hex-logo' title='dataimago R Package' alt='dataimago R Package' style='height: 32px; margin-top: 3px;'/>"
+      - text: "<img src='/assets/img/package_hex_logo.svg' class='footer-package-hex-logo inline-svg' title='dataimago R Package' alt='dataimago R Package' style='height: 32px; margin-top: 3px;'/>"
         href: https://dataimago.github.io/dataimago/
-      - text: "<img src='/assets/img/bluesky_logo.svg' class='footer-bluesky-logo' title='Bluesky' style='height: 28px; margin-top: 5px;' alt='Bluesky'/>"
+      - text: "<img src='/assets/img/bluesky_logo.svg' class='footer-bluesky-logo inline-svg' title='Bluesky' style='height: 28px; margin-top: 5px;' alt='Bluesky'/>"
         href: https://bsky.app/intent/compose?text=dataimago%20%28R%20package%29%3A%20An%20AI-native%20application%20development%20framework%20for%20data%20science.%20%23dataimago%20%23rstats%20https%3A%2F%2Fdataimago.github.io%2Fdataimago
         target: _blank 
 
@@ -114,7 +114,7 @@ format:
     code-copy: true
     code-overflow: wrap
     include-after: |
-      <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Fira+Sans+Condensed:wght@300;400;500;600;700&family=Fira+Math&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&family=Fredoka:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Fira+Sans:wght@300;400;500;600;700&family=Fira+Math&display=swap" rel="stylesheet">
       <script src="https://unpkg.com/lenis@1.3.8/dist/lenis.min.js"></script>
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
       <script type="text/javascript" src="/assets/js/jquery.sticky-kit.min.js"></script>

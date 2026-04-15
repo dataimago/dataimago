@@ -10,7 +10,7 @@
 <!-- Package Information -->
 [![CRAN status](https://www.r-pkg.org/badges/version/dataimago)](https://CRAN.R-project.org/package=dataimago)
 [![R Version](https://img.shields.io/badge/R-%E2%89%A5%204.1.0-blue.svg)](https://cran.r-project.org/)
-[![Package Version](https://img.shields.io/badge/Version-0.0--0.3-brightgreen.svg)](https://github.com/dataimago/dataimago)
+[![Package Version](https://img.shields.io/badge/Version-0.0--1.0-brightgreen.svg)](https://github.com/dataimago/dataimago)
 
 <!-- Technical Architecture -->
 [![Node.js Version](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)

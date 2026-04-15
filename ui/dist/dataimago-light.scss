@@ -13,7 +13,7 @@ $navbar-bg: rgb(237, 237, 235) !default;
 $link-color: #7c7c7c !default;
 $code-color: #ff69b4 !default;
 $code-bg: rgb(225, 225, 223) !default;
-$headings-font-family: Poppins, system-ui, sans-serif !default;
+$headings-font-family: Josefin Sans, system-ui, sans-serif !default;
 $headings-font-weight: 500 !default;
 $h2-font-size: 1.875rem !default;
 
@@ -32,11 +32,16 @@ $h2-font-size: 1.875rem !default;
 pre { border: 1px solid rgb(220, 220, 218); }
 :root { 
   /* Font Family CSS Custom Properties */
-  --font-family-sans: Fira Sans Condensed, system-ui, sans-serif;
+  --font-family-sans: Fira Sans, system-ui, sans-serif;
   --font-family-mono: JetBrains Mono, SF Mono, Monaco, Inconsolata, monospace;
-  --font-family-display: Poppins, system-ui, sans-serif;
-  --font-family-brand: Josefin Sans, system-ui, sans-serif;
+  --font-family-display: Josefin Sans, system-ui, sans-serif;
+  --font-family-brand: Futura, system-ui, sans-serif;
   --font-family-math: Fira Math, Fira Sans Math, system-ui, sans-serif;
+  
+  /* Font Style CSS Custom Properties */
+  --font-style-normal: normal;
+  --font-style-italic: italic;
+  --font-style-oblique: oblique;
   
   --logo-default-fill: #7c7c7c; 
   --logo-hover-fill: rgb(20, 20, 16);
@@ -48,6 +53,19 @@ pre { border: 1px solid rgb(220, 220, 218); }
   --theme-text-primary: rgb(20, 20, 16);
   --theme-text-secondary: #7c7c7c;
   --theme-text-hover: rgb(20, 20, 16);
+  
+  /* Dropdown styling */
+  --theme-dropdown-bg: rgb(225, 225, 223);
+  --theme-dropdown-shadow: rgba(220, 220, 218, 0.9);
+  --theme-dropdown-border: rgb(210, 210, 208);
+  --theme-dropdown-hover-bg: rgb(237, 237, 235);
+  --theme-dropdown-hover-shadow: rgba(220, 220, 218, 0.8);
+  
+  /* Bluesky logo styling */
+  --bluesky-logo-fill-default: #7c7c7c;
+  --bluesky-logo-fill-hover: #1185fe;
+  --bluesky-logo-stroke-default: transparent;
+  --bluesky-logo-stroke-hover: rgb(20, 20, 16);
   
   /* OKLCH Enhanced Colors for Modern Browsers */
   --dataimago-body-bg-oklch: oklch(0.937 0.007 110.1);

@@ -1,0 +1,434 @@
+#' @importFrom fs dir_exists dir_create path file_exists
+#' @importFrom glue glue
+#' @importFrom jsonlite toJSON
+#' @importFrom crayon green silver yellow red bold blue
+NULL
+
+# ============================================================================
+# generate_types.R — Generate TypeScript Types and Dual-Mode API Client
+# ============================================================================
+#
+# Creates TypeScript type definitions from R function signatures and a
+# dual-mode API client that transparently switches between a live R server
+# (development) and pre-computed static JSON files (production/Vercel).
+#
+# Pattern: R function signatures → TypeScript types + API client
+# Reference: dissertation-ai/shared-utils/ (proof-of-concept)
+# ============================================================================
+
+
+#' Generate Shared TypeScript Utilities
+#'
+#' Creates TypeScript type definitions, API client, and utility functions
+#' from an R package's exported functions. The generated code enables
+#' type-safe integration between the R analysis layer and NextJS frontend.
+#'
+#' @param pkg_path Character. Path to the R package source directory
+#' @param output_dir Character. Directory for generated TypeScript files
+#' @param pkg_name Character. Package name. If NULL, read from DESCRIPTION.
+#' @param api_port Integer. Default API port for development mode. Default: 8000
+#' @param verbose Logical. Print progress. Default: TRUE
+#'
+#' @return List with: files_created, types_generated, client_mode
+#'
+#' @details
+#' Three files are generated:
+#'
+#' **types.ts** — TypeScript interfaces for:
+#' - API response structures (matching R function return types)
+#' - Parameter types for each function
+#' - Common types (ApiResponse, ErrorResponse, etc.)
+#'
+#' **api-client.ts** — Dual-mode API client:
+#' - Development: HTTP requests to localhost R server
+#' - Production: Reads from /api/*.json static files
+#' - Mode determined by NEXT_PUBLIC_API_MODE environment variable
+#' - Consistent interface regardless of mode
+#'
+#' **index.ts** — Re-exports from types and client
+#'
+#' @section Dual-Mode Pattern:
+#' The generated client implements the dataimago dual-mode API pattern:
+#' \itemize{
+#'   \item \code{NEXT_PUBLIC_API_MODE=live}: Requests go to the R server
+#'   \item \code{NEXT_PUBLIC_API_MODE=static}: Reads pre-computed JSON files
+#'   \item Transparent switching — components don't know which mode is active
+#' }
+#'
+#' @export
+generate_shared_utils <- function(pkg_path,
+                                   output_dir,
+                                   pkg_name = NULL,
+                                   api_port = 8000L,
+                                   verbose = TRUE) {
+
+  # Read package name
+  if (is.null(pkg_name)) {
+    desc_path <- fs::path(pkg_path, "DESCRIPTION")
+    if (fs::file_exists(desc_path)) {
+      desc_lines <- readLines(desc_path, warn = FALSE)
+      pkg_line <- grep("^Package:", desc_lines, value = TRUE)
+      if (length(pkg_line) > 0) {
+        pkg_name <- trimws(sub("^Package:\\s*", "", pkg_line[1]))
+      }
+    }
+    if (is.null(pkg_name)) pkg_name <- basename(pkg_path)
+  }
+
+  if (verbose) {
+    ui_info(glue::glue("\U0001F4DD Generating TypeScript utilities for '{pkg_name}'"))
+  }
+
+  # Parse exported functions
+  exports <- parse_roxygen_exports(pkg_path, verbose = verbose)
+
+  # Ensure output directory
+  if (!fs::dir_exists(output_dir)) {
+    fs::dir_create(output_dir, recurse = TRUE)
+  }
+
+  files_created <- character(0)
+
+  # Generate types.ts
+  types_code <- generate_types_ts(exports, pkg_name)
+  types_path <- fs::path(output_dir, "types.ts")
+  writeLines(types_code, types_path)
+  files_created <- c(files_created, "types.ts")
+  if (verbose) ui_done("Generated types.ts")
+
+  # Generate api-client.ts
+  client_code <- generate_api_client_ts(exports, pkg_name, api_port)
+  client_path <- fs::path(output_dir, "api-client.ts")
+  writeLines(client_code, client_path)
+  files_created <- c(files_created, "api-client.ts")
+  if (verbose) ui_done("Generated api-client.ts (dual-mode)")
+
+  # Generate index.ts
+  index_code <- generate_index_ts(exports, pkg_name)
+  index_path <- fs::path(output_dir, "index.ts")
+  writeLines(index_code, index_path)
+  files_created <- c(files_created, "index.ts")
+  if (verbose) ui_done("Generated index.ts")
+
+  results <- list(
+    files_created = files_created,
+    types_generated = length(exports),
+    client_mode = "dual (live + static)"
+  )
+
+  if (verbose) {
+    ui_done(glue::glue("Generated {length(files_created)} TypeScript files"))
+  }
+
+  invisible(results)
+}
+
+
+# ============================================================================
+# Internal: TypeScript Code Generation
+# ============================================================================
+
+#' Generate types.ts content
+#' @noRd
+generate_types_ts <- function(exports, pkg_name) {
+  lines <- c(
+    glue::glue("// Auto-generated TypeScript types for {pkg_name}"),
+    glue::glue("// Generated by dataimago::generate_shared_utils()"),
+    glue::glue("// Date: {Sys.Date()}"),
+    "//",
+    "// DO NOT EDIT MANUALLY — regenerate with dataimago::generate_shared_utils()",
+    "",
+    "// ============================================================================",
+    "// Common Types",
+    "// ============================================================================",
+    "",
+    "export interface ApiResponse<T = unknown> {",
+    "  status: 'success' | 'error';",
+    "  results?: T;",
+    "  summary?: T;",
+    "  filters?: Record<string, string>;",
+    "  metadata?: Record<string, unknown>;",
+    "  message?: string;",
+    "  interpretation?: string;",
+    "}",
+    "",
+    "export interface ErrorResponse {",
+    "  status: 'error';",
+    "  message: string;",
+    "  endpoint: string;",
+    "  timestamp: string;",
+    "  code: string;",
+    "}",
+    "",
+    "export interface DiscoveryResponse {",
+    glue::glue("  package: '{pkg_name}';"),
+    "  analyses: Record<string, {",
+    "    description: string;",
+    "    parameters: Record<string, string>;",
+    "  }>;",
+    "}",
+    "",
+    "// ============================================================================",
+    "// Function Parameter Types",
+    "// ============================================================================"
+  )
+
+  for (fn_name in names(exports)) {
+    fn_meta <- exports[[fn_name]]
+    interface_name <- to_pascal_case(fn_name)
+
+    lines <- c(lines, "",
+      glue::glue("/** Parameters for {fn_name}() */"),
+      glue::glue("export interface {interface_name}Params {{")
+    )
+
+    for (param_name in names(fn_meta$params)) {
+      p <- fn_meta$params[[param_name]]
+      ts_type <- r_type_to_typescript(p$type, p$enum)
+      optional <- if (isTRUE(p$required)) "" else "?"
+      desc <- gsub("\\*/", "* /", p$description)  # Escape comment-ending
+
+      lines <- c(lines,
+        glue::glue("  /** {desc} */"),
+        glue::glue("  {param_name}{optional}: {ts_type};")
+      )
+    }
+
+    lines <- c(lines, "}")
+  }
+
+  lines <- c(lines,
+    "",
+    "// ============================================================================",
+    "// API Mode Configuration",
+    "// ============================================================================",
+    "",
+    "export type ApiMode = 'live' | 'static';",
+    "",
+    "export interface ApiConfig {",
+    "  mode: ApiMode;",
+    "  baseUrl: string;",
+    "  staticBasePath: string;",
+    "}"
+  )
+
+  paste(lines, collapse = "\n")
+}
+
+
+#' Generate api-client.ts content
+#' @noRd
+generate_api_client_ts <- function(exports, pkg_name, api_port) {
+  # Build function-specific methods
+  methods <- character(0)
+
+  for (fn_name in names(exports)) {
+    fn_meta <- exports[[fn_name]]
+    endpoint <- fn_to_endpoint(fn_name)
+    interface_name <- to_pascal_case(fn_name)
+
+    # Build method
+    methods <- c(methods, "",
+      glue::glue("  /**"),
+      glue::glue("   * {fn_meta$title}"),
+      glue::glue("   * Endpoint: GET /{endpoint}"),
+      glue::glue("   */"),
+      glue::glue("  async {to_camel_case(fn_name)}(params: Partial<{interface_name}Params> = {{}}): Promise<ApiResponse> {{"),
+      glue::glue("    return this.request('/{endpoint}', params);"),
+      "  }"
+    )
+  }
+
+  methods_str <- paste(methods, collapse = "\n")
+
+  lines <- c(
+    glue::glue("// Auto-generated dual-mode API client for {pkg_name}"),
+    glue::glue("// Generated by dataimago::generate_shared_utils()"),
+    glue::glue("// Date: {Sys.Date()}"),
+    "//",
+    "// Supports two modes:",
+    glue::glue("//   - live: HTTP requests to R server (localhost:{api_port})"),
+    "//   - static: Reads pre-computed JSON from /api/ directory",
+    "//",
+    "// DO NOT EDIT MANUALLY — regenerate with dataimago::generate_shared_utils()",
+    "",
+    "import type {",
+    "  ApiResponse,",
+    "  ErrorResponse,",
+    "  DiscoveryResponse,",
+    "  ApiConfig,",
+    "  ApiMode,",
+    paste(vapply(names(exports), function(fn) {
+      paste0("  ", to_pascal_case(fn), "Params,")
+    }, character(1)), collapse = "\n"),
+    "} from './types';",
+    "",
+    glue::glue("const DEFAULT_CONFIG: ApiConfig = {{"),
+    glue::glue("  mode: (process.env.NEXT_PUBLIC_API_MODE as ApiMode) || 'static',"),
+    glue::glue("  baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:{api_port}',"),
+    "  staticBasePath: '/api',",
+    "};",
+    "",
+    glue::glue("export class {to_pascal_case(pkg_name)}Client {{"),
+    "  private config: ApiConfig;",
+    "",
+    "  constructor(config: Partial<ApiConfig> = {}) {",
+    "    this.config = { ...DEFAULT_CONFIG, ...config };",
+    "  }",
+    "",
+    "  /**",
+    "   * Core request method — routes to live server or static JSON",
+    "   */",
+    "  private async request(endpoint: string, params: Record<string, unknown> = {}): Promise<ApiResponse> {",
+    "    if (this.config.mode === 'live') {",
+    "      return this.liveRequest(endpoint, params);",
+    "    }",
+    "    return this.staticRequest(endpoint, params);",
+    "  }",
+    "",
+    "  /**",
+    "   * Live mode: HTTP GET to R server",
+    "   */",
+    "  private async liveRequest(endpoint: string, params: Record<string, unknown>): Promise<ApiResponse> {",
+    "    const url = new URL(`${this.config.baseUrl}${endpoint}`);",
+    "    Object.entries(params).forEach(([key, value]) => {",
+    "      if (value !== undefined && value !== null) {",
+    "        url.searchParams.set(key, String(value));",
+    "      }",
+    "    });",
+    "",
+    "    const response = await fetch(url.toString());",
+    "    if (!response.ok) {",
+    "      const error: ErrorResponse = await response.json();",
+    "      throw new Error(error.message || `API error: ${response.status}`);",
+    "    }",
+    "    return response.json();",
+    "  }",
+    "",
+    "  /**",
+    "   * Static mode: Read pre-computed JSON from /api/ directory",
+    "   */",
+    "  private async staticRequest(endpoint: string, params: Record<string, unknown>): Promise<ApiResponse> {",
+    "    // Build static file path from endpoint and params",
+    "    const paramStr = Object.entries(params)",
+    "      .filter(([, v]) => v !== undefined && v !== null)",
+    "      .sort(([a], [b]) => a.localeCompare(b))",
+    "      .map(([k, v]) => `${k}=${v}`)",
+    "      .join('&');",
+    "",
+    "    const filename = paramStr",
+    "      ? `${endpoint.slice(1)}/${paramStr.replace(/&/g, '_').replace(/=/g, '-')}.json`",
+    "      : `${endpoint.slice(1)}/default.json`;",
+    "",
+    "    const response = await fetch(`${this.config.staticBasePath}/${filename}`);",
+    "    if (!response.ok) {",
+    "      // Fall back to default if specific params file doesn't exist",
+    "      const fallback = await fetch(`${this.config.staticBasePath}/${endpoint.slice(1)}/default.json`);",
+    "      if (!fallback.ok) {",
+    "        throw new Error(`Static data not found for ${endpoint}`);",
+    "      }",
+    "      return fallback.json();",
+    "    }",
+    "    return response.json();",
+    "  }",
+    "",
+    "  // ========================================================================",
+    "  // Generated API Methods",
+    "  // ========================================================================",
+    methods_str,
+    "",
+    "  /**",
+    "   * Discover available analyses and parameters",
+    "   */",
+    "  async discover(): Promise<DiscoveryResponse> {",
+    "    return this.request('/discover') as Promise<DiscoveryResponse>;",
+    "  }",
+    "",
+    "  /**",
+    "   * Get current API mode",
+    "   */",
+    "  getMode(): ApiMode {",
+    "    return this.config.mode;",
+    "  }",
+    "",
+    "  /**",
+    "   * Check if running in live mode",
+    "   */",
+    "  isLive(): boolean {",
+    "    return this.config.mode === 'live';",
+    "  }",
+    "}",
+    "",
+    "// Default client instance",
+    glue::glue("export const apiClient = new {to_pascal_case(pkg_name)}Client();")
+  )
+
+  paste(lines, collapse = "\n")
+}
+
+
+#' Generate index.ts re-export file
+#' @noRd
+generate_index_ts <- function(exports, pkg_name) {
+  lines <- c(
+    glue::glue("// Auto-generated index for {pkg_name} shared utilities"),
+    glue::glue("// Generated by dataimago::generate_shared_utils()"),
+    "//",
+    "// DO NOT EDIT MANUALLY — regenerate with dataimago::generate_shared_utils()",
+    "",
+    "export * from './types';",
+    glue::glue("export {{ {to_pascal_case(pkg_name)}Client, apiClient }} from './api-client';")
+  )
+
+  paste(lines, collapse = "\n")
+}
+
+
+# ============================================================================
+# Internal: Naming Convention Helpers
+# ============================================================================
+
+#' Convert to PascalCase (e.g., summarizeAssessment → SummarizeAssessment)
+#' @noRd
+to_pascal_case <- function(name) {
+  # Handle snake_case
+  parts <- strsplit(name, "[_.-]")[[1]]
+  paste(vapply(parts, function(p) {
+    paste0(toupper(substr(p, 1, 1)), substr(p, 2, nchar(p)))
+  }, character(1)), collapse = "")
+}
+
+
+#' Convert to camelCase (e.g., summarize_assessment → summarizeAssessment)
+#' @noRd
+to_camel_case <- function(name) {
+  # Already camelCase? Keep it
+  if (!grepl("[_.-]", name)) return(name)
+
+  parts <- strsplit(name, "[_.-]")[[1]]
+  first <- parts[1]
+  rest <- vapply(parts[-1], function(p) {
+    paste0(toupper(substr(p, 1, 1)), substr(p, 2, nchar(p)))
+  }, character(1))
+
+  paste0(first, paste(rest, collapse = ""))
+}
+
+
+#' Convert R type to TypeScript type
+#' @noRd
+r_type_to_typescript <- function(r_type, enum_vals = NULL) {
+  if (!is.null(enum_vals) && length(enum_vals) > 0) {
+    return(paste(vapply(enum_vals, function(v) paste0("'", v, "'"), character(1)), collapse = " | "))
+  }
+
+  switch(r_type,
+    "boolean" = "boolean",
+    "integer" = "number",
+    "number" = "number",
+    "numeric" = "number",
+    "array" = "string[]",
+    "list" = "Record<string, unknown>",
+    "string"
+  )
+}

@@ -9,17 +9,15 @@
       
       .monogram-a {
         font-size: 920px;
-        fill: #83838f;
       }
       
       .monogram-i {
         font-size: 820px;
-        fill: #83838f;
       }
       
       .hexagon {
         fill: none;
-        stroke: #83838f;
+        stroke: currentColor;
         stroke-width: 25;
         stroke-linejoin: round;
         stroke-linecap: round;

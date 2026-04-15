@@ -35,8 +35,9 @@ nav .nav-item:not(.compact) {
 // ===== NAVBAR TYPOGRAPHY =====
 .navbar-title {
   font-family: var(--font-family-brand) !important;
+  font-style: var(--font-style-italic) !important;
   font-weight: 400;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   padding: 0;
   height: 48px;
   line-height: 55px;
@@ -56,7 +57,9 @@ nav .nav-item:not(.compact) {
 }
 
 .navbar-brand, .navbar-nav .nav-link {
-  font-family: var(--font-family-sans) !important;
+  font-family: var(--font-family-display) !important;
+  font-weight: 500;
+  font-size: 1.2rem;
   padding-top: 0px !important;
   padding-bottom: 0px !important;
 }
@@ -102,7 +105,7 @@ nav .nav-item:not(.compact) {
 .navbar-logo svg path,
 .navbar-logo.inline-svg path {
   fill: var(--logo-default-fill);
-  transition: fill var(--logo-transition-duration) ease;
+  transition: fill var(--transition-logo) ease;
 }
 
 .navbar-logo:hover svg path,
@@ -118,11 +121,7 @@ nav .nav-item:not(.compact) {
 }
 
 .navbar-brand-container {
-  padding: 0 0 0 10px;
-}
-
-.navbar-brand-logo {
-  margin-bottom: 8px;
+  padding: 0 0 12px 10px;
 }
 
 // ===== NAVBAR NAVIGATION =====
@@ -468,11 +467,12 @@ body.quarto-dark .quarto-color-scheme-toggle:hover .bi::before {
 .inline-svg {
   display: inline-block;
   vertical-align: middle;
+  width: 100%;
 }
 
 .inline-svg path,
 .inline-svg svg path {
-  transition: fill var(--logo-transition-duration) ease;
+  transition: fill var(--transition-logo) ease;
 }
 
 // Navbar GitHub logo
@@ -487,34 +487,260 @@ a:hover .navbar-github-logo path {
   fill: var(--logo-hover-fill);
 }
 
-// Footer logo styling - generic for all footer logos
-.footer-quarto-logo path,
-.footer-netlify-logo path,
-.footer-ai-monogram-logo path,
-.footer-package-hex-logo path,
-.footer-bluesky-logo path {
-  transition: fill var(--logo-transition-duration) ease;
-  fill: var(--logo-default-fill);
+// ===== FOOTER LAYOUT STYLES =====
+// Footer customization - ENHANCED for all layouts
+footer {
+  display: block !important;
+  align-items: center !important;
+  justify-content: space-between !important;
 }
 
-// Footer hover effects
-.footer-quarto-logo:hover path,
-.footer-netlify-logo:hover path,
-.footer-ai-monogram-logo:hover path,
-.footer-package-hex-logo:hover path,
-a:hover .footer-quarto-logo path,
-a:hover .footer-netlify-logo path,
-a:hover .footer-ai-monogram-logo path,
-a:hover .footer-package-hex-logo path {
-  fill: var(--logo-hover-fill);
+.nav-footer,
+.page-footer {
+  min-height: 2.5em !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  border-top: 1px solid var(--theme-border-default, rgba(0,0,0,0.1)) !important;
+  background: var(--theme-body-bg, transparent) !important;
+  color: var(--theme-text-secondary, inherit) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-top: 2rem !important;
 }
 
-// Special styling for Bluesky logo (brand color)
+.nav-footer-left .footer-items,
+.nav-footer-center .footer-items,
+.nav-footer-right .footer-items,
+.page-footer-left .footer-items,
+.page-footer-center .footer-items,
+.page-footer-right .footer-items {
+  padding-top: 0.2em !important;
+  padding-bottom: 0.2em !important;
+  gap: 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important; // Remove default list margins
+  padding-left: 0 !important; // Remove default list padding
+  list-style: none !important; // Ensure no list bullets
+}
+
+// Footer section layout - ensure proper horizontal alignment
+.nav-footer-left,
+.nav-footer-center, 
+.nav-footer-right,
+.page-footer-left,
+.page-footer-center,
+.page-footer-right {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 2em !important;
+}
+
+.nav-footer-left,
+.page-footer-left {
+  justify-content: flex-start !important;
+}
+
+.nav-footer-center,
+.page-footer-center {
+  justify-content: center !important;
+  flex: 1 !important; // Allow center section to expand and center content
+}
+
+.nav-footer-right,
+.page-footer-right {
+  justify-content: flex-end !important;
+}
+
+// Ensure footer is visible in full-page layouts
+.page-layout-full .nav-footer,
+.page-layout-full .page-footer {
+  position: relative !important;
+  z-index: 10 !important;
+  width: 100% !important;
+}
+
+// Enhanced footer logo styling
+.footer-quarto-logo,
+.footer-netlify-logo,
+.footer-ai-monogram-logo,
+.footer-package-hex-logo,
+.footer-bluesky-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all var(--transition-logo) ease !important;
+
+  svg {
+    height: 24px !important;
+    width: auto !important;
+    max-width: 100% !important;
+    display: block !important;
+  }
+}
+
+.footer-quarto-logo,
+.footer-netlify-logo {
+  path {
+    transition: fill var(--transition-logo) ease !important;
+    fill: var(--logo-default-fill) !important;
+  }
+
+  &:hover path,
+  a:hover & path {
+    fill: var(--logo-hover-fill) !important;
+  }
+}
+
+// AI Monogram logo styling
+.footer-ai-monogram-logo .bg {
+  fill: var(--logo-default-fill) !important;
+  transition: fill var(--transition-logo) ease !important;
+}
+
+.footer-ai-monogram-logo:hover .bg,
+a:hover .footer-ai-monogram-logo .bg {
+  fill: var(--logo-hover-fill) !important;
+}
+
+// Bluesky logo styling
 .footer-bluesky-logo path {
-  fill: var(--bluesky-logo-fill-default);
+  fill: var(--bluesky-logo-fill-default) !important;
 }
 
 .footer-bluesky-logo:hover path,
 a:hover .footer-bluesky-logo path {
-  fill: var(--bluesky-logo-fill-hover);
+  fill: var(--bluesky-logo-fill-hover) !important;
+  stroke: var(--bluesky-logo-stroke-hover) !important;
+}
+
+// Hex logo styling
+// Package hex logo styling (uses text elements with CSS classes)
+.footer-package-hex-logo .monogram-a,
+.footer-package-hex-logo .monogram-i {
+  fill: var(--logo-default-fill) !important;
+  transition: fill var(--transition-logo) ease !important;
+}
+
+.footer-package-hex-logo .hexagon {
+  stroke: var(--logo-default-fill) !important;
+  transition: stroke var(--transition-logo) ease !important;
+}
+
+.footer-package-hex-logo:hover .monogram-a,
+.footer-package-hex-logo:hover .monogram-i,
+a:hover .footer-package-hex-logo .monogram-a,
+a:hover .footer-package-hex-logo .monogram-i {
+  fill: var(--logo-hover-fill) !important;
+}
+
+.footer-package-hex-logo:hover .hexagon,
+a:hover .footer-package-hex-logo .hexagon {
+  stroke: var(--logo-hover-fill) !important;
+}
+
+// ===== SOCIAL ICONS & FOOTER LOGO EXTENSIONS =====
+// Social icons container styling for footer and other contexts
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.social-icons a {
+  display: inline-flex;
+  align-items: center;
+  transition: transform var(--transition-logo) ease;
+}
+
+.social-icons a:hover {
+  transform: translateY(-2px);
+}
+
+.social-icons svg, 
+.social-icons iconify-icon {
+  width: 24px;
+  height: 24px;
+  transition: all var(--transition-logo) ease;
+}
+
+// Generic footer logo class for any footer logo
+.footer-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all var(--transition-logo) ease !important;
+
+  svg {
+    height: 24px !important;
+    width: auto !important;
+    max-width: 100% !important;
+    display: block !important;
+  }
+
+  path {
+    transition: fill var(--transition-logo) ease !important;
+    fill: var(--logo-default-fill) !important;
+  }
+
+  &:hover path,
+  a:hover & path {
+    fill: var(--logo-hover-fill) !important;
+  }
+}
+
+// ===== SVG UTILITY CLASSES =====
+// Generic SVG container for consistent layout
+.svg-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-logo) ease;
+}
+
+// SVG scaling utility
+.svg-scale-hover {
+  transition: transform var(--transition-logo) ease;
+}
+
+.svg-scale-hover:hover {
+  transform: scale(1.1);
+}
+
+// ===== THEME-AWARE SVG STYLING =====
+// Generic theme-aware SVG styling for all logo types
+.theme-svg path, 
+.theme-svg circle, 
+.theme-svg rect, 
+.theme-svg polygon {
+  fill: var(--logo-default-fill, #7c7c7c);
+  transition: fill var(--transition-logo) ease;
+}
+
+.theme-svg.svg-hover path, 
+.theme-svg.svg-hover circle, 
+.theme-svg.svg-hover rect, 
+.theme-svg.svg-hover polygon, 
+.theme-svg:hover path, 
+.theme-svg:hover circle, 
+.theme-svg:hover rect, 
+.theme-svg:hover polygon {
+  fill: var(--logo-hover-fill, #000000);
+  stroke: var(--logo-hover-stroke, transparent);
+}
+
+// Specific theme-aware logo contexts
+.theme-svg.logo-navbar path, 
+.theme-svg.logo-navbar circle, 
+.theme-svg.logo-navbar rect, 
+.theme-svg.logo-navbar polygon {
+  fill: var(--logo-default-fill, #7c7c7c);
+}
+
+.theme-svg.logo-hex path, 
+.theme-svg.logo-hex circle, 
+.theme-svg.logo-hex rect, 
+.theme-svg.logo-hex polygon {
+  fill: var(--logo-default-fill, #7c7c7c);
 }

@@ -1,0 +1,633 @@
+%%%
+%%% dataimago.sty - LaTeX Style Package for dataimago Design System
+%%%
+%%% A unified LaTeX package providing consistent typography, colors, and layout
+%%% for PDF documents aligned with the dataimago design system.
+%%%
+%%% Copyright (c) 2025 dataimago
+%%% License: MIT (see LICENSE.md)
+%%%
+%%% Version: 0.1.0
+%%% Date: 2025-10-19
+%%%
+%%% USAGE:
+%%%   \usepackage{dataimago}
+%%%
+%%% REQUIREMENTS:
+%%%   - XeLaTeX or LuaLaTeX (for fontspec and unicode-math)
+%%%   - System fonts: Noto Sans, Noto Sans Mono, Noto Sans Math, Josefin Sans
+%%%   - memoir document class (for full book/report features)
+%%%   - Or article class (basic features only)
+%%%
+%%% FEATURES:
+%%%   - dataimago typography (Noto Sans + Josefin Sans)
+%%%   - dataimago color tokens (surface, content, border, brand colors)
+%%%   - Custom memoir page styles and chapter/section formatting
+%%%   - Theorem and definition boxes styled with dataimago tokens
+%%%   - Front matter commands for title pages and abstracts
+%%%
+%%% For more information, see README.md
+%%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{dataimago}[2025/10/19 v0.1.0 dataimago Design System for LaTeX]
+
+%%%
+%%% PACKAGE IDENTIFICATION
+%%%
+\typeout{dataimago.sty v0.1.0 - dataimago Design System for LaTeX}
+\typeout{Loading dataimago typography, colors, and layout...}
+
+%%%
+%%% REQUIRED PACKAGES
+%%%
+
+%% Font and math support (XeLaTeX/LuaLaTeX required)
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+
+%% Color support
+\RequirePackage[svgnames]{xcolor}
+
+%% Core LaTeX packages
+\RequirePackage[obeyspaces,hyphens]{url}
+\RequirePackage{graphicx}
+\RequirePackage{rotating,bm,amsmath,amsfonts,amssymb,indentfirst,lscape}
+\RequirePackage{caption}
+
+%% Box and list support
+\RequirePackage{tcolorbox}
+\tcbuselibrary{most,skins,breakable}
+\RequirePackage{enumitem}
+
+%% Memoir-specific packages (loaded only if memoir class is detected)
+\@ifclassloaded{memoir}{%
+  \RequirePackage{epigraph}
+  \RequirePackage{tabularx}
+  \typeout{dataimago: memoir class detected - loading enhanced features}
+}{%
+  % Article class - load alternative packages
+  \RequirePackage{sectsty}
+  \RequirePackage{titling}
+  \typeout{dataimago: article class detected - loading basic features}
+}
+
+%%%
+%%% SECTION 1: TYPOGRAPHY - FONTS
+%%%
+%%% dataimago font stack: Noto Sans (body/math) + Josefin Sans (headings)
+%%% Using system fonts for portability across machines
+%%%
+
+%% Body Font: Noto Sans
+% Token: font.family.sans = "Noto Sans, system-ui, sans-serif"
+\setmainfont{Noto Sans}[
+  Scale=1.0,
+  Ligatures=TeX,
+  Numbers=OldStyle
+]
+
+\setsansfont{Noto Sans}[
+  Scale=1.0,
+  Ligatures=TeX
+]
+
+%% Monospace Font: Noto Sans Mono
+% Token: font.family.mono = "Noto Sans Mono, ..."
+\setmonofont{Noto Sans Mono}[
+  Scale=0.95,
+  Ligatures=TeX
+]
+
+%% Math Font: Noto Sans Math
+% Token: font.family.math = "Noto Sans Math, ..."
+% OpenType MATH table support for proper equation rendering
+\setmathfont{Noto Sans Math}[
+  Scale=1.0,
+  math-style=ISO,
+  bold-style=ISO
+]
+
+%% Heading Font: Josefin Sans
+% Token: font.family.display = "Josefin Sans, system-ui, sans-serif"
+% Using system fonts for portability across machines
+% Hierarchical weight variants for clear visual hierarchy
+% Note: Font family names include the weight for non-Regular weights
+
+% Bold (700) - Default, for Title, Chapters
+\newfontfamily\HeadingFont[
+  Scale=MatchLowercase,
+  LetterSpace=0.5,
+  BoldFont=Josefin Sans
+]{Josefin Sans}
+\let\HeadingFontBold\HeadingFont  % Alias for clarity
+
+% SemiBold (600) - For Subtitle
+\newfontfamily\HeadingFontSemiBold[
+  Scale=MatchLowercase,
+  LetterSpace=0.5,
+  BoldFont=Josefin Sans
+]{Josefin Sans SemiBold}
+
+% Medium (500) - For Sections  
+% Note: Josefin Sans doesn't have Medium weight, using Regular
+\newfontfamily\HeadingFontMedium[
+  Scale=MatchLowercase,
+  LetterSpace=0.5,
+  BoldFont=Josefin Sans
+]{Josefin Sans}
+
+% Regular (400) - For Subsections
+\newfontfamily\HeadingFontRegular[
+  Scale=MatchLowercase,
+  LetterSpace=0.5,
+  BoldFont=Josefin Sans
+]{Josefin Sans}
+
+% Light (300) - For Subsubsections
+\newfontfamily\HeadingFontLight[
+  Scale=MatchLowercase,
+  LetterSpace=0.5,
+  BoldFont=Josefin Sans
+]{Josefin Sans Light}
+
+% ExtraLight (200) - For future use (captions, labels)
+% Note: Using Thin as ExtraLight equivalent
+\newfontfamily\HeadingFontExtraLight[
+  Scale=MatchLowercase,
+  LetterSpace=0.5,
+  BoldFont=Josefin Sans
+]{Josefin Sans Thin}
+
+%% Apply Josefin to section headings (article class only)
+\@ifclassloaded{memoir}{%
+  % Memoir class - skip sectsty (incompatible with memoir)
+  % Section formatting handled in SECTION 3 below
+}{%
+  % Article class - use sectsty
+  \allsectionsfont{\HeadingFont\color{ContentPrimary}}
+  
+  % Make document title use Josefin
+  \pretitle{\begin{center}\HeadingFont\huge\color{ContentPrimary}}
+  \posttitle{\par\end{center}\vskip 1em}
+  \preauthor{\begin{center}\large\begin{tabular}[t]{c}}
+  \postauthor{\end{tabular}\par\end{center}}
+  \predate{\begin{center}\normalsize\color{ContentSecondary}}
+  \postdate{\par\end{center}\vskip 1.5em}
+}
+
+%%%
+%%% SECTION 2: COLORS - dataimago Design Tokens
+%%%
+%%% All colors defined using dataimago design token values
+%%%
+
+% Surface tokens (light theme)
+% Token: color.surface.page.light = rgb(237, 237, 235) / oklch(0.937 0.007 110.1)
+\definecolor{SurfacePage}{RGB}{237, 237, 235}
+
+% Token: color.surface.code.light = rgb(225, 225, 223)
+\definecolor{SurfaceCode}{RGB}{225, 225, 223}
+
+% Token: color.surface.elevated.light = rgba(237, 237, 235, 0.9)
+\definecolor{SurfaceElevated}{RGB}{237, 237, 235}
+
+% Content tokens
+% Token: color.content.primary.light = rgb(20, 20, 16)
+\definecolor{ContentPrimary}{RGB}{20, 20, 16}
+
+% Token: color.content.secondary.light = #7c7c7c
+\definecolor{ContentSecondary}{HTML}{7c7c7c}
+
+% Border tokens
+% Token: color.border.code.light = rgb(220, 220, 218)
+\definecolor{BorderCode}{RGB}{220, 220, 218}
+
+% Token: color.border.moderate.light = rgba(20, 20, 16, 0.15)
+\definecolor{BorderModerate}{RGB}{51, 51, 46}
+
+% Figure box background - subtle off-white for semi-transparent figure backgrounds
+\colorlet{FigureBoxBg}{white!42!SurfacePage}
+
+% Brand tokens (theme-agnostic)
+% Token: color.brand.dataimago.primary = #3498DB
+\definecolor{DataimagoPrimary}{HTML}{3498DB}
+
+% Token: color.brand.dataimago.accent = #ff69b4
+\definecolor{DataimagoAccent}{HTML}{ff69b4}
+
+% Token: color.brand.dataimago.ethical = #E74C3C
+\definecolor{DataimagoEthical}{HTML}{E74C3C}
+
+% Functional tokens
+% Token: color.functional.info = #3498DB
+\definecolor{InfoColor}{HTML}{3498DB}
+
+% Token: color.functional.warning = #F39C12
+\definecolor{WarningColor}{HTML}{F39C12}
+
+% Token: color.functional.error = #E74C3C
+\definecolor{ErrorColor}{HTML}{E74C3C}
+
+% Token: color.functional.success = #27AE60
+\definecolor{SuccessColor}{HTML}{27AE60}
+
+% Special colors for theorem boxes
+\definecolor{CornsilkBox}{RGB}{245, 245, 220}
+\definecolor{CornsilkBoxBorder}{RGB}{210, 210, 208}
+
+%% Apply page background color (dataimago surface token)
+% Token: color.surface.page.light = rgb(237, 237, 235)
+\pagecolor{SurfacePage}
+
+%% Figure border parameters (\fbox)
+% Token: border.width.subtle = 0.4pt (dataimago)
+% Token: spacing.micro.xs = 0.25rem ≈ 3pt (dataimago)
+\setlength{\fboxrule}{0.75pt}   % Border line thickness
+\setlength{\fboxsep}{0.5pt}      % Padding between border and content
+
+%%%
+%%% SECTION 3: MEMOIR CLASS CONFIGURATION
+%%%
+%%% Page styles, chapter/section formatting, and book structure
+%%% (Only loaded if memoir class is detected)
+%%%
+
+\@ifclassloaded{memoir}{%
+  %% Memoir divisions configuration
+  % Enable subsubsection numbering
+  \setsecnumdepth{subsubsection}
+  \maxsecnumdepth{subsubsection}
+  
+  % Set TOC depth (chapters and sections only)
+  \settocdepth{section}
+  
+  %% Page styles using memoir's built-in system
+  \makepagestyle{dataimago}
+  \makeevenhead{dataimago}{\small\normalfont\color{ContentSecondary}\thepage}{}{\small\normalfont\color{ContentSecondary}\leftmark}
+  \makeoddhead{dataimago}{\small\normalfont\color{ContentSecondary}\leftmark}{}{\small\normalfont\color{ContentSecondary}\thepage}
+  \makeevenfoot{dataimago}{}{}{}
+  \makeoddfoot{dataimago}{}{}{}
+  \makeheadrule{dataimago}{\textwidth}{0.4pt}
+  
+  % Apply custom page style
+  \pagestyle{dataimago}
+  
+  % Plain style for chapter openings
+  \makepagestyle{plain}
+  \makeevenfoot{plain}{}{\small\normalfont\thepage}{}
+  \makeoddfoot{plain}{}{\small\normalfont\thepage}{}
+  
+  %% Front matter style (no headers, centered page numbers)
+  \makepagestyle{frontmatter}
+  \makeevenfoot{frontmatter}{}{\small\normalfont\thepage}{}
+  \makeoddfoot{frontmatter}{}{\small\normalfont\thepage}{}
+  
+  %% Chapter and section spacing
+  \setlength{\beforechapskip}{0pt}        % Space before chapter title
+  \setlength{\afterchapskip}{40pt}        % Space after chapter title
+  \setbeforesecskip{-3.5ex plus -1ex minus -.2ex}
+  \setaftersecskip{2.3ex plus .2ex}
+  \setbeforesubsecskip{-3.25ex plus -1ex minus -.2ex}
+  \setaftersubsecskip{1.5ex plus .2ex}
+  
+  %% Increase head height to accommodate headers
+  \setlength{\headheight}{18pt}
+  
+  %% TOC Title formatting - use body font (Noto Sans), not heading font
+  \renewcommand{\printtoctitle}[1]{\normalfont\Large\bfseries\color{ContentPrimary}#1}
+  
+  %% Customize TOC appearance
+  \renewcommand{\cftchapterfont}{\normalfont\bfseries\color{ContentPrimary}}
+  \renewcommand{\cftchapterpagefont}{\normalfont\bfseries\color{ContentPrimary}}
+  \renewcommand{\cftsectionfont}{\normalfont\color{ContentPrimary}}
+  \renewcommand{\cftsectionpagefont}{\normalfont\color{ContentPrimary}}
+  
+  % Add dots to chapter TOC entries
+  \renewcommand{\cftchapterleader}{\color{ContentSecondary}\cftdotfill{\cftdotsep}}
+  \renewcommand{\cftsectionleader}{\color{ContentSecondary}\cftdotfill{\cftdotsep}}
+  
+  % Adjust TOC spacing
+  \setlength{\cftbeforechapterskip}{0.8em}
+  \setlength{\cftbeforesectionskip}{0.3em}
+  
+  %% Epigraph styling (for opening quotes)
+  \setlength{\epigraphwidth}{0.6\textwidth}
+  \setlength{\epigraphrule}{0pt}
+  \renewcommand{\textflush}{flushright}
+  \renewcommand{\epigraphsize}{\normalsize\itshape}
+  
+  %% Abstract styling for memoir
+  \renewcommand{\abstractnamefont}{\Large\normalfont\bfseries\color{ContentPrimary}}
+  \renewcommand{\abstracttextfont}{\normalfont\normalsize}
+  \setlength{\absleftindent}{0pt}
+  \setlength{\absrightindent}{0pt}
+  
+  %% Custom chapter style: dataimago-ell (modified ELL)
+  \makechapterstyle{dataimago-ell}{%
+    \chapterstyle{default}
+    
+    % Font definitions using dataimago fonts
+    \renewcommand*{\chapnamefont}{\normalfont\large\HeadingFontBold\color{ContentSecondary}}
+    \renewcommand*{\chapnumfont}{\normalfont\HUGE\HeadingFontBold\color{ContentPrimary}}
+    \renewcommand*{\chaptitlefont}{\normalfont\huge\HeadingFontBold\color{ContentPrimary}}
+    
+    % Calculate indent for right-side extension
+    \settowidth{\chapindent}{\chapnumfont 111}
+    
+    % Remove default chapter heading elements
+    \renewcommand*{\printchaptername}{}
+    \renewcommand*{\chapternamenum}{}
+    
+    % Custom chapter number printing (right-aligned)
+    \renewcommand*{\printchapternum}{%
+      % For numbered chapters - number right-aligned
+      \begin{adjustwidth}{0pt}{-0.0\chapindent}
+        \raggedleft%
+        {\chapnumfont\color{ContentPrimary}\thechapter}%
+        \par\vspace{0.3\onelineskip}%
+      \end{adjustwidth}%
+    }
+    
+    % For unnumbered chapters (e.g., Preface, Acknowledgments)
+    \renewcommand\printchapternonum{%
+      \vphantom{\chapnumfont 1}%
+      \afterchapternum%
+    }
+    
+    % Print chapter title (right-aligned above hrule)
+    \renewcommand*{\printchaptertitle}[1]{%
+      \begin{adjustwidth}{0pt}{-0.0\chapindent}
+        % Measure the title height
+        \setbox0=\vbox{%
+          \raggedleft%
+          {\chapnumfont\thechapter}%
+          \par\vspace{0.3\onelineskip}%
+          {\chaptitlefont\color{ContentPrimary}##1}%
+          \par\vspace{0.5\onelineskip}%
+        }%
+        \raggedleft%
+        {\chaptitlefont\color{ContentPrimary}##1}%
+        \par\vspace{0.5\onelineskip}%
+        % Horizontal rule with vertical rule extending upward at right end
+        \noindent\textcolor{BorderModerate}{%
+          \rule{\dimexpr\linewidth + 0.4\chapindent\relax}{0.4pt}%
+          \llap{\raisebox{0.4pt}[0pt][0pt]{\rule{0.4pt}{\ht0}}}%
+        }%
+      \end{adjustwidth}%
+      \par%
+    }
+    
+    % Spacing after chapter title
+    \renewcommand*{\afterchaptertitle}{%
+      \par\vspace{1.5\onelineskip}%
+    }
+  }
+  
+  % Apply the custom chapter style
+  \chapterstyle{dataimago-ell}
+  
+  %% Chapter mark for headers (appears in page headers)
+  \renewcommand{\chaptermark}[1]{%
+    \markboth{\thechapter.\ #1}{}}
+  
+  %% Unnumbered chapters still appear in TOC
+  \setcounter{tocdepth}{1}
+  
+  %% Section formatting (inline numbering)
+  % Numbers in ContentSecondary, text in ContentPrimary
+  \setsecheadstyle{%
+    \Large\HeadingFontMedium\color{ContentPrimary}%
+  }
+  
+  \setsubsecheadstyle{%
+    \large\HeadingFontRegular\color{ContentPrimary}%
+  }
+  
+  \setsubsubsecheadstyle{%
+    \normalsize\HeadingFontLight\color{ContentPrimary}%
+  }
+  
+  %% Section numbering format
+  \renewcommand{\thesection}{\thechapter.\arabic{section}}
+  \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+  \renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+  
+  %% TOC formatting for sections (indentation)
+  \cftsetindents{section}{1.5em}{2.5em}
+  \cftsetindents{subsection}{4.0em}{3.5em}
+  \cftsetindents{subsubsection}{7.5em}{4.5em}
+  
+  %% Section number formatting (ContentSecondary color)
+  \renewcommand{\@seccntformat}[1]{%
+    \normalfont\HeadingFontMedium\textcolor{ContentSecondary}{\csname the#1\endcsname}\enspace
+  }
+  
+}{}  % End memoir-specific configuration
+
+%%%
+%%% SECTION 4: CUSTOM BOXES AND ENVIRONMENTS
+%%%
+%%% Theorem boxes, definition boxes, and proof environment
+%%%
+
+%% Abstract Box suppression (for Quarto integration)
+% Suppress Quarto's automatic abstract rendering by redefining as no-op
+\@ifpackageloaded{comment}{}{%
+  \renewenvironment{abstract}{%
+    \setbox\z@\vbox\bgroup
+  }{%
+    \egroup
+  }
+}
+
+%% Theorem Box (using dataimago surface tokens)
+\newtcolorbox{theorembox}[2][]{
+  enhanced,
+  breakable,
+  colback=SurfaceCode,               % Token: color.surface.code
+  colframe=BorderCode,               % Token: color.border.code
+  boxrule=0.6pt,
+  arc=3pt,                           % Token: radius.subtle
+  left=10pt,
+  right=10pt,
+  top=8pt,
+  bottom=8pt,
+  before skip=12pt,
+  after skip=12pt,
+  title={#2},
+  fonttitle=\HeadingFont\bfseries,
+  coltitle=ContentPrimary,
+  #1
+}
+
+%% Definition Box (lighter variant)
+\newtcolorbox{definitionbox}[2][]{
+  enhanced,
+  breakable,
+  colback=SurfaceElevated,           % Token: color.surface.elevated
+  colframe=BorderModerate,           % Token: color.border.moderate
+  boxrule=0.8pt,
+  arc=4pt,
+  left=10pt,
+  right=10pt,
+  top=8pt,
+  bottom=8pt,
+  before skip=12pt,
+  after skip=12pt,
+  title={#2},
+  fonttitle=\HeadingFont\bfseries,
+  coltitle=ContentPrimary,
+  #1
+}
+
+%% Proof Environment (minimalist, dataimago style)
+% Uses Noto Sans (body font), not Josefin Sans (heading font)
+\AtBeginDocument{%
+  \renewenvironment{proof}{%
+    \noindent{\normalfont\bfseries\color{ContentPrimary}Proof.}\hspace{0.5em}%
+  }{\hfill$\blacksquare$}%
+}
+
+%%%
+%%% SECTION 5: CAPTION AND LIST FORMATTING
+%%%
+
+%% Caption Formatting
+\captionsetup{
+  font=small,
+  labelfont=bf,
+  textfont=normal,
+  justification=justified,
+  skip=8pt
+}
+
+%% List Styling
+\setlist[enumerate]{
+  font=\normalfont,
+  leftmargin=*,
+  itemsep=0.5em,
+  parsep=0.25em
+}
+
+\setlist[itemize]{
+  font=\normalfont,
+  leftmargin=*,
+  itemsep=0.5em,
+  parsep=0.25em
+}
+
+%%%
+%%% SECTION 6: CUSTOM COMMANDS
+%%%
+
+%% Software/Package names
+\newcommand{\R}{{\textsf{R}\hspace{.3em}}}
+\newcommand{\sgpFlow}{\textsf{{\textit{sgpFlow}\hspace{.2em}}}}
+
+%% Section reference command
+\newcommand{\sref}[1]{\hyperref[#1]{\S\ref*{#1}}}
+
+%% Abstract name (uses Josefin Sans)
+\renewcommand{\abstractname}{\normalsize\HeadingFont Abstract}
+
+%%%
+%%% SECTION 7: FRONT MATTER COMMANDS (Memoir only)
+%%%
+
+\@ifclassloaded{memoir}{%
+  %% dataimago logo command
+  \newcommand{\dataimagoLogo}{%
+    % AI Monogram logo
+    \href{https://dataimago.ai}{%
+      \includegraphics[width=0.75in]{assets/logos/ai_monogram.pdf}%
+    }%
+  }%
+  
+  %% CC-BY-SA logo command
+  \newcommand{\ccbyLogo}{%
+    \href{https://github.com/dbetebenner/Betebenner_Braun_Paper_1/blob/main/LICENSE.md}{%
+      \IfFileExists{assets/logos/cc-by-sa.png}{%
+        \includegraphics[width=0.5in]{assets/logos/cc-by-sa.png}%
+      }{%
+          \small\color{DataimagoPrimary}CC BY-SA 4.0%
+      }%
+    }%
+  }%
+  
+  %% Version command
+  \newcommand{\version}[1]{\def\theversion{#1}}
+  \version{v0.0.1} % Default version
+  
+  %% Subtitle command (Quarto integration)
+  \providecommand{\subtitle}[1]{\gdef\thesubtitle{#1}}
+  \gdef\thesubtitle{}
+  
+  %% Custom title page (right-justified, dataimago style)
+  \renewcommand{\maketitle}{%
+    % Set title page layout with 0.75in margins on each side
+    \settypeblocksize{9.0in}{7in}{*}
+    \setlrmargins{0.75in}{*}{1}        % 0.75in left, equal right
+    \setulmargins{1in}{*}{*}
+    \checkandfixthelayout
+    
+    \begin{titlingpage}
+      \begin{flushright}
+      \vspace*{1.5cm}
+      
+      % Title
+      {\HeadingFontBold\color{ContentPrimary}\Huge\thetitle\par}
+      \vspace{0.8em}
+      
+      % Subtitle
+      \ifx\thesubtitle\@empty
+      \else
+        {\LARGE\HeadingFontSemiBold\color{ContentSecondary}\thesubtitle\par}
+      \fi
+      \vspace{2em}
+      
+      % Authors with superscript affiliations  
+      {\large\normalfont%
+        Damian W. Betebenner$^{1}$\\[0.3em]
+        Henry I. Braun$^{2}$\par}
+      \vspace{1em}
+      
+      % Affiliations
+      {\small\color{ContentSecondary}%
+        $^{1}$The National Center for the Improvement of Educational Assessment, Dover, NH, USA\\[0.3em]
+        $^{2}$Lynch School of Education, Boston College, Chestnut Hill, MA, USA\par}
+      
+      \vspace{1.0in}
+      
+      % Version, date, and license
+      {\normalsize\color{ContentSecondary}\theversion\par}
+      \vspace{0.2em}
+      {\normalsize\color{ContentSecondary}\thedate\par}
+      \vspace{0.7em}
+      \ccbyLogo
+      
+      \vfill
+      
+      % Bottom right: dataimago logo only
+      \dataimagoLogo
+      
+      \end{flushright}
+    \end{titlingpage}
+    
+    % Restore body page layout (1in margins)
+    \settypeblocksize{9.0in}{6.5in}{*}
+    \setlrmargins{1in}{*}{1}
+    \setulmargins{1in}{*}{*}
+    \checkandfixthelayout
+    
+    \cleardoublepage
+  }
+}{}  % End memoir front matter commands
+
+%%%
+%%% END OF PACKAGE
+%%%
+
+\typeout{dataimago.sty loaded successfully!}
+\endinput
+
