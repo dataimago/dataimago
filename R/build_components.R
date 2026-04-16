@@ -160,9 +160,9 @@ build_design_components <- function(project_path,
         verbose = verbose
       )
       results$files_created <- c(results$files_created,
-                                   paste0("shared-utils/", types_result$files_created))
+                                 paste0("shared-utils/", types_result$files_created))
       results$components_generated <- c(results$components_generated,
-                                          "typescript-types", "dual-mode-api-client")
+                                        "typescript-types", "dual-mode-api-client")
     }
 
     # ====================================================================
