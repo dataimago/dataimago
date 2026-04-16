@@ -70,23 +70,22 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Install UI dependencies
+        run: |
+          cd ui
+          pnpm install
+
       - name: Test Design System Build
         run: |
           R CMD INSTALL .
           Rscript -e "
-          result <- dataimago::create_ui_workspace(force_overwrite = TRUE)
-          if (!result[['success']]) {
-            cat('UI workspace creation failed:', paste(result[['errors']], collapse = '; '), '\n')
-            quit(status = 1)
-          }
-
           result <- dataimago::build_design_system(
             force_rebuild = TRUE,
             include_sri = TRUE,
             verbose = TRUE
           )
           if (!result[['success']]) {
-            cat('Design system build failed')
+            cat('Design system build failed:', paste(result[['errors']], collapse = '; '), '\n')
             quit(status = 1)
           }
 

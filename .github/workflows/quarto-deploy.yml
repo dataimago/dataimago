@@ -51,13 +51,15 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Install UI dependencies
+        run: |
+          cd ui
+          pnpm install
+
       - name: Install Package and Build Design System
         run: |
           R CMD INSTALL .
           Rscript -e "
-          result <- dataimago::create_ui_workspace(force_overwrite = TRUE)
-          if (!result[['success']]) quit(status = 1)
-
           result <- dataimago::build_design_system(verbose = TRUE)
           if (!result[['success']]) quit(status = 1)
           "
