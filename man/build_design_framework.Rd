@@ -66,7 +66,7 @@ All generated infrastructure embeds dataimago's ethical AI principles and
 build_design_framework("./my-project", framework = "quarto")
 
 # Full framework with Docker support
-build_design_framework("./my-app", 
+build_design_framework("./my-app",
                        framework = "full",
                        include_docker = TRUE,
                        node_package_manager = "pnpm")
