@@ -4,7 +4,7 @@
 \name{dataimago-package}
 \alias{dataimago}
 \alias{dataimago-package}
-\title{dataimago: AI-Native Web-Application Development Framework for Data Science}
+\title{dataimago: AI-Native Web-Application Development Framework}
 \description{
 The \code{dataimago} package is a comprehensive development framework that accelerates
 the creation of data science web applications for both human developers and AI agents.
@@ -150,7 +150,7 @@ scaffold_nextjs_integration(path = "my-project")
 \section{Package Metadata}{
 
 \itemize{
-\item \strong{Version}: 0.0-0.3 (using dataimago semantic versioning)
+\item \strong{Version}: 0.0-3.0 (using dataimago semantic versioning)
 \item \strong{License}: MIT
 \item \strong{Maintainer}: Damian W. Betebenner \href{mailto:dbetebenner@nciea.org}{dbetebenner@nciea.org}
 \item \strong{Website}: https://dataimago.github.io/dataimago/

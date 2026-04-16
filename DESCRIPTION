@@ -1,7 +1,7 @@
 Package: dataimago
-Version: 0.0-2.0
-Date: 2026-4-15
-Title: AI-Native Web-Application Development Framework for Data Science
+Version: 0.0-3.0
+Date: 2026-4-16
+Title: AI-Native Web-Application Development Framework
 Description: A comprehensive development framework that accelerates the creation
     of data science web applications for both human developers and AI agents.
     Provides complete design system compilation, multi-platform deployment

@@ -4,8 +4,8 @@ authors:
 - family-names: "Betebenner"
   given-names: "Damian"
   orcid: "https://orcid.org/0000-0003-0476-5599"
-title: "dataimago: Ethical AI-Native Data Science Foundation Package."
-version: 0.0-0.7
+title: "dataimago: AI-Native Web-Application Development Framework"
+version: 0.0-3.0
 doi: 10.5281/zenodo.3634024
-date-released: 2025-10-19
+date-released: 2026-4-16
 url: "https://dataimago.github.io/dataimago"

@@ -1,4 +1,4 @@
-#' dataimago: AI-Native Web-Application Development Framework for Data Science
+#' dataimago: AI-Native Web-Application Development Framework
 #'
 #' @description
 #' The `dataimago` package is a comprehensive development framework that accelerates
@@ -124,7 +124,7 @@
 #'
 #' @section Package Metadata:
 #' \itemize{
-#'   \item **Version**: 0.0-0.3 (using dataimago semantic versioning)
+#'   \item **Version**: 0.0-3.0 (using dataimago semantic versioning)
 #'   \item **License**: MIT
 #'   \item **Maintainer**: Damian W. Betebenner <dbetebenner@nciea.org>
 #'   \item **Website**: https://dataimago.github.io/dataimago/
