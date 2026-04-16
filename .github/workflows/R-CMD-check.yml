@@ -73,6 +73,13 @@ jobs:
         run: |
           Rscript -e "devtools::load_all(); result <- dataimago::build_design_system(verbose = TRUE); if (!result[['success']]) { cat('Design system build failed:', paste(result[['errors']], collapse = '; ')); quit(status = 1) }; cat('Design system built successfully')"
 
+      - name: Clean up node_modules before R CMD check
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          rm -rf ui/node_modules
+          rm -rf ui/src/dataimago-design/node_modules
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
