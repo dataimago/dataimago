@@ -60,11 +60,11 @@ NULL
 #'
 #' @export
 export_static_api <- function(pkg_path,
-                               output_dir = "public/api",
-                               pkg_name = NULL,
-                               param_grid = NULL,
-                               max_combinations = 500L,
-                               verbose = TRUE) {
+                              output_dir = "public/api",
+                              pkg_name = NULL,
+                              param_grid = NULL,
+                              max_combinations = 500L,
+                              verbose = TRUE) {
 
   start_time <- Sys.time()
 

@@ -57,10 +57,10 @@ NULL
 #'
 #' @export
 generate_shared_utils <- function(pkg_path,
-                                   output_dir,
-                                   pkg_name = NULL,
-                                   api_port = 8000L,
-                                   verbose = TRUE) {
+                                  output_dir,
+                                  pkg_name = NULL,
+                                  api_port = 8000L,
+                                  verbose = TRUE) {
 
   # Read package name
   if (is.null(pkg_name)) {

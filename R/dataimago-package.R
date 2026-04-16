@@ -94,16 +94,16 @@
 #' Set up development environment and build your first application:
 #' \preformatted{
 #' library(dataimago)
-#' 
+#'
 #' # 1. Initialize development workspace
 #' create_ui_workspace()
-#' 
+#'
 #' # 2. Build design system assets
 #' result <- build_design_system()
-#' 
+#'
 #' # 3. Generate professional documentation
 #' create_quarto_documentation()
-#' 
+#'
 #' # 4. Deploy to multiple platforms
 #' # - Quarto extension: Available automatically
 #' # - CDN assets: Available via jsDelivr

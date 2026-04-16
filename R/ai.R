@@ -168,7 +168,7 @@ ai <- function(project_name,
       verbose = verbose
     ))
   }
-  
+
   # Initialize results list
   results <- list(
     project_name = project_name,
@@ -184,19 +184,19 @@ ai <- function(project_name,
     success = FALSE,
     errors = character(0)
   )
-  
+
   tryCatch({
     # PHASE 1: Build Design Framework
     if (verbose) ui_info("\\U0001F3D7\\uFE0F Phase 1: Building design framework...")
-    
+
     framework_result <- build_design_framework(
       project_path = full_project_path,
       framework = framework,
       verbose = verbose
     )
-    
+
     results$framework_result <- framework_result
-    
+
     # PHASE 2: Build Design Components (+ meta-tool pipeline if source_pkg)
     if (verbose) ui_info("\\U0001F4E6 Phase 2: Building design components...")
 
@@ -334,7 +334,7 @@ ai <- function(project_name,
         ui_info("   pnpm install && pnpm dev")
       }
     }
-    
+
   }, error = function(e) {
     results$errors <- c(results$errors, as.character(e))
     if (verbose) {
@@ -405,7 +405,7 @@ ai_remote <- function(project_name,
       ui_warn(glue::glue("Remote API call failed: {e$message}"))
       ui_info("Falling back to local generation pipeline...")
     }
-    return(NULL)
+    NULL
   })
 
   if (is.null(response)) {

@@ -428,7 +428,7 @@ generate_api_reference_qmd <- function(desc_content, rd_content,
   # Add function documentation sections
   qmd_content <- c(qmd_content, add_function_docs_sections(rd_content))
 
-  return(qmd_content)
+  qmd_content
 }
 
 #' Update dataimago Assets in Quarto Website
@@ -465,7 +465,7 @@ update_dataimago_assets <- function(output_path, package_path) {
       "ai_monogram_supreme_favicon.png",
       "ai_monogram_supreme_COLOR.png"
     )
-    
+
     png_files <- character(0)
     for (png_name in essential_pngs) {
       png_path <- file.path(inst_dir, png_name)

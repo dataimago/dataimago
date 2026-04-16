@@ -114,14 +114,14 @@ bootstrap_wiki <- function(project_path,
       if (!is.null(pkg_source)) {
         writeLines(pkg_source$content, fs::path(wiki_dir, "sources", pkg_source$filename))
         results$files_created <- c(results$files_created,
-          fs::path("wiki", "sources", pkg_source$filename))
+                                   fs::path("wiki", "sources", pkg_source$filename))
       }
 
       # Create architecture decision record
       adr_content <- create_initial_adr(project_name, source_pkg)
       writeLines(adr_content, fs::path(wiki_dir, "decisions", "001-dataimago-generation.md"))
       results$files_created <- c(results$files_created,
-        "wiki/decisions/001-dataimago-generation.md")
+                                 "wiki/decisions/001-dataimago-generation.md")
     }
 
     results$success <- TRUE
@@ -156,11 +156,11 @@ create_wiki_index <- function(project_name, source_pkg) {
       if (length(pkg_line) > 0) {
         pkg_name <- trimws(sub("^Package:\\s*", "", pkg_line[1]))
         pages <- c(pages,
-          glue::glue("- [Source: {pkg_name}](sources/{pkg_name}-package.md) \u2014 Source R package documentation"))
+                   glue::glue("- [Source: {pkg_name}](sources/{pkg_name}-package.md) \u2014 Source R package documentation"))
       }
     }
     pages <- c(pages,
-      "- [ADR-001: dataimago Generation](decisions/001-dataimago-generation.md) \u2014 Architecture decision record")
+               "- [ADR-001: dataimago Generation](decisions/001-dataimago-generation.md) \u2014 Architecture decision record")
   }
 
   c(

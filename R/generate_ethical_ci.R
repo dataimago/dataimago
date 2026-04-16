@@ -108,7 +108,9 @@ generate_ci_workflow <- function(framework) {
       "        with:\n",
       "          version: 9\n\n"
     )
-  } else ""
+  } else {
+    ""
+  }
 
   paste0(
     "name: CI\n\n",
@@ -166,14 +168,17 @@ generate_ethical_workflow <- function(framework) {
       "          NEXT_SIZE=$(du -sk apps/web-app/.next/static 2>/dev/null | cut -f1 || echo \"0\")\n",
       "          echo \"Next.js static: ${NEXT_SIZE}KB\"\n",
       "          # Fail if total JS exceeds 500KB (performance equity)\n",
-      "          JS_SIZE=$(find apps/web-app/.next/static -name '*.js' -exec du -sk {} + 2>/dev/null | awk '{sum+=$1} END {print sum}' || echo \"0\")\n",
+      "          JS_SIZE=$(find apps/web-app/.next/static -name '*.js' -exec du -sk {} + 2>/dev/null \\",
+      "            | awk '{sum+=$1} END {print sum}' || echo \"0\")\n",
       "          echo \"Total JS: ${JS_SIZE}KB\"\n",
       "          if [ \"$JS_SIZE\" -gt 500 ]; then\n",
       "            echo \"::error::JS bundle exceeds 500KB performance equity budget\"\n",
       "            exit 1\n",
       "          fi\n"
     )
-  } else ""
+  } else {
+    ""
+  }
 
   paste0(
     "name: Ethical Compliance\n\n",

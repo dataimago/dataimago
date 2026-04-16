@@ -27,7 +27,7 @@ NULL
 #' @details
 #' **Infrastructure Created:**
 #' - **ui/**: Complete Node.js workspace with package.json, build.js
-#' - **inst/**: R package data structure with foundation documents  
+#' - **inst/**: R package data structure with foundation documents
 #' - **R/**: R function scaffolding with ethical AI annotations
 #' - **.github/workflows/**: Automated testing, building, deployment
 #' - **Configuration files**: _quarto.yml, .Rbuildignore, NAMESPACE, etc.
@@ -46,9 +46,9 @@ NULL
 #' \dontrun{
 #' # Basic Quarto framework
 #' build_design_framework("./my-project", framework = "quarto")
-#' 
+#'
 #' # Full framework with Docker support
-#' build_design_framework("./my-app", 
+#' build_design_framework("./my-app",
 #'                        framework = "full",
 #'                        include_docker = TRUE,
 #'                        node_package_manager = "pnpm")
@@ -56,23 +56,23 @@ NULL
 #'
 #' @export
 build_design_framework <- function(project_path,
-                                 framework = c("quarto", "shiny", "nextjs", "full"),
-                                 include_workflows = TRUE,
-                                 include_docker = FALSE, 
-                                 node_package_manager = c("pnpm", "npm", "yarn"),
-                                 git_init = TRUE,
-                                 verbose = TRUE) {
-  
+                                   framework = c("quarto", "shiny", "nextjs", "full"),
+                                   include_workflows = TRUE,
+                                   include_docker = FALSE,
+                                   node_package_manager = c("pnpm", "npm", "yarn"),
+                                   git_init = TRUE,
+                                   verbose = TRUE) {
+
   # Validate arguments
   framework <- rlang::arg_match(framework)
   node_package_manager <- rlang::arg_match(node_package_manager)
-  
+
   if (verbose) {
     ui_info(glue::glue("\U0001F3D7\uFE0F Building design framework infrastructure"))
     ui_info(glue::glue("\U0001F4C1 Path: {project_path}"))
     ui_info(glue::glue("\U0001F3AF Framework: {framework}"))
   }
-  
+
   # Initialize results
   results <- list(
     project_path = project_path,
@@ -85,7 +85,7 @@ build_design_framework <- function(project_path,
     success = FALSE,
     errors = character(0)
   )
-  
+
   tryCatch({
     # Ensure project directory exists
     if (!fs::dir_exists(project_path)) {
@@ -93,10 +93,10 @@ build_design_framework <- function(project_path,
       results$directories_created <- c(results$directories_created, project_path)
       if (verbose) ui_done(glue::glue("Created project directory: {project_path}"))
     }
-    
+
     # Create core directory structure based on framework
     core_dirs <- get_framework_directories(framework)
-    
+
     for (dir in core_dirs) {
       dir_path <- fs::path(project_path, dir)
       if (!fs::dir_exists(dir_path)) {
@@ -105,7 +105,7 @@ build_design_framework <- function(project_path,
         if (verbose) ui_done(glue::glue("Created directory: {dir}"))
       }
     }
-    
+
     # Create configuration files
     config_files <- create_framework_configs(
       project_path = project_path,
@@ -113,9 +113,9 @@ build_design_framework <- function(project_path,
       node_package_manager = node_package_manager,
       verbose = verbose
     )
-    
+
     results$files_created <- c(results$files_created, config_files)
-    
+
     # Set up UI workspace if needed
     if (framework %in% c("quarto", "nextjs", "full")) {
       ui_result <- setup_ui_workspace(
@@ -124,23 +124,23 @@ build_design_framework <- function(project_path,
         node_package_manager = node_package_manager,
         verbose = verbose
       )
-      
+
       results$has_ui_workspace <- ui_result$success
       results$files_created <- c(results$files_created, ui_result$files_created)
       results$directories_created <- c(results$directories_created, ui_result$directories_created)
     }
-    
+
     # Set up R package structure if needed
     if (framework %in% c("shiny", "full") || grepl("r-package", framework)) {
       r_result <- setup_r_package_structure(
         project_path = project_path,
         verbose = verbose
       )
-      
+
       results$has_r_package <- r_result$success
       results$files_created <- c(results$files_created, r_result$files_created)
     }
-    
+
     # Set up GitHub workflows
     if (include_workflows) {
       workflow_result <- setup_github_workflows(
@@ -148,36 +148,36 @@ build_design_framework <- function(project_path,
         framework = framework,
         verbose = verbose
       )
-      
+
       results$files_created <- c(results$files_created, workflow_result$files_created)
       results$directories_created <- c(results$directories_created, workflow_result$directories_created)
     }
-    
+
     # Initialize git repository
     if (git_init) {
       git_result <- initialize_git_repository(
         project_path = project_path,
         verbose = verbose
       )
-      
+
       results$files_created <- c(results$files_created, git_result$files_created)
     }
-    
+
     results$success <- TRUE
-    
+
     if (verbose) {
       ui_done("\U0001F389 Design framework infrastructure created successfully!")
       ui_info(glue::glue("\U0001F4C1 Created {length(results$directories_created)} directories"))
       ui_info(glue::glue("\U0001F4C4 Created {length(results$files_created)} files"))
     }
-    
+
   }, error = function(e) {
     results$errors <- c(results$errors, as.character(e))
     if (verbose) {
       ui_oops(glue::glue("Failed to build framework: {e$message}"))
     }
   })
-  
+
   invisible(results)
 }
 
@@ -226,21 +226,21 @@ get_framework_directories <- function(framework) {
 # Helper function: Create framework configuration files
 create_framework_configs <- function(project_path, framework, node_package_manager, verbose) {
   created_files <- character(0)
-  
+
   # Create .Rbuildignore
   rbuildignore_content <- get_rbuildignore_content(framework)
   rbuildignore_path <- fs::path(project_path, ".Rbuildignore")
   writeLines(rbuildignore_content, rbuildignore_path)
   created_files <- c(created_files, ".Rbuildignore")
   if (verbose) ui_done("Created .Rbuildignore")
-  
+
   # Create .gitignore
   gitignore_content <- get_gitignore_content(framework)
   gitignore_path <- fs::path(project_path, ".gitignore")
   writeLines(gitignore_content, gitignore_path)
   created_files <- c(created_files, ".gitignore")
   if (verbose) ui_done("Created .gitignore")
-  
+
   # Framework-specific configs
   if (framework %in% c("quarto", "nextjs", "full")) {
     # Create basic _quarto.yml
@@ -250,7 +250,7 @@ create_framework_configs <- function(project_path, framework, node_package_manag
     created_files <- c(created_files, "ui/www/_quarto.yml")
     if (verbose) ui_done("Created _quarto.yml")
   }
-  
+
   created_files
 }
 
@@ -261,7 +261,7 @@ setup_ui_workspace <- function(project_path, framework, node_package_manager, ve
     files_created = character(0),
     directories_created = character(0)
   )
-  
+
   tryCatch({
     # Create package.json
     package_json <- get_package_json(framework, node_package_manager)
@@ -269,7 +269,7 @@ setup_ui_workspace <- function(project_path, framework, node_package_manager, ve
     writeLines(jsonlite::toJSON(package_json, pretty = TRUE, auto_unbox = TRUE), package_json_path)
     results$files_created <- c(results$files_created, "ui/package.json")
     if (verbose) ui_done("Created ui/package.json")
-    
+
     # Copy build.js from current package
     build_js_source <- fs::path_package("dataimago", "ui", "build.js")
     if (fs::file_exists(build_js_source)) {
@@ -278,20 +278,20 @@ setup_ui_workspace <- function(project_path, framework, node_package_manager, ve
       results$files_created <- c(results$files_created, "ui/build.js")
       if (verbose) ui_done("Created ui/build.js")
     }
-    
+
     # Create basic token files
     create_basic_tokens(fs::path(project_path, "ui", "src", "tokens"), verbose)
     results$files_created <- c(results$files_created, "ui/src/tokens/colors.json", "ui/src/tokens/typography.json")
-    
+
     # Create basic SCSS files
     create_basic_scss(fs::path(project_path, "ui", "src", "styles"), verbose)
     results$files_created <- c(results$files_created, "ui/src/styles/main.scss")
-    
+
     results$success <- TRUE
   }, error = function(e) {
     if (verbose) ui_warn(glue::glue("UI workspace setup encountered issues: {e$message}"))
   })
-  
+
   results
 }
 
@@ -301,7 +301,7 @@ setup_r_package_structure <- function(project_path, verbose) {
     success = FALSE,
     files_created = character(0)
   )
-  
+
   tryCatch({
     # Create basic DESCRIPTION file
     description_content <- get_basic_description()
@@ -309,19 +309,19 @@ setup_r_package_structure <- function(project_path, verbose) {
     writeLines(description_content, description_path)
     results$files_created <- c(results$files_created, "DESCRIPTION")
     if (verbose) ui_done("Created DESCRIPTION")
-    
+
     # Create basic NAMESPACE
     namespace_content <- "# Generated by roxygen2: do not edit by hand\n\nexport()"
     namespace_path <- fs::path(project_path, "NAMESPACE")
     writeLines(namespace_content, namespace_path)
     results$files_created <- c(results$files_created, "NAMESPACE")
     if (verbose) ui_done("Created NAMESPACE")
-    
+
     results$success <- TRUE
   }, error = function(e) {
     if (verbose) ui_warn(glue::glue("R package setup encountered issues: {e$message}"))
   })
-  
+
   results
 }
 
@@ -331,44 +331,44 @@ setup_github_workflows <- function(project_path, framework, verbose) {
     files_created = character(0),
     directories_created = character(0)
   )
-  
+
   # Create .github/workflows directory
   workflows_dir <- fs::path(project_path, ".github", "workflows")
   if (!fs::dir_exists(workflows_dir)) {
     fs::dir_create(workflows_dir, recurse = TRUE)
     results$directories_created <- c(results$directories_created, ".github", ".github/workflows")
   }
-  
+
   # Create basic CI workflow
   ci_workflow <- get_ci_workflow(framework)
   ci_path <- fs::path(workflows_dir, "ci.yml")
   yaml::write_yaml(ci_workflow, ci_path)
   results$files_created <- c(results$files_created, ".github/workflows/ci.yml")
   if (verbose) ui_done("Created GitHub Actions CI workflow")
-  
+
   results
 }
 
 # Helper function: Initialize git repository
 initialize_git_repository <- function(project_path, verbose) {
   results <- list(files_created = character(0))
-  
+
   tryCatch({
     # Initialize git repo
     processx::run("git", c("init"), wd = project_path, echo = FALSE)
     if (verbose) ui_done("Initialized git repository")
-    
+
     # Create README.md
     readme_content <- get_readme_template()
     readme_path <- fs::path(project_path, "README.md")
     writeLines(readme_content, readme_path)
     results$files_created <- c(results$files_created, "README.md")
     if (verbose) ui_done("Created README.md")
-    
+
   }, error = function(e) {
     if (verbose) ui_warn(glue::glue("Git initialization encountered issues: {e$message}"))
   })
-  
+
   results
 }
 
@@ -376,7 +376,7 @@ initialize_git_repository <- function(project_path, verbose) {
 get_rbuildignore_content <- function(framework) {
   c(
     "^.*\\.Rproj$",
-    "^\\.Rproj\\.user$", 
+    "^\\.Rproj\\.user$",
     "^ui/node_modules$",
     "^ui/dist$",
     "^docs$",
@@ -496,7 +496,7 @@ create_basic_tokens <- function(tokens_dir, verbose) {
   )
   colors_path <- fs::path(tokens_dir, "colors.json")
   writeLines(jsonlite::toJSON(colors, pretty = TRUE, auto_unbox = TRUE), colors_path)
-  
+
   # Create basic typography.json
   typography <- list(
     font = list(
@@ -510,7 +510,7 @@ create_basic_tokens <- function(tokens_dir, verbose) {
   )
   typography_path <- fs::path(tokens_dir, "typography.json")
   writeLines(jsonlite::toJSON(typography, pretty = TRUE, auto_unbox = TRUE), typography_path)
-  
+
   if (verbose) ui_done("Created basic design tokens")
 }
 
@@ -524,9 +524,9 @@ create_basic_scss <- function(styles_dir, verbose) {
     "  color: var(--color-primary, #3498DB);",
     "}"
   )
-  
+
   scss_path <- fs::path(styles_dir, "main.scss")
   writeLines(scss_content, scss_path)
-  
+
   if (verbose) ui_done("Created basic SCSS files")
 }

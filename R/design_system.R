@@ -436,14 +436,14 @@ build_design_system <- function(force_rebuild = FALSE,
     }
   }
 
-  return(list(
+  list(
     success = success,
     assets = assets,
     sri_hashes = sri_hashes,
     build_time = build_time,
     metadata = metadata,
     errors = errors
-  ))
+  )
 }
 
 #' Create UI Workspace for Design System
@@ -884,11 +884,11 @@ create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
     }
   }
 
-  return(list(
+  list(
     success = success,
     created_files = created_files,
     errors = errors
-  ))
+  )
 }
 
 #' Update Quarto Extension Assets
@@ -1041,16 +1041,16 @@ update_quarto_extension <- function(verbose = TRUE) {
       }
     }
   }
-  
+
   # Copy JavaScript assets from ui/dist/js/
   js_dist_dir <- "ui/dist/js"
   extension_js_dir <- "ui/www/_extensions/dataimago/ai-native/assets/js"
-  
+
   if (dir_exists(js_dist_dir) && dir_exists(extension_js_dir)) {
     if (verbose) {
       ui_info("Copying JavaScript assets to extension...")
     }
-    
+
     js_files <- dir_ls(js_dist_dir, type = "file", glob = "*.js")
     for (js_file in js_files) {
       filename <- basename(js_file)
@@ -1071,20 +1071,20 @@ update_quarto_extension <- function(verbose = TRUE) {
         }
       )
     }
-    
+
     js_count <- length(js_files)
     if (verbose && js_count > 0) {
       ui_info(glue("Updated {js_count} JavaScript files in extension"))
     }
   }
-  
+
   # Also copy JavaScript to ui/www/assets/js/ for development
   quarto_js_dir <- "ui/www/assets/js"
   if (dir_exists(js_dist_dir) && dir_exists(quarto_js_dir)) {
     if (verbose) {
       ui_info("Copying JavaScript assets to Quarto development directory...")
     }
-    
+
     js_files <- dir_ls(js_dist_dir, type = "file", glob = "*.js")
     for (js_file in js_files) {
       filename <- basename(js_file)
@@ -1093,7 +1093,7 @@ update_quarto_extension <- function(verbose = TRUE) {
           target_file <- file.path(quarto_js_dir, filename)
           file_copy(js_file, target_file, overwrite = TRUE)
           updated_files <- c(updated_files, target_file)
-          
+
           if (verbose) {
             ui_info(glue("Copied {filename} to Quarto assets"))
           }
@@ -1105,13 +1105,16 @@ update_quarto_extension <- function(verbose = TRUE) {
         }
       )
     }
-    
+
     if (verbose && length(js_files) > 0) {
       ui_info(glue("Updated {length(js_files)} JavaScript files in Quarto assets"))
     }
   } else {
     if (verbose) {
-      ui_warn(glue("Cannot copy JS to Quarto assets - js_dist_dir exists: {dir_exists(js_dist_dir)}, quarto_js_dir exists: {dir_exists(quarto_js_dir)}"))
+      ui_warn(glue(
+        'Cannot copy JS to Quarto assets - js_dist_dir exists: ',
+        '{dir_exists(js_dist_dir)}, quarto_js_dir exists: {dir_exists(quarto_js_dir)}'
+      ))
     }
   }
 
@@ -1135,11 +1138,11 @@ update_quarto_extension <- function(verbose = TRUE) {
     }
   }
 
-  return(list(
+  list(
     success = success,
     updated_files = updated_files,
     errors = errors
-  ))
+  )
 }
 
 #' Generate CDN Distribution Assets
@@ -1249,11 +1252,11 @@ generate_cdn_assets <- function(verbose = TRUE) {
     }
   }
 
-  return(list(
+  list(
     success = success,
     assets = assets,
     errors = errors
-  ))
+  )
 }
 
 #' Generate AI-Optimized Repository Context
@@ -1298,20 +1301,20 @@ generate_cdn_assets <- function(verbose = TRUE) {
 #' ```r
 #' # Standard AI context generation
 #' generate_ai_context()
-#' 
+#'
 #' # Markdown format for documentation
 #' generate_ai_context(style = "markdown")  # -> dataimago-repomix.md
-#' 
+#'
 #' # Custom filename
 #' generate_ai_context(output_file = "custom-context.xml")
-#' 
+#'
 #' # Minimal output for faster processing
 #' generate_ai_context(include_token_count = FALSE, min_token_threshold = 500)
 #' ```
 #'
 #' **AI Assistant Integration:**
-#' Upload the generated file to your AI assistant (Claude Projects, ChatGPT, etc.) 
-#' to provide complete codebase context including philosophical foundations and 
+#' Upload the generated file to your AI assistant (Claude Projects, ChatGPT, etc.)
+#' to provide complete codebase context including philosophical foundations and
 #' technical implementation patterns.
 #'
 #' @return List with success status, output file path, token count, and any errors
@@ -1324,27 +1327,27 @@ generate_cdn_assets <- function(verbose = TRUE) {
 #' if (result$success) {
 #'   cat("AI context generated:", result$output_file)
 #' }
-#' 
+#'
 #' # Generate markdown version for documentation
 #' generate_ai_context(style = "markdown")  # -> dataimago-repomix.md
 #' }
 generate_ai_context <- function(output_file = NULL,
-                               style = "xml",
-                               include_token_count = TRUE,
-                               min_token_threshold = 100,
-                               verbose = TRUE) {
-  
+                                style = "xml",
+                                include_token_count = TRUE,
+                                min_token_threshold = 100,
+                                verbose = TRUE) {
+
   # Validate inputs
   if (!style %in% c("xml", "markdown", "plain")) {
     stop("style must be one of: 'xml', 'markdown', 'plain'")
   }
-  
+
   if (!is.numeric(min_token_threshold) || min_token_threshold < 0) {
     stop("min_token_threshold must be a non-negative number")
   }
-  
+
   errors <- character(0)
-  
+
   # Generate default filename if not provided
   if (is.null(output_file)) {
     # Extract package name from DESCRIPTION file
@@ -1355,10 +1358,10 @@ generate_ai_context <- function(output_file = NULL,
       if (length(package_line) > 0) {
         package_name <- trimws(sub("^Package:\\s*", "", package_line[1]))
         # Generate filename based on style
-        file_ext <- switch(style, 
-                          "xml" = "xml", 
-                          "markdown" = "md", 
-                          "plain" = "txt")
+        file_ext <- switch(style,
+                           "xml" = "xml",
+                           "markdown" = "md",
+                           "plain" = "txt")
         output_file <- glue("{package_name}-repomix.{file_ext}")
       } else {
         output_file <- glue("package-repomix.{switch(style, 'xml' = 'xml', 'markdown' = 'md', 'plain' = 'txt')}")
@@ -1367,13 +1370,13 @@ generate_ai_context <- function(output_file = NULL,
       output_file <- glue("package-repomix.{switch(style, 'xml' = 'xml', 'markdown' = 'md', 'plain' = 'txt')}")
     }
   }
-  
+
   if (verbose) {
     ui_info("Generating AI-optimized repository context with Repomix...")
     ui_info(glue("Output format: {style}"))
     ui_info(glue("Output file: {output_file}"))
   }
-  
+
   # Check if npx is available
   npx_check <- tryCatch({
     processx::run("npx", "--version", stdout = NULL, stderr = NULL)
@@ -1381,7 +1384,7 @@ generate_ai_context <- function(output_file = NULL,
   }, error = function(e) {
     FALSE
   })
-  
+
   if (!npx_check) {
     errors <- c(errors, "npx not available. Please install Node.js 18+ with npm/npx")
     if (verbose) {
@@ -1396,25 +1399,25 @@ generate_ai_context <- function(output_file = NULL,
       errors = errors
     ))
   }
-  
+
   # Build repomix command arguments
   cmd_args <- c("repomix@latest", "--output", output_file, "--style", style)
-  
+
   if (include_token_count) {
     cmd_args <- c(cmd_args, "--token-count-tree", as.character(min_token_threshold))
   }
-  
+
   if (verbose) {
     cmd_args <- c(cmd_args, "--verbose")
   } else {
     cmd_args <- c(cmd_args, "--quiet")
   }
-  
+
   # Execute repomix
   if (verbose) {
     ui_info("Running repomix... (this may take a moment)")
   }
-  
+
   result <- tryCatch({
     processx::run("npx", cmd_args, stdout_line_callback = if (verbose) function(line, proc) {
       cat(crayon::silver(line), "\n")
@@ -1423,10 +1426,10 @@ generate_ai_context <- function(output_file = NULL,
     errors <<- c(errors, glue("Repomix execution failed: {e$message}"))
     list(status = 1)
   })
-  
+
   # Check if output file was created
   output_exists <- fs::file_exists(output_file)
-  
+
   # Extract token count if available (from repomix output)
   token_count <- 0
   if (output_exists && include_token_count) {
@@ -1440,16 +1443,16 @@ generate_ai_context <- function(output_file = NULL,
       }
     }
   }
-  
+
   success <- (result$status == 0) && output_exists
-  
+
   if (verbose) {
     if (success) {
       ui_done(glue("AI context generated successfully: {output_file}"))
       ui_info("Upload this file to your AI assistant for comprehensive codebase context")
       ui_info("The file includes:")
       ui_info("  - Complete philosophical foundations (inst/dataimago/)")
-      ui_info("  - All R functions and documentation") 
+      ui_info("  - All R functions and documentation")
       ui_info("  - Design system source of truth")
       ui_info("  - AI agent coordination files (CLAUDE.md, AGENT_INDEX.md)")
       ui_info("  - Build system architecture and patterns")
@@ -1470,11 +1473,11 @@ generate_ai_context <- function(output_file = NULL,
       ui_info("  - Verify .repomixignore configuration")
     }
   }
-  
-  return(list(
+
+  list(
     success = success,
     output_file = output_file,
     token_count = token_count,
     errors = errors
-  ))
+  )
 }
