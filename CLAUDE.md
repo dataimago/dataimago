@@ -187,18 +187,62 @@ build_design_system()      # Compile design tokens + SCSS → CSS
 ### 5. **File System Standards**
 ```
 dataimago/
-├── R/                      # Core functions
-│   ├── documentation_utils.R # Documentation generation
-│   └── design_system.R     # R-first CSS build pipeline
+├── CLAUDE.md               # Primary AI agent context (this file)
+├── README.md               # Project overview
+├── NEWS.md                 # Release notes / changelog
+├── DESCRIPTION & NAMESPACE # Package metadata and exports
+├── CITATION.cff            # Citation metadata
+├── .Rbuildignore           # Build exclusions
+├── .repomixignore          # AI-context exclusions (governs generate_ai_context())
+├── R/                      # Core R source (15 files)
+│   ├── ai.R                      # ai() meta-function: R package -> NextJS app
+│   ├── asset_sync.R              # Asset synchronization utilities
+│   ├── build_components.R        # Component scaffolding
+│   ├── build_framework.R         # Framework scaffolding
+│   ├── dataimago-package.R       # Package-level documentation
+│   ├── design_system.R           # R-first CSS build pipeline + generate_ai_context()
+│   ├── documentation_utils.R     # Quarto documentation generation
+│   ├── export_static.R           # Static JSON export
+│   ├── generate_api.R            # REST API scaffolding
+│   ├── generate_claude_md.R      # CLAUDE.md generation for downstream packages
+│   ├── generate_ethical_ci.R     # CI scaffolding for ethical enforcement
+│   ├── generate_mcp.R            # MCP tool generation
+│   ├── generate_self_mcp.R       # Self-MCP (dataimago-as-MCP-server)
+│   ├── generate_types.R          # TypeScript type generation
+│   └── generate_wiki.R           # Wiki content generation
+├── man/                    # Generated .Rd function documentation
+├── tests/                  # Test suite
 ├── ui/                     # Complete frontend development workspace
 │   ├── src/
 │   │   └── dataimago-design/ # Git submodule - design system repository
+│   │       ├── CLAUDE.md           # Wiki maintainer protocol
+│   │       ├── AGENTS.md           # Design system agent guide
+│   │       ├── README.md           # Submodule overview
 │   │       ├── src/
-│   │       │   ├── tokens/   # Design tokens (JSON) - SOURCE OF TRUTH
-│   │       │   ├── styles/   # SCSS source files - SOURCE OF TRUTH
-│   │       │   └── js/       # JavaScript modules - SOURCE OF TRUTH
-│   │       ├── packages/     # npm workspace packages
-│   │       └── tools/        # Build and validation tools
+│   │       │   ├── tokens/         # Design tokens (JSON) - SOURCE OF TRUTH
+│   │       │   ├── styles/         # SCSS source files - SOURCE OF TRUTH
+│   │       │   ├── icons/          # Icon source files
+│   │       │   ├── latex/          # LaTeX theme generation
+│   │       │   ├── pages/          # Page templates
+│   │       │   └── js/             # JavaScript modules - SOURCE OF TRUTH
+│   │       ├── foundations/        # Human-authored philosophy/design/architecture/governance
+│   │       ├── wiki/               # Authoritative AI-maintained knowledge base
+│   │       │   ├── index.md            # Entry point
+│   │       │   ├── log.md              # Activity log
+│   │       │   ├── patterns/           # Implementation patterns
+│   │       │   ├── theories/           # Theoretical foundations
+│   │       │   ├── decisions/          # Architectural decisions
+│   │       │   ├── personas/           # User personas
+│   │       │   ├── connections/        # Cross-concept links
+│   │       │   ├── analyses/           # Deep analyses
+│   │       │   ├── principles/         # Design principles
+│   │       │   └── sources/            # Source-document extracts
+│   │       ├── templates/              # Knowledge templates
+│   │       ├── raw/                    # Incoming source materials (NOT authoritative)
+│   │       │   └── references/         # (gitignored by .repomixignore)
+│   │       ├── tools/                  # Build and validation tools
+│   │       ├── examples/               # Usage examples
+│   │       └── dist/                   # Built submodule assets (regenerable)
 │   ├── dist/              # Built CSS assets (regenerable)
 │   └── www/               # Quarto website project with assets and extensions
 │       ├── assets/
@@ -223,19 +267,11 @@ dataimago/
 │       ├── news.qmd       # Release notes
 │       └── 404.qmd        # Custom error page
 ├── inst/
-│   ├── dataimago/          # Complete foundation documents
-│   │   ├── 01_Foundations/ # Mission, vision, philosophy
-│   │   ├── 02_Manifesto/   # Critical theory content
-│   │   ├── 03_Application_Architecture/
-│   │   └── 04_dataimago_Content/ # Design assets
-│   ├── quarto-assets/      # CDN-ready CSS distribution
-│   ├── CLAUDE.md           # AI agent context
-│   └── AGENT_INDEX.md      # Agent coordination
-├── docs/                   # Rendered website (GitHub Pages)
-├── docs/development/       # Developer documentation
-├── man/                    # Generated .Rd files
-├── DESCRIPTION & NAMESPACE # Package metadata
-└── .Rbuildignore          # Curated content exclusions
+│   ├── dataimago/                    # Architecture & historical roadmap
+│   │   ├── ARCHITECTURE.md           # System architecture with Mermaid diagrams
+│   │   └── HISTORICAL_ROADMAP.md     # Historical asset-consolidation roadmap (superseded)
+│   └── quarto-assets/                # CDN-ready CSS distribution (jsDelivr-compatible)
+└── docs/                   # Rendered website output (GitHub Pages)
 ```
 
 ---
