@@ -39,7 +39,7 @@ NULL
 #' **Components Generated:**
 #' - **REST API scaffolding** (api.R): RestRserve endpoints for each exported R function
 #' - **MCP tool definitions** (mcp-schema.json): AI agent tool schemas from roxygen docs
-#' - **TypeScript utilities** (shared-utils/): Types + dual-mode API client
+#' - **TypeScript utilities** (shared-utils/): Types + single-path NextJS API client
 #' - **Foundation Documents**: Mission, philosophy, ethical guidelines as .qmd files
 #' - **Content Templates**: Page layouts, component libraries, design patterns
 #'
@@ -166,7 +166,7 @@ build_design_components <- function(project_path,
         )
         results$components_generated <- c(
           results$components_generated,
-          "typescript-types", "dual-mode-api-client"
+          "typescript-types", "single-path-api-client"
         )
       }
 

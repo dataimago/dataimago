@@ -9,20 +9,38 @@ NULL
 # export_static.R -- Pre-compute R Analysis Results as Static JSON
 # ============================================================================
 #
-# Enables serverless deployment (e.g., Vercel) by pre-computing all R
-# analysis results as static JSON files. The dual-mode API client reads
-# these files in production instead of hitting a live R server.
+# Phase 2e semantics: the JSON files written here are the
+# **StaticProducerDriver's input contract**, not a public URL space. The
+# NextJS API route tree (/api/discover, /api/data/<endpoint>,
+# /api/openapi.json) is the only public surface; when DATAIMAGO_PRODUCER
+# is "static", the route handlers read these files via the driver in
+# `@dataimago/shared-utils/producers`.
 #
-# Pattern: R functions x parameter combinations -> public/api/*.json
-# Reference: dissertation framework's static export workflow
+# Filename convention (must match StaticProducerDriver.filenameFor):
+#   <output_dir>/discover.json                        - manifest (Phase-2e shape)
+#   <output_dir>/openapi.json                         - OpenAPI spec (stub OK)
+#   <output_dir>/<endpoint>/default.json              - no-param response
+#   <output_dir>/<endpoint>/<v1>_<v2>_..._<vn>.json   - param response
+#                                                       (values only, lowercased,
+#                                                        whitespace -> "_")
+#
+# Pattern: R functions x parameter combinations -> <output_dir>/**/*.json
+# Reference:
+#   - packages/shared-utils/src/producers/static-driver.ts (contract)
+#   - dataimago-design wiki: patterns/producer-driver-pattern.md
 # ============================================================================
 
 
-#' Export Static API Data
+#' Export Static API Data (StaticProducerDriver input contract)
 #'
 #' Enumerates parameter combinations for exported R functions and pre-computes
-#' results as static JSON files. These files enable serverless deployment
-#' where no R runtime is available (e.g., Vercel, Netlify, GitHub Pages).
+#' results as static JSON files. These files are the input contract for the
+#' `StaticProducerDriver` (see `@dataimago/shared-utils/producers`): they are
+#' read by the NextJS API route handlers at request time when
+#' `DATAIMAGO_PRODUCER=static`. They are not themselves a public URL space.
+#'
+#' The filename convention below mirrors `StaticProducerDriver.filenameFor`
+#' exactly; changes to this file *must* be mirrored there.
 #'
 #' @param pkg_path Character. Path to the R package source directory
 #' @param output_dir Character. Directory for JSON output files (typically
@@ -48,9 +66,15 @@ NULL
 #' 4. Write results as JSON files to the output directory
 #' 5. Create a manifest file listing all exported endpoints
 #'
-#' File naming convention:
-#' \code{output_dir/<endpoint>/default.json} -- default parameters
-#' \code{output_dir/<endpoint>/<param1>-<val1>_<param2>-<val2>.json} -- specific params
+#' File naming convention (mirrors `StaticProducerDriver.filenameFor`):
+#' \itemize{
+#'   \item \code{output_dir/discover.json} -- Phase-2e producer manifest
+#'   \item \code{output_dir/openapi.json} -- OpenAPI 3.0 spec (stub acceptable)
+#'   \item \code{output_dir/<endpoint>/default.json} -- no-parameter result
+#'   \item \code{output_dir/<endpoint>/<v1>_<v2>_..._<vn>.json} -- param result,
+#'     values only, lowercased, whitespace replaced by underscores, joined by
+#'     underscores (no \code{param=val} encoding)
+#' }
 #'
 #' @section Performance Equity:
 #' Static JSON files are typically much smaller than dynamic responses because
@@ -149,29 +173,14 @@ export_static_api <- function(pkg_path,
     functions_exported <- c(functions_exported, fn_name)
   }
 
-  # Export discovery endpoint
-  discover_result <- export_discover_endpoint(exports, pkg_name, output_dir)
+  # Export discovery manifest (Phase-2e shape: discover.json at the root)
+  pkg_version <- read_pkg_version(pkg_path)
+  discover_result <- export_discover_endpoint(exports, pkg_name, pkg_version, output_dir)
   total_files <- total_files + discover_result$files
 
-  # Write manifest
-  manifest <- list(
-    package = pkg_name,
-    generated = as.character(Sys.time()),
-    generator = "dataimago::export_static_api()",
-    endpoints = lapply(names(exports), function(fn) {
-      list(
-        function_name = fn,
-        endpoint = fn_to_endpoint(fn),
-        files = list.files(fs::path(output_dir, fn_to_endpoint(fn)), pattern = "\\.json$")
-      )
-    }),
-    total_files = total_files,
-    total_size_kb = round(total_bytes / 1024, 1)
-  )
-
-  manifest_path <- fs::path(output_dir, "manifest.json")
-  writeLines(jsonlite::toJSON(manifest, auto_unbox = TRUE, pretty = TRUE), manifest_path)
-  total_files <- total_files + 1L
+  # Export OpenAPI stub (StaticProducerDriver.readOpenApi contract)
+  openapi_result <- export_openapi_stub(exports, pkg_name, pkg_version, output_dir)
+  total_files <- total_files + openapi_result$files
 
   elapsed <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
 
@@ -257,43 +266,181 @@ safe_call_function <- function(pkg_name, fn_name, params) {
 
 
 #' Convert parameter combination to filename
+#'
+#' Mirrors `StaticProducerDriver.filenameFor()` in
+#' `packages/shared-utils/src/producers/static-driver.ts`:
+#'   - no params  -> "default.json"
+#'   - otherwise  -> values only, lowercased, whitespace -> "_", joined by "_"
+#'
+#' Both sides of this contract MUST stay in lockstep.
+#'
 #' @noRd
 combo_to_filename <- function(combo) {
   if (length(combo) == 0) {
     return("default.json")
   }
 
-  parts <- vapply(names(combo), function(k) {
-    v <- as.character(combo[[k]])
-    # Sanitize value for filename
-    v_clean <- gsub("[^a-zA-Z0-9_.-]", "_", v)
-    paste0(k, "-", v_clean)
-  }, character(1))
+  # StaticProducerDriver sanitization: lowercase, whitespace -> "_",
+  # and then be defensive against slashes and control chars for the filesystem.
+  sanitize_value <- function(v) {
+    s <- tolower(as.character(v))
+    s <- gsub("\\s+", "_", s)
+    # Keep [a-z0-9_.-]; everything else becomes "_".
+    gsub("[^a-z0-9_.-]", "_", s)
+  }
 
-  paste0(paste(sort(parts), collapse = "_"), ".json")
+  # Preserve caller-provided ordering (matches JS Object.values() semantics
+  # for string-keyed records). Empty / NULL values are skipped, matching
+  # the driver's `filter((v) => v !== undefined && v !== null && v !== '')`.
+  keep <- vapply(combo, function(v) {
+    !is.null(v) && !identical(v, NA) && nzchar(as.character(v))
+  }, logical(1))
+
+  if (!any(keep)) {
+    return("default.json")
+  }
+
+  values <- vapply(combo[keep], sanitize_value, character(1))
+  paste0(paste(values, collapse = "_"), ".json")
 }
 
 
-#' Export the discovery endpoint as static JSON
+#' Export the discovery manifest as `<output_dir>/discover.json`
+#'
+#' The shape is the Phase-2e `ProducerManifest` expected by the NextJS
+#' `/api/discover` route and the `StaticProducerDriver`:
+#'
+#' \preformatted{
+#'   {
+#'     "package_name": "...",
+#'     "version": "...",
+#'     "endpoints": [ { "name", "title", "description", "path", "method",
+#'                      "params": [ { "name", "type", "required", ... } ] } ],
+#'     "openapi_url": "/api/openapi.json",
+#'     "timestamp": "ISO-8601"
+#'   }
+#' }
+#'
 #' @noRd
-export_discover_endpoint <- function(exports, pkg_name, output_dir) {
-  discover_dir <- fs::path(output_dir, "discover")
-  if (!fs::dir_exists(discover_dir)) {
-    fs::dir_create(discover_dir, recurse = TRUE)
-  }
+export_discover_endpoint <- function(exports, pkg_name, pkg_version, output_dir) {
+  endpoint_infos <- lapply(names(exports), function(fn_name) {
+    fn_meta <- exports[[fn_name]]
+    endpoint <- fn_to_endpoint(fn_name)
 
-  discover_data <- list(
-    package = pkg_name,
-    analyses = lapply(exports, function(fn_meta) {
-      list(
-        description = fn_meta$title,
-        parameters = lapply(fn_meta$params, function(p) p$description)
+    params <- lapply(names(fn_meta$params), function(p_name) {
+      p <- fn_meta$params[[p_name]]
+      info <- list(
+        name = p_name,
+        type = p$type %||% "string",
+        required = isTRUE(p$required)
       )
+      if (!is.null(p$description) && nzchar(p$description)) {
+        info$description <- p$description
+      }
+      if (!is.null(p$default) && !identical(p$default, NA)) {
+        info$default <- gsub('^"|"$', "", as.character(p$default))
+      }
+      if (!is.null(p$enum) && length(p$enum) > 0) {
+        info$enum <- as.list(p$enum)
+      }
+      info
     })
+
+    list(
+      name = endpoint,
+      title = fn_meta$title %||% fn_name,
+      description = fn_meta$description %||% "",
+      path = paste0("/", endpoint),
+      method = "GET",
+      params = params
+    )
+  })
+
+  manifest <- list(
+    package_name = pkg_name,
+    version = pkg_version %||% "0.0.0",
+    endpoints = endpoint_infos,
+    openapi_url = "/api/openapi.json",
+    timestamp = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
   )
 
-  json_content <- jsonlite::toJSON(discover_data, auto_unbox = TRUE, pretty = TRUE)
-  writeLines(json_content, fs::path(discover_dir, "default.json"))
+  json_content <- jsonlite::toJSON(
+    manifest,
+    auto_unbox = TRUE,
+    pretty = TRUE,
+    null = "null"
+  )
+  writeLines(json_content, fs::path(output_dir, "discover.json"))
 
   list(files = 1L)
 }
+
+
+#' Export an OpenAPI 3.0 stub as `<output_dir>/openapi.json`
+#'
+#' StaticProducerDriver.readOpenApi reads this file verbatim. The stub
+#' records the four public NextJS routes so downstream tooling (e.g.
+#' the platform's API browser) has something to render before the real
+#' spec is generated.
+#'
+#' @noRd
+export_openapi_stub <- function(exports, pkg_name, pkg_version, output_dir) {
+  paths <- list()
+  paths[["/api/discover"]] <- list(
+    get = list(
+      summary = "Discover the endpoint catalog",
+      responses = list(`200` = list(description = "Producer manifest"))
+    )
+  )
+  paths[["/api/openapi.json"]] <- list(
+    get = list(
+      summary = "OpenAPI 3.0 specification for this project",
+      responses = list(`200` = list(description = "OpenAPI document"))
+    )
+  )
+  for (fn_name in names(exports)) {
+    endpoint <- fn_to_endpoint(fn_name)
+    paths[[paste0("/api/data/", endpoint)]] <- list(
+      get = list(
+        summary = exports[[fn_name]]$title %||% fn_name,
+        responses = list(`200` = list(description = "Analysis result"))
+      )
+    )
+  }
+
+  spec <- list(
+    openapi = "3.0.0",
+    info = list(
+      title = glue::glue("{pkg_name} API"),
+      version = pkg_version %||% "0.0.0",
+      description = "Auto-generated stub by dataimago::export_static_api(); replace with a real spec as the API matures."
+    ),
+    paths = paths
+  )
+
+  writeLines(
+    jsonlite::toJSON(spec, auto_unbox = TRUE, pretty = TRUE),
+    fs::path(output_dir, "openapi.json")
+  )
+
+  list(files = 1L)
+}
+
+
+#' Read the Version field from an R package DESCRIPTION
+#' @noRd
+read_pkg_version <- function(pkg_path) {
+  desc_path <- fs::path(pkg_path, "DESCRIPTION")
+  if (!fs::file_exists(desc_path)) {
+    return(NULL)
+  }
+  lines <- readLines(desc_path, warn = FALSE)
+  v <- grep("^Version:", lines, value = TRUE)
+  if (length(v) == 0) {
+    return(NULL)
+  }
+  trimws(sub("^Version:\\s*", "", v[1]))
+}
+
+# `%||%` is provided by base R since 4.4.0; the package's DESCRIPTION requires
+# R >= 4.5 via `Depends`, so no local definition is needed.

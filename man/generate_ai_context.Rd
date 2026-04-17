@@ -53,7 +53,11 @@ comprehensive codebase context for AI assistants. The generated artifact include
 
 \strong{AI Agent Context:}
 \itemize{
-\item \code{CLAUDE.md} and \code{AGENT_INDEX.md} coordination files
+\item \code{CLAUDE.md} at package root -- primary AI context document
+\item \code{inst/dataimago/ARCHITECTURE.md} -- system architecture with Mermaid diagrams
+\item \code{ui/src/dataimago-design/AGENTS.md} -- design submodule agent guide
+\item \code{ui/src/dataimago-design/CLAUDE.md} -- wiki maintainer protocol
+\item \verb{ui/src/dataimago-design/wiki/} -- authoritative knowledge base (index, log, patterns, theories, decisions)
 \item Structured metadata for semantic interoperability
 \item Development patterns aligned with emancipatory AI principles
 }

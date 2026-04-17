@@ -1291,7 +1291,11 @@ generate_cdn_assets <- function(verbose = TRUE) {
 #' - Git submodule integration and workflow patterns
 #'
 #' **AI Agent Context:**
-#' - `CLAUDE.md` and `AGENT_INDEX.md` coordination files
+#' - `CLAUDE.md` at package root -- primary AI context document
+#' - `inst/dataimago/ARCHITECTURE.md` -- system architecture with Mermaid diagrams
+#' - `ui/src/dataimago-design/AGENTS.md` -- design submodule agent guide
+#' - `ui/src/dataimago-design/CLAUDE.md` -- wiki maintainer protocol
+#' - `ui/src/dataimago-design/wiki/` -- authoritative knowledge base (index, log, patterns, theories, decisions)
 #' - Structured metadata for semantic interoperability
 #' - Development patterns aligned with emancipatory AI principles
 #'
@@ -1464,11 +1468,12 @@ generate_ai_context <- function(output_file = NULL,
       ui_done(glue("AI context generated successfully: {output_file}"))
       ui_info("Upload this file to your AI assistant for comprehensive codebase context")
       ui_info("The file includes:")
-      ui_info("  - Complete philosophical foundations (inst/dataimago/)")
-      ui_info("  - All R functions and documentation")
-      ui_info("  - Design system source of truth")
-      ui_info("  - AI agent coordination files (CLAUDE.md, AGENT_INDEX.md)")
-      ui_info("  - Build system architecture and patterns")
+      ui_info("  - Primary AI agent context (CLAUDE.md at package root)")
+      ui_info("  - All R functions and roxygen documentation (R/, man/)")
+      ui_info("  - System architecture with Mermaid diagrams (inst/dataimago/ARCHITECTURE.md)")
+      ui_info("  - Design system source of truth (ui/src/dataimago-design/src/tokens, styles)")
+      ui_info("  - Authoritative knowledge base (ui/src/dataimago-design/wiki/)")
+      ui_info("  - Design submodule agent guide (ui/src/dataimago-design/AGENTS.md)")
       if (token_count > 0) {
         ui_info(glue("  - Token count: {format(token_count, big.mark = ',')}"))
       }

@@ -19,7 +19,10 @@ generate_shared_utils(
 
 \item{pkg_name}{Character. Package name. If NULL, read from DESCRIPTION.}
 
-\item{api_port}{Integer. Default API port for development mode. Default: 8000}
+\item{api_port}{Integer. Retained for backward compatibility. Since
+Phase 2e the emitted client does not talk to the R server directly;
+the R server is instead the live-producer driver's backing service.
+Default: 8000}
 
 \item{verbose}{Logical. Print progress. Default: TRUE}
 }
@@ -38,26 +41,33 @@ Three files are generated:
 \itemize{
 \item API response structures (matching R function return types)
 \item Parameter types for each function
-\item Common types (ApiResponse, ErrorResponse, etc.)
+\item Common types (ApiResponse, ErrorResponse, DiscoveryResponse)
+\item \code{ApiMode} / \code{ApiConfig} retained but marked \verb{@deprecated} for one
+minor release; new code must not branch on them
 }
 
-\strong{api-client.ts} -- Dual-mode API client:
+\strong{api-client.ts} -- Single-path API client (Phase 2e+):
 \itemize{
-\item Development: HTTP requests to localhost R server
-\item Production: Reads from /api/*.json static files
-\item Mode determined by NEXT_PUBLIC_API_MODE environment variable
-\item Consistent interface regardless of mode
+\item Always calls the NextJS API route tree:
+\itemize{
+\item \code{GET /api/discover} for the manifest
+\item \verb{GET /api/data/<endpoint>} for analysis results
+\item \code{GET /api/openapi.json} for the OpenAPI spec
+}
+\item Producer selection (static / live / database / composite) is a
+server-only concern (DATAIMAGO_PRODUCER env var); the client never
+sees which driver answered
+\item No \code{fetch} fallback to \verb{/api/*.json} in \verb{public/}; static responses
+flow through the NextJS route handler backed by StaticProducerDriver
 }
 
 \strong{index.ts} -- Re-exports from types and client
 }
-\section{Dual-Mode Pattern}{
+\section{Phase 2e Semantics}{
 
-The generated client implements the dataimago dual-mode API pattern:
-\itemize{
-\item \code{NEXT_PUBLIC_API_MODE=live}: Requests go to the R server
-\item \code{NEXT_PUBLIC_API_MODE=static}: Reads pre-computed JSON files
-\item Transparent switching -- components don't know which mode is active
-}
+The generated client is intentionally \emph{thin}. It is a typed fetch
+wrapper over four public NextJS routes. The pre-Phase-2e \code{mode}
+constructor argument and \code{NEXT_PUBLIC_API_MODE} env var now emit
+deprecation warnings but continue to compile.
 }
 

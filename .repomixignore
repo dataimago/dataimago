@@ -158,26 +158,74 @@ repomix-output.*
 **/repomix-output.*
 
 # ====================================================================
+# STALE OR SUPERSEDED CONTENT
+# ====================================================================
+
+# Raw reference materials are NOT authoritative (per dataimago-design/CLAUDE.md).
+# They are incoming source materials that may contradict current wiki/ content.
+# Exclude so AI does not ingest superseded content as fact.
+ui/src/dataimago-design/raw/
+**/dataimago-design/raw/
+
+# Self-referential repomix outputs (avoid recursive inclusion)
+dataimago-repomix.md
+dataimago-repomix.xml
+*-repomix.md
+*-repomix.xml
+
+# R check artifacts (parallel copy of the package, confuses AI indexing)
+dataimago.Rcheck/
+**/*.Rcheck/
+
+# Design submodule build outputs (regenerable via pnpm build)
+ui/src/dataimago-design/dist/
+**/dataimago-design/dist/
+
+# ====================================================================
 # NOTES ON PRESERVED CONTENT
 # ====================================================================
 # The following are INTENTIONALLY INCLUDED for AI context:
 #
-# - inst/dataimago/        Foundation documents (philosophical core)
-# - inst/CLAUDE.md         AI agent context document
-# - inst/AGENT_INDEX.md    Agent coordination document
-# - ui/src/                Design tokens and SCSS (source of truth)
-# - R/                     Core R functions
-# - man/                   Function documentation
-# - DESCRIPTION            Package metadata
-# - NAMESPACE              Package exports
-# - README.md              Project overview
-# - ARCHITECTURE.md        System design
-# - IMPLEMENTATION_ROADMAP.md  Development plans
-# - ui/www/*.qmd           Quarto source documents
-# - ui/www/_quarto.yml     Quarto configuration
-# - _extensions/dataimago/ Quarto extension (distribution)
+# Package root:
+# - CLAUDE.md                          Primary AI agent context document
+# - README.md                          Project overview
+# - NEWS.md                            Release notes / changelog
+# - DESCRIPTION / NAMESPACE            Package metadata and exports
+# - CITATION.cff                       Citation metadata
 #
-# These files contain the philosophical, architectural, and
-# functional essence of the dataimago project and are essential
-# for AI-assisted development and understanding.
+# R source and documentation:
+# - R/                                 All R source (ai.R, asset_sync.R, build_components.R,
+#                                      build_framework.R, dataimago-package.R, design_system.R,
+#                                      documentation_utils.R, export_static.R, generate_api.R,
+#                                      generate_claude_md.R, generate_ethical_ci.R,
+#                                      generate_mcp.R, generate_self_mcp.R, generate_types.R,
+#                                      generate_wiki.R)
+# - man/                               Generated .Rd function documentation
+# - tests/                             Test suite
+#
+# Install directory:
+# - inst/dataimago/ARCHITECTURE.md     System architecture + Mermaid diagrams
+# - inst/dataimago/HISTORICAL_ROADMAP.md  Historical asset-consolidation roadmap (superseded)
+# - inst/quarto-assets/                CDN-ready CSS distribution (jsDelivr)
+#
+# Design system submodule (ui/src/dataimago-design/):
+# - CLAUDE.md                          Wiki maintainer protocol
+# - AGENTS.md                          Design system agent guide
+# - README.md                          Submodule overview
+# - wiki/                              Authoritative knowledge base (index.md, log.md,
+#                                      patterns/, theories/, decisions/, personas/,
+#                                      connections/, analyses/, principles/, sources/)
+# - foundations/                       Philosophy/design/architecture/governance (human-authored)
+# - src/tokens/                        Design tokens (JSON, source of truth)
+# - src/styles/                        SCSS source files (source of truth)
+# - templates/                         Knowledge templates
+#
+# Quarto website:
+# - ui/www/*.qmd                       Quarto source documents
+# - ui/www/_quarto.yml                 Quarto website configuration
+# - ui/www/_extensions/dataimago/      Quarto extension distribution
+#
+# These files contain the philosophical, architectural, and functional
+# essence of the dataimago project and are essential for AI-assisted
+# development and understanding.
 # ====================================================================

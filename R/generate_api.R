@@ -5,15 +5,27 @@
 NULL
 
 # ============================================================================
-# generate_api.R -- Generate REST API Scaffolding from R Package Exports
+# generate_api.R -- Emit the Live-Producer Driver's Backing Server
 # ============================================================================
 #
-# Part of the dataimago meta-tool pipeline. Reads an R package's exported
-# functions and roxygen documentation, then generates a RestRserve-based
-# api.R file with endpoints for each function. Follows the pattern proven
-# in the dissertation framework proof-of-concept.
+# Phase 2e semantics: the `api.R` file emitted here is NOT a public API.
+# It is the backing service the LiveProducerDriver dials when
+# DATAIMAGO_PRODUCER=live. The only public HTTP surface in a generated
+# project is the NextJS API route tree (/api/discover, /api/data/<endpoint>,
+# /api/openapi.json) owned by the template at apps/template/src/app/api/.
 #
-# Key pattern: R as Source of Truth -> REST API -> MCP Tools -> Web UI
+# Consequences:
+#   - This generator MUST NOT write into apps/template/src/app/api/**.
+#     That tree is owned by the template checkout; overwriting it would
+#     break the canonical routes. The `output_dir` argument should always
+#     point at a project-local `R/` directory.
+#   - The routes below (/<endpoint>, /discover, /openapi.json) become
+#     internal endpoints from the NextJS process's point of view. CORS
+#     is therefore unnecessary in production (same-network live driver)
+#     but is preserved for developer-mode direct access.
+#
+# Key pattern: R as Source of Truth -> Live Producer Driver -> NextJS API
+#   -> Web UI / MCP Tools
 # ============================================================================
 
 
@@ -98,37 +110,46 @@ parse_roxygen_exports <- function(pkg_path, verbose = FALSE) {
 }
 
 
-#' Generate REST API Scaffolding
+#' Generate the Live-Producer Driver's Backing Server
 #'
-#' Creates a complete api.R file with RestRserve endpoints for each exported
-#' function in the target R package. Includes CORS support, error handling,
-#' OpenAPI specification, and a discovery endpoint.
+#' Creates an `api.R` file with RestRserve endpoints for each exported
+#' function in the target R package. In Phase 2e+ this file is the
+#' **live-producer driver's backing service**, not a public API — the
+#' NextJS API route tree (owned by `apps/template/src/app/api/`) remains
+#' the sole public surface.
 #'
-#' @param pkg_path Character. Path to the source R package
-#' @param output_dir Character. Directory to write the generated api.R file
+#' @param pkg_path Character. Path to the source R package.
+#' @param output_dir Character. Directory to write the generated `api.R`.
+#'   Must NOT point into `apps/template/src/app/api/` — that tree is owned
+#'   by the template and must never be overwritten by the generator.
 #' @param pkg_name Character. Package name (used in generated code). If NULL,
-#'   read from DESCRIPTION file.
-#' @param port Integer. Default port for the API server. Default: 8000
-#' @param verbose Logical. Print progress. Default: TRUE
+#'   read from DESCRIPTION.
+#' @param port Integer. Default port for the backing server. Default: 8000.
+#' @param verbose Logical. Print progress. Default: TRUE.
 #'
-#' @return List with: files_created, endpoints_generated, function_count
+#' @return List with: files_created, endpoints_generated, function_count.
 #'
 #' @details
-#' The generated API follows the dissertation framework pattern:
-#' - One GET endpoint per exported function
-#' - Query parameters derived from function parameters
-#' - Consistent JSON response structure: \{status, results, filters, metadata\}
-#' - CORS headers for cross-origin requests
-#' - OpenAPI 3.0 specification endpoint
-#' - Discovery endpoint listing all available analyses
-#' - Error handling with structured error responses
+#' The generated server exposes:
+#' - One GET endpoint per exported function (consumed by LiveProducerDriver)
+#' - `/discover` — endpoint catalog, used by `/api/discover` in live mode
+#' - `/openapi.json` — OpenAPI 3.0 spec, used by `/api/openapi.json`
+#' - CORS headers, left permissive for developer-mode direct access; the
+#'   live driver itself runs same-network against this server.
+#'
+#' @section Phase 2e Invariants:
+#' - The only HTTP surface a browser or external caller should ever touch
+#'   is the NextJS route tree. This generator does not scaffold that tree;
+#'   it is supplied by the template at clone time and is the write-once
+#'   public contract.
+#' - Client code (`api-client.ts`) never talks to the server below directly.
 #'
 #' @section Ethical Alignment:
-#' Generated APIs inherit dataimago's ethical constraints through:
-#' - CORS restricted to configured origins (not wildcard in production)
-#' - No authentication bypass mechanisms
+#' Generated servers inherit dataimago's ethical constraints through:
 #' - Structured error responses (no stack traces in production)
 #' - Data variable metadata endpoint for transparency
+#' - Same-network invocation in production removes the CORS attack surface;
+#'   developer-mode CORS should be tightened before any public exposure.
 #'
 #' @export
 generate_api_scaffolding <- function(pkg_path,
@@ -136,6 +157,19 @@ generate_api_scaffolding <- function(pkg_path,
                                      pkg_name = NULL,
                                      port = 8000L,
                                      verbose = TRUE) {
+  # Phase 2e write-once guard: never emit into the template's NextJS API
+  # route tree. That tree is the sole public HTTP surface and is owned by
+  # apps/template/src/app/api/.
+  normalized_out <- normalizePath(output_dir, mustWork = FALSE, winslash = "/")
+  if (grepl("/src/app/api(/|$)", normalized_out)) {
+    stop(
+      "generate_api_scaffolding() refuses to write into `src/app/api/` -- ",
+      "the NextJS API route tree is owned by the template and must never ",
+      "be overwritten. Use a project-local `R/` directory instead.",
+      call. = FALSE
+    )
+  }
+
   # Read package name from DESCRIPTION if not provided
   if (is.null(pkg_name)) {
     desc_path <- fs::path(pkg_path, "DESCRIPTION")
