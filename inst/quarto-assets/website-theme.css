@@ -24,51 +24,6 @@
   --color-functional-error: oklch(0.545 0.485 35.9); /* OKLCH enhanced */
   --color-functional-info: #3498DB; /* sRGB fallback */
   --color-functional-info: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
-  --color-brand-dataimago-primary: #3498DB;
-  --color-brand-dataimago-accent: #ff69b4;
-  --color-brand-ethical-ai: #E74C3C;
-  --color-functional-success: #27AE60;
-  --color-functional-warning: #F39C12;
-  --color-functional-error: #E74C3C;
-  --color-functional-info: #3498DB;
-  --spacing-component-padding: 1rem;
-  --spacing-component-margin: 1.5rem;
-  --spacing-component-gap: 0.75rem;
-  --spacing-layout-section: 3rem;
-  --spacing-layout-container: 2rem;
-  --spacing-layout-comfortable: 1rem;
-  --spacing-micro-tight: 0.25rem;
-  --spacing-micro-normal: 0.5rem;
-  --spacing-micro-loose: 1rem;
-  --radius-component: 0.5rem;
-  --radius-subtle: 0.25rem;
-  --radius-prominent: 0.75rem;
-  --radius-full: 9999px;
-  --transition-quick: 0.15s ease;
-  --transition-standard: 0.25s ease-in-out;
-  --transition-smooth: 0.35s ease;
-  --transition-logo: 0.3s;
-  --card-background: surface.elevated;
-  --card-padding: spacing.component.padding;
-  --card-radius: radius.component;
-  --card-shadow: shadow.moderate;
-  --card-border: border.subtle;
-  --button-padding-x: spacing.component.padding;
-  --button-padding-y: spacing.micro.normal;
-  --button-radius: radius.component;
-  --button-font-weight: typography.weight.medium;
-  --button-primary-background: interactive.primary;
-  --button-primary-text: content.inverse;
-  --button-primary-hover: interactive.hover;
-  --button-secondary-background: surface.elevated;
-  --button-secondary-text: content.primary;
-  --button-secondary-hover: surface.page;
-  --navbar-background: surface.navbar;
-  --navbar-background-scrolled: surface.navbar-scrolled;
-  --navbar-text: content.secondary;
-  --navbar-text-hover: interactive.accent;
-  --navbar-transition: transition.smooth;
-  --navigation-item-spacing: spacing.micro.loose;
   --font-family-sans: Fira Sans, system-ui, sans-serif;
   --font-family-mono: JetBrains Mono, SF Mono, Monaco, Inconsolata, monospace;
   --font-family-display: Josefin Sans, system-ui, sans-serif;
@@ -420,7 +375,7 @@
 }
 
 body {
-  transition: background-color 0.35s ease;
+  transition: background-color var(--logo-transition-duration) ease;
   font-family: var(--font-family-sans);
   line-height: 1.6;
 }
@@ -477,7 +432,7 @@ nav .nav-item:not(.compact) {
 
 .navbar-logo {
   max-height: 36px;
-  transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
+  transition: max-height var(--logo-transition-duration) ease-in-out, transform var(--logo-transition-duration) ease-in-out, opacity var(--logo-transition-duration) ease-in-out;
   will-change: max-height, transform, opacity;
   background-size: contain;
   background-repeat: no-repeat;
@@ -497,7 +452,7 @@ nav .nav-item:not(.compact) {
   max-height: 36px;
   width: auto;
   height: auto;
-  transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
+  transition: max-height var(--logo-transition-duration) ease-in-out, transform var(--logo-transition-duration) ease-in-out, opacity var(--logo-transition-duration) ease-in-out;
   will-change: max-height, transform, opacity;
 }
 
@@ -544,7 +499,7 @@ nav .nav-item:not(.compact) {
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--theme-text-primary) 0%, var(--theme-text-secondary) 100%);
-  transition: width 0.4s ease;
+  transition: width 0.25s ease;
   transform-origin: left;
 }
 
@@ -609,7 +564,7 @@ nav .nav-item:not(.compact) {
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--theme-text-primary) 0%, var(--theme-text-secondary) 100%);
-  transition: width 0.4s ease;
+  transition: width 0.25s ease;
   transform-origin: left;
 }
 
@@ -681,7 +636,7 @@ nav .nav-item:not(.compact) {
 
 .navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon:hover {
   color: var(--color-brand-dataimago-accent);
-  transition: all 0.35s ease-in-out;
+  transition: all var(--logo-transition-duration) ease-in-out;
 }
 
 h1, h2, h3, h4, h5, h6 {

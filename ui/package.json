@@ -12,17 +12,21 @@
     "postcss": "postcss",
     "optimize": "postcss dist/*.css --dir dist --config postcss.config.js"
   },
-  "keywords": ["dataimago", "design-system", "css", "ai-native", "ethical-ai"],
+  "keywords": [
+    "dataimago",
+    "design-system",
+    "css",
+    "ai-native",
+    "ethical-ai"
+  ],
   "devDependencies": {
-    "style-dictionary": "^4.0.0",
-    "sass": "^1.69.0",
-    "postcss": "^8.4.0",
-    "autoprefixer": "^10.4.0",
-    "cssnano": "^6.0.0",
-    "postcss-cli": "^11.0.0",
-    "@fullhuman/postcss-purgecss": "^5.0.0",
-    "postcss-custom-properties": "^13.0.0",
-    "postcss-color-function": "^4.1.0",
-    "read-cache": "^1.0.0"
+    "@fullhuman/postcss-purgecss": "^8.0.0",
+    "autoprefixer": "^10.5.0",
+    "cssnano": "^7.1.5",
+    "postcss": "^8.5.10",
+    "postcss-cli": "^11.0.1",
+    "postcss-custom-properties": "^13.3.12",
+    "sass": "^1.99.0",
+    "style-dictionary": "^5.4.0"
   }
 }

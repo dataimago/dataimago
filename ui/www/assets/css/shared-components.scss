@@ -5,7 +5,7 @@
 // ===== BASE STYLES =====
 
 body {
-  transition: background-color 0.35s ease;
+  transition: background-color var(--logo-transition-duration) ease;
   font-family: var(--font-family-sans);
   line-height: 1.6;
 }
@@ -68,7 +68,7 @@ nav .nav-item:not(.compact) {
 
 .navbar-logo {
   max-height: 36px;
-  transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
+  transition: max-height var(--logo-transition-duration) ease-in-out, transform var(--logo-transition-duration) ease-in-out, opacity var(--logo-transition-duration) ease-in-out;
   will-change: max-height, transform, opacity;
   
   // For traditional img elements (fallback)
@@ -92,7 +92,7 @@ nav .nav-item:not(.compact) {
   max-height: 36px;
   width: auto;
   height: auto;
-  transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
+  transition: max-height var(--logo-transition-duration) ease-in-out, transform var(--logo-transition-duration) ease-in-out, opacity var(--logo-transition-duration) ease-in-out;
   will-change: max-height, transform, opacity;
 }
 
@@ -143,7 +143,7 @@ nav .nav-item:not(.compact) {
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--theme-text-primary) 0%, var(--theme-text-secondary) 100%);
-  transition: width 0.4s ease;
+  transition: width 0.25s ease;
   transform-origin: left;
 }
 
@@ -215,7 +215,7 @@ nav .nav-item:not(.compact) {
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--theme-text-primary) 0%, var(--theme-text-secondary) 100%);
-  transition: width 0.4s ease;
+  transition: width 0.25s ease;
   transform-origin: left;
 }
 
@@ -299,7 +299,7 @@ nav .nav-item:not(.compact) {
 
 .navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon:hover {
   color: var(--color-brand-dataimago-accent); // Use design token instead of hardcoded #ff69b4
-  transition: all 0.35s ease-in-out;
+  transition: all var(--logo-transition-duration) ease-in-out;
 }
 
 // ===== TYPOGRAPHY =====

@@ -23,51 +23,6 @@
   --color-functional-error: oklch(0.545 0.485 35.9); /* OKLCH enhanced */
   --color-functional-info: #3498DB; /* sRGB fallback */
   --color-functional-info: oklch(0.602 0.284 261.8); /* OKLCH enhanced */
-  --color-brand-dataimago-primary: #3498DB;
-  --color-brand-dataimago-accent: #ff69b4;
-  --color-brand-ethical-ai: #E74C3C;
-  --color-functional-success: #27AE60;
-  --color-functional-warning: #F39C12;
-  --color-functional-error: #E74C3C;
-  --color-functional-info: #3498DB;
-  --spacing-component-padding: 1rem;
-  --spacing-component-margin: 1.5rem;
-  --spacing-component-gap: 0.75rem;
-  --spacing-layout-section: 3rem;
-  --spacing-layout-container: 2rem;
-  --spacing-layout-comfortable: 1rem;
-  --spacing-micro-tight: 0.25rem;
-  --spacing-micro-normal: 0.5rem;
-  --spacing-micro-loose: 1rem;
-  --radius-component: 0.5rem;
-  --radius-subtle: 0.25rem;
-  --radius-prominent: 0.75rem;
-  --radius-full: 9999px;
-  --transition-quick: 0.15s ease;
-  --transition-standard: 0.25s ease-in-out;
-  --transition-smooth: 0.35s ease;
-  --transition-logo: 0.3s;
-  --card-background: surface.elevated;
-  --card-padding: spacing.component.padding;
-  --card-radius: radius.component;
-  --card-shadow: shadow.moderate;
-  --card-border: border.subtle;
-  --button-padding-x: spacing.component.padding;
-  --button-padding-y: spacing.micro.normal;
-  --button-radius: radius.component;
-  --button-font-weight: typography.weight.medium;
-  --button-primary-background: interactive.primary;
-  --button-primary-text: content.inverse;
-  --button-primary-hover: interactive.hover;
-  --button-secondary-background: surface.elevated;
-  --button-secondary-text: content.primary;
-  --button-secondary-hover: surface.page;
-  --navbar-background: surface.navbar;
-  --navbar-background-scrolled: surface.navbar-scrolled;
-  --navbar-text: content.secondary;
-  --navbar-text-hover: interactive.accent;
-  --navbar-transition: transition.smooth;
-  --navigation-item-spacing: spacing.micro.loose;
   --font-family-sans: Fira Sans, system-ui, sans-serif;
   --font-family-mono: JetBrains Mono, SF Mono, Monaco, Inconsolata, monospace;
   --font-family-display: Josefin Sans, system-ui, sans-serif;
@@ -442,7 +397,7 @@ svg {
   background-size: contain;
   background-repeat: no-repeat;
   max-height: 36px;
-  transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
+  transition: max-height var(--logo-transition-duration) ease-in-out, transform var(--logo-transition-duration) ease-in-out, opacity var(--logo-transition-duration) ease-in-out;
   will-change: max-height, transform, opacity;
 }
 .navbar-logo.shrink {
@@ -479,14 +434,15 @@ svg {
   }
 }
 
-.landing-logo {
-  animation: gentle-float 6s ease-in-out infinite;
+@media (prefers-reduced-motion: no-preference) {
+  .landing-logo {
+    animation: gentle-float 6s ease-in-out infinite;
+  }
+  .landing-logo:hover {
+    animation-play-state: paused;
+    transform: scale(1.05);
+  }
 }
-.landing-logo:hover {
-  animation-play-state: paused;
-  transform: scale(1.05);
-}
-
 @keyframes gentle-float {
   0%, 100% {
     transform: translateY(0px);
@@ -542,10 +498,14 @@ svg {
   color: var(--theme-text-hover);
 }
 
-.svg-pulse {
-  animation: svg-pulse 2s ease-in-out infinite;
+@media (prefers-reduced-motion: no-preference) {
+  .svg-pulse {
+    animation: svg-pulse 2s ease-in-out infinite;
+  }
+  .svg-rotate {
+    animation: svg-rotate 20s linear infinite;
+  }
 }
-
 @keyframes svg-pulse {
   0%, 100% {
     opacity: 1;
@@ -554,10 +514,6 @@ svg {
     opacity: 0.7;
   }
 }
-.svg-rotate {
-  animation: svg-rotate 20s linear infinite;
-}
-
 @keyframes svg-rotate {
   from {
     transform: rotate(0deg);
@@ -610,12 +566,16 @@ svg {
   border: 2px solid var(--theme-text-secondary);
   border-top-color: transparent;
   border-radius: 50%;
-  animation: svg-spinner 0.8s linear infinite;
 }
 .svg-loading svg {
   opacity: 0.3;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .svg-loading::after {
+    animation: svg-spinner 0.8s linear infinite;
+  }
+}
 @keyframes svg-spinner {
   to {
     transform: rotate(360deg);

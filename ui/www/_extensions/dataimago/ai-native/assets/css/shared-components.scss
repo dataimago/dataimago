@@ -5,7 +5,7 @@
 // ===== BASE STYLES =====
 
 body {
-  transition: background-color 0.35s ease;
+  transition: background-color var(--logo-transition-duration) ease;
   font-family: var(--font-family-sans);
   line-height: 1.6;
 }
@@ -68,7 +68,7 @@ nav .nav-item:not(.compact) {
 
 .navbar-logo {
   max-height: 36px;
-  transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
+  transition: max-height var(--logo-transition-duration) ease-in-out, transform var(--logo-transition-duration) ease-in-out, opacity var(--logo-transition-duration) ease-in-out;
   will-change: max-height, transform, opacity;
   
   // For traditional img elements (fallback)
@@ -85,13 +85,6 @@ nav .nav-item:not(.compact) {
   transition: opacity 0.15s ease-in-out;
 }
 
-.navbar-logo.logo-hover,
-.footer-ai-monogram-logo.logo-hover {
-  filter: brightness(1.2) saturate(1.3);
-  transform: scale(1.05);
-  transition: filter 0.2s ease, transform 0.2s ease;
-}
-
 // ===== INLINE SVG NAVBAR LOGO STYLING =====
 
 .navbar-logo.inline-svg,
@@ -99,7 +92,7 @@ nav .nav-item:not(.compact) {
   max-height: 36px;
   width: auto;
   height: auto;
-  transition: max-height 0.35s ease-in-out, transform 0.35s ease-in-out, opacity 0.35s ease-in-out;
+  transition: max-height var(--logo-transition-duration) ease-in-out, transform var(--logo-transition-duration) ease-in-out, opacity var(--logo-transition-duration) ease-in-out;
   will-change: max-height, transform, opacity;
 }
 
@@ -150,7 +143,7 @@ nav .nav-item:not(.compact) {
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--theme-text-primary) 0%, var(--theme-text-secondary) 100%);
-  transition: width 0.4s ease;
+  transition: width 0.25s ease;
   transform-origin: left;
 }
 
@@ -222,7 +215,7 @@ nav .nav-item:not(.compact) {
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--theme-text-primary) 0%, var(--theme-text-secondary) 100%);
-  transition: width 0.4s ease;
+  transition: width 0.25s ease;
   transform-origin: left;
 }
 
@@ -306,7 +299,7 @@ nav .nav-item:not(.compact) {
 
 .navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon:hover {
   color: var(--color-brand-dataimago-accent); // Use design token instead of hardcoded #ff69b4
-  transition: all 0.35s ease-in-out;
+  transition: all var(--logo-transition-duration) ease-in-out;
 }
 
 // ===== TYPOGRAPHY =====
@@ -750,28 +743,4 @@ a:hover .footer-package-hex-logo .hexagon {
 .theme-svg.logo-hex rect, 
 .theme-svg.logo-hex polygon {
   fill: var(--logo-default-fill, #7c7c7c);
-}
-
-// ===== ETHICAL NOTE CALLOUT =====
-
-.ethical-note {
-  border-left: 4px solid var(--dataimago-brand-ethical, #E74C3C);
-  background-color: var(--theme-surface-hover, rgba(231, 76, 60, 0.06));
-  padding: 1rem 1.25rem;
-  margin: 1.5rem 0;
-  border-radius: 0 var(--radius-sm, 4px) var(--radius-sm, 4px) 0;
-  font-size: 0.95rem;
-  line-height: 1.6;
-
-  p:last-child {
-    margin-bottom: 0;
-  }
-
-  strong:first-child {
-    color: var(--dataimago-brand-ethical, #E74C3C);
-  }
-
-  ul, ol {
-    margin-bottom: 0.5rem;
-  }
 }
