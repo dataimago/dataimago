@@ -96,13 +96,17 @@ test_that("export_static_api() writes discover.json + openapi.json at the root",
   ))
 
   expect_true(fs::file_exists(fs::path(out, "discover.json")),
-              info = "Phase 2e requires discover.json at the root")
+    info = "Phase 2e requires discover.json at the root"
+  )
   expect_true(fs::file_exists(fs::path(out, "openapi.json")),
-              info = "Phase 2e requires openapi.json at the root")
+    info = "Phase 2e requires openapi.json at the root"
+  )
   expect_false(fs::file_exists(fs::path(out, "manifest.json")),
-               info = "legacy manifest.json must not be emitted alongside discover.json")
+    info = "legacy manifest.json must not be emitted alongside discover.json"
+  )
   expect_false(fs::dir_exists(fs::path(out, "discover")),
-               info = "legacy discover/ directory must not be emitted")
+    info = "legacy discover/ directory must not be emitted"
+  )
 })
 
 
@@ -131,22 +135,32 @@ test_that("discover.json carries the Phase-2e manifest shape", {
   hello <- manifest$endpoints[[which(names_of == "hello")]]
   expect_equal(hello$path, "/hello")
   expect_equal(hello$method, "GET")
-  expect_true(any(vapply(hello$params, function(p) p$name == "language",
-                         logical(1))))
+  expect_true(any(vapply(
+    hello$params, function(p) p$name == "language",
+    logical(1)
+  )))
 })
 
 
 test_that("combo_to_filename() emits values-only filenames matching the driver", {
   expect_equal(combo_to_filename(list()), "default.json")
-  expect_equal(combo_to_filename(list(language = "English")),
-               "english.json")
-  expect_equal(combo_to_filename(list(a = "Foo Bar", b = "baz")),
-               "foo_bar_baz.json")
-  expect_equal(combo_to_filename(list(a = "A/B", b = "C?D")),
-               "a_b_c_d.json")
+  expect_equal(
+    combo_to_filename(list(language = "English")),
+    "english.json"
+  )
+  expect_equal(
+    combo_to_filename(list(a = "Foo Bar", b = "baz")),
+    "foo_bar_baz.json"
+  )
+  expect_equal(
+    combo_to_filename(list(a = "A/B", b = "C?D")),
+    "a_b_c_d.json"
+  )
   # Empty values are dropped, per the driver contract.
-  expect_equal(combo_to_filename(list(a = "", b = "keep")),
-               "keep.json")
+  expect_equal(
+    combo_to_filename(list(a = "", b = "keep")),
+    "keep.json"
+  )
 })
 
 
@@ -169,16 +183,21 @@ test_that("generated api-client.ts is single-path and calls /api/data/", {
   expect_true(fs::file_exists(client_path))
   client_src <- paste(readLines(client_path, warn = FALSE), collapse = "\n")
 
-  expect_match(client_src, "/api/data/", fixed = TRUE,
-               info = "client must target the NextJS route tree")
+  expect_match(client_src, "/api/data/",
+    fixed = TRUE,
+    info = "client must target the NextJS route tree"
+  )
   expect_match(client_src, "/api/discover", fixed = TRUE)
   expect_match(client_src, "/api/openapi.json", fixed = TRUE)
   expect_false(grepl("NEXT_PUBLIC_API_MODE", client_src, fixed = TRUE),
-               info = "Phase 2e client must not branch on NEXT_PUBLIC_API_MODE")
+    info = "Phase 2e client must not branch on NEXT_PUBLIC_API_MODE"
+  )
   expect_false(grepl("staticRequest", client_src, fixed = TRUE),
-               info = "dual-mode staticRequest method is removed")
+    info = "dual-mode staticRequest method is removed"
+  )
   expect_false(grepl("liveRequest", client_src, fixed = TRUE),
-               info = "dual-mode liveRequest method is removed")
+    info = "dual-mode liveRequest method is removed"
+  )
 })
 
 
@@ -194,7 +213,8 @@ test_that("generated types.ts marks ApiMode/ApiConfig as deprecated", {
   )
 
   types_src <- paste(readLines(fs::path(out, "types.ts"), warn = FALSE),
-                     collapse = "\n")
+    collapse = "\n"
+  )
   # Both kept, both deprecated.
   expect_match(types_src, "export type ApiMode", fixed = TRUE)
   expect_match(types_src, "@deprecated", fixed = TRUE)
@@ -247,8 +267,10 @@ test_that("self-MCP tools reference /api/mcp/<tool> endpoints", {
   generate_self_mcp(output_path = out, verbose = FALSE)
 
   schema <- jsonlite::fromJSON(out, simplifyDataFrame = FALSE)
-  by_name <- setNames(schema$tools, vapply(schema$tools, function(t) t$name,
-                                           character(1)))
+  by_name <- setNames(schema$tools, vapply(
+    schema$tools, function(t) t$name,
+    character(1)
+  ))
 
   for (tool in c("dataimago_scaffold", "dataimago_build", "dataimago_status")) {
     expect_true(tool %in% names(by_name), info = paste("missing tool:", tool))

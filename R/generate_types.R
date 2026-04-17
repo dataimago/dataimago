@@ -233,7 +233,7 @@ generate_types_ts <- function(exports, pkg_name) {
     lines,
     "",
     "// ============================================================================",
-    "// Deprecated — kept for one minor release after Phase 2e",
+    "// Deprecated -- kept for one minor release after Phase 2e",
     "// ============================================================================",
     "",
     "/**",
