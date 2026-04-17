@@ -48,23 +48,23 @@ generate_self_mcp <- function(output_path = NULL, verbose = TRUE) {
     ),
     resources = list(
       list(
-        uri = 'dataimago://wiki',
-        name = 'dataimago Knowledge Wiki',
+        uri = "dataimago://wiki",
+        name = "dataimago Knowledge Wiki",
         description = paste0(
-          'The dataimago design system knowledge base -- 70+ pages covering ',
-          'critical theory, ethical AI, design tokens, implementation patterns, ',
-          'and architectural decisions.'
+          "The dataimago design system knowledge base -- 70+ pages covering ",
+          "critical theory, ethical AI, design tokens, implementation patterns, ",
+          "and architectural decisions."
         ),
-        mimeType = 'text/markdown'
+        mimeType = "text/markdown"
       ),
       list(
-        uri = 'dataimago://foundations',
-        name = 'dataimago FOUNDATIONS',
+        uri = "dataimago://foundations",
+        name = "dataimago FOUNDATIONS",
         description = paste0(
-          'Authoritative human-authored knowledge documents covering philosophy, ',
-          'design theory, architecture, governance, and application guidelines.'
+          "Authoritative human-authored knowledge documents covering philosophy, ",
+          "design theory, architecture, governance, and application guidelines."
         ),
-        mimeType = 'text/markdown'
+        mimeType = "text/markdown"
       )
     ),
     capabilities = list(

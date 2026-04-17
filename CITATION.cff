@@ -5,7 +5,7 @@ authors:
   given-names: "Damian"
   orcid: "https://orcid.org/0000-0003-0476-5599"
 title: "dataimago: AI-Native Web-Application Development Framework"
-version: 0.0-3.0
+version: 0.0-3.1
 doi: 10.5281/zenodo.3634024
-date-released: 2026-4-16
+date-released: 2026-4-17
 url: "https://dataimago.github.io/dataimago"
