@@ -331,19 +331,19 @@ r_type_to_json_schema <- function(r_type) {
 #' Coerce a default value string to the appropriate JSON type
 #' @noRd
 coerce_default_value <- function(default_str, type) {
-  default_str <- gsub('^"|"$', '', as.character(default_str))
+  default_str <- gsub('^"|"$', "", as.character(default_str))
 
   switch(type,
-    'boolean' = {
-      if (tolower(default_str) %in% c('true', 't')) TRUE
-      else if (tolower(default_str) %in% c('false', 'f')) FALSE
+    "boolean" = {
+      if (tolower(default_str) %in% c("true", "t")) TRUE
+      else if (tolower(default_str) %in% c("false", "f")) FALSE
       else default_str
     },
-    'integer' = {
-      val <- suppressWarnings(as.integer(gsub('L$', '', default_str)))
+    "integer" = {
+      val <- suppressWarnings(as.integer(gsub("L$", "", default_str)))
       if (is.na(val)) default_str else val
     },
-    'number' = {
+    "number" = {
       val <- suppressWarnings(as.numeric(default_str))
       if (is.na(val)) default_str else val
     },
