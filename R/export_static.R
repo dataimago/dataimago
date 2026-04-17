@@ -65,7 +65,6 @@ export_static_api <- function(pkg_path,
                               param_grid = NULL,
                               max_combinations = 500L,
                               verbose = TRUE) {
-
   start_time <- Sys.time()
 
   # Read package name
@@ -239,25 +238,30 @@ generate_param_combinations <- function(params, max_combinations) {
 #' Safely call an R package function with given parameters
 #' @noRd
 safe_call_function <- function(pkg_name, fn_name, params) {
-  tryCatch({
-    fn <- getFromNamespace(fn_name, pkg_name)
-    do.call(fn, params)
-  }, error = function(e) {
-    # Return error structure instead of NULL for debugging
-    list(
-      status = "error",
-      message = paste("Static export error:", e$message),
-      function_name = fn_name,
-      params = params
-    )
-  })
+  tryCatch(
+    {
+      fn <- getFromNamespace(fn_name, pkg_name)
+      do.call(fn, params)
+    },
+    error = function(e) {
+      # Return error structure instead of NULL for debugging
+      list(
+        status = "error",
+        message = paste("Static export error:", e$message),
+        function_name = fn_name,
+        params = params
+      )
+    }
+  )
 }
 
 
 #' Convert parameter combination to filename
 #' @noRd
 combo_to_filename <- function(combo) {
-  if (length(combo) == 0) return("default.json")
+  if (length(combo) == 0) {
+    return("default.json")
+  }
 
   parts <- vapply(names(combo), function(k) {
     v <- as.character(combo[[k]])

@@ -34,7 +34,6 @@ NULL
 #'
 #' @export
 generate_self_mcp <- function(output_path = NULL, verbose = TRUE) {
-
   if (verbose) ui_info("Generating dataimago self-description MCP tools...")
 
   schema <- list(

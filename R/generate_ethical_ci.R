@@ -24,7 +24,6 @@ NULL
 generate_ethical_ci <- function(project_path,
                                 framework = "nextjs",
                                 verbose = TRUE) {
-
   if (verbose) ui_info("Generating ethical CI pipeline...")
 
   results <- list(files_created = character(0))

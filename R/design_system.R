@@ -390,20 +390,23 @@ build_design_system <- function(force_rebuild = FALSE,
   if (verbose) {
     ui_info("Synchronizing Quarto assets across directories...")
   }
-  tryCatch({
-    # Source the asset sync function if not already loaded
-    if (!exists("sync_quarto_assets")) {
-      source("R/asset_sync.R")
+  tryCatch(
+    {
+      # Source the asset sync function if not already loaded
+      if (!exists("sync_quarto_assets")) {
+        source("R/asset_sync.R")
+      }
+      sync_result <- sync_quarto_assets(verbose = FALSE)
+      if (!sync_result$success) {
+        errors <- c(errors, sync_result$errors)
+      } else if (length(sync_result$synced_files) > 0 && verbose) {
+        ui_info(glue("   Synchronized {length(sync_result$synced_files)} asset files"))
+      }
+    },
+    error = function(e) {
+      errors <- c(errors, glue("Asset synchronization failed: {e$message}"))
     }
-    sync_result <- sync_quarto_assets(verbose = FALSE)
-    if (!sync_result$success) {
-      errors <- c(errors, sync_result$errors)
-    } else if (length(sync_result$synced_files) > 0 && verbose) {
-      ui_info(glue("   Synchronized {length(sync_result$synced_files)} asset files"))
-    }
-  }, error = function(e) {
-    errors <- c(errors, glue("Asset synchronization failed: {e$message}"))
-  })
+  )
 
   # 10. Create build metadata
   build_time <- Sys.time()
@@ -1336,7 +1339,6 @@ generate_ai_context <- function(output_file = NULL,
                                 include_token_count = TRUE,
                                 min_token_threshold = 100,
                                 verbose = TRUE) {
-
   # Validate inputs
   if (!style %in% c("xml", "markdown", "plain")) {
     stop("style must be one of: 'xml', 'markdown', 'plain'")
@@ -1359,9 +1361,10 @@ generate_ai_context <- function(output_file = NULL,
         package_name <- trimws(sub("^Package:\\s*", "", package_line[1]))
         # Generate filename based on style
         file_ext <- switch(style,
-                           "xml" = "xml",
-                           "markdown" = "md",
-                           "plain" = "txt")
+          "xml" = "xml",
+          "markdown" = "md",
+          "plain" = "txt"
+        )
         output_file <- glue("{package_name}-repomix.{file_ext}")
       } else {
         output_file <- glue("package-repomix.{switch(style, 'xml' = 'xml', 'markdown' = 'md', 'plain' = 'txt')}")
@@ -1378,12 +1381,15 @@ generate_ai_context <- function(output_file = NULL,
   }
 
   # Check if npx is available
-  npx_check <- tryCatch({
-    processx::run("npx", "--version", stdout = NULL, stderr = NULL)
-    TRUE
-  }, error = function(e) {
-    FALSE
-  })
+  npx_check <- tryCatch(
+    {
+      processx::run("npx", "--version", stdout = NULL, stderr = NULL)
+      TRUE
+    },
+    error = function(e) {
+      FALSE
+    }
+  )
 
   if (!npx_check) {
     errors <- c(errors, "npx not available. Please install Node.js 18+ with npm/npx")
@@ -1418,14 +1424,21 @@ generate_ai_context <- function(output_file = NULL,
     ui_info("Running repomix... (this may take a moment)")
   }
 
-  result <- tryCatch({
-    processx::run("npx", cmd_args, stdout_line_callback = if (verbose) function(line, proc) {
-      cat(crayon::silver(line), "\n")
-    } else NULL)
-  }, error = function(e) {
-    errors <<- c(errors, glue("Repomix execution failed: {e$message}"))
-    list(status = 1)
-  })
+  result <- tryCatch(
+    {
+      processx::run("npx", cmd_args, stdout_line_callback = if (verbose) {
+        function(line, proc) {
+          cat(crayon::silver(line), "\n")
+        }
+      } else {
+        NULL
+      })
+    },
+    error = function(e) {
+      errors <<- c(errors, glue("Repomix execution failed: {e$message}"))
+      list(status = 1)
+    }
+  )
 
   # Check if output file was created
   output_exists <- fs::file_exists(output_file)

@@ -29,7 +29,6 @@ generate_claude_md <- function(project_path,
                                framework = "quarto",
                                features = NULL,
                                verbose = TRUE) {
-
   if (verbose) ui_info("Generating project CLAUDE.md...")
 
   # Build sections
@@ -114,14 +113,16 @@ build_architecture_section <- function(framework, source_pkg) {
   )
 
   if (!is.null(source_pkg)) {
-    base <- paste0(base,
+    base <- paste0(
+      base,
       "**Pipeline:** R functions \u2192 REST API \u2192 MCP Tools \u2192 TypeScript \u2192 Web UI\n\n",
       "The source R package is the single source of truth. All API endpoints,\n",
       "MCP tool definitions, TypeScript types, and the API client are derived\n",
       "from the R package's exported functions and roxygen documentation.\n"
     )
   } else {
-    base <- paste0(base,
+    base <- paste0(
+      base,
       "\nThis is a scaffolded project without a source R package.\n",
       "Add a source package to enable the full meta-tool pipeline.\n"
     )
@@ -156,20 +157,23 @@ build_source_pkg_section <- function(source_pkg, verbose) {
   }
 
   # List exported functions
-  tryCatch({
-    exports <- parse_roxygen_exports(source_pkg, verbose = FALSE)
-    if (length(exports) > 0) {
-      fn_names <- vapply(exports, function(x) x$name, character(1))
-      section <- paste0(section, "\n**Exported functions:**\n")
-      for (fn in fn_names) {
-        fn_meta <- exports[[which(fn_names == fn)]]
-        desc <- if (!is.null(fn_meta$title)) fn_meta$title else ""
-        section <- paste0(section, "- `", fn, "()` \u2014 ", desc, "\n")
+  tryCatch(
+    {
+      exports <- parse_roxygen_exports(source_pkg, verbose = FALSE)
+      if (length(exports) > 0) {
+        fn_names <- vapply(exports, function(x) x$name, character(1))
+        section <- paste0(section, "\n**Exported functions:**\n")
+        for (fn in fn_names) {
+          fn_meta <- exports[[which(fn_names == fn)]]
+          desc <- if (!is.null(fn_meta$title)) fn_meta$title else ""
+          section <- paste0(section, "- `", fn, "()` \u2014 ", desc, "\n")
+        }
       }
+    },
+    error = function(e) {
+      if (verbose) ui_warn(glue::glue("Could not parse exports: {e$message}"))
     }
-  }, error = function(e) {
-    if (verbose) ui_warn(glue::glue("Could not parse exports: {e$message}"))
-  })
+  )
 
   section
 }
@@ -178,7 +182,8 @@ build_patterns_section <- function(framework) {
   section <- "## Key Patterns\n\n"
 
   if (framework %in% c("nextjs", "full")) {
-    section <- paste0(section,
+    section <- paste0(
+      section,
       "### Dual-Mode API Client\n",
       "The `@dataimago/shared-utils` package provides a client that switches between:\n",
       "- **Live mode** (`NEXT_PUBLIC_API_MODE=live`): HTTP requests to R API server\n",
@@ -191,13 +196,15 @@ build_patterns_section <- function(framework) {
       "hardcoding domain knowledge. It works with any R package's exported functions.\n"
     )
   } else if (framework == "quarto") {
-    section <- paste0(section,
+    section <- paste0(
+      section,
       "### Multi-Format Output\n",
       "Quarto renders content to multiple formats (HTML, PDF, DOCX) from single .qmd sources.\n",
       "The dataimago design system tokens are applied via the Quarto extension.\n"
     )
   } else if (framework == "shiny") {
-    section <- paste0(section,
+    section <- paste0(
+      section,
       "### Reactive R Integration\n",
       "Shiny apps run R analysis functions reactively in the server.\n",
       "The dataimago design system is applied via bslib theming.\n"
@@ -231,7 +238,8 @@ build_conventions_section <- function(framework) {
   section <- "## Conventions\n\n"
 
   if (framework %in% c("nextjs", "full")) {
-    section <- paste0(section,
+    section <- paste0(
+      section,
       "- TypeScript strict mode everywhere\n",
       "- React components use `'use client'` when they need interactivity\n",
       "- SWR hooks for data fetching in client components\n",
@@ -240,14 +248,16 @@ build_conventions_section <- function(framework) {
       "- File naming: components `kebab-case.tsx`, hooks `useCase.ts`\n"
     )
   } else if (framework == "quarto") {
-    section <- paste0(section,
+    section <- paste0(
+      section,
       "- Quarto .qmd files for all content\n",
       "- YAML frontmatter for metadata\n",
       "- Cross-references with `@fig-`, `@tbl-`, `@sec-` prefixes\n",
       "- dataimago Quarto extension for theming\n"
     )
   } else if (framework == "shiny") {
-    section <- paste0(section,
+    section <- paste0(
+      section,
       "- bslib for theming with dataimago tokens\n",
       "- Module pattern for complex UI components\n",
       "- Reactive programming for data flow\n"

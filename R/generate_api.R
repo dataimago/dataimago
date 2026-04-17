@@ -136,7 +136,6 @@ generate_api_scaffolding <- function(pkg_path,
                                      pkg_name = NULL,
                                      port = 8000L,
                                      verbose = TRUE) {
-
   # Read package name from DESCRIPTION if not provided
   if (is.null(pkg_name)) {
     desc_path <- fs::path(pkg_path, "DESCRIPTION")
@@ -268,7 +267,7 @@ parse_roxygen_block <- function(roxygen_lines, func_name) {
       description = trimws(param_desc),
       type = param_type,
       enum = enum_vals,
-      default = NULL  # Will be filled from function signature
+      default = NULL # Will be filled from function signature
     )
   }
 
@@ -325,7 +324,7 @@ parse_function_defaults <- function(lines, start_line) {
       defaults[[param_name]] <- default_val
     } else {
       param_name <- trimws(p)
-      defaults[[param_name]] <- NA  # No default (required parameter)
+      defaults[[param_name]] <- NA # No default (required parameter)
     }
   }
 
@@ -419,11 +418,18 @@ merge_param_defaults <- function(roxygen_params, sig_defaults) {
 #' @noRd
 infer_param_type <- function(desc) {
   desc_lower <- tolower(desc)
-  if (grepl("\\blogical\\b", desc_lower)) return("boolean")
-  if (grepl("\\binteger\\b", desc_lower)) return("integer")
-  if (grepl("\\bnumeric\\b|\\bnumber\\b|\\bdouble\\b", desc_lower)) return("number"
-  )
-  if (grepl("\\bcharacter\\s+vector\\b", desc_lower)) return("array")
+  if (grepl("\\blogical\\b", desc_lower)) {
+    return("boolean")
+  }
+  if (grepl("\\binteger\\b", desc_lower)) {
+    return("integer")
+  }
+  if (grepl("\\bnumeric\\b|\\bnumber\\b|\\bdouble\\b", desc_lower)) {
+    return("number")
+  }
+  if (grepl("\\bcharacter\\s+vector\\b", desc_lower)) {
+    return("array")
+  }
   "string"
 }
 
@@ -431,11 +437,21 @@ infer_param_type <- function(desc) {
 #' Infer JSON Schema type from a default value string
 #' @noRd
 infer_type_from_default <- function(default_val) {
-  if (is.na(default_val)) return("string")
-  if (default_val %in% c("TRUE", "FALSE")) return("boolean")
-  if (grepl("^\\d+L$", default_val)) return("integer")
-  if (grepl("^\\d+\\.?\\d*$", default_val)) return("number")
-  if (grepl("^NULL$", default_val)) return("string")
+  if (is.na(default_val)) {
+    return("string")
+  }
+  if (default_val %in% c("TRUE", "FALSE")) {
+    return("boolean")
+  }
+  if (grepl("^\\d+L$", default_val)) {
+    return("integer")
+  }
+  if (grepl("^\\d+\\.?\\d*$", default_val)) {
+    return("number")
+  }
+  if (grepl("^NULL$", default_val)) {
+    return("string")
+  }
   "string"
 }
 
@@ -456,7 +472,9 @@ extract_enum_values <- function(desc) {
     after_options <- sub("\\..*", "", after_options)
     vals <- trimws(strsplit(after_options, ",")[[1]])
     vals <- vals[nchar(vals) > 0 & nchar(vals) < 30]
-    if (length(vals) >= 2) return(vals)
+    if (length(vals) >= 2) {
+      return(vals)
+    }
   }
 
   NULL
@@ -608,19 +626,22 @@ generate_handler_code <- function(fn_name, fn_meta, endpoint, pkg_name) {
 
     # Type conversion
     if (p$type == "boolean") {
-      param_extractions <- c(param_extractions,
+      param_extractions <- c(
+        param_extractions,
         glue::glue("        {param_name}_raw <- request$get_query_parameter('{param_name}', default = '{default_str}')"),
         glue::glue("        {param_name} <- as.logical({param_name}_raw)"),
         glue::glue("        if (is.na({param_name})) {param_name} <- FALSE")
       )
     } else if (p$type %in% c("integer", "number")) {
       conversion_fn <- if (p$type == "integer") "as.integer" else "as.numeric"
-      param_extractions <- c(param_extractions,
+      param_extractions <- c(
+        param_extractions,
         glue::glue("        {param_name}_raw <- request$get_query_parameter('{param_name}', default = '{default_str}')"),
         glue::glue("        {param_name} <- {conversion_fn}({param_name}_raw)")
       )
     } else {
-      param_extractions <- c(param_extractions,
+      param_extractions <- c(
+        param_extractions,
         glue::glue("        {param_name} <- request$get_query_parameter('{param_name}', default = '{default_str}')")
       )
     }

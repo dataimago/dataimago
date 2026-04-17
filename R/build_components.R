@@ -71,7 +71,6 @@ build_design_components <- function(project_path,
                                     ethical_framework = TRUE,
                                     r_package = TRUE,
                                     verbose = TRUE) {
-
   # Validate arguments
   theme <- rlang::arg_match(theme)
 
@@ -107,131 +106,138 @@ build_design_components <- function(project_path,
     implementation_status = if (!is.null(source_pkg)) "full" else "scaffold"
   )
 
-  tryCatch({
-    # Validate project path exists
-    if (!fs::dir_exists(project_path)) {
-      stop(glue::glue("Project path '{project_path}' does not exist. Run build_design_framework() first."),
-           call. = FALSE)
-    }
-
-    # ====================================================================
-    # META-TOOL PIPELINE: Generate from source R package
-    # ====================================================================
-    if (!is.null(source_pkg)) {
-      if (!fs::dir_exists(source_pkg)) {
-        stop(glue::glue("Source package path '{source_pkg}' does not exist."), call. = FALSE)
+  tryCatch(
+    {
+      # Validate project path exists
+      if (!fs::dir_exists(project_path)) {
+        stop(glue::glue("Project path '{project_path}' does not exist. Run build_design_framework() first."),
+          call. = FALSE
+        )
       }
+
+      # ====================================================================
+      # META-TOOL PIPELINE: Generate from source R package
+      # ====================================================================
+      if (!is.null(source_pkg)) {
+        if (!fs::dir_exists(source_pkg)) {
+          stop(glue::glue("Source package path '{source_pkg}' does not exist."), call. = FALSE)
+        }
+
+        if (verbose) {
+          ui_info("\U0001F310 Running meta-tool derivation pipeline: R -> API -> MCP -> TypeScript")
+        }
+
+        # Step 1: Generate REST API scaffolding
+        api_output_dir <- fs::path(project_path, "R")
+        if (!fs::dir_exists(api_output_dir)) {
+          fs::dir_create(api_output_dir, recurse = TRUE)
+        }
+
+        api_result <- generate_api_scaffolding(
+          pkg_path = source_pkg,
+          output_dir = api_output_dir,
+          verbose = verbose
+        )
+        results$files_created <- c(results$files_created, api_result$files_created)
+        results$components_generated <- c(results$components_generated, "rest-api")
+
+        # Step 2: Generate MCP tool definitions
+        mcp_output_path <- fs::path(project_path, "mcp-schema.json")
+
+        generate_mcp_tools(
+          pkg_path = source_pkg,
+          output_path = mcp_output_path,
+          verbose = verbose
+        )
+        results$files_created <- c(results$files_created, "mcp-schema.json")
+        results$components_generated <- c(results$components_generated, "mcp-tools")
+
+        # Step 3: Generate TypeScript types and dual-mode API client
+        types_output_dir <- fs::path(project_path, "shared-utils")
+
+        types_result <- generate_shared_utils(
+          pkg_path = source_pkg,
+          output_dir = types_output_dir,
+          verbose = verbose
+        )
+        results$files_created <- c(
+          results$files_created,
+          paste0("shared-utils/", types_result$files_created)
+        )
+        results$components_generated <- c(
+          results$components_generated,
+          "typescript-types", "dual-mode-api-client"
+        )
+      }
+
+      # ====================================================================
+      # CONTENT SCAFFOLDING: Basic templates and documentation
+      # ====================================================================
+
+      # Create basic index.qmd if ui/www exists
+      if (fs::dir_exists(fs::path(project_path, "ui", "www"))) {
+        index_content <- create_basic_index_qmd(theme, features, verbose)
+        index_path <- fs::path(project_path, "ui", "www", "index.qmd")
+        writeLines(index_content, index_path)
+        results$files_created <- c(results$files_created, "ui/www/index.qmd")
+        results$components_generated <- c(results$components_generated, "index-page")
+        if (verbose) ui_done("Created basic index.qmd")
+      }
+
+      # Add foundation documents if requested
+      if (foundation_docs) {
+        foundation_result <- add_foundation_documents(
+          project_path = project_path,
+          theme = theme,
+          verbose = verbose
+        )
+
+        results$files_created <- c(results$files_created, foundation_result$files_created)
+        results$components_generated <- c(results$components_generated, foundation_result$components_generated)
+      }
+
+      # Add ethical framework documentation if requested
+      if (ethical_framework) {
+        ethical_result <- add_ethical_framework(
+          project_path = project_path,
+          verbose = verbose
+        )
+
+        results$files_created <- c(results$files_created, ethical_result$files_created)
+        results$components_generated <- c(results$components_generated, ethical_result$components_generated)
+      }
+
+      # Create feature-specific files
+      if (!is.null(features)) {
+        features_result <- create_feature_stubs(
+          project_path = project_path,
+          features = features,
+          theme = theme,
+          verbose = verbose
+        )
+
+        results$files_created <- c(results$files_created, features_result$files_created)
+        results$components_generated <- c(results$components_generated, features_result$components_generated)
+      }
+
+      results$success <- TRUE
 
       if (verbose) {
-        ui_info("\U0001F310 Running meta-tool derivation pipeline: R -> API -> MCP -> TypeScript")
+        ui_done("\U0001F389 Design components completed!")
+        ui_info(glue::glue("\U0001F4C4 Created {length(results$files_created)} files"))
+        ui_info(glue::glue("\U0001F9E9 Generated {length(results$components_generated)} components"))
+        if (!is.null(source_pkg)) {
+          ui_info("\U0001F504 Meta-tool pipeline: R \u2192 API \u2192 MCP \u2192 TypeScript \u2714")
+        }
       }
-
-      # Step 1: Generate REST API scaffolding
-      api_output_dir <- fs::path(project_path, "R")
-      if (!fs::dir_exists(api_output_dir)) {
-        fs::dir_create(api_output_dir, recurse = TRUE)
-      }
-
-      api_result <- generate_api_scaffolding(
-        pkg_path = source_pkg,
-        output_dir = api_output_dir,
-        verbose = verbose
-      )
-      results$files_created <- c(results$files_created, api_result$files_created)
-      results$components_generated <- c(results$components_generated, "rest-api")
-
-      # Step 2: Generate MCP tool definitions
-      mcp_output_path <- fs::path(project_path, "mcp-schema.json")
-
-      generate_mcp_tools(
-        pkg_path = source_pkg,
-        output_path = mcp_output_path,
-        verbose = verbose
-      )
-      results$files_created <- c(results$files_created, "mcp-schema.json")
-      results$components_generated <- c(results$components_generated, "mcp-tools")
-
-      # Step 3: Generate TypeScript types and dual-mode API client
-      types_output_dir <- fs::path(project_path, "shared-utils")
-
-      types_result <- generate_shared_utils(
-        pkg_path = source_pkg,
-        output_dir = types_output_dir,
-        verbose = verbose
-      )
-      results$files_created <- c(results$files_created,
-                                 paste0("shared-utils/", types_result$files_created))
-      results$components_generated <- c(results$components_generated,
-                                        "typescript-types", "dual-mode-api-client")
-    }
-
-    # ====================================================================
-    # CONTENT SCAFFOLDING: Basic templates and documentation
-    # ====================================================================
-
-    # Create basic index.qmd if ui/www exists
-    if (fs::dir_exists(fs::path(project_path, "ui", "www"))) {
-      index_content <- create_basic_index_qmd(theme, features, verbose)
-      index_path <- fs::path(project_path, "ui", "www", "index.qmd")
-      writeLines(index_content, index_path)
-      results$files_created <- c(results$files_created, "ui/www/index.qmd")
-      results$components_generated <- c(results$components_generated, "index-page")
-      if (verbose) ui_done("Created basic index.qmd")
-    }
-
-    # Add foundation documents if requested
-    if (foundation_docs) {
-      foundation_result <- add_foundation_documents(
-        project_path = project_path,
-        theme = theme,
-        verbose = verbose
-      )
-
-      results$files_created <- c(results$files_created, foundation_result$files_created)
-      results$components_generated <- c(results$components_generated, foundation_result$components_generated)
-    }
-
-    # Add ethical framework documentation if requested
-    if (ethical_framework) {
-      ethical_result <- add_ethical_framework(
-        project_path = project_path,
-        verbose = verbose
-      )
-
-      results$files_created <- c(results$files_created, ethical_result$files_created)
-      results$components_generated <- c(results$components_generated, ethical_result$components_generated)
-    }
-
-    # Create feature-specific files
-    if (!is.null(features)) {
-      features_result <- create_feature_stubs(
-        project_path = project_path,
-        features = features,
-        theme = theme,
-        verbose = verbose
-      )
-
-      results$files_created <- c(results$files_created, features_result$files_created)
-      results$components_generated <- c(results$components_generated, features_result$components_generated)
-    }
-
-    results$success <- TRUE
-
-    if (verbose) {
-      ui_done("\U0001F389 Design components completed!")
-      ui_info(glue::glue("\U0001F4C4 Created {length(results$files_created)} files"))
-      ui_info(glue::glue("\U0001F9E9 Generated {length(results$components_generated)} components"))
-      if (!is.null(source_pkg)) {
-        ui_info("\U0001F504 Meta-tool pipeline: R \u2192 API \u2192 MCP \u2192 TypeScript \u2714")
+    },
+    error = function(e) {
+      results$errors <- c(results$errors, as.character(e))
+      if (verbose) {
+        ui_oops(glue::glue("Failed to build components: {e$message}"))
       }
     }
-
-  }, error = function(e) {
-    results$errors <- c(results$errors, as.character(e))
-    if (verbose) {
-      ui_oops(glue::glue("Failed to build components: {e$message}"))
-    }
-  })
+  )
 
   invisible(results)
 }

@@ -56,7 +56,6 @@ generate_mcp_tools <- function(pkg_path,
                                pkg_name = NULL,
                                include_api_tools = TRUE,
                                verbose = TRUE) {
-
   # Read package name from DESCRIPTION if not provided
   if (is.null(pkg_name)) {
     desc_path <- fs::path(pkg_path, "DESCRIPTION")
@@ -323,7 +322,7 @@ r_type_to_json_schema <- function(r_type) {
     "numeric" = "number",
     "array" = "array",
     "list" = "object",
-    "string"  # default
+    "string" # default
   )
 }
 
@@ -335,9 +334,13 @@ coerce_default_value <- function(default_str, type) {
 
   switch(type,
     "boolean" = {
-      if (tolower(default_str) %in% c("true", "t")) TRUE
-      else if (tolower(default_str) %in% c("false", "f")) FALSE
-      else default_str
+      if (tolower(default_str) %in% c("true", "t")) {
+        TRUE
+      } else if (tolower(default_str) %in% c("false", "f")) {
+        FALSE
+      } else {
+        default_str
+      }
     },
     "integer" = {
       val <- suppressWarnings(as.integer(gsub("L$", "", default_str)))

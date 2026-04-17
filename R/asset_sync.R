@@ -119,24 +119,29 @@ sync_quarto_assets <- function(verbose = TRUE) {
 
     if (length(files_to_copy) > 0) {
       if (verbose) {
-        cat(crayon::yellow(cli::symbol$warning),
-            "Synchronizing", length(files_to_copy), "CSS files to extensions...\n")
+        cat(
+          crayon::yellow(cli::symbol$warning),
+          "Synchronizing", length(files_to_copy), "CSS files to extensions...\n"
+        )
       }
       for (file in files_to_copy) {
-        tryCatch({
-          file.copy(
-            file.path(css_source, file),
-            file.path(css_extension, file),
-            overwrite = TRUE
-          )
-          synced_files <- c(synced_files, file.path("extensions/css", file))
-          if (verbose) {
-            status_msg <- if (file %in% missing_in_extensions) "Added" else "Updated"
-            cat(crayon::green(cli::symbol$tick), status_msg, file, "in extensions\n")
+        tryCatch(
+          {
+            file.copy(
+              file.path(css_source, file),
+              file.path(css_extension, file),
+              overwrite = TRUE
+            )
+            synced_files <- c(synced_files, file.path("extensions/css", file))
+            if (verbose) {
+              status_msg <- if (file %in% missing_in_extensions) "Added" else "Updated"
+              cat(crayon::green(cli::symbol$tick), status_msg, file, "in extensions\n")
+            }
+          },
+          error = function(e) {
+            errors <- c(errors, glue::glue("Failed to copy {file} to extensions: {e$message}"))
           }
-        }, error = function(e) {
-          errors <- c(errors, glue::glue("Failed to copy {file} to extensions: {e$message}"))
-        })
+        )
       }
     }
   }
@@ -166,24 +171,29 @@ sync_quarto_assets <- function(verbose = TRUE) {
 
     if (length(scss_to_copy) > 0) {
       if (verbose) {
-        cat(crayon::yellow(cli::symbol$warning),
-            "Synchronizing", length(scss_to_copy), "SCSS files to extensions...\n")
+        cat(
+          crayon::yellow(cli::symbol$warning),
+          "Synchronizing", length(scss_to_copy), "SCSS files to extensions...\n"
+        )
       }
       for (file in scss_to_copy) {
-        tryCatch({
-          file.copy(
-            file.path(css_source, file),
-            file.path(css_extension, file),
-            overwrite = TRUE
-          )
-          synced_files <- c(synced_files, file.path("extensions/css", file))
-          if (verbose) {
-            status_msg <- if (file %in% missing_scss_in_extensions) "Added" else "Updated"
-            cat(crayon::green(cli::symbol$tick), status_msg, file, "in extensions\n")
+        tryCatch(
+          {
+            file.copy(
+              file.path(css_source, file),
+              file.path(css_extension, file),
+              overwrite = TRUE
+            )
+            synced_files <- c(synced_files, file.path("extensions/css", file))
+            if (verbose) {
+              status_msg <- if (file %in% missing_scss_in_extensions) "Added" else "Updated"
+              cat(crayon::green(cli::symbol$tick), status_msg, file, "in extensions\n")
+            }
+          },
+          error = function(e) {
+            errors <- c(errors, glue::glue("Failed to copy {file} to extensions: {e$message}"))
           }
-        }, error = function(e) {
-          errors <- c(errors, glue::glue("Failed to copy {file} to extensions: {e$message}"))
-        })
+        )
       }
     }
   }
@@ -216,24 +226,29 @@ sync_quarto_assets <- function(verbose = TRUE) {
 
     if (length(js_to_copy) > 0) {
       if (verbose) {
-        cat(crayon::yellow(cli::symbol$warning),
-            "Synchronizing", length(js_to_copy), "JS files to extensions...\n")
+        cat(
+          crayon::yellow(cli::symbol$warning),
+          "Synchronizing", length(js_to_copy), "JS files to extensions...\n"
+        )
       }
       for (file in js_to_copy) {
-        tryCatch({
-          file.copy(
-            file.path(js_source, file),
-            file.path(js_extension, file),
-            overwrite = TRUE
-          )
-          synced_files <- c(synced_files, file.path("extensions/js", file))
-          if (verbose) {
-            status_msg <- if (file %in% missing_js_in_extensions) "Added" else "Updated"
-            cat(crayon::green(cli::symbol$tick), status_msg, file, "in extensions\n")
+        tryCatch(
+          {
+            file.copy(
+              file.path(js_source, file),
+              file.path(js_extension, file),
+              overwrite = TRUE
+            )
+            synced_files <- c(synced_files, file.path("extensions/js", file))
+            if (verbose) {
+              status_msg <- if (file %in% missing_js_in_extensions) "Added" else "Updated"
+              cat(crayon::green(cli::symbol$tick), status_msg, file, "in extensions\n")
+            }
+          },
+          error = function(e) {
+            errors <- c(errors, glue::glue("Failed to copy {file} to extensions: {e$message}"))
           }
-        }, error = function(e) {
-          errors <- c(errors, glue::glue("Failed to copy {file} to extensions: {e$message}"))
-        })
+        )
       }
     }
   }

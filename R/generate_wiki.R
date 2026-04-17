@@ -24,7 +24,6 @@ bootstrap_wiki <- function(project_path,
                            project_name,
                            source_pkg = NULL,
                            verbose = TRUE) {
-
   if (verbose) ui_info("Bootstrapping project wiki...")
 
   wiki_dir <- fs::path(project_path, "wiki")
@@ -33,105 +32,111 @@ bootstrap_wiki <- function(project_path,
     success = FALSE
   )
 
-  tryCatch({
-    # Create wiki directory structure
-    dirs <- c(
-      wiki_dir,
-      fs::path(wiki_dir, "sources"),
-      fs::path(wiki_dir, "patterns"),
-      fs::path(wiki_dir, "decisions"),
-      fs::path(wiki_dir, "analyses")
-    )
+  tryCatch(
+    {
+      # Create wiki directory structure
+      dirs <- c(
+        wiki_dir,
+        fs::path(wiki_dir, "sources"),
+        fs::path(wiki_dir, "patterns"),
+        fs::path(wiki_dir, "decisions"),
+        fs::path(wiki_dir, "analyses")
+      )
 
-    for (d in dirs) {
-      if (!fs::dir_exists(d)) {
-        fs::dir_create(d, recurse = TRUE)
+      for (d in dirs) {
+        if (!fs::dir_exists(d)) {
+          fs::dir_create(d, recurse = TRUE)
+        }
       }
-    }
 
-    # Create raw/ directory structure (Karpathy 3-layer pattern)
-    raw_dirs <- c(
-      fs::path(project_path, "raw"),
-      fs::path(project_path, "raw", "papers"),
-      fs::path(project_path, "raw", "conversations"),
-      fs::path(project_path, "raw", "data"),
-      fs::path(project_path, "raw", "references")
-    )
-    for (d in raw_dirs) {
-      if (!fs::dir_exists(d)) fs::dir_create(d, recurse = TRUE)
-    }
-    for (d in raw_dirs[-1]) {
-      gitkeep <- fs::path(d, ".gitkeep")
-      if (!fs::file_exists(gitkeep)) writeLines(character(0), gitkeep)
-    }
+      # Create raw/ directory structure (Karpathy 3-layer pattern)
+      raw_dirs <- c(
+        fs::path(project_path, "raw"),
+        fs::path(project_path, "raw", "papers"),
+        fs::path(project_path, "raw", "conversations"),
+        fs::path(project_path, "raw", "data"),
+        fs::path(project_path, "raw", "references")
+      )
+      for (d in raw_dirs) {
+        if (!fs::dir_exists(d)) fs::dir_create(d, recurse = TRUE)
+      }
+      for (d in raw_dirs[-1]) {
+        gitkeep <- fs::path(d, ".gitkeep")
+        if (!fs::file_exists(gitkeep)) writeLines(character(0), gitkeep)
+      }
 
-    # Create index.md
-    index_content <- create_wiki_index(project_name, source_pkg)
-    writeLines(index_content, fs::path(wiki_dir, "index.md"))
-    results$files_created <- c(results$files_created, "wiki/index.md")
+      # Create index.md
+      index_content <- create_wiki_index(project_name, source_pkg)
+      writeLines(index_content, fs::path(wiki_dir, "index.md"))
+      results$files_created <- c(results$files_created, "wiki/index.md")
 
-    # Create glossary.md
-    glossary_content <- create_wiki_glossary(project_name, source_pkg)
-    writeLines(glossary_content, fs::path(wiki_dir, "glossary.md"))
-    results$files_created <- c(results$files_created, "wiki/glossary.md")
+      # Create glossary.md
+      glossary_content <- create_wiki_glossary(project_name, source_pkg)
+      writeLines(glossary_content, fs::path(wiki_dir, "glossary.md"))
+      results$files_created <- c(results$files_created, "wiki/glossary.md")
 
-    # Create log.md
-    log_content <- c(
-      "---",
-      "title: Activity Log",
-      "type: log",
-      glue::glue("created: {Sys.Date()}"),
-      glue::glue("updated: {Sys.Date()}"),
-      "---",
-      "",
-      "# Wiki Activity Log",
-      "",
-      "Chronological record of all wiki activity. Newest entries at top.",
-      "",
-      "---",
-      "",
-      glue::glue("## [{Sys.Date()}] bootstrap | Wiki initialized by dataimago"),
-      "",
-      glue::glue("Project '{project_name}' wiki created by dataimago::ai()."),
+      # Create log.md
+      log_content <- c(
+        "---",
+        "title: Activity Log",
+        "type: log",
+        glue::glue("created: {Sys.Date()}"),
+        glue::glue("updated: {Sys.Date()}"),
+        "---",
+        "",
+        "# Wiki Activity Log",
+        "",
+        "Chronological record of all wiki activity. Newest entries at top.",
+        "",
+        "---",
+        "",
+        glue::glue("## [{Sys.Date()}] bootstrap | Wiki initialized by dataimago"),
+        "",
+        glue::glue("Project '{project_name}' wiki created by dataimago::ai()."),
+        if (!is.null(source_pkg)) {
+          glue::glue("Seeded with domain context from source R package.")
+        } else {
+          "Minimal wiki created without source package context."
+        },
+        ""
+      )
+      writeLines(log_content, fs::path(wiki_dir, "log.md"))
+      results$files_created <- c(results$files_created, "wiki/log.md")
+
+      # Create overview.md
+      overview_content <- create_wiki_overview(project_name, source_pkg)
+      writeLines(overview_content, fs::path(wiki_dir, "overview.md"))
+      results$files_created <- c(results$files_created, "wiki/overview.md")
+
+      # If source package provided, create source summary and pattern pages
       if (!is.null(source_pkg)) {
-        glue::glue("Seeded with domain context from source R package.")
-      } else {
-        "Minimal wiki created without source package context."
-      },
-      ""
-    )
-    writeLines(log_content, fs::path(wiki_dir, "log.md"))
-    results$files_created <- c(results$files_created, "wiki/log.md")
+        pkg_source <- create_pkg_source_page(source_pkg, verbose)
+        if (!is.null(pkg_source)) {
+          writeLines(pkg_source$content, fs::path(wiki_dir, "sources", pkg_source$filename))
+          results$files_created <- c(
+            results$files_created,
+            fs::path("wiki", "sources", pkg_source$filename)
+          )
+        }
 
-    # Create overview.md
-    overview_content <- create_wiki_overview(project_name, source_pkg)
-    writeLines(overview_content, fs::path(wiki_dir, "overview.md"))
-    results$files_created <- c(results$files_created, "wiki/overview.md")
-
-    # If source package provided, create source summary and pattern pages
-    if (!is.null(source_pkg)) {
-      pkg_source <- create_pkg_source_page(source_pkg, verbose)
-      if (!is.null(pkg_source)) {
-        writeLines(pkg_source$content, fs::path(wiki_dir, "sources", pkg_source$filename))
-        results$files_created <- c(results$files_created,
-                                   fs::path("wiki", "sources", pkg_source$filename))
+        # Create architecture decision record
+        adr_content <- create_initial_adr(project_name, source_pkg)
+        writeLines(adr_content, fs::path(wiki_dir, "decisions", "001-dataimago-generation.md"))
+        results$files_created <- c(
+          results$files_created,
+          "wiki/decisions/001-dataimago-generation.md"
+        )
       }
 
-      # Create architecture decision record
-      adr_content <- create_initial_adr(project_name, source_pkg)
-      writeLines(adr_content, fs::path(wiki_dir, "decisions", "001-dataimago-generation.md"))
-      results$files_created <- c(results$files_created,
-                                 "wiki/decisions/001-dataimago-generation.md")
+      results$success <- TRUE
+      if (verbose) {
+        ui_done(glue::glue("Wiki bootstrapped with {length(results$files_created)} files"))
+      }
+    },
+    error = function(e) {
+      if (verbose) ui_warn(glue::glue("Wiki bootstrap encountered issues: {e$message}"))
     }
-
-    results$success <- TRUE
-    if (verbose) {
-      ui_done(glue::glue("Wiki bootstrapped with {length(results$files_created)} files"))
-    }
-
-  }, error = function(e) {
-    if (verbose) ui_warn(glue::glue("Wiki bootstrap encountered issues: {e$message}"))
-  })
+  )
 
   invisible(results)
 }
@@ -155,12 +160,16 @@ create_wiki_index <- function(project_name, source_pkg) {
       pkg_line <- grep("^Package:", desc_lines, value = TRUE)
       if (length(pkg_line) > 0) {
         pkg_name <- trimws(sub("^Package:\\s*", "", pkg_line[1]))
-        pages <- c(pages,
-                   glue::glue("- [Source: {pkg_name}](sources/{pkg_name}-package.md) \u2014 Source R package documentation"))
+        pages <- c(
+          pages,
+          glue::glue("- [Source: {pkg_name}](sources/{pkg_name}-package.md) \u2014 Source R package documentation")
+        )
       }
     }
-    pages <- c(pages,
-               "- [ADR-001: dataimago Generation](decisions/001-dataimago-generation.md) \u2014 Architecture decision record")
+    pages <- c(
+      pages,
+      "- [ADR-001: dataimago Generation](decisions/001-dataimago-generation.md) \u2014 Architecture decision record"
+    )
   }
 
   c(
@@ -254,7 +263,9 @@ create_wiki_overview <- function(project_name, source_pkg) {
 
 create_pkg_source_page <- function(source_pkg, verbose) {
   desc_path <- fs::path(source_pkg, "DESCRIPTION")
-  if (!fs::file_exists(desc_path)) return(NULL)
+  if (!fs::file_exists(desc_path)) {
+    return(NULL)
+  }
 
   desc_lines <- readLines(desc_path)
   pkg_name <- trimws(sub("^Package:\\s*", "", grep("^Package:", desc_lines, value = TRUE)[1]))
@@ -264,22 +275,25 @@ create_pkg_source_page <- function(source_pkg, verbose) {
 
   # Get exports
   export_section <- ""
-  tryCatch({
-    exports <- parse_roxygen_exports(source_pkg, verbose = FALSE)
-    if (length(exports) > 0) {
-      fn_lines <- vapply(exports, function(x) {
-        fn_title <- if (!is.null(x$title)) x$title else ""
-        glue::glue("- `{x$name}()` \u2014 {fn_title}")
-      }, character(1))
-      export_section <- paste0(
-        "\n## Exported Functions\n\n",
-        paste(fn_lines, collapse = "\n"),
-        "\n"
-      )
+  tryCatch(
+    {
+      exports <- parse_roxygen_exports(source_pkg, verbose = FALSE)
+      if (length(exports) > 0) {
+        fn_lines <- vapply(exports, function(x) {
+          fn_title <- if (!is.null(x$title)) x$title else ""
+          glue::glue("- `{x$name}()` \u2014 {fn_title}")
+        }, character(1))
+        export_section <- paste0(
+          "\n## Exported Functions\n\n",
+          paste(fn_lines, collapse = "\n"),
+          "\n"
+        )
+      }
+    },
+    error = function(e) {
+      if (verbose) ui_warn(glue::glue("Could not parse exports for wiki: {e$message}"))
     }
-  }, error = function(e) {
-    if (verbose) ui_warn(glue::glue("Could not parse exports for wiki: {e$message}"))
-  })
+  )
 
   content <- c(
     "---",

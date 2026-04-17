@@ -61,7 +61,6 @@ generate_shared_utils <- function(pkg_path,
                                   pkg_name = NULL,
                                   api_port = 8000L,
                                   verbose = TRUE) {
-
   # Read package name
   if (is.null(pkg_name)) {
     desc_path <- fs::path(pkg_path, "DESCRIPTION")
@@ -177,7 +176,8 @@ generate_types_ts <- function(exports, pkg_name) {
     fn_meta <- exports[[fn_name]]
     interface_name <- to_pascal_case(fn_name)
 
-    lines <- c(lines, "",
+    lines <- c(
+      lines, "",
       glue::glue("/** Parameters for {fn_name}() */"),
       glue::glue("export interface {interface_name}Params {{")
     )
@@ -186,9 +186,10 @@ generate_types_ts <- function(exports, pkg_name) {
       p <- fn_meta$params[[param_name]]
       ts_type <- r_type_to_typescript(p$type, p$enum)
       optional <- if (isTRUE(p$required)) "" else "?"
-      desc <- gsub("\\*/", "* /", p$description)  # Escape comment-ending
+      desc <- gsub("\\*/", "* /", p$description) # Escape comment-ending
 
-      lines <- c(lines,
+      lines <- c(
+        lines,
         glue::glue("  /** {desc} */"),
         glue::glue("  {param_name}{optional}: {ts_type};")
       )
@@ -197,7 +198,8 @@ generate_types_ts <- function(exports, pkg_name) {
     lines <- c(lines, "}")
   }
 
-  lines <- c(lines,
+  lines <- c(
+    lines,
     "",
     "// ============================================================================",
     "// API Mode Configuration",
@@ -228,7 +230,8 @@ generate_api_client_ts <- function(exports, pkg_name, api_port) {
     interface_name <- to_pascal_case(fn_name)
 
     # Build method
-    methods <- c(methods, "",
+    methods <- c(
+      methods, "",
       glue::glue("  /**"),
       glue::glue("   * {fn_meta$title}"),
       glue::glue("   * Endpoint: GET /{endpoint}"),
@@ -403,7 +406,9 @@ to_pascal_case <- function(name) {
 #' @noRd
 to_camel_case <- function(name) {
   # Already camelCase? Keep it
-  if (!grepl("[_.-]", name)) return(name)
+  if (!grepl("[_.-]", name)) {
+    return(name)
+  }
 
   parts <- strsplit(name, "[_.-]")[[1]]
   first <- parts[1]
