@@ -147,8 +147,14 @@ build_scaffold_tool <- function() {
       ),
       required = list("project_name")
     ),
+    # Phase 2e: expose the MCP endpoint the runtime should target when this
+    # tool is invoked via HTTP. The `/api/mcp/<tool>` surface is formalized
+    # in Phase 5; until then MCP clients fall back to `implementation.r_function`.
     implementation = list(
-      type = "r_function",
+      type = "nextjs_mcp",
+      endpoint = "/api/mcp/dataimago_scaffold",
+      method = "POST",
+      producer = "default",
       r_function = "dataimago::ai",
       r_package = "dataimago"
     )
@@ -182,7 +188,10 @@ build_build_tool <- function() {
       )
     ),
     implementation = list(
-      type = "r_function",
+      type = "nextjs_mcp",
+      endpoint = "/api/mcp/dataimago_build",
+      method = "POST",
+      producer = "default",
       r_function = "dataimago::build_design_system",
       r_package = "dataimago"
     )
@@ -216,7 +225,10 @@ build_status_tool <- function() {
       )
     ),
     implementation = list(
-      type = "r_function",
+      type = "nextjs_mcp",
+      endpoint = "/api/mcp/dataimago_status",
+      method = "GET",
+      producer = "default",
       r_function = "dataimago::check_project_status",
       note = "Status function to be implemented"
     )

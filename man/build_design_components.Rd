@@ -65,7 +65,7 @@ functions -- implementing the "R as Source of Truth" pipeline.
 \itemize{
 \item \strong{REST API scaffolding} (api.R): RestRserve endpoints for each exported R function
 \item \strong{MCP tool definitions} (mcp-schema.json): AI agent tool schemas from roxygen docs
-\item \strong{TypeScript utilities} (shared-utils/): Types + dual-mode API client
+\item \strong{TypeScript utilities} (shared-utils/): Types + single-path NextJS API client
 \item \strong{Foundation Documents}: Mission, philosophy, ethical guidelines as .qmd files
 \item \strong{Content Templates}: Page layouts, component libraries, design patterns
 }

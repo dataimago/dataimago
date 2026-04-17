@@ -2,7 +2,7 @@
 % Please edit documentation in R/export_static.R
 \name{export_static_api}
 \alias{export_static_api}
-\title{Export Static API Data}
+\title{Export Static API Data (StaticProducerDriver input contract)}
 \usage{
 export_static_api(
   pkg_path,
@@ -35,10 +35,15 @@ elapsed_seconds
 }
 \description{
 Enumerates parameter combinations for exported R functions and pre-computes
-results as static JSON files. These files enable serverless deployment
-where no R runtime is available (e.g., Vercel, Netlify, GitHub Pages).
+results as static JSON files. These files are the input contract for the
+\code{StaticProducerDriver} (see \verb{@dataimago/shared-utils/producers}): they are
+read by the NextJS API route handlers at request time when
+\code{DATAIMAGO_PRODUCER=static}. They are not themselves a public URL space.
 }
 \details{
+The filename convention below mirrors \code{StaticProducerDriver.filenameFor}
+exactly; changes to this file \emph{must} be mirrored there.
+
 The export process:
 \enumerate{
 \item Parse exported functions and their parameter metadata
@@ -53,9 +58,15 @@ The export process:
 \item Create a manifest file listing all exported endpoints
 }
 
-File naming convention:
-\code{output_dir/<endpoint>/default.json} -- default parameters
-\code{output_dir/<endpoint>/<param1>-<val1>_<param2>-<val2>.json} -- specific params
+File naming convention (mirrors \code{StaticProducerDriver.filenameFor}):
+\itemize{
+\item \code{output_dir/discover.json} -- Phase-2e producer manifest
+\item \code{output_dir/openapi.json} -- OpenAPI 3.0 spec (stub acceptable)
+\item \code{output_dir/<endpoint>/default.json} -- no-parameter result
+\item \code{output_dir/<endpoint>/<v1>_<v2>_..._<vn>.json} -- param result,
+values only, lowercased, whitespace replaced by underscores, joined by
+underscores (no \code{param=val} encoding)
+}
 }
 \section{Performance Equity}{
 

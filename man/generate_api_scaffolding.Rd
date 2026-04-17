@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_api.R
 \name{generate_api_scaffolding}
 \alias{generate_api_scaffolding}
-\title{Generate REST API Scaffolding}
+\title{Generate the Live-Producer Driver's Backing Server}
 \usage{
 generate_api_scaffolding(
   pkg_path,
@@ -13,45 +13,58 @@ generate_api_scaffolding(
 )
 }
 \arguments{
-\item{pkg_path}{Character. Path to the source R package}
+\item{pkg_path}{Character. Path to the source R package.}
 
-\item{output_dir}{Character. Directory to write the generated api.R file}
+\item{output_dir}{Character. Directory to write the generated \code{api.R}.
+Must NOT point into \verb{apps/template/src/app/api/} — that tree is owned
+by the template and must never be overwritten by the generator.}
 
 \item{pkg_name}{Character. Package name (used in generated code). If NULL,
-read from DESCRIPTION file.}
+read from DESCRIPTION.}
 
-\item{port}{Integer. Default port for the API server. Default: 8000}
+\item{port}{Integer. Default port for the backing server. Default: 8000.}
 
-\item{verbose}{Logical. Print progress. Default: TRUE}
+\item{verbose}{Logical. Print progress. Default: TRUE.}
 }
 \value{
-List with: files_created, endpoints_generated, function_count
+List with: files_created, endpoints_generated, function_count.
 }
 \description{
-Creates a complete api.R file with RestRserve endpoints for each exported
-function in the target R package. Includes CORS support, error handling,
-OpenAPI specification, and a discovery endpoint.
+Creates an \code{api.R} file with RestRserve endpoints for each exported
+function in the target R package. In Phase 2e+ this file is the
+\strong{live-producer driver's backing service}, not a public API — the
+NextJS API route tree (owned by \verb{apps/template/src/app/api/}) remains
+the sole public surface.
 }
 \details{
-The generated API follows the dissertation framework pattern:
+The generated server exposes:
 \itemize{
-\item One GET endpoint per exported function
-\item Query parameters derived from function parameters
-\item Consistent JSON response structure: \{status, results, filters, metadata\}
-\item CORS headers for cross-origin requests
-\item OpenAPI 3.0 specification endpoint
-\item Discovery endpoint listing all available analyses
-\item Error handling with structured error responses
+\item One GET endpoint per exported function (consumed by LiveProducerDriver)
+\item \verb{/discover} — endpoint catalog, used by \verb{/api/discover} in live mode
+\item \verb{/openapi.json} — OpenAPI 3.0 spec, used by \verb{/api/openapi.json}
+\item CORS headers, left permissive for developer-mode direct access; the
+live driver itself runs same-network against this server.
 }
 }
+\section{Phase 2e Invariants}{
+
+\itemize{
+\item The only HTTP surface a browser or external caller should ever touch
+is the NextJS route tree. This generator does not scaffold that tree;
+it is supplied by the template at clone time and is the write-once
+public contract.
+\item Client code (\code{api-client.ts}) never talks to the server below directly.
+}
+}
+
 \section{Ethical Alignment}{
 
-Generated APIs inherit dataimago's ethical constraints through:
+Generated servers inherit dataimago's ethical constraints through:
 \itemize{
-\item CORS restricted to configured origins (not wildcard in production)
-\item No authentication bypass mechanisms
 \item Structured error responses (no stack traces in production)
 \item Data variable metadata endpoint for transparency
+\item Same-network invocation in production removes the CORS attack surface;
+developer-mode CORS should be tightened before any public exposure.
 }
 }
 

@@ -199,15 +199,28 @@ build_mcp_tool <- function(fn_name, fn_meta, pkg_name) {
     input_schema[["required"]] <- as.list(required)
   }
 
+  # Phase 2e: the canonical public surface for invoking this tool is the
+  # NextJS API route tree, not the R function directly. `implementation.endpoint`
+  # records where to call it; `implementation.producer` is an optional hint to
+  # the server (default: "default", i.e. whichever producer DATAIMAGO_PRODUCER
+  # selects). MCP runtimes should treat these fields as the source of truth.
+  endpoint_path <- paste0("/api/data/", fn_to_endpoint(fn_name))
+
   list(
     name = tool_name,
     description = paste0(fn_meta$title, ". ", fn_meta$description),
     inputSchema = input_schema,
     implementation = list(
-      type = "r_function",
-      package = pkg_name,
-      `function` = fn_name,
-      description = glue::glue("Calls {pkg_name}::{fn_name}() with specified parameters")
+      type = "nextjs_api",
+      endpoint = endpoint_path,
+      method = "GET",
+      producer = "default",
+      r_function = fn_name,
+      r_package = pkg_name,
+      description = glue::glue(
+        "GET {endpoint_path} -- dispatched server-side to {pkg_name}::{fn_name}() ",
+        "via the active producer driver."
+      )
     )
   )
 }
@@ -240,11 +253,19 @@ build_api_start_tool <- function(pkg_name) {
       ),
       additionalProperties = FALSE
     ),
+    # The API-start tool is intentionally *not* an HTTP endpoint — it boots
+    # the backing live-producer server. Flag `producer = "live"` so MCP
+    # runtimes understand this tool only makes sense when the active
+    # producer is the live driver.
     implementation = list(
       type = "r_function",
-      package = pkg_name,
-      `function` = glue::glue("run_{pkg_name}_api"),
-      description = glue::glue("Calls {pkg_name}::run_{pkg_name}_api() to start the REST API server"),
+      producer = "live",
+      r_function = glue::glue("run_{pkg_name}_api"),
+      r_package = pkg_name,
+      description = glue::glue(
+        "Calls {pkg_name}::run_{pkg_name}_api() to start the live producer's ",
+        "backing REST server."
+      ),
       warning = "This starts a persistent server process."
     )
   )
