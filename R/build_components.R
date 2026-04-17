@@ -439,41 +439,41 @@ create_feature_stub_content <- function(feature, theme) {
 # Helper function: Get feature descriptions
 get_feature_description <- function(feature) {
   switch(feature,
-    "chat-interface" = paste0(
-      "- Real-time conversational AI interface\n",
-      "- Message history and context management\n",
-      "- Ethical response filtering\n",
-      "- User preference learning"
+    'chat-interface' = paste0(
+      '- Real-time conversational AI interface\n',
+      '- Message history and context management\n',
+      '- Ethical response filtering\n',
+      '- User preference learning'
     ),
-    "document-analysis" = paste0(
-      "- Automated document processing\n",
-      "- Content extraction and summarization\n",
-      "- Sentiment and topic analysis\n",
-      "- Bias detection in content"
+    'document-analysis' = paste0(
+      '- Automated document processing\n',
+      '- Content extraction and summarization\n',
+      '- Sentiment and topic analysis\n',
+      '- Bias detection in content'
     ),
-    "data-viz" = paste0(
-      "- Interactive chart generation\n",
-      "- Real-time data visualization\n",
-      "- Accessible design patterns\n",
-      "- Ethical data representation"
+    'data-viz' = paste0(
+      '- Interactive chart generation\n',
+      '- Real-time data visualization\n',
+      '- Accessible design patterns\n',
+      '- Ethical data representation'
     ),
-    "streaming" = paste0(
-      "- Real-time data streaming\n",
-      "- Live update interfaces\n",
-      "- Performance optimization\n",
-      "- Privacy-preserving streaming"
+    'streaming' = paste0(
+      '- Real-time data streaming\n',
+      '- Live update interfaces\n',
+      '- Performance optimization\n',
+      '- Privacy-preserving streaming'
     ),
-    "model-management" = paste0(
-      "- AI model selection interface\n",
-      "- Performance monitoring\n",
-      "- Bias evaluation tools\n",
-      "- Model lifecycle management"
+    'model-management' = paste0(
+      '- AI model selection interface\n',
+      '- Performance monitoring\n',
+      '- Bias evaluation tools\n',
+      '- Model lifecycle management'
     ),
     paste0(
-      "- Component-specific functionality\n",
-      "- Ethical AI integration\n",
-      "- User-centered design\n",
-      "- Performance optimization"
+      '- Component-specific functionality\n',
+      '- Ethical AI integration\n',
+      '- User-centered design\n',
+      '- Performance optimization'
     )
   )
 }

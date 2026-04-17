@@ -1112,8 +1112,8 @@ update_quarto_extension <- function(verbose = TRUE) {
   } else {
     if (verbose) {
       ui_warn(glue(
-        "Cannot copy JS to Quarto assets - js_dist_dir exists: ",
-        "{dir_exists(js_dist_dir)}, quarto_js_dir exists: {dir_exists(quarto_js_dir)}"
+        'Cannot copy JS to Quarto assets - js_dist_dir exists: ',
+        '{dir_exists(js_dist_dir)}, quarto_js_dir exists: {dir_exists(quarto_js_dir)}'
       ))
     }
   }
