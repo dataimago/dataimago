@@ -1285,17 +1285,21 @@ generate_cdn_assets <- function(verbose = TRUE) {
 #' - Mission, vision, and architectural blueprints
 #'
 #' **Technical Architecture:**
-#' - All R functions with roxygen2 documentation
-#' - Design system source of truth (`ui/src/dataimago-design/`)
+#' - All R functions with roxygen2 documentation (`R/`, `man/`)
+#' - UI consumer layer that pulls the design system from published packages
+#'   (`ui/build.js`, `ui/package.json`, `ui/.npmrc`) — the retired
+#'   `ui/src/dataimago-design/` git submodule is no longer part of this
+#'   package (see `NEWS.md` 0.0-4.0). The authoritative design-system
+#'   source of truth now lives in the sibling `dataimago-design` repo and
+#'   ships via `@dataimago/tokens`, `@dataimago/css`, and
+#'   `@dataimago-ui/components`; ingest its context separately when needed.
 #' - Build system patterns and multi-platform distribution
-#' - Git submodule integration and workflow patterns
 #'
 #' **AI Agent Context:**
 #' - `CLAUDE.md` at package root -- primary AI context document
 #' - `inst/dataimago/ARCHITECTURE.md` -- system architecture with Mermaid diagrams
-#' - `ui/src/dataimago-design/AGENTS.md` -- design submodule agent guide
-#' - `ui/src/dataimago-design/CLAUDE.md` -- wiki maintainer protocol
-#' - `ui/src/dataimago-design/wiki/` -- authoritative knowledge base (index, log, patterns, theories, decisions)
+#' - `ui/README.md` -- consumer-side build pipeline and prototype-in-consumer workflow
+#' - `tools/design-link.mjs` -- local link helper for design-system prototyping
 #' - Structured metadata for semantic interoperability
 #' - Development patterns aligned with emancipatory AI principles
 #'
@@ -1471,9 +1475,11 @@ generate_ai_context <- function(output_file = NULL,
       ui_info("  - Primary AI agent context (CLAUDE.md at package root)")
       ui_info("  - All R functions and roxygen documentation (R/, man/)")
       ui_info("  - System architecture with Mermaid diagrams (inst/dataimago/ARCHITECTURE.md)")
-      ui_info("  - Design system source of truth (ui/src/dataimago-design/src/tokens, styles)")
-      ui_info("  - Authoritative knowledge base (ui/src/dataimago-design/wiki/)")
-      ui_info("  - Design submodule agent guide (ui/src/dataimago-design/AGENTS.md)")
+      ui_info("  - UI consumer layer (ui/build.js, ui/package.json, ui/.npmrc, ui/README.md)")
+      ui_info("  - Prototype-in-consumer helper (tools/design-link.mjs)")
+      ui_info("  Note: design-system source of truth lives in the sibling")
+      ui_info("        dataimago-design repo (@dataimago/tokens, @dataimago/css,")
+      ui_info("        @dataimago-ui/components); ingest its context separately if needed.")
       if (token_count > 0) {
         ui_info(glue("  - Token count: {format(token_count, big.mark = ',')}"))
       }

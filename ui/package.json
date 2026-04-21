@@ -1,16 +1,15 @@
 {
-  "name": "@dataimago/design-system",
+  "name": "@dataimago/rpkg-ui",
   "private": true,
   "version": "0.1.0",
-  "description": "dataimago AI-native application development framework design system - CSS compilation workspace",
+  "description": "dataimago-rpkg UI assets — consumes the @dataimago design packages and distributes compiled assets to inst/, docs/, and ui/www/.",
   "scripts": {
-    "build": "node build.js",
-    "build-legacy": "node build-legacy.js",
-    "watch": "node build.js --watch",
-    "clean": "rm -rf dist/*",
-    "tokens": "style-dictionary build",
-    "postcss": "postcss",
-    "optimize": "postcss dist/*.css --dir dist --config postcss.config.js"
+    "build":   "node build.js",
+    "watch":   "node build.js --watch",
+    "clean":   "rm -rf dist/*",
+    "design:link":   "node ../tools/design-link.mjs link",
+    "design:unlink": "node ../tools/design-link.mjs unlink",
+    "design:status": "node ../tools/design-link.mjs status"
   },
   "keywords": [
     "dataimago",
@@ -19,14 +18,9 @@
     "ai-native",
     "ethical-ai"
   ],
-  "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^8.0.0",
-    "autoprefixer": "^10.5.0",
-    "cssnano": "^7.1.5",
-    "postcss": "^8.5.10",
-    "postcss-cli": "^11.0.1",
-    "postcss-custom-properties": "^13.3.12",
-    "sass": "^1.99.0",
-    "style-dictionary": "^5.4.0"
+  "dependencies": {
+    "@dataimago/tokens":        "^0.1.0-alpha.0",
+    "@dataimago/css":           "^0.1.0-alpha.0",
+    "@dataimago-ui/components": "^0.1.0-alpha.0"
   }
 }

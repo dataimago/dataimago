@@ -41,55 +41,22 @@
 ^ui/pnpm-lock\.yaml$
 ^ui/\.npmrc$
 
-# ===== GIT SUBMODULE EXCLUSIONS =====
-# Exclude ALL node_modules in the git submodule
-^ui/src/dataimago-design/node_modules$
-^ui/src/dataimago-design/node_modules/
+# ===== RETIRED ui/src/dataimago-design/ SUBMODULE =====
+# The design system is now consumed from published packages
+# (@dataimago/tokens, @dataimago/css, @dataimago-ui/components); see
+# ui/README.md and NEWS.md 0.0-4.0. The empty ui/src/ shell is pruned
+# here so R CMD build does not stage it.
+^ui/src$
+^ui/src/
 
-# Exclude git artifacts in submodule
-^ui/src/dataimago-design/\.git$
-^ui/src/dataimago-design/\.git/
-^ui/src/dataimago-design/\.gitignore$
-
-# Exclude package management files in submodule
-^ui/src/dataimago-design/package-lock\.json$
-^ui/src/dataimago-design/pnpm-lock\.yaml$
-^ui/src/dataimago-design/\.npmrc$
-
-# Exclude build configuration files in submodule
-^ui/src/dataimago-design/postcss\.config\.js$
+# ===== DEV-ONLY TOOLING (not shipped in the built package) =====
+# Node-side helper for prototype-in-consumer: pnpm design:{link,unlink,status}
+^tools$
+^tools/
 
 # ===== DEVELOPMENT AND DOCUMENTATION FILES =====
-# Exclude development documentation in submodule
-^ui/src/dataimago-design/AGENTS\.md$
-^ui/src/dataimago-design/INTEGRATION\.md$
-^ui/src/dataimago-design/PHASE.*\.md$
-^ui/src/dataimago-design/SYSTEM-COMPARISON\.md$
-^ui/src/dataimago-design/TODO\.md$
-^ui/src/dataimago-design/TOKEN_ARCHITECTURE\.md$
-^ui/src/dataimago-design/README\.md$
-
 # Exclude development guides in ui/
-^ui/P3-OKLCH-Testing-Guide\.md$
-^ui/Phase.*-Implementation-Plan\.md$
-^ui/PostCSS-Implementation-Guide\.md$
 ^ui/README\.md$
-
-# Exclude foundations documentation (development-only)
-^ui/src/dataimago-design/foundations$
-^ui/src/dataimago-design/foundations/
-
-# Exclude examples and reports (development-only)
-^ui/src/dataimago-design/examples$
-^ui/src/dataimago-design/examples/
-^ui/src/dataimago-design/reports$
-^ui/src/dataimago-design/reports/
-
-# Exclude build tools and scripts
-^ui/src/dataimago-design/tools$
-^ui/src/dataimago-design/tools/
-^ui/src/dataimago-design/scripts$
-^ui/src/dataimago-design/scripts/
 
 # ===== QUARTO AND WEB DEVELOPMENT =====
 # Exclude any Quarto extensions at package root (should only be in ui/www/)

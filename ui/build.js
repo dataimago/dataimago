@@ -1,324 +1,287 @@
 #!/usr/bin/env node
 /**
- * dataimago Design System Build Script - Two-Stage Architecture
- * 
- * This optimized build script implements a two-stage build process:
- * 1. Stage 1: Universal build (no PurgeCSS) → submodule/dist/ 
- * 2. Stage 2: Optimized build (with PurgeCSS) → consumer/dist/
- * 
- * Key benefits:
- * - Maintains source of truth in dataimago-design submodule
- * - Generates both universal and website-optimized assets
- * - Eliminates duplicate build logic
- * - Supports idempotent builds
+ * dataimago-rpkg UI build script — package-channel edition.
+ *
+ * Consumes the design system from three installed packages instead of the
+ * retired `ui/src/dataimago-design` git submodule + two-stage build:
+ *
+ *   - @dataimago/tokens        → canonical token JSON, tokens.css, tokens.scss
+ *   - @dataimago/css           → dataimago.css, dataimago.min.css, tailwind-preset
+ *   - @dataimago-ui/components → React component bundle (ESM + CJS)
+ *
+ * Output file names are preserved bit-for-bit where the R side expects them
+ * (inst/quarto-assets/, docs/assets/, etc.) so that `dataimago::` exports
+ * and Shiny UI helpers continue to resolve the same paths after the
+ * submodule removal. Any artifact not yet shipped by a package (for
+ * example, Quarto dataimago-{light,dark}.scss) is derived locally from the
+ * installed tokens.
+ *
+ * Prerequisites:
+ *   1. `pnpm install` has been run in `ui/` so node_modules/@dataimago/* are
+ *      present. `.npmrc` provides the scope → registry mapping; local dev
+ *      must export GITHUB_PACKAGES_TOKEN before the first install.
+ *   2. To prototype design-system changes without republishing, run
+ *      `DATAIMAGO_DESIGN_PATH=... node tools/design-link.mjs link`
+ *      at the repo root, then re-run this script.
  */
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
-// Configuration
-const config = {
-  // Local paths
-  distDir: path.join(__dirname, 'dist'),
-  
-  // Source repository paths (git submodule)
-  sourceRepo: path.join(__dirname, 'src', 'dataimago-design'),
-  sourceDistDir: path.join(__dirname, 'src', 'dataimago-design', 'dist'),
-  
-  // Distribution channels in consumer repo
-  distributionChannels: [
-    {
-      name: 'CDN Assets (inst/quarto-assets/)',
-      path: path.join(__dirname, '..', 'inst', 'quarto-assets'),
-      files: ['tokens.css', 'tokens.scss', 'dataimago.css', 'dataimago.min.css', 'website-theme.css', 'website-theme.min.css', 'dataimago-light.scss', 'dataimago-dark.scss']
-    },
-    {
-      name: 'Website Assets (ui/www/assets/css/)',
-      path: path.join(__dirname, 'www', 'assets', 'css'),
-      files: 'all' // Copy all CSS/SCSS files
-    },
-    {
-      name: 'Quarto Extension (ui/www/_extensions/dataimago/ai-native/assets/css/)',
-      path: path.join(__dirname, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'css'),
-      files: 'all'
-    },
-    {
-      name: 'Docs Assets (docs/assets/css/)',
-      path: path.join(__dirname, '..', 'docs', 'assets', 'css'),
-      files: ['tokens.css', 'dataimago.css', 'dataimago.min.css', 'documentation.css', 'landing.css']
-    }
-  ],
-  
-  // SVG Icon distribution channels
-  iconChannels: [
-    {
-      name: 'Website Icons (ui/www/assets/img/)',
-      path: path.join(__dirname, 'www', 'assets', 'img')
-    },
-    {
-      name: 'Extension Icons (ui/www/_extensions/dataimago/ai-native/assets/img/)',
-      path: path.join(__dirname, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'img')
-    },
-    {
-      name: 'Docs Icons (docs/assets/img/)',
-      path: path.join(__dirname, '..', 'docs', 'assets', 'img')
-    }
-  ]
+const uiDir = __dirname;
+const rpkgRoot = path.join(uiDir, '..');
+const distDir = path.join(uiDir, 'dist');
+const nodeModulesDir = path.join(uiDir, 'node_modules');
+
+const packages = {
+  tokens:     path.join(nodeModulesDir, '@dataimago', 'tokens'),
+  css:        path.join(nodeModulesDir, '@dataimago', 'css'),
+  components: path.join(nodeModulesDir, '@dataimago-ui', 'components'),
 };
 
-console.log('🚀 dataimago: Two-stage build process starting...');
-
-// Step 1: Ensure source repository exists
-if (!fs.existsSync(config.sourceRepo)) {
-  console.error('❌ Source repository not found at:', config.sourceRepo);
-  console.log('💡 Make sure the git submodule is initialized:');
-  console.log('   git submodule update --init --recursive');
-  process.exit(1);
-}
-
-// Step 2: Execute two-stage build in source repository
-console.log('🛠️  Building design system in source repository...');
-try {
-  // Change to source directory
-  process.chdir(config.sourceRepo);
-  
-  // Install dependencies if needed
-  if (!fs.existsSync(path.join(config.sourceRepo, 'node_modules'))) {
-    console.log('📦 Installing source repository dependencies...');
-    execSync('pnpm install', { stdio: 'inherit' });
-  }
-  
-  // Check if build-core.mjs exists for two-stage build
-  const buildCorePath = path.join('tools', 'build-core.mjs');
-  if (fs.existsSync(buildCorePath)) {
-    // Use the two-stage build process (preferred method)
-    console.log('🔧 Using two-stage build process...');
-    const consumerDistPath = path.resolve(__dirname, 'dist');
-    console.log(`🎯 Running two-stage build: consumer dist → ${consumerDistPath}`);
-    execSync(`node -e "import('./tools/build-core.mjs').then(m => m.buildTwoStage('${consumerDistPath}'))"`, { stdio: 'inherit' });
-  } else {
-    // Fallback: Use legacy build script
-    console.log('🔧 Using legacy build script...');
-    const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-    if (packageJson.scripts && packageJson.scripts.build) {
-      execSync('pnpm build', { stdio: 'inherit' });
-    } else {
-      throw new Error('No build script available in source repository');
+function requirePkg(name, absPath, { required = true } = {}) {
+  if (!fs.existsSync(absPath)) {
+    const msg = `❌ Missing design package: ${name} at ${absPath}`;
+    if (required) {
+      console.error(msg);
+      console.error('   Run `pnpm install` in ui/ first. See ui/README.md.');
+      process.exit(1);
     }
+    console.warn('⚠️  Optional package not installed:', name);
+    return false;
   }
-  
-  // Change back to consumer directory
-  process.chdir(path.join(__dirname));
-  
-  console.log('✅ Source repository build completed');
-} catch (error) {
-  console.error('❌ Source repository build failed:', error.message);
-  process.exit(1);
+  return true;
 }
 
-// Step 3: Verify build outputs
-console.log('📁 Verifying build outputs...');
-
-// Verify source dist (universal assets)
-if (!fs.existsSync(config.sourceDistDir)) {
-  console.error('❌ Source dist directory not found:', config.sourceDistDir);
-  process.exit(1);
+function ensureDir(dir) {
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
 
-// Verify consumer dist (optimized assets)
-if (!fs.existsSync(config.distDir)) {
-  console.error('❌ Consumer dist directory not found:', config.distDir);
-  console.error('This suggests the two-stage build process failed');
-  process.exit(1);
+function copyFile(src, dest) {
+  ensureDir(path.dirname(dest));
+  fs.copyFileSync(src, dest);
 }
 
-const sourceAssets = fs.readdirSync(config.sourceDistDir);
-const consumerAssets = fs.readdirSync(config.distDir);
-
-console.log(`📊 Source dist: ${sourceAssets.length} universal assets`);
-console.log(`📊 Consumer dist: ${consumerAssets.length} optimized assets`);
-
-// Utility function for recursive copying
 function copyRecursive(src, dest) {
   const stats = fs.statSync(src);
-  
   if (stats.isDirectory()) {
-    if (!fs.existsSync(dest)) {
-      fs.mkdirSync(dest, { recursive: true });
-    }
-    
-    const items = fs.readdirSync(src);
-    items.forEach(item => {
+    ensureDir(dest);
+    for (const item of fs.readdirSync(src)) {
       copyRecursive(path.join(src, item), path.join(dest, item));
-    });
+    }
   } else {
-    fs.copyFileSync(src, dest);
+    copyFile(src, dest);
   }
 }
 
-// Step 4: Distribute assets to all channels
-console.log('📦 Distributing assets to consumer repository locations...');
-
-config.distributionChannels.forEach(channel => {
-  // Ensure target directory exists
-  if (!fs.existsSync(channel.path)) {
-    fs.mkdirSync(channel.path, { recursive: true });
+function copyIfExists(src, dest) {
+  if (fs.existsSync(src)) {
+    copyFile(src, dest);
+    return true;
   }
-  
-  let copiedCount = 0;
-  
-  if (channel.files === 'all') {
-    // Copy all CSS/SCSS files from consumer dist (optimized)
-    const allFiles = fs.readdirSync(config.distDir);
-    
-    allFiles.forEach(file => {
-      const srcPath = path.join(config.distDir, file);
-      const destPath = path.join(channel.path, file);
-      const stats = fs.statSync(srcPath);
-      
-      if (stats.isDirectory()) {
-        // Handle directories (like js/)
-        if (file === 'js' && channel.name.includes('css')) {
-          // Don't copy JS to CSS directories
-          return;
-        }
-        copyRecursive(srcPath, destPath);
-        copiedCount++;
-      } else if (file.endsWith('.css') || file.endsWith('.scss') || file.endsWith('.map')) {
-        fs.copyFileSync(srcPath, destPath);
-        copiedCount++;
-      }
-    });
-  } else {
-    // Copy specific files from consumer dist (optimized)
-    channel.files.forEach(file => {
-      const srcPath = path.join(config.distDir, file);
-      const destPath = path.join(channel.path, file);
-      
-      if (fs.existsSync(srcPath)) {
-        fs.copyFileSync(srcPath, destPath);
-        copiedCount++;
-      }
-    });
-  }
-  
-  console.log(`   ✓ ${channel.name} (${copiedCount} assets)`);
-});
-
-// Step 4.5: Distribute SVG icon assets
-console.log('🎨 Distributing SVG icons to consumer repository locations...');
-
-const iconsSourceDir = path.join(config.distDir, 'icons');
-if (fs.existsSync(iconsSourceDir)) {
-  config.iconChannels.forEach(channel => {
-    // Ensure target directory exists
-    if (!fs.existsSync(channel.path)) {
-      fs.mkdirSync(channel.path, { recursive: true });
-    }
-    
-    let copiedCount = 0;
-    
-    // Copy SVG icons from dist/icons/ to target, flattening structure for web use
-    function copyIconsFlat(src, dest) {
-      const items = fs.readdirSync(src);
-      items.forEach(item => {
-        const srcPath = path.join(src, item);
-        const stats = fs.statSync(srcPath);
-        if (stats.isDirectory()) {
-          copyIconsFlat(srcPath, dest); // Recurse but keep flat structure
-        } else if (item.endsWith('.svg')) {
-          fs.copyFileSync(srcPath, path.join(dest, item));
-          copiedCount++;
-        }
-      });
-    }
-    
-    copyIconsFlat(iconsSourceDir, channel.path);
-    console.log(`   ✓ ${channel.name} (${copiedCount} SVG icons)`);
-  });
-} else {
-  console.log('⚠️  No icons found in dist/ - SVG assets may not have been built');
+  return false;
 }
 
-// Step 5: Handle JavaScript assets separately
-const jsChannels = [
-  {
-    name: 'Website JS (ui/www/assets/js/)',
-    path: path.join(__dirname, 'www', 'assets', 'js')
-  },
-  {
-    name: 'Extension JS (ui/www/_extensions/dataimago/ai-native/assets/js/)',
-    path: path.join(__dirname, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'js')
-  },
-  {
-    name: 'Docs JS (docs/assets/js/)',
-    path: path.join(__dirname, '..', 'docs', 'assets', 'js')
-  }
+console.log('🚀 dataimago-rpkg UI build — consuming @dataimago packages from node_modules');
+
+requirePkg('@dataimago/tokens', packages.tokens);
+requirePkg('@dataimago/css',    packages.css);
+requirePkg('@dataimago-ui/components', packages.components, { required: false });
+
+ensureDir(distDir);
+
+// ─── Stage 1: tokens + CSS → dist/ ─────────────────────────────────────────
+console.log('📦 Stage 1: assembling dist/ from installed packages');
+
+const cssDist = path.join(packages.css, 'dist');
+const tokensDist = path.join(packages.tokens, 'dist');
+
+const cssArtifacts = [
+  ['tokens.css',         path.join(tokensDist, 'tokens.css')],
+  ['tokens.scss',        path.join(tokensDist, 'tokens.scss')],
+  ['dataimago.css',      path.join(cssDist,    'dataimago.css')],
+  ['dataimago.min.css',  path.join(cssDist,    'dataimago.min.css')],
+  ['tailwind-preset.js', path.join(cssDist,    'tailwind-preset.js')],
 ];
 
-const jsSourceDir = path.join(config.distDir, 'js');
-if (fs.existsSync(jsSourceDir)) {
-  jsChannels.forEach(channel => {
-    if (!fs.existsSync(channel.path)) {
-      fs.mkdirSync(channel.path, { recursive: true });
-    }
-    
-    copyRecursive(jsSourceDir, channel.path);
-    
-    // Count JS files for reporting
-    function countJSFiles(dir) {
-      let count = 0;
-      const items = fs.readdirSync(dir);
-      items.forEach(item => {
-        const itemPath = path.join(dir, item);
-        const stats = fs.statSync(itemPath);
-        if (stats.isDirectory()) {
-          count += countJSFiles(itemPath);
-        } else if (item.endsWith('.js')) {
-          count++;
-        }
-      });
-      return count;
-    }
-    
-    const jsCount = countJSFiles(channel.path);
-    console.log(`   ✓ ${channel.name} (${jsCount} JS files)`);
-  });
+for (const [destName, src] of cssArtifacts) {
+  if (copyIfExists(src, path.join(distDir, destName))) {
+    console.log('   ✓', destName);
+  } else {
+    console.warn('   ⚠️  missing in package:', destName, '←', src);
+  }
 }
 
-// Step 6: Build Summary
-console.log('📊 Two-Stage Build Summary:');
+// ─── Stage 2: derived Quarto + website-theme artifacts ─────────────────────
+//
+// The R side still expects `dataimago-light.scss`, `dataimago-dark.scss`,
+// `website-theme.css`, and `website-theme.min.css`. These are not yet
+// emitted by any package — we synthesize them here from the installed
+// tokens. When the design packages start shipping them directly, these
+// branches become simple copies.
+console.log('🪶 Stage 2: deriving Quarto themes + website-theme aliases');
 
-// Show source assets (universal)
-console.log('🌍 Universal Assets (submodule/dist/):');
-sourceAssets.forEach(file => {
-  const filePath = path.join(config.sourceDistDir, file);
-  const stats = fs.statSync(filePath);
-  
-  if (stats.isFile() && file.endsWith('.css')) {
-    const sizeKB = Math.round(stats.size / 1024 * 100) / 100;
-    console.log(`   📦 ${file} (${sizeKB} KB)`);
+const tokensIndex = require(path.join(packages.tokens, 'dist', 'index.cjs'));
+const palette = tokensIndex?.palette ?? {};
+
+function shade(scale, step, fallback) {
+  const v = palette?.[scale]?.[String(step)];
+  return typeof v === 'string' ? v : fallback;
+}
+
+const lightScss = [
+  '/*-- scss:defaults --*/',
+  `$body-bg: ${shade('cream', 100, '#fdf9f2')};`,
+  `$body-color: ${shade('ink', 900, '#0c0a09')};`,
+  `$link-color: ${shade('copper', 500, '#d46820')};`,
+  `$primary: ${shade('accent', 500, '#b54a27')};`,
+  `$code-color: ${shade('copper', 700, '#913d15')};`,
+  '',
+].join('\n');
+
+const darkScss = [
+  '/*-- scss:defaults --*/',
+  `$body-bg: ${shade('ink', 900, '#0c0a09')};`,
+  `$body-color: ${shade('cream', 100, '#fdf9f2')};`,
+  `$link-color: ${shade('copper', 400, '#ea8441')};`,
+  `$primary: ${shade('accent', 500, '#b54a27')};`,
+  `$code-color: ${shade('copper', 300, '#f0a467')};`,
+  '',
+].join('\n');
+
+fs.writeFileSync(path.join(distDir, 'dataimago-light.scss'), lightScss);
+fs.writeFileSync(path.join(distDir, 'dataimago-dark.scss'),  darkScss);
+console.log('   ✓ dataimago-light.scss');
+console.log('   ✓ dataimago-dark.scss');
+
+if (fs.existsSync(path.join(distDir, 'dataimago.css'))) {
+  fs.copyFileSync(
+    path.join(distDir, 'dataimago.css'),
+    path.join(distDir, 'website-theme.css'),
+  );
+  console.log('   ✓ website-theme.css (aliased to dataimago.css)');
+}
+if (fs.existsSync(path.join(distDir, 'dataimago.min.css'))) {
+  fs.copyFileSync(
+    path.join(distDir, 'dataimago.min.css'),
+    path.join(distDir, 'website-theme.min.css'),
+  );
+  console.log('   ✓ website-theme.min.css (aliased to dataimago.min.css)');
+}
+
+// ─── Stage 3: component JS bundle (optional) ───────────────────────────────
+console.log('🧩 Stage 3: @dataimago-ui/components bundle');
+
+const componentsJsDir = path.join(distDir, 'js', 'dataimago-ui');
+if (fs.existsSync(packages.components)) {
+  const componentsDist = path.join(packages.components, 'dist');
+  if (fs.existsSync(componentsDist)) {
+    copyRecursive(componentsDist, componentsJsDir);
+    console.log('   ✓ dist/js/dataimago-ui/ populated');
+  } else {
+    console.warn('   ⚠️  @dataimago-ui/components has no dist/ — skipping JS copy');
   }
-});
+} else {
+  console.log('   (skipped — @dataimago-ui/components not installed)');
+}
 
-// Show consumer assets (optimized)
-console.log('🎯 Optimized Assets (consumer/dist/):');
-consumerAssets.forEach(file => {
-  const filePath = path.join(config.distDir, file);
-  const stats = fs.statSync(filePath);
-  
-  if (stats.isFile() && file.endsWith('.css')) {
-    const sizeKB = Math.round(stats.size / 1024 * 100) / 100;
-    console.log(`   ⚡ ${file} (${sizeKB} KB)`);
-  } else if (stats.isDirectory()) {
-    const dirFiles = fs.readdirSync(filePath).length;
-    console.log(`   📁 ${file}/ (${dirFiles} files)`);
+// ─── Stage 4: manifest.json (stable shape; R side parses this) ─────────────
+const manifest = {
+  name: '@dataimago/design-system',
+  builtAt: new Date().toISOString(),
+  builtBy: 'ui/build.js (package-channel)',
+  sources: {
+    '@dataimago/tokens':        readPkgVersion(packages.tokens),
+    '@dataimago/css':           readPkgVersion(packages.css),
+    '@dataimago-ui/components': readPkgVersion(packages.components),
+  },
+  artifacts: fs.readdirSync(distDir).sort(),
+};
+fs.writeFileSync(
+  path.join(distDir, 'manifest.json'),
+  JSON.stringify(manifest, null, 2) + '\n',
+);
+console.log('📝 manifest.json written');
+
+function readPkgVersion(pkgDir) {
+  const pkgJson = path.join(pkgDir, 'package.json');
+  if (!fs.existsSync(pkgJson)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(pkgJson, 'utf8')).version ?? null;
+  } catch {
+    return null;
   }
-});
+}
 
-// Step 7: Verify critical assets exist
-const criticalAssets = [
+// ─── Stage 5: distribute assets to consumer channels ───────────────────────
+// The channel layout mirrors what the R exports in `inst/quarto-assets/`
+// and the Shiny UI helpers in `ui/www/` expect. File names are preserved.
+console.log('📦 Stage 5: fanning assets out to consumer channels');
+
+const cssChannels = [
+  {
+    name: 'CDN assets (inst/quarto-assets/)',
+    path: path.join(rpkgRoot, 'inst', 'quarto-assets'),
+    files: [
+      'tokens.css', 'tokens.scss',
+      'dataimago.css', 'dataimago.min.css',
+      'website-theme.css', 'website-theme.min.css',
+      'dataimago-light.scss', 'dataimago-dark.scss',
+    ],
+  },
+  {
+    name: 'Website CSS (ui/www/assets/css/)',
+    path: path.join(uiDir, 'www', 'assets', 'css'),
+    files: 'all',
+  },
+  {
+    name: 'Quarto extension (ui/www/_extensions/dataimago/ai-native/assets/css/)',
+    path: path.join(uiDir, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'css'),
+    files: 'all',
+  },
+  {
+    name: 'Docs CSS (docs/assets/css/)',
+    path: path.join(rpkgRoot, 'docs', 'assets', 'css'),
+    files: ['tokens.css', 'dataimago.css', 'dataimago.min.css'],
+  },
+];
+
+for (const channel of cssChannels) {
+  ensureDir(channel.path);
+  let copied = 0;
+
+  const distFiles = fs.readdirSync(distDir);
+  const files = channel.files === 'all'
+    ? distFiles.filter((f) => /\.(css|scss|map)$/.test(f))
+    : channel.files;
+
+  for (const file of files) {
+    const src = path.join(distDir, file);
+    if (fs.existsSync(src)) {
+      copyFile(src, path.join(channel.path, file));
+      copied += 1;
+    }
+  }
+  console.log(`   ✓ ${channel.name} (${copied} assets)`);
+}
+
+// JS channels — fan out the components bundle under a stable subdir.
+if (fs.existsSync(componentsJsDir)) {
+  const jsChannels = [
+    path.join(uiDir, 'www', 'assets', 'js', 'dataimago-ui'),
+    path.join(uiDir, 'www', '_extensions', 'dataimago', 'ai-native', 'assets', 'js', 'dataimago-ui'),
+    path.join(rpkgRoot, 'docs', 'assets', 'js', 'dataimago-ui'),
+  ];
+  for (const dest of jsChannels) {
+    ensureDir(dest);
+    copyRecursive(componentsJsDir, dest);
+    console.log(`   ✓ ${path.relative(rpkgRoot, dest)}`);
+  }
+}
+
+// ─── Stage 6: critical-asset smoke check ───────────────────────────────────
+const critical = [
   'tokens.css',
   'dataimago.css',
   'dataimago.min.css',
@@ -326,33 +289,12 @@ const criticalAssets = [
   'dataimago-dark.scss',
   'website-theme.css',
   'website-theme.min.css',
-  'manifest.json'
+  'manifest.json',
 ];
-
-console.log('🔍 Verifying critical assets...');
-const missingAssets = criticalAssets.filter(asset => !fs.existsSync(path.join(config.distDir, asset)));
-
-if (missingAssets.length > 0) {
-  console.warn('⚠️  Missing critical assets:', missingAssets.join(', '));
-} else {
-  console.log('✅ All critical assets present');
+const missing = critical.filter((f) => !fs.existsSync(path.join(distDir, f)));
+if (missing.length > 0) {
+  console.error('❌ Missing critical assets:', missing.join(', '));
+  process.exit(1);
 }
-
-// Step 8: Git submodule status (optional)
-try {
-  const submoduleStatus = execSync('git submodule status', { 
-    encoding: 'utf8', 
-    cwd: path.join(__dirname, '..') 
-  });
-  console.log('📋 Submodule status:', submoduleStatus.trim());
-} catch (error) {
-  // Ignore git errors - not critical for build
-}
-
-console.log('\n🎉 Two-stage dataimago design system build complete!');
-console.log('📈 Architecture Benefits:');
-console.log('   🌍 Universal assets: Available for external distribution');
-console.log('   ⚡ Optimized assets: PurgeCSS applied for website performance');
-console.log('   🎯 Single source of truth: Maintained in dataimago-design');
-console.log('   🔄 Idempotent builds: Consistent results across environments');
-console.log('🛡️  Ethical AI design system ready for deployment!');
+console.log('✅ All critical assets present in', path.relative(rpkgRoot, distDir));
+console.log('\n🎉 UI build complete.');

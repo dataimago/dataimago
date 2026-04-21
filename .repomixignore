@@ -161,12 +161,6 @@ repomix-output.*
 # STALE OR SUPERSEDED CONTENT
 # ====================================================================
 
-# Raw reference materials are NOT authoritative (per dataimago-design/CLAUDE.md).
-# They are incoming source materials that may contradict current wiki/ content.
-# Exclude so AI does not ingest superseded content as fact.
-ui/src/dataimago-design/raw/
-**/dataimago-design/raw/
-
 # Self-referential repomix outputs (avoid recursive inclusion)
 dataimago-repomix.md
 dataimago-repomix.xml
@@ -177,19 +171,27 @@ dataimago-repomix.xml
 dataimago.Rcheck/
 **/*.Rcheck/
 
-# Design submodule build outputs (regenerable via pnpm build)
-ui/src/dataimago-design/dist/
-**/dataimago-design/dist/
+# ====================================================================
+# RETIRED ui/src/dataimago-design/ SUBMODULE
+# ====================================================================
+# The design system is no longer vendored here; it ships from
+# @dataimago/tokens, @dataimago/css, and @dataimago-ui/components (see
+# NEWS.md 0.0-4.0 and dataimago-design/wiki/decisions/publish-packages.md).
+# These rules are defensive: if a stray local checkout re-introduces the
+# directory, repomix must not pick it up as authoritative.
+ui/src/
+ui/src/dataimago-design/
+**/dataimago-design/
 
 # ====================================================================
-# NOTES ON PRESERVED CONTENT
+# NOTES ON PRESERVED CONTENT (post-submodule architecture)
 # ====================================================================
 # The following are INTENTIONALLY INCLUDED for AI context:
 #
 # Package root:
 # - CLAUDE.md                          Primary AI agent context document
 # - README.md                          Project overview
-# - NEWS.md                            Release notes / changelog
+# - NEWS.md                            Release notes / changelog (0.0-4.0 documents the migration)
 # - DESCRIPTION / NAMESPACE            Package metadata and exports
 # - CITATION.cff                       Citation metadata
 #
@@ -208,24 +210,22 @@ ui/src/dataimago-design/dist/
 # - inst/dataimago/HISTORICAL_ROADMAP.md  Historical asset-consolidation roadmap (superseded)
 # - inst/quarto-assets/                CDN-ready CSS distribution (jsDelivr)
 #
-# Design system submodule (ui/src/dataimago-design/):
-# - CLAUDE.md                          Wiki maintainer protocol
-# - AGENTS.md                          Design system agent guide
-# - README.md                          Submodule overview
-# - wiki/                              Authoritative knowledge base (index.md, log.md,
-#                                      patterns/, theories/, decisions/, personas/,
-#                                      connections/, analyses/, principles/, sources/)
-# - foundations/                       Philosophy/design/architecture/governance (human-authored)
-# - src/tokens/                        Design tokens (JSON, source of truth)
-# - src/styles/                        SCSS source files (source of truth)
-# - templates/                         Knowledge templates
+# UI consumer layer (pulls from the @dataimago/* package channel):
+# - ui/package.json                    Declares @dataimago/tokens, @dataimago/css,
+#                                      @dataimago-ui/components as dependencies
+# - ui/.npmrc                          Dual-registry mapping (public npm + GitHub Packages)
+# - ui/build.js                        Consumes node_modules/@dataimago/* and distributes
+#                                      to inst/quarto-assets/, docs/assets/, ui/www/
+# - ui/README.md                       Consumer-side build + prototype-in-consumer workflow
+# - tools/design-link.mjs              pnpm-overrides helper for local design-system work
 #
 # Quarto website:
 # - ui/www/*.qmd                       Quarto source documents
 # - ui/www/_quarto.yml                 Quarto website configuration
 # - ui/www/_extensions/dataimago/      Quarto extension distribution
 #
-# These files contain the philosophical, architectural, and functional
-# essence of the dataimago project and are essential for AI-assisted
-# development and understanding.
+# Note: the authoritative design-system source of truth (wiki/, foundations/,
+# packages/tokens/src/, packages/css/src/, packages/components/src/) lives in
+# the sibling dataimago-design repo and is intentionally NOT duplicated here.
+# Run repomix against that repo separately when you need design-system context.
 # ====================================================================

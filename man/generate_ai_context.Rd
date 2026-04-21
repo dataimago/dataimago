@@ -45,19 +45,23 @@ comprehensive codebase context for AI assistants. The generated artifact include
 
 \strong{Technical Architecture:}
 \itemize{
-\item All R functions with roxygen2 documentation
-\item Design system source of truth (\verb{ui/src/dataimago-design/})
+\item All R functions with roxygen2 documentation (\verb{R/}, \verb{man/})
+\item UI consumer layer that pulls the design system from published packages
+(\code{ui/build.js}, \code{ui/package.json}, \code{ui/.npmrc}) -- the retired
+\verb{ui/src/dataimago-design/} git submodule is no longer part of this
+package (see \code{NEWS.md} 0.0-4.0). The authoritative design-system
+source of truth now lives in the sibling \code{dataimago-design} repo and
+ships via \code{@dataimago/tokens}, \code{@dataimago/css}, and
+\code{@dataimago-ui/components}; ingest its context separately when needed.
 \item Build system patterns and multi-platform distribution
-\item Git submodule integration and workflow patterns
 }
 
 \strong{AI Agent Context:}
 \itemize{
 \item \code{CLAUDE.md} at package root -- primary AI context document
 \item \code{inst/dataimago/ARCHITECTURE.md} -- system architecture with Mermaid diagrams
-\item \code{ui/src/dataimago-design/AGENTS.md} -- design submodule agent guide
-\item \code{ui/src/dataimago-design/CLAUDE.md} -- wiki maintainer protocol
-\item \verb{ui/src/dataimago-design/wiki/} -- authoritative knowledge base (index, log, patterns, theories, decisions)
+\item \code{ui/README.md} -- consumer-side build pipeline and prototype-in-consumer workflow
+\item \code{tools/design-link.mjs} -- local link helper for design-system prototyping
 \item Structured metadata for semantic interoperability
 \item Development patterns aligned with emancipatory AI principles
 }

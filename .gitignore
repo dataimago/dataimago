@@ -49,13 +49,19 @@ Thumbs.db
 # NODE.JS / UI WORKSPACE
 # =============================================================================
 # Dependencies
-ui/node_modules/
-ui/src/dataimago-design/node_modules/
 node_modules/
+ui/node_modules/
+tools/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Retired ui/src/dataimago-design/ submodule — design system is now
+# consumed from @dataimago/tokens, @dataimago/css, @dataimago-ui/components.
+# Ignore the legacy path so a stray checkout can't re-introduce it.
+ui/src/dataimago-design/
+ui/src/
 
 # Package managers
 .pnpm-store/
@@ -194,10 +200,12 @@ junit.xml
 # =============================================================================
 # DISTRIBUTION ARTIFACTS (Keep these - they're critical!)
 # =============================================================================
-# KEEP: docs/ - GitHub Pages website (CRITICAL FOR HOSTING)
-# KEEP: inst/quarto-assets/ - CDN distribution (as noted in README)
-# KEEP: ui/www/_extensions/ - Quarto extension (as noted in README)
-# KEEP: ui/src/ - Source of truth (as noted in README)
+# KEEP: docs/                   - GitHub Pages website (CRITICAL FOR HOSTING)
+# KEEP: inst/quarto-assets/     - CDN distribution (as noted in README)
+# KEEP: ui/www/_extensions/     - Quarto extension (as noted in README)
+# KEEP: ui/package.json + .npmrc - Consumer manifest for @dataimago/* packages
+# KEEP: ui/build.js              - Package-channel consumer build
+# KEEP: tools/design-link.mjs    - Prototype-in-consumer helper
 
 # But exclude temporary build files within these directories
 inst/quarto-assets/*.tmp
@@ -280,15 +288,21 @@ local.config.js
 local.env
 
 # =============================================================================
-# IMPORTANT: WHAT TO KEEP (as per README.md)
+# IMPORTANT: WHAT TO KEEP
 # =============================================================================
-# These directories are CRITICAL and should never be in .gitignore:
-# - docs/ - GitHub Pages website (CRITICAL FOR HOSTING)
-# - inst/quarto-assets/ - CDN distribution
-# - ui/src/ - Source of truth
-# - ui/www/_extensions/dataimago/ai-native/ - Quarto extension
-# 
+# These directories/files are CRITICAL and should never be in .gitignore:
+# - docs/                                    - GitHub Pages website (CRITICAL FOR HOSTING)
+# - inst/quarto-assets/                      - CDN distribution via jsDelivr
+# - ui/www/_extensions/dataimago/ai-native/  - Quarto extension
+# - ui/package.json, ui/.npmrc, ui/build.js  - Consumer of @dataimago/* packages
+# - tools/design-link.mjs                    - Prototype-in-consumer helper
+#
 # These can be regenerated safely:
-# - ui/dist/ - Build outputs
-# - ui/node_modules/ - Dependencies
+# - ui/dist/         - Build outputs (produced by `pnpm build`)
+# - ui/node_modules/ - Dependencies (produced by `pnpm install`)
+#
+# Deprecated / retired (explicitly ignored above):
+# - ui/src/dataimago-design/ - Retired submodule; design system now ships as
+#   @dataimago/tokens + @dataimago/css + @dataimago-ui/components. See
+#   NEWS.md 0.0-4.0 and wiki/decisions/publish-packages.md in dataimago-design.
 # =============================================================================
