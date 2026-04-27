@@ -133,8 +133,7 @@ with comprehensive documentation of every system interaction.
 ## Seealso
 
 `[update_quarto_extension](update_quarto_extension)` for extension asset management,
-`[generate_cdn_assets](generate_cdn_assets)` for CDN preparation,
-`[create_ui_workspace](create_ui_workspace)` for UI workspace initialization
+`[generate_cdn_assets](generate_cdn_assets)` for CDN preparation
 
 ## Concept
 
@@ -434,95 +433,6 @@ cat("Generated documentation at:", doc_path)
 
 *This function is part of the dataimago ethical AI framework.*
 
-# Create UI Workspace for Design System
-
-## Description
-
-::: {.ethical-note}
-This function embodies dataimago's principle of embedding AI within culture for emancipatory purposes.
-:::
-
-
-Sets up the Node.js workspace structure and configuration files needed for
-CSS compilation and design token processing. This function creates the complete
-ui/ directory structure with package.json, build scripts, and source files.
-
-## Usage
-
-```r
-create_ui_workspace(force_overwrite = FALSE, verbose = TRUE)
-```
-
-## Arguments
-
-* `force_overwrite`: Logical. Overwrite existing ui/ directory if it exists. Default: FALSE
-* `verbose`: Logical. Print detailed progress information. Default: TRUE
-
-## Details
-
-***Created Directory Structure:***
-
-```
-ui/
-+-- package.json              # Node.js dependencies (Style Dictionary, Sass, etc.)
-+-- build.js                  # Custom build script for compilation
-+-- src/
-|   +-- tokens/
-|   |   +-- colors.json       # dataimago color palette
-|   |   +-- typography.json   # Font definitions and scales
-|   |   +-- spacing.json      # Spacing scale and dimensions
-|   +-- styles/
-|       +-- base.scss         # Base styles using design tokens
-|       +-- components.scss   # UI component styles
-|       +-- utilities.scss    # Utility classes
-+-- dist/                     # Build output directory (created by build process)
-```
-
-***Design Token Philosophy:***The design tokens follow dataimago's ethical AI principles:
-
-* ***Semantic Naming***: Colors like `primary`, `accent`, `ethical-highlight`
-* ***Accessibility First***: WCAG AA contrast ratios and reduced motion support
-* ***Cultural Sensitivity***: Avoid culturally-biased color assumptions
-* ***Future-Proof***: JSON structure enables multiple output formats
-
-***Build Tool Configuration:***
-
-* ***Style Dictionary***: Converts design tokens to CSS custom properties
-* ***Sass/SCSS***: Compiles component styles with token integration
-* ***PostCSS***: Adds vendor prefixes and optimizations
-* ***CSSnano***: Minification for production distribution
-
-## Value
-
-List containing setup results:
-
-* success: Logical indicating setup success
-* created_files: Character vector of files created
-* errors: Character vector of any error messages
-
-## Examples
-
-_Examples using dataimago's ethical AI framework:_
-
-
-```r
-# Create new ui workspace
-result <- create_ui_workspace()
-
-# Force recreate existing workspace
-result <- create_ui_workspace(force_overwrite = TRUE)
-
-# Check what was created
-if (result$success) {
-  cat("Created files:", paste(result$created_files, collapse = "\n  "))
-}
-```
-
-
----
-
-*This function is part of the dataimago ethical AI framework.*
-
 # dataimago: AI-Native Web-Application Development Framework for Data Science
 
 ## Description
@@ -555,10 +465,9 @@ applications are scalable, accessible, and aligned with human flourishing.
 
 * `[create_quarto_documentation](create_quarto_documentation)`: Generate professional documentation
 websites with consistent branding and ethical AI annotations
-* `[build_design_system](build_design_system)`: Complete CSS compilation pipeline
-from design tokens to production-ready assets
-* `[create_ui_workspace](create_ui_workspace)`: Set up Node.js development environment
-with modern web tooling
+* `[build_design_system](build_design_system)`: Orchestrates `pnpm install` +
+`pnpm build` in `ui/` and fans the published `@dataimago/*` assets out to
+every distribution channel
 * Multi-platform deployment to Quarto extensions, CDN, and Next.js applications
 
 #### Design System & Asset Management
@@ -588,8 +497,10 @@ This framework is designed from the ground up for both human developers and AI a
 
 #### Rapid Development Workflow
 
-* ***One-Command Setup***: `create_ui_workspace()` initializes complete development environment
-* ***Automated Asset Pipeline***: `build_design_system()` handles design token compilation to production CSS
+* ***Package-Channel Setup***: `cd ui && pnpm install` (one-time; see the
+  sibling [`new-consumer-checklist.md`](../../dataimago-design/wiki/patterns/new-consumer-checklist.md))
+* ***Automated Asset Pipeline***: `build_design_system()` fans the
+  published `@dataimago/*` assets out to every deployment target
 * ***Multi-Platform Deployment***: Single source generates assets for Quarto, Shiny, Next.js, and CDN
 * ***Consistent Branding***: Automatic application of design system and ethical AI principles
 
@@ -613,13 +524,17 @@ Framework functions are optimized for AI-driven development:
 
 Set up development environment and build your first application:
 
+```bash
+# 1. One-time Node bootstrap (the 0.0-3.x create_ui_workspace() scaffolder
+#    was retired alongside the dataimago-design submodule; see
+#    dataimago-design/wiki/patterns/new-consumer-checklist.md):
+cd ui && pnpm install
 ```
+
+```r
 library(dataimago)
 
-# 1. Initialize development workspace
-create_ui_workspace()
-
-# 2. Build design system assets
+# 2. Build design system assets from @dataimago/* packages
 result <- build_design_system()
 
 # 3. Generate professional documentation

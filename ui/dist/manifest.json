@@ -1,32 +1,42 @@
 {
-  "name": "dataimago Design System",
-  "version": "0.0.1",
-  "buildTime": "stable",
-  "assets": {
-    "tokens.css": "CSS custom properties from design tokens",
-    "tokens.scss": "SCSS version of design tokens",
-    "dataimago.css": "Complete design system (expanded)",
-    "dataimago.min.css": "Complete design system (minified)",
-    "website-theme.css": "Unified website theme",
-    "dataimago-light.scss": "Quarto light theme",
-    "dataimago-dark.scss": "Quarto dark theme",
-    "tailwind-preset.js": "Tailwind CSS preset for Next.js"
+  "name": "@dataimago/design-system",
+  "builtAt": "2026-04-27T09:39:09.777Z",
+  "builtBy": "ui/build.js (package-channel)",
+  "sources": {
+    "@dataimago/tokens": "0.1.0-alpha.1",
+    "@dataimago/css": "0.1.0-alpha.1",
+    "@dataimago/ui": "0.1.0-alpha.1"
   },
-  "javascript": {
-    "accessibility.js": "JavaScript component: accessibility",
-    "custom-anchors.js": "JavaScript component: custom-anchors",
-    "hero-scroller.js": "JavaScript component: hero-scroller",
-    "lenis-integration.js": "JavaScript component: lenis-integration",
-    "vendor/jquery.sticky-kit.min.js": "JavaScript component: jquery.sticky-kit.min"
-  },
-  "pages": {
-    "documentation.css": "Page-specific styles: documentation",
-    "documentation.min.css": "Page-specific styles: documentation.min",
-    "landing.css": "Page-specific styles: landing",
-    "landing.min.css": "Page-specific styles: landing.min",
-    "shared-enhanced-toc.css": "Page-specific styles: shared-enhanced-toc",
-    "shared-enhanced-toc.min.css": "Page-specific styles: shared-enhanced-toc.min",
-    "tokens.min.css": "Page-specific styles: tokens.min",
-    "website-theme.min.css": "Page-specific styles: website-theme.min"
-  }
+  "artifacts": [
+    "dataimago-dark.scss",
+    "dataimago-light.scss",
+    "dataimago.css",
+    "dataimago.css.map",
+    "dataimago.min.css",
+    "dataimago.min.css.map",
+    "documentation.css",
+    "documentation.css.map",
+    "documentation.min.css",
+    "documentation.min.css.map",
+    "icons",
+    "js",
+    "landing.css",
+    "landing.css.map",
+    "landing.min.css",
+    "landing.min.css.map",
+    "manifest.json",
+    "shared-components.scss",
+    "shared-enhanced-toc.css",
+    "shared-enhanced-toc.css.map",
+    "shared-enhanced-toc.min.css",
+    "shared-enhanced-toc.min.css.map",
+    "tailwind-preset.js",
+    "tokens.css",
+    "tokens.min.css",
+    "tokens.scss",
+    "website-theme.css",
+    "website-theme.css.map",
+    "website-theme.min.css",
+    "website-theme.min.css.map"
+  ]
 }

@@ -100,7 +100,7 @@
     "href": "r_package.html#seealso",
     "title": "dataimago R Package Documentation",
     "section": "Seealso",
-    "text": "Seealso\n[update_quarto_extension](update_quarto_extension) for extension asset management, [generate_cdn_assets](generate_cdn_assets) for CDN preparation, [create_ui_workspace](create_ui_workspace) for UI workspace initialization",
+    "text": "Seealso\n[update_quarto_extension](update_quarto_extension) for extension asset management, [generate_cdn_assets](generate_cdn_assets) for CDN preparation",
     "crumbs": [
       "Home",
       "Getting Started",
@@ -484,31 +484,7 @@
     "href": "r_package.html#description-3",
     "title": "dataimago R Package Documentation",
     "section": "Description",
-    "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nSets up the Node.js workspace structure and configuration files needed for CSS compilation and design token processing. This function creates the complete ui/ directory structure with package.json, build scripts, and source files.",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#usage-3",
-    "href": "r_package.html#usage-3",
-    "title": "dataimago R Package Documentation",
-    "section": "Usage",
-    "text": "Usage\ncreate_ui_workspace(force_overwrite = FALSE, verbose = TRUE)",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#arguments-3",
-    "href": "r_package.html#arguments-3",
-    "title": "dataimago R Package Documentation",
-    "section": "Arguments",
-    "text": "Arguments\n\nforce_overwrite: Logical. Overwrite existing ui/ directory if it exists. Default: FALSE\nverbose: Logical. Print detailed progress information. Default: TRUE",
+    "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nThe dataimago package is a comprehensive development framework that accelerates the creation of data science web applications for both human developers and AI agents. It provides complete design system compilation, multi-platform deployment (Quarto, Shiny, Next.js), MCP-compatible tooling, and embedded ethical AI principles. Features R-first workflows that wrap modern web development tools in familiar interfaces, enabling rapid application scaffolding with consistent branding and best practices.",
     "crumbs": [
       "Home",
       "Getting Started",
@@ -520,55 +496,7 @@
     "href": "r_package.html#details-3",
     "title": "dataimago R Package Documentation",
     "section": "Details",
-    "text": "Details\nCreated Directory Structure:\nui/\n+-- package.json              # Node.js dependencies (Style Dictionary, Sass, etc.)\n+-- build.js                  # Custom build script for compilation\n+-- src/\n|   +-- tokens/\n|   |   +-- colors.json       # dataimago color palette\n|   |   +-- typography.json   # Font definitions and scales\n|   |   +-- spacing.json      # Spacing scale and dimensions\n|   +-- styles/\n|       +-- base.scss         # Base styles using design tokens\n|       +-- components.scss   # UI component styles\n|       +-- utilities.scss    # Utility classes\n+-- dist/                     # Build output directory (created by build process)\nDesign Token Philosophy:The design tokens follow dataimago’s ethical AI principles:\n\nSemantic Naming: Colors like primary, accent, ethical-highlight\nAccessibility First: WCAG AA contrast ratios and reduced motion support\nCultural Sensitivity: Avoid culturally-biased color assumptions\nFuture-Proof: JSON structure enables multiple output formats\n\nBuild Tool Configuration:\n\nStyle Dictionary: Converts design tokens to CSS custom properties\nSass/SCSS: Compiles component styles with token integration\nPostCSS: Adds vendor prefixes and optimizations\nCSSnano: Minification for production distribution",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#value-3",
-    "href": "r_package.html#value-3",
-    "title": "dataimago R Package Documentation",
-    "section": "Value",
-    "text": "Value\nList containing setup results:\n\nsuccess: Logical indicating setup success\ncreated_files: Character vector of files created\nerrors: Character vector of any error messages",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#examples-3",
-    "href": "r_package.html#examples-3",
-    "title": "dataimago R Package Documentation",
-    "section": "Examples",
-    "text": "Examples\nExamples using dataimago’s ethical AI framework:\n# Create new ui workspace\nresult &lt;- create_ui_workspace()\n\n# Force recreate existing workspace\nresult &lt;- create_ui_workspace(force_overwrite = TRUE)\n\n# Check what was created\nif (result$success) {\n  cat(\"Created files:\", paste(result$created_files, collapse = \"\\n  \"))\n}\n\nThis function is part of the dataimago ethical AI framework.",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#description-4",
-    "href": "r_package.html#description-4",
-    "title": "dataimago R Package Documentation",
-    "section": "Description",
-    "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nThe dataimago package is a comprehensive development framework that accelerates the creation of data science web applications for both human developers and AI agents. It provides complete design system compilation, multi-platform deployment (Quarto, Shiny, Next.js), MCP-compatible tooling, and embedded ethical AI principles. Features R-first workflows that wrap modern web development tools in familiar interfaces, enabling rapid application scaffolding with consistent branding and best practices.",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#details-4",
-    "href": "r_package.html#details-4",
-    "title": "dataimago R Package Documentation",
-    "section": "Details",
-    "text": "Details\n\nFramework Philosophy\ndataimago is an AI-native development framework that embeds ethical principles and consistent patterns into every aspect of application development. Rather than requiring developers to manually implement best practices, the framework provides pre-built components, automated tooling, and structured workflows that ensure applications are scalable, accessible, and aligned with human flourishing.\n\n\nFramework Components\n\nApplication Development Tools\n\n[create_quarto_documentation](create_quarto_documentation): Generate professional documentation websites with consistent branding and ethical AI annotations\n[build_design_system](build_design_system): Complete CSS compilation pipeline from design tokens to production-ready assets\n[create_ui_workspace](create_ui_workspace): Set up Node.js development environment with modern web tooling\nMulti-platform deployment to Quarto extensions, CDN, and Next.js applications\n\n\n\nDesign System & Asset Management\n\nDesign Tokens: JSON-based design system with CSS custom properties\nSCSS Compilation: Style Dictionary + Sass pipeline for consistent styling\nCDN Distribution: jsDelivr-ready assets with SRI hashes for security\nVisual Identity: SVG-based logos with automatic theme switching\n\n\n\nFramework Documentation (inst/dataimago/)\n\n01_Foundations/: Framework philosophy and governance principles\n02_Manifesto/: Ethical AI approach and paradigm differentiation\n03_Application_Architecture/: Technical implementation patterns and best practices\n04_dataimago_Content/: Complete design system assets and branding guidelines\n\n\n\n\nAI-Native Development Features\nThis framework is designed from the ground up for both human developers and AI agents:\n\nMCP-Compatible Tooling\n\nStructured APIs: All functions use consistent parameter patterns and return structured results\nComprehensive Documentation: Detailed roxygen2 docs with examples and error handling\nMachine-Readable Outputs: JSON-compatible results for programmatic consumption\nAgent Context Files: inst/CLAUDE.md and inst/AGENT_INDEX.md provide persistent AI context\n\n\n\nRapid Development Workflow\n\nOne-Command Setup: create_ui_workspace() initializes complete development environment\nAutomated Asset Pipeline: build_design_system() handles design token compilation to production CSS\nMulti-Platform Deployment: Single source generates assets for Quarto, Shiny, Next.js, and CDN\nConsistent Branding: Automatic application of design system and ethical AI principles\n\n\n\nAI Agent Integration\nFramework functions are optimized for AI-driven development:\n\nDeterministic Operations: Same inputs always produce same outputs\nClear Error Messages: Detailed failure information for debugging and remediation\nIncremental Builds: Smart dependency detection avoids unnecessary rebuilds\nValidation Pipelines: Built-in checks ensure output quality and consistency\n\n\n\n\nCode-as-Philosophy Commitments\n\nHermeneutic Transparency: All modeling assumptions documented and interpretable\nPositivistic Rigor: Empirical operations robust, efficient, and replicable\nEthical Reflexivity: Tools include affordances for users to interrogate usage\nIterative Design: Each commit is dialectical step toward future aspirations\n\n\n\nQuick Start - Application Development Workflow\nSet up development environment and build your first application:\nlibrary(dataimago)\n\n# 1. Initialize development workspace\ncreate_ui_workspace()\n\n# 2. Build design system assets\nresult &lt;- build_design_system()\n\n# 3. Generate professional documentation\ncreate_quarto_documentation()\n\n# 4. Deploy to multiple platforms\n# - Quarto extension: Available automatically\n# - CDN assets: Available via jsDelivr\n# - Next.js: Use generated tailwind-preset.js\nAccess framework documentation (planned):\nget_foundation_document(\"architecture_patterns\")\nget_design_system_tokens(\"colors\")\nGenerate application scaffolding (planned):\ncreate_dataimago_app(name = \"my-data-app\", type = \"quarto+shiny\")\nscaffold_nextjs_integration(path = \"my-project\")",
+    "text": "Details\n\nFramework Philosophy\ndataimago is an AI-native development framework that embeds ethical principles and consistent patterns into every aspect of application development. Rather than requiring developers to manually implement best practices, the framework provides pre-built components, automated tooling, and structured workflows that ensure applications are scalable, accessible, and aligned with human flourishing.\n\n\nFramework Components\n\nApplication Development Tools\n\n[create_quarto_documentation](create_quarto_documentation): Generate professional documentation websites with consistent branding and ethical AI annotations\n[build_design_system](build_design_system): Orchestrates pnpm install + pnpm build in ui/ and fans the published @dataimago/* assets out to every distribution channel\nMulti-platform deployment to Quarto extensions, CDN, and Next.js applications\n\n\n\nDesign System & Asset Management\n\nDesign Tokens: JSON-based design system with CSS custom properties\nSCSS Compilation: Style Dictionary + Sass pipeline for consistent styling\nCDN Distribution: jsDelivr-ready assets with SRI hashes for security\nVisual Identity: SVG-based logos with automatic theme switching\n\n\n\nFramework Documentation (inst/dataimago/)\n\n01_Foundations/: Framework philosophy and governance principles\n02_Manifesto/: Ethical AI approach and paradigm differentiation\n03_Application_Architecture/: Technical implementation patterns and best practices\n04_dataimago_Content/: Complete design system assets and branding guidelines\n\n\n\n\nAI-Native Development Features\nThis framework is designed from the ground up for both human developers and AI agents:\n\nMCP-Compatible Tooling\n\nStructured APIs: All functions use consistent parameter patterns and return structured results\nComprehensive Documentation: Detailed roxygen2 docs with examples and error handling\nMachine-Readable Outputs: JSON-compatible results for programmatic consumption\nAgent Context Files: inst/CLAUDE.md and inst/AGENT_INDEX.md provide persistent AI context\n\n\n\nRapid Development Workflow\n\nPackage-Channel Setup: cd ui && pnpm install (one-time; see the sibling new-consumer-checklist.md)\nAutomated Asset Pipeline: build_design_system() fans the published @dataimago/* assets out to every deployment target\nMulti-Platform Deployment: Single source generates assets for Quarto, Shiny, Next.js, and CDN\nConsistent Branding: Automatic application of design system and ethical AI principles\n\n\n\nAI Agent Integration\nFramework functions are optimized for AI-driven development:\n\nDeterministic Operations: Same inputs always produce same outputs\nClear Error Messages: Detailed failure information for debugging and remediation\nIncremental Builds: Smart dependency detection avoids unnecessary rebuilds\nValidation Pipelines: Built-in checks ensure output quality and consistency\n\n\n\n\nCode-as-Philosophy Commitments\n\nHermeneutic Transparency: All modeling assumptions documented and interpretable\nPositivistic Rigor: Empirical operations robust, efficient, and replicable\nEthical Reflexivity: Tools include affordances for users to interrogate usage\nIterative Design: Each commit is dialectical step toward future aspirations\n\n\n\nQuick Start - Application Development Workflow\nSet up development environment and build your first application:\n# 1. One-time Node bootstrap (the 0.0-3.x create_ui_workspace() scaffolder\n#    was retired alongside the dataimago-design submodule; see\n#    dataimago-design/wiki/patterns/new-consumer-checklist.md):\ncd ui && pnpm install\nlibrary(dataimago)\n\n# 2. Build design system assets from @dataimago/* packages\nresult &lt;- build_design_system()\n\n# 3. Generate professional documentation\ncreate_quarto_documentation()\n\n# 4. Deploy to multiple platforms\n# - Quarto extension: Available automatically\n# - CDN assets: Available via jsDelivr\n# - Next.js: Use generated tailwind-preset.js\nAccess framework documentation (planned):\nget_foundation_document(\"architecture_patterns\")\nget_design_system_tokens(\"colors\")\nGenerate application scaffolding (planned):\ncreate_dataimago_app(name = \"my-data-app\", type = \"quarto+shiny\")\nscaffold_nextjs_integration(path = \"my-project\")",
     "crumbs": [
       "Home",
       "Getting Started",
@@ -696,11 +624,71 @@
     ]
   },
   {
+    "objectID": "r_package.html#description-4",
+    "href": "r_package.html#description-4",
+    "title": "dataimago R Package Documentation",
+    "section": "Description",
+    "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nPrepares assets for CDN distribution with versioning, SRI hashes, and metadata. Creates jsDelivr-compatible structure in inst/quarto-assets/ for R package distribution.",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago R Package Documentation"
+    ]
+  },
+  {
+    "objectID": "r_package.html#usage-3",
+    "href": "r_package.html#usage-3",
+    "title": "dataimago R Package Documentation",
+    "section": "Usage",
+    "text": "Usage\ngenerate_cdn_assets(verbose = TRUE)",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago R Package Documentation"
+    ]
+  },
+  {
+    "objectID": "r_package.html#arguments-3",
+    "href": "r_package.html#arguments-3",
+    "title": "dataimago R Package Documentation",
+    "section": "Arguments",
+    "text": "Arguments\n\nverbose: Logical. Print detailed progress information. Default: TRUE",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago R Package Documentation"
+    ]
+  },
+  {
+    "objectID": "r_package.html#details-4",
+    "href": "r_package.html#details-4",
+    "title": "dataimago R Package Documentation",
+    "section": "Details",
+    "text": "Details\nThis function creates CDN-ready assets by:\n\nCopying Built Assets: Moves ui/dist/*.css to inst/quarto-assets/\nGenerating Metadata: Creates manifest.json with build info and SRI hashes\nCreating Usage Examples: Generates HTML snippets showing CDN usage\nValidating File Integrity: Ensures all copied files are complete and uncorrupted\n\nCDN Distribution Strategy:Files in inst/quarto-assets/ become available via jsDelivr once the package is tagged and released on GitHub:\nhttps://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css\nSRI (Subresource Integrity) Hashes:Each CSS file gets a SHA-384 hash for security:\n&lt;link rel=\"stylesheet\"\n      href=\"https://cdn.jsdelivr.net/gh/.../dataimago.min.css\"\n      integrity=\"sha384-...\"\n      crossorigin=\"anonymous\"&gt;\nGenerated Files:\n\ninst/quarto-assets/dataimago.min.css - Main compiled CSS\ninst/quarto-assets/tokens.css - CSS custom properties (if built)\ninst/quarto-assets/manifest.json - Build metadata and SRI hashes\ninst/quarto-assets/README.md - Usage instructions and examples",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago R Package Documentation"
+    ]
+  },
+  {
+    "objectID": "r_package.html#value-3",
+    "href": "r_package.html#value-3",
+    "title": "dataimago R Package Documentation",
+    "section": "Value",
+    "text": "Value\nList containing CDN preparation results:\n\nsuccess: Logical indicating preparation success\nassets: Character vector of CDN-ready asset paths\nerrors: Character vector of any error messages\n\n\nThis function is part of the dataimago ethical AI framework.",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago R Package Documentation"
+    ]
+  },
+  {
     "objectID": "r_package.html#description-5",
     "href": "r_package.html#description-5",
     "title": "dataimago R Package Documentation",
     "section": "Description",
-    "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nPrepares assets for CDN distribution with versioning, SRI hashes, and metadata. Creates jsDelivr-compatible structure in inst/quarto-assets/ for R package distribution.",
+    "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nCopies compiled CSS and other assets from ui/dist/ into the Quarto extension structure. Maintains proper extension.yml configuration and ensures asset linking works correctly.",
     "crumbs": [
       "Home",
       "Getting Started",
@@ -712,7 +700,7 @@
     "href": "r_package.html#usage-4",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
-    "text": "Usage\ngenerate_cdn_assets(verbose = TRUE)",
+    "text": "Usage\nupdate_quarto_extension(verbose = TRUE)",
     "crumbs": [
       "Home",
       "Getting Started",
@@ -736,7 +724,7 @@
     "href": "r_package.html#details-5",
     "title": "dataimago R Package Documentation",
     "section": "Details",
-    "text": "Details\nThis function creates CDN-ready assets by:\n\nCopying Built Assets: Moves ui/dist/*.css to inst/quarto-assets/\nGenerating Metadata: Creates manifest.json with build info and SRI hashes\nCreating Usage Examples: Generates HTML snippets showing CDN usage\nValidating File Integrity: Ensures all copied files are complete and uncorrupted\n\nCDN Distribution Strategy:Files in inst/quarto-assets/ become available via jsDelivr once the package is tagged and released on GitHub:\nhttps://cdn.jsdelivr.net/gh/dataimago/dataimago-rpkg@v0.1.0/inst/quarto-assets/dataimago.min.css\nSRI (Subresource Integrity) Hashes:Each CSS file gets a SHA-384 hash for security:\n&lt;link rel=\"stylesheet\"\n      href=\"https://cdn.jsdelivr.net/gh/.../dataimago.min.css\"\n      integrity=\"sha384-...\"\n      crossorigin=\"anonymous\"&gt;\nGenerated Files:\n\ninst/quarto-assets/dataimago.min.css - Main compiled CSS\ninst/quarto-assets/tokens.css - CSS custom properties (if built)\ninst/quarto-assets/manifest.json - Build metadata and SRI hashes\ninst/quarto-assets/README.md - Usage instructions and examples",
+    "text": "Details\nThis function performs the following operations:\n\nValidates Extension Structure: Checks that ui/www/_extensions/dataimago/ai-native/ exists\nCopies Main CSS: Copies ui/dist/dataimago.min.css to extension assets\nUpdates Asset References: Ensures extension.yml references the correct CSS files\nPreserves Extension Config: Maintains existing Lua filters, shortcodes, etc.\n\nExtension Asset Mapping:\n\nui/dist/dataimago.min.css -&gt; ui/www/_extensions/dataimago/ai-native/assets/css/dataimago.min.css and ui/www/_extensions/dataimago/ai-native/assets/css/tokens.css (if exists)\nSource maps and development files are excluded from extension distribution\n\nFile Operations:All file copying uses R’s fs::file_copy() with overwrite protection and atomic operations to prevent corrupted assets during development. The function will not overwrite extension configuration files (like _extension.yml) unless they become corrupted.",
     "crumbs": [
       "Home",
       "Getting Started",
@@ -748,7 +736,19 @@
     "href": "r_package.html#value-4",
     "title": "dataimago R Package Documentation",
     "section": "Value",
-    "text": "Value\nList containing CDN preparation results:\n\nsuccess: Logical indicating preparation success\nassets: Character vector of CDN-ready asset paths\nerrors: Character vector of any error messages\n\n\nThis function is part of the dataimago ethical AI framework.",
+    "text": "Value\nList containing update results:\n\nsuccess: Logical indicating update success\nupdated_files: Character vector of files updated in extension\nerrors: Character vector of any error messages",
+    "crumbs": [
+      "Home",
+      "Getting Started",
+      "dataimago R Package Documentation"
+    ]
+  },
+  {
+    "objectID": "r_package.html#examples-3",
+    "href": "r_package.html#examples-3",
+    "title": "dataimago R Package Documentation",
+    "section": "Examples",
+    "text": "Examples\nExamples using dataimago’s ethical AI framework:\n# Update extension after building CSS\nbuild_design_system()\nresult &lt;- update_quarto_extension()\n\n# Check what was updated\nif (result$success) {\n  cat(\n    \"Updated files:\",\n    paste(result$updated_files, collapse = \"\\n  \")\n  )\n}\n\nThis function is part of the dataimago ethical AI framework.",
     "crumbs": [
       "Home",
       "Getting Started",
@@ -760,7 +760,7 @@
     "href": "r_package.html#description-6",
     "title": "dataimago R Package Documentation",
     "section": "Description",
-    "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nCopies compiled CSS and other assets from ui/dist/ into the Quarto extension structure. Maintains proper extension.yml configuration and ensures asset linking works correctly.",
+    "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nAdd Function Documentation Sections with Exported/Non-exported Structure",
     "crumbs": [
       "Home",
       "Getting Started",
@@ -772,7 +772,7 @@
     "href": "r_package.html#usage-5",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
-    "text": "Usage\nupdate_quarto_extension(verbose = TRUE)",
+    "text": "Usage\nadd_function_docs_sections(rd_content)",
     "crumbs": [
       "Home",
       "Getting Started",
@@ -782,78 +782,6 @@
   {
     "objectID": "r_package.html#arguments-5",
     "href": "r_package.html#arguments-5",
-    "title": "dataimago R Package Documentation",
-    "section": "Arguments",
-    "text": "Arguments\n\nverbose: Logical. Print detailed progress information. Default: TRUE",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#details-6",
-    "href": "r_package.html#details-6",
-    "title": "dataimago R Package Documentation",
-    "section": "Details",
-    "text": "Details\nThis function performs the following operations:\n\nValidates Extension Structure: Checks that ui/www/_extensions/dataimago/ai-native/ exists\nCopies Main CSS: Copies ui/dist/dataimago.min.css to extension assets\nUpdates Asset References: Ensures extension.yml references the correct CSS files\nPreserves Extension Config: Maintains existing Lua filters, shortcodes, etc.\n\nExtension Asset Mapping:\n\nui/dist/dataimago.min.css -&gt; ui/www/_extensions/dataimago/ai-native/assets/css/dataimago.min.css and ui/www/_extensions/dataimago/ai-native/assets/css/tokens.css (if exists)\nSource maps and development files are excluded from extension distribution\n\nFile Operations:All file copying uses R’s fs::file_copy() with overwrite protection and atomic operations to prevent corrupted assets during development. The function will not overwrite extension configuration files (like _extension.yml) unless they become corrupted.",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#value-5",
-    "href": "r_package.html#value-5",
-    "title": "dataimago R Package Documentation",
-    "section": "Value",
-    "text": "Value\nList containing update results:\n\nsuccess: Logical indicating update success\nupdated_files: Character vector of files updated in extension\nerrors: Character vector of any error messages",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#examples-4",
-    "href": "r_package.html#examples-4",
-    "title": "dataimago R Package Documentation",
-    "section": "Examples",
-    "text": "Examples\nExamples using dataimago’s ethical AI framework:\n# Update extension after building CSS\nbuild_design_system()\nresult &lt;- update_quarto_extension()\n\n# Check what was updated\nif (result$success) {\n  cat(\n    \"Updated files:\",\n    paste(result$updated_files, collapse = \"\\n  \")\n  )\n}\n\nThis function is part of the dataimago ethical AI framework.",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#description-7",
-    "href": "r_package.html#description-7",
-    "title": "dataimago R Package Documentation",
-    "section": "Description",
-    "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nAdd Function Documentation Sections with Exported/Non-exported Structure",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#usage-6",
-    "href": "r_package.html#usage-6",
-    "title": "dataimago R Package Documentation",
-    "section": "Usage",
-    "text": "Usage\nadd_function_docs_sections(rd_content)",
-    "crumbs": [
-      "Home",
-      "Getting Started",
-      "dataimago R Package Documentation"
-    ]
-  },
-  {
-    "objectID": "r_package.html#arguments-6",
-    "href": "r_package.html#arguments-6",
     "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nrd_content: List of converted .Rd content",
@@ -876,8 +804,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#value-6",
-    "href": "r_package.html#value-6",
+    "objectID": "r_package.html#value-5",
+    "href": "r_package.html#value-5",
     "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with structured function documentation\n\nThis function is part of the dataimago ethical AI framework.",
@@ -888,8 +816,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#description-8",
-    "href": "r_package.html#description-8",
+    "objectID": "r_package.html#description-7",
+    "href": "r_package.html#description-7",
     "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nConvert .Rd Files to QMD Format using Rd2md",
@@ -900,8 +828,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#usage-7",
-    "href": "r_package.html#usage-7",
+    "objectID": "r_package.html#usage-6",
+    "href": "r_package.html#usage-6",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nconvert_rd_files_to_qmd(rd_files)",
@@ -912,8 +840,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#arguments-7",
-    "href": "r_package.html#arguments-7",
+    "objectID": "r_package.html#arguments-6",
+    "href": "r_package.html#arguments-6",
     "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nrd_files: Character vector of paths to .Rd files",
@@ -936,8 +864,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#value-7",
-    "href": "r_package.html#value-7",
+    "objectID": "r_package.html#value-6",
+    "href": "r_package.html#value-6",
     "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nList containing converted documentation for each function\n\nThis function is part of the dataimago ethical AI framework.",
@@ -948,8 +876,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#description-9",
-    "href": "r_package.html#description-9",
+    "objectID": "r_package.html#description-8",
+    "href": "r_package.html#description-8",
     "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nExtract Field from DESCRIPTION Lines",
@@ -960,8 +888,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#usage-8",
-    "href": "r_package.html#usage-8",
+    "objectID": "r_package.html#usage-7",
+    "href": "r_package.html#usage-7",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nextract_desc_field(desc_lines, field_name)",
@@ -972,8 +900,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#arguments-8",
-    "href": "r_package.html#arguments-8",
+    "objectID": "r_package.html#arguments-7",
+    "href": "r_package.html#arguments-7",
     "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_lines: Character vector of DESCRIPTION file lines\nfield_name: Name of field to extract",
@@ -996,8 +924,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#value-8",
-    "href": "r_package.html#value-8",
+    "objectID": "r_package.html#value-7",
+    "href": "r_package.html#value-7",
     "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter string with field value or NULL if not found\n\nThis function is part of the dataimago ethical AI framework.",
@@ -1008,8 +936,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#description-10",
-    "href": "r_package.html#description-10",
+    "objectID": "r_package.html#description-9",
+    "href": "r_package.html#description-9",
     "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nFormat DESCRIPTION Fields for Quarto Display",
@@ -1020,8 +948,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#usage-9",
-    "href": "r_package.html#usage-9",
+    "objectID": "r_package.html#usage-8",
+    "href": "r_package.html#usage-8",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nformat_description_fields(desc_content)",
@@ -1032,8 +960,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#arguments-9",
-    "href": "r_package.html#arguments-9",
+    "objectID": "r_package.html#arguments-8",
+    "href": "r_package.html#arguments-8",
     "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_content: Parsed DESCRIPTION content list",
@@ -1056,8 +984,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#value-9",
-    "href": "r_package.html#value-9",
+    "objectID": "r_package.html#value-8",
+    "href": "r_package.html#value-8",
     "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with formatted DESCRIPTION fields\n\nThis function is part of the dataimago ethical AI framework.",
@@ -1068,8 +996,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#description-11",
-    "href": "r_package.html#description-11",
+    "objectID": "r_package.html#description-10",
+    "href": "r_package.html#description-10",
     "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nGenerate API Reference QMD Content",
@@ -1080,8 +1008,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#usage-10",
-    "href": "r_package.html#usage-10",
+    "objectID": "r_package.html#usage-9",
+    "href": "r_package.html#usage-9",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\ngenerate_api_reference_qmd(\n  desc_content,\n  rd_content,\n  include_description = TRUE,\n  include_foundation_links = TRUE\n)",
@@ -1092,8 +1020,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#arguments-10",
-    "href": "r_package.html#arguments-10",
+    "objectID": "r_package.html#arguments-9",
+    "href": "r_package.html#arguments-9",
     "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_content: Parsed DESCRIPTION content\nrd_content: Converted .Rd content\ninclude_description: Include DESCRIPTION section\ninclude_foundation_links: Include dataimago foundation links",
@@ -1116,8 +1044,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#value-10",
-    "href": "r_package.html#value-10",
+    "objectID": "r_package.html#value-9",
+    "href": "r_package.html#value-9",
     "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with complete qmd content\n\nThis function is part of the dataimago ethical AI framework.",
@@ -1128,8 +1056,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#description-12",
-    "href": "r_package.html#description-12",
+    "objectID": "r_package.html#description-11",
+    "href": "r_package.html#description-11",
     "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nGenerate _quarto.yml Configuration File",
@@ -1140,8 +1068,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#usage-11",
-    "href": "r_package.html#usage-11",
+    "objectID": "r_package.html#usage-10",
+    "href": "r_package.html#usage-10",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\ngenerate_quarto_yml(desc_content, template = \"dataimago\")",
@@ -1152,8 +1080,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#arguments-11",
-    "href": "r_package.html#arguments-11",
+    "objectID": "r_package.html#arguments-10",
+    "href": "r_package.html#arguments-10",
     "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_content: Parsed DESCRIPTION content\ntemplate: Template type (currently supports “dataimago”)",
@@ -1176,8 +1104,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#value-11",
-    "href": "r_package.html#value-11",
+    "objectID": "r_package.html#value-10",
+    "href": "r_package.html#value-10",
     "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with _quarto.yml content\n\nThis function is part of the dataimago ethical AI framework.",
@@ -1188,8 +1116,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#description-13",
-    "href": "r_package.html#description-13",
+    "objectID": "r_package.html#description-12",
+    "href": "r_package.html#description-12",
     "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nParse DESCRIPTION File",
@@ -1200,8 +1128,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#usage-12",
-    "href": "r_package.html#usage-12",
+    "objectID": "r_package.html#usage-11",
+    "href": "r_package.html#usage-11",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nparse_description_file(desc_file)",
@@ -1212,8 +1140,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#arguments-12",
-    "href": "r_package.html#arguments-12",
+    "objectID": "r_package.html#arguments-11",
+    "href": "r_package.html#arguments-11",
     "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\ndesc_file: Path to DESCRIPTION file",
@@ -1236,8 +1164,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#value-12",
-    "href": "r_package.html#value-12",
+    "objectID": "r_package.html#value-11",
+    "href": "r_package.html#value-11",
     "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nList containing parsed DESCRIPTION fields\n\nThis function is part of the dataimago ethical AI framework.",
@@ -1248,8 +1176,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#description-14",
-    "href": "r_package.html#description-14",
+    "objectID": "r_package.html#description-13",
+    "href": "r_package.html#description-13",
     "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nPost-Process Markdown to QMD Format with dataimago Customizations",
@@ -1260,8 +1188,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#usage-13",
-    "href": "r_package.html#usage-13",
+    "objectID": "r_package.html#usage-12",
+    "href": "r_package.html#usage-12",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\npost_process_md_to_qmd(md_content, func_name)",
@@ -1272,8 +1200,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#arguments-13",
-    "href": "r_package.html#arguments-13",
+    "objectID": "r_package.html#arguments-12",
+    "href": "r_package.html#arguments-12",
     "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\nmd_content: Character vector of markdown content from Rd2md\nfunc_name: Function name for customization",
@@ -1296,8 +1224,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#value-13",
-    "href": "r_package.html#value-13",
+    "objectID": "r_package.html#value-12",
+    "href": "r_package.html#value-12",
     "title": "dataimago R Package Documentation",
     "section": "Value",
     "text": "Value\nCharacter vector with qmd-formatted content\n\nThis function is part of the dataimago ethical AI framework.",
@@ -1308,8 +1236,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#description-15",
-    "href": "r_package.html#description-15",
+    "objectID": "r_package.html#description-14",
+    "href": "r_package.html#description-14",
     "title": "dataimago R Package Documentation",
     "section": "Description",
     "text": "Description\n\nThis function embodies dataimago’s principle of embedding AI within culture for emancipatory purposes.\n\nUpdate dataimago Assets in Quarto Website",
@@ -1320,8 +1248,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#usage-14",
-    "href": "r_package.html#usage-14",
+    "objectID": "r_package.html#usage-13",
+    "href": "r_package.html#usage-13",
     "title": "dataimago R Package Documentation",
     "section": "Usage",
     "text": "Usage\nupdate_dataimago_assets(output_path, package_path)",
@@ -1332,8 +1260,8 @@
     ]
   },
   {
-    "objectID": "r_package.html#arguments-14",
-    "href": "r_package.html#arguments-14",
+    "objectID": "r_package.html#arguments-13",
+    "href": "r_package.html#arguments-13",
     "title": "dataimago R Package Documentation",
     "section": "Arguments",
     "text": "Arguments\n\noutput_path: Path to quarto website directory\npackage_path: Path to package root",
@@ -1852,7 +1780,7 @@
     "href": "design_system.html#multi-platform-distribution",
     "title": "Design System",
     "section": "Multi-Platform Distribution",
-    "text": "Multi-Platform Distribution\nThe design system serves four primary platforms with consistent ethical enforcement:\n\nR packages — for data science workflows\nQuarto documents — for reproducible reporting and websites\nWeb applications — Next.js, D3.js interactive visualizations\nLaTeX/PDF — Academic publishing and archival output via dataimago.sty\n\nThe two-stage build system produces universal assets in standalone mode and optimized, PurgeCSS-reduced assets when consumed as a submodule.",
+    "text": "Multi-Platform Distribution\nThe design system serves four primary platforms with consistent ethical enforcement:\n\nR packages — for data science workflows\nQuarto documents — for reproducible reporting and websites\nWeb applications — Next.js, D3.js interactive visualizations\nLaTeX/PDF — Academic publishing and archival output via dataimago.sty\n\nThe design system is consumed through the published @dataimago/tokens, @dataimago/css, and @dataimago/ui packages on public npm. Consumers resolve the same identity regardless of whether they build a Quarto site, a Shiny app, or a Next.js application.",
     "crumbs": [
       "Home",
       "Ethics & Design",
@@ -1876,7 +1804,7 @@
     "href": "design_system.html#token-files",
     "title": "Design System",
     "section": "Token Files",
-    "text": "Token Files\nSource tokens are defined in the dataimago-design repository:\n\nsrc/tokens/colors.json — Brand, functional, and ethical color values\nsrc/tokens/typography.json — Font stacks and sizing scales\nsrc/tokens/spacing.json — Layout and spacing values\nsrc/tokens/effects.json — Shadow, motion, and transition definitions\nsrc/styles/ — SCSS compilation from tokens to platform-specific output\ntools/ — Ethical validators (contrast, motion, bundle size)",
+    "text": "Token Files\nSource tokens are defined in the sibling dataimago-design monorepo and shipped through the @dataimago/tokens package on npm. Consumers of this R package pick them up automatically via ui/package.json + ui/build.js:\n\n@dataimago/tokens — colors, typography, spacing, effects, and ethical-constraint tokens; emits tokens.{css,scss} plus JS/TS modules\n@dataimago/css — compiled dataimago.{css,min.css} and the tailwind-preset for Next.js\n@dataimago/ui — React component bundle (optional)\n\nInside the dataimago-design repo, the upstream layout is roughly:\n\npackages/tokens/src/tokens/{colors,typography,spacing,effects}.json\npackages/css/src/styles/ — SCSS compilation from tokens to platform-specific output\ntools/ — Ethical validators (contrast, motion, bundle size)",
     "crumbs": [
       "Home",
       "Ethics & Design",
@@ -1936,7 +1864,7 @@
     "href": "index.html",
     "title": "dataimago: An AI-Native Application Development Framework for Data Science",
     "section": "",
-    "text": "AI-Native Development Framework\ndataimago represents a new paradigm in data science application development, designed specifically for integration with AI-native workflows and modern web frameworks. Built with comprehensive design systems and ethical AI principles at its core.\n\n\nComplete Build Pipeline & Multi-Platform Deployment\nThe framework provides automated CSS compilation from design tokens to production-ready assets. A single source generates optimized builds for Quarto websites, Shiny applications, Next.js platforms, and CDN distribution.\n\n\nMCP-Compatible & AI-Agent Ready\nAll functions are designed with structured, machine-readable interfaces that enable seamless collaboration between human developers and AI agents. JSON-compatible results and deterministic operations ensure reliable automation.\n\n\nR-First Workflows with Modern Web Tools\nFamiliar R interfaces wrap sophisticated Node.js build tools, providing the power of modern web development without requiring developers to leave their preferred environment.\n\n\nProfessional Documentation & Design Systems\nAutomated generation of branded websites with consistent styling, comprehensive API documentation, and responsive design patterns that work across all deployment targets.\n\n\nRapid Development with Consistent Quality\nFrom concept to deployment in minimal time, with built-in design systems ensuring professional results. Scalable architecture supports everything from simple documentation sites to complex data applications.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n⚡ Development Tools\nComplete Build Pipeline\nAutomated CSS compilation from design tokens to production-ready assets\nMulti-Platform Deployment\nSingle source generates assets for Quarto, Shiny, Next.js, and CDN\nProfessional Documentation\nAutomated generation of branded websites with consistent styling\n\n\nQuick Start Workflow\ncreate_ui_workspace()        # Setup environment\nbuild_design_system()        # Compile assets  \ncreate_quarto_documentation() # Generate docs\n\n\n\n\n\n\n🤖 AI-Native Features\nMCP-Compatible APIs\nStructured functions designed for AI agent consumption and automation\nDeterministic Operations\nReproducible builds with comprehensive error handling and validation\nMachine-Readable Outputs\nJSON-compatible results for seamless programmatic integration\n\n\n  \n\n\n\n\n\n🎯 Framework Benefits\n\n\nRapid Development\nComplete applications from concept to deployment in minimal time\nConsistent Quality\nBuilt-in design systems ensure professional results across all platforms\nAI-Agent Ready\nMCP-compatible tooling enables seamless human-AI collaboration\nScalable Architecture\nMulti-platform deployment from single source with automated optimization\n\n\n\n\nAPI Reference\nComplete function documentation and examples\nFramework Documentation\nArchitecture • Development Patterns"
+    "text": "AI-Native Development Framework\ndataimago represents a new paradigm in data science application development, designed specifically for integration with AI-native workflows and modern web frameworks. Built with comprehensive design systems and ethical AI principles at its core.\n\n\nComplete Build Pipeline & Multi-Platform Deployment\nThe framework provides automated CSS compilation from design tokens to production-ready assets. A single source generates optimized builds for Quarto websites, Shiny applications, Next.js platforms, and CDN distribution.\n\n\nMCP-Compatible & AI-Agent Ready\nAll functions are designed with structured, machine-readable interfaces that enable seamless collaboration between human developers and AI agents. JSON-compatible results and deterministic operations ensure reliable automation.\n\n\nR-First Workflows with Modern Web Tools\nFamiliar R interfaces wrap sophisticated Node.js build tools, providing the power of modern web development without requiring developers to leave their preferred environment.\n\n\nProfessional Documentation & Design Systems\nAutomated generation of branded websites with consistent styling, comprehensive API documentation, and responsive design patterns that work across all deployment targets.\n\n\nRapid Development with Consistent Quality\nFrom concept to deployment in minimal time, with built-in design systems ensuring professional results. Scalable architecture supports everything from simple documentation sites to complex data applications.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n⚡ Development Tools\nComplete Build Pipeline\nAutomated CSS compilation from design tokens to production-ready assets\nMulti-Platform Deployment\nSingle source generates assets for Quarto, Shiny, Next.js, and CDN\nProfessional Documentation\nAutomated generation of branded websites with consistent styling\n\n\nQuick Start Workflow\n# One-time bootstrap (Node bootstrap is manual as of 0.0-4.0):\ncd ui && pnpm install\nbuild_design_system()         # Compile + distribute @dataimago/* assets\ncreate_quarto_documentation() # Generate docs\n\n\n\n\n\n\n🤖 AI-Native Features\nMCP-Compatible APIs\nStructured functions designed for AI agent consumption and automation\nDeterministic Operations\nReproducible builds with comprehensive error handling and validation\nMachine-Readable Outputs\nJSON-compatible results for seamless programmatic integration\n\n\n  \n\n\n\n\n\n🎯 Framework Benefits\n\n\nRapid Development\nComplete applications from concept to deployment in minimal time\nConsistent Quality\nBuilt-in design systems ensure professional results across all platforms\nAI-Agent Ready\nMCP-compatible tooling enables seamless human-AI collaboration\nScalable Architecture\nMulti-platform deployment from single source with automated optimization\n\n\n\n\nAPI Reference\nComplete function documentation and examples\nFramework Documentation\nArchitecture • Development Patterns"
   },
   {
     "objectID": "news.html",

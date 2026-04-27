@@ -1,6 +1,17 @@
 # Historical Asset Consolidation Roadmap
 
-> **Status: HISTORICAL / SUPERSEDED.** This document describes an early (Aug 2025) asset-consolidation plan that targeted a `/ui/src/js/{vendor,pages,utils}/` structure. That architecture was never implemented; `ui/src/` evolved into the `dataimago-design` git submodule instead. The current roadmap lives at `ui/src/dataimago-design/wiki/analyses/development-roadmap.md`. Kept here for historical reference only -- do not use as a source of current architectural truth.
+> **Status: HISTORICAL / SUPERSEDED.** This document describes an early
+> (Aug 2025) asset-consolidation plan that targeted a
+> `/ui/src/js/{vendor,pages,utils}/` structure. That architecture was
+> never implemented; `ui/src/` briefly evolved into the
+> `dataimago-design` git submodule, which was itself retired in
+> `dataimago` 0.0-4.0 in favour of the package-channel model
+> (`@dataimago/tokens`, `@dataimago/css`, `@dataimago/ui` on public npm;
+> see 0.0-5.0 for the scope unification).
+> The current roadmap lives in the sibling `dataimago-design` repo at
+> `wiki/analyses/development-roadmap.md` (clone that repo directly; no
+> submodule link remains). Kept here for historical reference only --
+> do not use as a source of current architectural truth.
 
 ## Objective (Historical)
 Bring all remaining orphaned assets under the `/ui/src/` source-of-truth architecture to complete the "AI-Native Web Application Development Workspace" vision.

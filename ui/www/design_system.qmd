@@ -81,7 +81,10 @@ The design system serves four primary platforms with consistent ethical enforcem
 - **Web applications** --- Next.js, D3.js interactive visualizations
 - **LaTeX/PDF** --- Academic publishing and archival output via `dataimago.sty`
 
-The two-stage build system produces universal assets in standalone mode and optimized, PurgeCSS-reduced assets when consumed as a submodule.
+The design system is consumed through the published `@dataimago/tokens`,
+`@dataimago/css`, and `@dataimago/ui` packages on public npm. Consumers
+resolve the same identity regardless of whether they build a Quarto
+site, a Shiny app, or a Next.js application.
 
 ## Typography as Democratic Infrastructure
 
@@ -94,11 +97,21 @@ Font choices prioritize reading accessibility over brand personality:
 
 ## Token Files
 
-Source tokens are defined in the dataimago-design repository:
+Source tokens are defined in the sibling `dataimago-design` monorepo
+and shipped through the `@dataimago/tokens` package on npm. Consumers
+of this R package pick them up automatically via
+`ui/package.json` + `ui/build.js`:
 
-- `src/tokens/colors.json` --- Brand, functional, and ethical color values
-- `src/tokens/typography.json` --- Font stacks and sizing scales
-- `src/tokens/spacing.json` --- Layout and spacing values
-- `src/tokens/effects.json` --- Shadow, motion, and transition definitions
-- `src/styles/` --- SCSS compilation from tokens to platform-specific output
+- `@dataimago/tokens` --- colors, typography, spacing, effects, and
+  ethical-constraint tokens; emits `tokens.{css,scss}` plus JS/TS
+  modules
+- `@dataimago/css` --- compiled `dataimago.{css,min.css}` and the
+  `tailwind-preset` for Next.js
+- `@dataimago/ui` --- React component bundle (optional)
+
+Inside the `dataimago-design` repo, the upstream layout is roughly:
+
+- `packages/tokens/src/tokens/{colors,typography,spacing,effects}.json`
+- `packages/css/src/styles/` --- SCSS compilation from tokens to
+  platform-specific output
 - `tools/` --- Ethical validators (contrast, motion, bundle size)

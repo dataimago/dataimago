@@ -22,7 +22,7 @@ and [`consuming-the-design-system` onboarding](../../../dataimago-design/wiki/on
    `dataimago-dark.scss`) and the `website-theme.css` / `website-theme.min.css`
    aliases locally from the installed tokens. These filenames are contractual:
    `R/design_system.R` and `inst/quarto-assets/` assume them.
-3. **Stage 3 — Copy** the optional `@dataimago-ui/components` ESM+CJS bundle
+3. **Stage 3 — Copy** the optional `@dataimago/ui` ESM+CJS bundle
    into `ui/dist/js/dataimago-ui/` if the package is installed.
 4. **Stage 4 — Distribute** `ui/dist/` into the four consumer channels that
    the R package exposes:
@@ -40,12 +40,11 @@ list is written alongside the CSS so the R side can cite provenance.
 
 - **pnpm** (this `ui/` directory is not a pnpm workspace root; it has its own
   lockfile so R-side tooling can install assets deterministically).
-- `.npmrc` in this directory maps `@dataimago/*` to public npm and
-  `@dataimago-ui/*` to GitHub Packages. Set `GITHUB_PACKAGES_TOKEN` (with at
-  least `read:packages`) before `pnpm install`.
+- `.npmrc` in this directory pins the `@dataimago/*` scope to public npm.
+  All three packages (`tokens`, `css`, `ui`) ship from a single registry
+  and need no auth token for read access.
 
 ```bash
-export GITHUB_PACKAGES_TOKEN=<github PAT with read:packages>
 pnpm install
 pnpm build
 ```
@@ -71,9 +70,9 @@ for the end-to-end workflow.
 
 ## R-side contract
 
-R functions in `R/design_system.R`, `R/asset_sync.R`, and
-`R/build_framework.R` assume these filenames exist in `ui/dist/` and in
-`inst/quarto-assets/` after a successful `pnpm build`:
+R functions in `R/design_system.R` and `R/asset_sync.R` assume these
+filenames exist in `ui/dist/` and in `inst/quarto-assets/` after a
+successful `pnpm build`:
 
 - `tokens.css`, `tokens.scss`
 - `dataimago.css`, `dataimago.min.css`

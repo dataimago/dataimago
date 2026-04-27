@@ -229,14 +229,15 @@ graph TB
 ```r
 library(dataimago)
 
-# 1. Ensure sophisticated UI workspace exists
-create_ui_workspace()  # Preserves existing sophisticated system
+# 1. One-time Node bootstrap in the package's ui/ directory
+#      cd ui && pnpm install
+#    (see ../../dataimago-design/wiki/patterns/new-consumer-checklist.md)
 
 # 2. Build all assets including CDN distribution
 build_design_system(
   include_sri = TRUE,      # Generate security hashes
   update_extension = TRUE, # Update Quarto extension
-  verbose = TRUE          # Show detailed progress
+  verbose = TRUE           # Show detailed progress
 )
 
 # 3. Files automatically copied from ui/dist/ to inst/quarto-assets/
@@ -299,10 +300,17 @@ This indicates build issues. Expected sizes:
 - `website-theme.min.css`: ~17KB (minified website theme)
 
 ```r
-# Check if sophisticated UI system exists
-list.files("ui/src/dataimago-design/", recursive = TRUE)  # Should show tokens/ and styles/
+# Verify the package-channel install brought in @dataimago/* packages.
+# (The ui/src/dataimago-design/ submodule was retired in 0.0-4.0.)
+list.files("ui/node_modules/@dataimago", recursive = FALSE)
+# Expect: "css", "tokens", "ui"  (all three ship from public npm; the
+# @dataimago-ui/components interim scope was unified into @dataimago/ui
+# on public npm in 0.0-5.0)
 
-# If missing or files too small, rebuild
+# If missing or files too small, reinstall + rebuild
+# (run from the ui/ directory of your consumer):
+#   pnpm install
+#   pnpm run build
 build_design_system(force_rebuild = TRUE)
 ```
 

@@ -77,9 +77,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-712d40c5d83700a6a154a96e67800b08.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b264b5e2a85417dd994fbc7d5248eee8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-712d40c5d83700a6a154a96e67800b08.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3b66461afbde23616a9df089707957b4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-36620f65128d9e3850e120d37934c983.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3b66461afbde23616a9df089707957b4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -685,7 +685,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Web applications</strong> — Next.js, D3.js interactive visualizations</li>
 <li><strong>LaTeX/PDF</strong> — Academic publishing and archival output via <code>dataimago.sty</code></li>
 </ul>
-<p>The two-stage build system produces universal assets in standalone mode and optimized, PurgeCSS-reduced assets when consumed as a submodule.</p>
+<p>The design system is consumed through the published <code>@dataimago/tokens</code>, <code>@dataimago/css</code>, and <code>@dataimago/ui</code> packages on public npm. Consumers resolve the same identity regardless of whether they build a Quarto site, a Shiny app, or a Next.js application.</p>
 </section>
 <section id="typography-as-democratic-infrastructure" class="level2">
 <h2 class="anchored" data-anchor-id="typography-as-democratic-infrastructure">Typography as Democratic Infrastructure</h2>
@@ -699,13 +699,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="token-files" class="level2">
 <h2 class="anchored" data-anchor-id="token-files">Token Files</h2>
-<p>Source tokens are defined in the dataimago-design repository:</p>
+<p>Source tokens are defined in the sibling <code>dataimago-design</code> monorepo and shipped through the <code>@dataimago/tokens</code> package on npm. Consumers of this R package pick them up automatically via <code>ui/package.json</code> + <code>ui/build.js</code>:</p>
 <ul>
-<li><code>src/tokens/colors.json</code> — Brand, functional, and ethical color values</li>
-<li><code>src/tokens/typography.json</code> — Font stacks and sizing scales</li>
-<li><code>src/tokens/spacing.json</code> — Layout and spacing values</li>
-<li><code>src/tokens/effects.json</code> — Shadow, motion, and transition definitions</li>
-<li><code>src/styles/</code> — SCSS compilation from tokens to platform-specific output</li>
+<li><code>@dataimago/tokens</code> — colors, typography, spacing, effects, and ethical-constraint tokens; emits <code>tokens.{css,scss}</code> plus JS/TS modules</li>
+<li><code>@dataimago/css</code> — compiled <code>dataimago.{css,min.css}</code> and the <code>tailwind-preset</code> for Next.js</li>
+<li><code>@dataimago/ui</code> — React component bundle (optional)</li>
+</ul>
+<p>Inside the <code>dataimago-design</code> repo, the upstream layout is roughly:</p>
+<ul>
+<li><code>packages/tokens/src/tokens/{colors,typography,spacing,effects}.json</code></li>
+<li><code>packages/css/src/styles/</code> — SCSS compilation from tokens to platform-specific output</li>
 <li><code>tools/</code> — Ethical validators (contrast, motion, bundle size)</li>
 </ul>
 

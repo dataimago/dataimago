@@ -33,8 +33,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
-          submodules: recursive
-          token: ${{ secrets.SUBMODULE_PAT || github.token }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -93,9 +91,14 @@ jobs:
 
           ### Technical Architecture
           - All R functions with complete roxygen2 documentation
-          - Design system source of truth (ui/src/dataimago-design/)
+          - UI consumer layer that pulls the design system from published
+            packages (ui/build.js, ui/package.json, ui/.npmrc). The
+            authoritative design-system source of truth lives in the sibling
+            dataimago-design repo and ships via @dataimago/tokens,
+            @dataimago/css, and @dataimago/ui (single public-npm registry,
+            no auth token required for read access)
           - Multi-platform build system (Quarto, CDN, Next.js integration)
-          - Git submodule workflow and CI/CD patterns
+          - Package-channel publishing + CI/CD patterns
 
           ### AI Agent Context
           - CLAUDE.md and AGENT_INDEX.md coordination files

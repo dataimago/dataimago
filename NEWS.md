@@ -1,14 +1,21 @@
-# dataimago 0.0-4.0 (in development)
+# dataimago 0.0-5.0
 
-## Design System Option B — Package-Channel Consumption (2026-04-21)
+## Package-Channel Migration + R API Cleanup (2026-04-27)
 
-The `ui/src/dataimago-design/` git submodule has been retired. `dataimago-rpkg`
-now consumes the design system as three published packages, matching the
-contract landed for `dataimago-ai`:
+This release ships the `0.0-4.x` package-channel transition end-to-end. The
+`ui/src/dataimago-design/` git submodule has been retired and `dataimago-rpkg`
+now consumes the design system as three published packages on a **single
+public-npm registry**, matching the posture already adopted by the sibling
+`dataimago-design` and `dataimago-ai` repos:
 
-- `@dataimago/tokens` — canonical JSON tokens + `tokens.{css,scss}` (public npm)
-- `@dataimago/css` — compiled `dataimago.{css,min.css}` + Tailwind preset (public npm)
-- `@dataimago-ui/components` — React component bundle (GitHub Packages; optional)
+- `@dataimago/tokens` — canonical JSON tokens + `tokens.{css,scss}`
+- `@dataimago/css` — compiled `dataimago.{css,min.css}` + Tailwind preset
+- `@dataimago/ui` — React component bundle (optional)
+
+No auth token is required for read access. The interim
+`@dataimago-ui/components` scope on GitHub Packages — referenced in the
+0.0-4.x WIP but never actually published — has been folded into
+`@dataimago/ui` on public npm. See the *Scope migration* subsection below.
 
 ### Changed
 
@@ -18,9 +25,10 @@ contract landed for `dataimago-ai`:
   the installed tokens, and fans assets out to `inst/quarto-assets/`,
   `ui/www/assets/css/`, `ui/www/_extensions/dataimago/ai-native/assets/css/`,
   and `docs/assets/css/` — preserving every filename the R side depends on.
-* **`ui/package.json`** — declares `@dataimago/tokens`, `@dataimago/css`, and
-  `@dataimago-ui/components` as dependencies; removes the legacy
-  Style-Dictionary / Sass / PostCSS toolchain that lived here previously.
+* **`ui/package.json`** — declares `@dataimago/tokens`, `@dataimago/css`,
+  and `@dataimago/ui` (all `^0.1.0-alpha.1`) as dependencies; removes the
+  legacy Style-Dictionary / Sass / PostCSS toolchain that lived here
+  previously.
 * **`ui/README.md`** — rewritten to document the new package-channel build
   pipeline and the prototype-in-consumer loop.
 * **`CLAUDE.md`** — session-start protocol, directory guide, build flow, and
@@ -28,12 +36,21 @@ contract landed for `dataimago-ai`:
 
 ### Added
 
-* **`ui/.npmrc`** — scope → registry mapping (public npm for `@dataimago/*`,
-  GitHub Packages for `@dataimago-ui/*`). Requires `GITHUB_PACKAGES_TOKEN`
-  with `read:packages` for first install.
+* **`ui/.npmrc`** — pins the `@dataimago` scope to public npm. Single
+  registry, single auth posture (`always-auth=true`); no token required
+  for read access. Tracked via a `!ui/.npmrc` exception in `.gitignore`
+  so consumers cloning the repo pick it up directly.
 * **`tools/design-link.mjs`** + **`pnpm design:{link,unlink,status}`** in
   `ui/` — link `@dataimago/*` to a local `dataimago-design` checkout via
   pnpm `overrides` for iterative prototyping.
+* **`tools/check-no-link-overrides.mjs`** +
+  **`.github/workflows/design-link-guard.yml`** — enforce the ADR's
+  prototype-in-consumer contract symmetrically with `dataimago-ai`. The
+  workflow runs on every pull request and push to `main` and fails the
+  build if `ui/package.json` still contains `link:` or `file:` overrides
+  for any `@dataimago/*` package. See
+  `dataimago-design/wiki/patterns/prototype-in-consumer.md` for the
+  governance rationale and the companion local-dev loop.
 
 ### Removed
 
@@ -41,6 +58,115 @@ contract landed for `dataimago-ai`:
   entry.
 * Legacy `ui/build-legacy.js`-style two-stage build invocation (delegated
   upstream to `dataimago-design`'s own monorepo build).
+* `GITHUB_PACKAGES_TOKEN` plumbing across `.github/workflows/`, `ui/.npmrc`,
+  README/CLAUDE/inst documentation, and `ui/build.js` header comments. The
+  package channel is single-registry public npm; consumers and CI no
+  longer set this secret.
+
+### Scope migration — `@dataimago-ui/components` → `@dataimago/ui`
+
+The 0.0-4.x WIP referenced an `@dataimago-ui/components` package on
+GitHub Packages, but that scope was **never actually published** — the
+design + ai stack consolidated to `@dataimago/ui` on public npm before
+the rpkg-side migration shipped. This release folds the rename in so
+`cd ui && pnpm install` resolves cleanly:
+
+* All three packages now resolve from a single registry (public npm) at
+  `^0.1.0-alpha.1`, matching what `dataimago-design`'s `release.yml`
+  publishes and what `dataimago-ai/apps/platform` consumes.
+* Renamed across `ui/package.json`, `ui/build.js` (path constants,
+  `requirePkg` calls, Stage 3 console banner, manifest sources),
+  `tools/check-no-link-overrides.mjs`, `tools/design-link.mjs`, and
+  `.github/workflows/ai-context.yml`.
+* All package and roxygen documentation (`README.md`, `CLAUDE.md`,
+  `ui/README.md`, `ui/www/README.md`, `ui/www/design_system.qmd`,
+  `inst/dataimago/{ARCHITECTURE,HISTORICAL_ROADMAP}.md`,
+  `inst/quarto-assets/README{,-latex}.md`, `R/dataimago-package.R`,
+  `R/design_system.R`) was updated to the unified scope.
+* Ignore-pattern files (`.gitignore`, `.Rbuildignore`, `.repomixignore`)
+  were updated, including a `!ui/.npmrc` exception so the npmrc tracks
+  in-repo.
+
+### Breaking changes (R API)
+
+Alongside the submodule retirement, this release removes the in-package
+scaffolders and related workflow pieces that assumed a co-located
+`ui/src/dataimago-design/` source tree. Downstream consumers calling any
+of the symbols below need to migrate before upgrading.
+
+* **`create_ui_workspace()` — removed.** No longer exported. Consumer
+  repos must bootstrap their own `ui/` directory manually by copying the
+  reference `ui/package.json`, `ui/.npmrc`, and `ui/build.js` from this
+  package and running `cd ui && pnpm install && pnpm build`. Full steps in
+  `dataimago-design/wiki/patterns/new-consumer-checklist.md`.
+* **`build_design_framework()` — removed.** The entire `R/build_framework.R`
+  file was deleted. The framework is now assembled upstream in the
+  `dataimago-design` monorepo and shipped via `@dataimago/tokens`,
+  `@dataimago/css`, and `@dataimago/ui` on public npm. Use
+  `pnpm update @dataimago/tokens @dataimago/css @dataimago/ui` in `ui/`
+  followed by `build_design_system()` to refresh consumer assets.
+* **`scaffold_full_quarto_site()`, `scaffold_ethics_pages()`,
+  `scaffold_js_assets()`, `load_quarto_template()`,
+  `render_quarto_template()`, `build_quarto_template_vars()`,
+  `scaffold_content_directories()`, `scaffold_utility_pages()` — removed.**
+  These internal helpers generated a Quarto site scaffold from assets
+  inside the submodule; they have no package-channel equivalent. Use the
+  documented `create_quarto_documentation(template = "dataimago")`
+  baseline and hand-author any additional pages in the consumer's own
+  Quarto project. The `scaffold_full_site` and `include_ethics`
+  parameters of `create_quarto_documentation()` were removed accordingly.
+* **`ai(mode = "local")` — removed.** `ai()` no longer supports a local
+  pipeline. Calling it with `mode = "local"` now throws an explanatory
+  `stop()` pointing to `mode = "remote"` (the recommended path, which
+  requires `DATAIMAGO_API_KEY`) or to the manual
+  `new-consumer-checklist.md`. `ai_remote()` likewise no longer falls
+  back to the local pipeline when the platform API is unreachable — it
+  errors with the HTTP failure so consumers see the problem.
+* **`build_design_system()` Step 5 (LaTeX distribution) — removed.** The
+  automatic copy of `dataimago.sty` out of the submodule into
+  `inst/quarto-assets/`, `ui/www/_extensions/.../latex/`,
+  `ui/www/assets/latex/`, and `docs/assets/latex/` has been removed. A
+  future `@dataimago/latex` npm package will restore the packaged
+  channel; in the interim, consumers that need PDF styling should copy
+  `inst/quarto-assets/dataimago.sty` into their project by hand. See
+  `inst/quarto-assets/README-latex.md` for the transitional workflow.
+* **`generate_ethical_ci()` CI template — `submodules: recursive` dropped.**
+  The actions/checkout step emitted for downstream CI no longer requests
+  recursive submodule checkout. Downstream consumers that were relying on
+  the template to pull `dataimago-design` as a submodule must switch to
+  the package-channel install (`pnpm install` from public npm; no token
+  required).
+* **Workflow secrets — `SUBMODULE_PAT` no longer read.** All six
+  `.github/workflows/*.yml` files in this package were cleaned up
+  (`ai-context.yml`, `R-CMD-check.yml`, `netlify-deploy.yml`,
+  `quarto-deploy.yml`, `release-cdn.yml`, `test-suite.yml`): the
+  `submodules: recursive` and `token: ${{ secrets.SUBMODULE_PAT || github.token }}`
+  inputs were removed from `actions/checkout`, and the `rm -rf
+  ui/src/dataimago-design/node_modules` cleanup step was removed from
+  `R-CMD-check.yml`. Fork maintainers can retire the `SUBMODULE_PAT`
+  repository secret.
+* **Generated docs refreshed.** `NAMESPACE` no longer exports the removed
+  functions; the corresponding `.Rd` files under `man/`
+  (`build_design_framework.Rd`, `create_ui_workspace.Rd`,
+  `scaffold_full_quarto_site.Rd`, `scaffold_ethics_pages.Rd`,
+  `scaffold_js_assets.Rd`, `load_quarto_template.Rd`,
+  `render_quarto_template.Rd`, `build_quarto_template_vars.Rd`,
+  `scaffold_content_directories.Rd`, `scaffold_utility_pages.Rd`) were
+  deleted. `docs/` was re-rendered and `dataimago-repomix.{md,xml}` was
+  regenerated.
+
+### Migration summary
+
+| If you were calling…                   | Do this instead                                                                                             |
+|----------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| `create_ui_workspace()`                | Copy `ui/package.json` + `ui/.npmrc` + `ui/build.js`, then `cd ui && pnpm install`                          |
+| `build_design_framework()`             | `pnpm update @dataimago/*` in `ui/`, then `build_design_system()`                                           |
+| `scaffold_full_quarto_site()` & kin    | `create_quarto_documentation(template = "dataimago")`, author extras by hand                                |
+| `create_quarto_documentation(scaffold_full_site = TRUE, include_ethics = TRUE)` | Drop both arguments — they were removed                                               |
+| `ai(mode = "local")`                   | `ai(mode = "remote")` with `DATAIMAGO_API_KEY` set, or bootstrap by hand via `new-consumer-checklist.md`    |
+| `ai_remote()` with no API key / reachable API | Provide `DATAIMAGO_API_KEY` and confirm the platform endpoint; no silent fallback remains          |
+| `build_design_system()` LaTeX step     | Manually copy `inst/quarto-assets/dataimago.sty` into the consumer until `@dataimago/latex` ships           |
+| `generate_ethical_ci()` emitted CI     | Regenerate CI from the updated template; drop `SUBMODULE_PAT` from repo secrets                             |
 
 ### Context
 

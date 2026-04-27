@@ -2,11 +2,9 @@
 
 export(ai)
 export(build_design_components)
-export(build_design_framework)
 export(build_design_system)
 export(check_quarto_asset_status)
 export(create_quarto_documentation)
-export(create_ui_workspace)
 export(export_static_api)
 export(generate_ai_context)
 export(generate_api_scaffolding)

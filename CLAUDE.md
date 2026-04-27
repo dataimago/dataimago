@@ -17,16 +17,27 @@ At the start of every session:
 
 > **Post-submodule update (Apr 2026):** The `ui/src/dataimago-design/`
 > submodule has been retired. Design-system assets now arrive through the
-> published `@dataimago/tokens`, `@dataimago/css`, and
-> `@dataimago-ui/components` packages consumed by `ui/build.js`. See
+> published `@dataimago/tokens`, `@dataimago/css`, and `@dataimago/ui`
+> packages on public npm, consumed by `ui/build.js`. See
 > `dataimago-design/wiki/decisions/publish-packages.md`.
 
 ## Generation Architecture: Local and Remote Modes
 
 The `ai()` function supports two generation modes:
 
-- **Local mode** (`mode = "local"`, default): Runs the full Phase 1-5 pipeline locally. Requires Node.js, pnpm, and git. Produces the application directly on disk.
-- **Remote mode** (`mode = "remote"`): Delegates generation to the dataimago-ai platform API at `/api/orchestrate`. Requires a `DATAIMAGO_API_KEY` environment variable. Falls back to local mode if the API is unreachable.
+- **Remote mode** (`mode = "remote"`, recommended): Delegates generation to the
+  dataimago-ai platform API at `/api/orchestrate`. Requires a
+  `DATAIMAGO_API_KEY` environment variable. In `dataimago` 0.0-4.0 there is
+  **no local fallback** — if the API is unreachable, `ai_remote()` errors
+  rather than silently degrading.
+- **Local mode** (`mode = "local"`): **Retired in 0.0-4.0.** The
+  in-package scaffolders (`build_design_framework()`,
+  `create_ui_workspace()`, `scaffold_full_quarto_site()` and friends)
+  were removed alongside the `ui/src/dataimago-design/` submodule. Calling
+  `ai(mode = "local")` now throws an explanatory `stop()` with pointers
+  to the remote mode and to the manual
+  [`new-consumer-checklist.md`](../../dataimago-design/wiki/patterns/new-consumer-checklist.md).
+  See `NEWS.md` 0.0-4.0 for the migration note.
 
 Remote mode makes dataimago-ai the canonical generation authority — the platform assembles files using canonical templates from dataimago-design and returns them for the R package to write to disk.
 
@@ -55,11 +66,11 @@ longer a `ui/src/dataimago-design/` submodule:
 |-----------------------------|-------------------|----------------------------------------------------------|
 | `@dataimago/tokens`         | public npm        | Canonical JSON tokens + `tokens.{css,scss}`              |
 | `@dataimago/css`            | public npm        | Compiled `dataimago.{css,min.css}` + `tailwind-preset`   |
-| `@dataimago-ui/components`  | GitHub Packages   | React component bundle (optional)                        |
+| `@dataimago/ui`             | public npm        | React component bundle (optional)                        |
 
-`.npmrc` in `ui/` routes each scope to its registry. The third package
-requires `GITHUB_PACKAGES_TOKEN` (with `read:packages`) before first install.
-See [`ui/README.md`](ui/README.md) and the design-system decision record at
+`.npmrc` in `ui/` pins the `@dataimago` scope to public npm; no auth
+token is required for read access. See [`ui/README.md`](ui/README.md) and
+the design-system decision record at
 `dataimago-design/wiki/decisions/publish-packages.md`.
 
 **Prototype-in-consumer loop.** When you need to iterate on the design
@@ -75,20 +86,23 @@ pnpm design:unlink           # restore registry versions before committing
 
 CI fails any branch that ships `link:` / `file:` overrides to `main`.
 
-### 🔄 Smart Workspace Detection
+### 🔄 Workspace Bootstrap (manual, post-0.0-4.0)
 
-`create_ui_workspace()` is intelligent:
-- Detects existing sophisticated build systems
-- **Preserves** advanced systems automatically  
-- Only creates minimal fallback when no UI directory exists
-- Never overwrites sophisticated systems without explicit `force_overwrite=TRUE`
+The `create_ui_workspace()` helper was retired alongside the submodule.
+To stand up a new consumer `ui/` directory today, follow
+[`dataimago-design/wiki/patterns/new-consumer-checklist.md`](../../dataimago-design/wiki/patterns/new-consumer-checklist.md):
+
+1. Copy the reference `ui/package.json`, `ui/.npmrc`, and `ui/build.js`
+   from this repo.
+2. `cd ui && pnpm install && pnpm build`. (No auth token required —
+   all three `@dataimago/*` packages ship from public npm.)
 
 ### 📁 Build System Flow
 
 ```
 node_modules/@dataimago/tokens/dist/         → copy      → ui/dist/tokens.{css,scss}
 node_modules/@dataimago/css/dist/            → copy      → ui/dist/dataimago.{css,min.css}, tailwind-preset.js
-node_modules/@dataimago-ui/components/dist/  → copy      → ui/dist/js/dataimago-ui/ (optional)
+node_modules/@dataimago/ui/dist/             → copy      → ui/dist/js/dataimago-ui/ (optional)
 @dataimago/tokens (index.cjs)                → derive    → ui/dist/dataimago-{light,dark}.scss
 ui/dist/dataimago.{css,min.css}              → alias     → ui/dist/website-theme.{css,min.css}
 ui/dist/                                     → fan-out   → inst/quarto-assets/, ui/www/assets/css/,
@@ -174,10 +188,13 @@ All function names should reflect **modularity**, **clarity**, and **semanticall
 
 **Currently Implemented:**
 - `create_quarto_documentation()` - Generate ethical AI documentation with foundation links
-  - `scaffold_full_site = TRUE` scaffolds the complete Quarto website from `dataimago-design/templates/quarto_website/`
-  - `include_ethics = TRUE` creates ethics.qmd, design_system.qmd, governance.qmd from wiki content
-- `create_ui_workspace()` - Set up Node.js design system workspace (one-time)
-- `build_design_system()` - Master CSS build function wrapping modern tools in R
+  (the `scaffold_full_site` / `include_ethics` parameters and their
+  sibling `scaffold_*` helpers were removed in 0.0-4.0; see
+  `dataimago-design/wiki/patterns/new-consumer-checklist.md` for the
+  replacement manual bootstrap flow)
+- `build_design_system()` - Master CSS build function that runs
+  `pnpm install && pnpm build` in `ui/` and fans `@dataimago/*` assets
+  out to the distribution channels
 - `update_quarto_extension()` - Sync built assets to Quarto extension
 - `generate_cdn_assets()` - Prepare CDN-ready distribution files
 
@@ -208,8 +225,10 @@ The package includes a complete CSS build system that wraps Node.js tooling in R
 
 **Workflow**:
 ```r
-create_ui_workspace()      # One-time Node.js setup
-build_design_system()      # Compile design tokens + SCSS → CSS
+# One-time Node.js setup is now manual; see
+# dataimago-design/wiki/patterns/new-consumer-checklist.md
+#   cd ui && pnpm install
+build_design_system()      # pnpm build in ui/ and fan @dataimago/* assets out
 ```
 
 **Distribution Channels**:
@@ -232,7 +251,6 @@ dataimago/
 │   ├── ai.R                      # ai() meta-function: R package -> NextJS app
 │   ├── asset_sync.R              # Asset synchronization utilities
 │   ├── build_components.R        # Component scaffolding
-│   ├── build_framework.R         # Framework scaffolding
 │   ├── dataimago-package.R       # Package-level documentation
 │   ├── design_system.R           # R-first CSS build pipeline + generate_ai_context()
 │   ├── documentation_utils.R     # Quarto documentation generation
@@ -247,9 +265,9 @@ dataimago/
 ├── man/                    # Generated .Rd function documentation
 ├── tests/                  # Test suite
 ├── ui/                     # Thin consumer of @dataimago design packages
-│   ├── .npmrc             # Scope → registry mapping (public npm + GitHub Packages)
+│   ├── .npmrc             # Pins @dataimago scope to public npm
 │   ├── package.json       # Declares @dataimago/tokens, @dataimago/css,
-│   │                      # @dataimago-ui/components dependencies
+│   │                      # @dataimago/ui dependencies
 │   ├── build.js           # Pulls node_modules/@dataimago/* into ui/dist/ and
 │   │                      # fans assets out to inst/, ui/www/, docs/
 │   ├── dist/              # Built CSS assets (regenerable)
@@ -318,8 +336,16 @@ The package includes `create_quarto_documentation()` which:
 - Adds ethical AI annotations to every function
 - Links technical documentation to foundation documents
 - Generates complete websites with dataimago branding
-- **Full site scaffolding** (`scaffold_full_site = TRUE`): creates the entire Quarto website from `dataimago-design/templates/quarto_website/`, including ethics pages, content directories, JS assets, news, and 404
-- **Ethics pages** (`include_ethics = TRUE`): generates `ethics.qmd`, `design_system.qmd`, `governance.qmd` from the dataimago-design wiki
+- **Historical:** prior versions exposed `scaffold_full_site = TRUE` and
+  `include_ethics = TRUE` flags that copied Quarto templates and ethics
+  pages out of the `ui/src/dataimago-design/` submodule. Both flags and
+  their helper functions (`scaffold_full_quarto_site()`,
+  `scaffold_ethics_pages()`, `scaffold_js_assets()`,
+  `load_quarto_template()`, `build_quarto_template_vars()`,
+  `render_quarto_template()`, `scaffold_content_directories()`,
+  `scaffold_utility_pages()`) were removed in 0.0-4.0. Full-site
+  bootstrap now lives in
+  `dataimago-design/wiki/patterns/new-consumer-checklist.md`.
 - Template rendering uses Mustache via `whisker::whisker.render()` with package metadata from DESCRIPTION
 
 ### Documentation Standards
@@ -411,15 +437,14 @@ This R package is an instantiation of critical theory in code:
 ```bash
 git clone https://github.com/dataimago/dataimago-rpkg
 cd dataimago-rpkg/ui
-export GITHUB_PACKAGES_TOKEN=<PAT with read:packages>
-pnpm install      # fetches @dataimago/tokens, @dataimago/css, @dataimago-ui/components
+pnpm install      # fetches @dataimago/tokens, @dataimago/css, @dataimago/ui
 pnpm build        # writes ui/dist/ and fans assets to inst/, docs/, ui/www/
 ```
 
 **Consuming a new design-system release:**
 ```bash
 cd ui
-pnpm update @dataimago/tokens @dataimago/css @dataimago-ui/components
+pnpm update @dataimago/tokens @dataimago/css @dataimago/ui
 pnpm build
 cd ..
 # Commit the bumped versions in ui/package.json (+ the regenerated CSS in docs/)
@@ -513,18 +538,25 @@ See [REPOMIX_INTEGRATION.md](REPOMIX_INTEGRATION.md) for detailed usage patterns
 - MIT licensing and proper attribution
 
 ### Phase 2: Documentation Generation \u2705 COMPLETE
-- `create_quarto_documentation()` function with `scaffold_full_site` and `include_ethics` params
+- `create_quarto_documentation()` function for ethical Rd → qmd conversion
 - Rd2md integration for .Rd → .qmd conversion
 - Philosophical context injection
 - Complete Quarto website generation with dataimago branding
-- Full-site scaffolding from `dataimago-design/templates/quarto_website/` templates
+- (The 0.0-3.x `scaffold_full_site` / `include_ethics` scaffolders that
+  drew from `ui/src/dataimago-design/templates/quarto_website/` were
+  retired in 0.0-4.0; see
+  `dataimago-design/wiki/patterns/new-consumer-checklist.md`.)
 - Ethics-first content: ethics.qmd, design_system.qmd, governance.qmd
+  (now bootstrapped manually per the checklist)
 - Utility pages: news.qmd, 404.qmd, documents.qmd, presentations.qmd
 - Sticky-header shrink and custom anchors ported from HelloWorld-rpkg
 
 ### Phase 3: R-First Design System \u2705 COMPLETE
-- `create_ui_workspace()` - Node.js workspace setup
-- `build_design_system()` - CSS compilation pipeline
+- Thin `ui/` consumer of `@dataimago/tokens`, `@dataimago/css`, and
+  `@dataimago/ui` (workspace bootstrap is now manual; see
+  `new-consumer-checklist.md`)
+- `build_design_system()` - orchestrates `pnpm install && pnpm build`
+  plus fan-out into distribution channels
 - `update_quarto_extension()` - Extension asset management
 - `generate_cdn_assets()` - Multi-platform distribution
 - Unicode-compliant documentation with proper escape sequences

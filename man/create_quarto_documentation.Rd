@@ -9,9 +9,7 @@ create_quarto_documentation(
   output_path = "ui/www",
   include_description = TRUE,
   include_foundation_links = TRUE,
-  template = "dataimago",
-  scaffold_full_site = FALSE,
-  include_ethics = TRUE
+  template = "dataimago"
 )
 }
 \arguments{
@@ -34,13 +32,6 @@ Default: TRUE}
 \item{template}{Character. Documentation template to use for styling and
 structure.  Currently supports "dataimago" template with ethical
 AI branding.  Default: "dataimago"}
-
-\item{scaffold_full_site}{Logical. When TRUE, scaffolds the complete site
-structure from dataimago-design templates including ethics pages, content
-directories, JS assets, news, and 404 pages. Default: FALSE}
-
-\item{include_ethics}{Logical. When TRUE and scaffold_full_site is TRUE,
-generates ethics.qmd from dataimago-design wiki content. Default: TRUE}
 }
 \value{
 Character (invisible). File path to the generated api_reference.qmd file.

@@ -7,6 +7,20 @@
 [![Philosophical](https://img.shields.io/badge/Integration-Ethical%20AI-purple.svg)](#-key-design-principles)
 [![R-First](https://img.shields.io/badge/Philosophy-R%20as%20Truth-red.svg)](#r-first-philosophy)
 
+> **Status (Apr 2026):** This document captures the 0.0-3.x architecture,
+> which was organized around the `ui/src/dataimago-design/` git submodule
+> and the `create_ui_workspace()` / `build_design_framework()` scaffolders.
+> Those pieces were retired in `dataimago` 0.0-4.0 (see `NEWS.md`) in favour
+> of a package-channel model that consumes `@dataimago/tokens`,
+> `@dataimago/css`, and `@dataimago/ui` directly from public npm. (The
+> interim `@dataimago-ui/components` scope on GitHub Packages was unified
+> into `@dataimago/ui` on public npm in 0.0-5.0.) Diagrams below
+> referencing `src/tokens/`, `src/styles/`, Style Dictionary, Sass
+> compilation, or `create_ui_workspace` describe the
+> historical pipeline and are retained for archaeological reference only.
+> For the current architecture see the top-level `README.md`, `CLAUDE.md`,
+> and the sibling `dataimago-design/wiki/` in the design-system monorepo.
+
 This document provides comprehensive Mermaid diagrams that illustrate the architecture and workflows of the dataimago R package.
 
 ## 🏗️ System Overview

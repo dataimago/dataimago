@@ -19,8 +19,8 @@
     "ethical-ai"
   ],
   "dependencies": {
-    "@dataimago/tokens":        "^0.1.0-alpha.0",
-    "@dataimago/css":           "^0.1.0-alpha.0",
-    "@dataimago-ui/components": "^0.1.0-alpha.0"
+    "@dataimago/tokens": "^0.1.0-alpha.1",
+    "@dataimago/css":    "^0.1.0-alpha.1",
+    "@dataimago/ui":     "^0.1.0-alpha.1"
   }
 }

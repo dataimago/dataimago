@@ -25,9 +25,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-        with:
-          submodules: recursive
-          token: ${{ secrets.SUBMODULE_PAT || github.token }}
 
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2

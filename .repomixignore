@@ -175,8 +175,8 @@ dataimago.Rcheck/
 # RETIRED ui/src/dataimago-design/ SUBMODULE
 # ====================================================================
 # The design system is no longer vendored here; it ships from
-# @dataimago/tokens, @dataimago/css, and @dataimago-ui/components (see
-# NEWS.md 0.0-4.0 and dataimago-design/wiki/decisions/publish-packages.md).
+# @dataimago/tokens, @dataimago/css, and @dataimago/ui on public npm (see
+# NEWS.md 0.0-4.0 / 0.0-5.0 and dataimago-design/wiki/decisions/publish-packages.md).
 # These rules are defensive: if a stray local checkout re-introduces the
 # directory, repomix must not pick it up as authoritative.
 ui/src/
@@ -197,7 +197,7 @@ ui/src/dataimago-design/
 #
 # R source and documentation:
 # - R/                                 All R source (ai.R, asset_sync.R, build_components.R,
-#                                      build_framework.R, dataimago-package.R, design_system.R,
+#                                      dataimago-package.R, design_system.R,
 #                                      documentation_utils.R, export_static.R, generate_api.R,
 #                                      generate_claude_md.R, generate_ethical_ci.R,
 #                                      generate_mcp.R, generate_self_mcp.R, generate_types.R,
@@ -212,8 +212,8 @@ ui/src/dataimago-design/
 #
 # UI consumer layer (pulls from the @dataimago/* package channel):
 # - ui/package.json                    Declares @dataimago/tokens, @dataimago/css,
-#                                      @dataimago-ui/components as dependencies
-# - ui/.npmrc                          Dual-registry mapping (public npm + GitHub Packages)
+#                                      @dataimago/ui as dependencies
+# - ui/.npmrc                          Pins @dataimago scope to public npm
 # - ui/build.js                        Consumes node_modules/@dataimago/* and distributes
 #                                      to inst/quarto-assets/, docs/assets/, ui/www/
 # - ui/README.md                       Consumer-side build + prototype-in-consumer workflow

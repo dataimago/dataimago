@@ -27,20 +27,26 @@ applications are scalable, accessible, and aligned with human flourishing.
 \subsection{AI-Native Application Generation}{
 
 \itemize{
-\item \code{\link{ai}}: Meta-orchestration function for complete AI-native application creation
-\item \code{\link{build_design_framework}}: Create foundational infrastructure and directory scaffolding
-\item \code{\link{build_design_components}}: Generate content, AI components, and ethical frameworks
-\item \code{\link{build_design_system}}: Complete CSS compilation pipeline from design tokens to production assets
+\item \code{\link{ai}}: Meta-orchestration entry point. In 0.0-4.x only
+\code{mode = "remote"} is wired; the in-package local scaffolders
+were retired alongside the \code{ui/src/dataimago-design/} submodule.
+\item \code{\link{build_design_components}}: Run the R \eqn{\to} API \eqn{\to}
+MCP \eqn{\to} TypeScript meta-tool pipeline against an existing project.
+\item \code{\link{build_design_system}}: Consume the \code{@dataimago/*}
+packages from \code{ui/node_modules} and fan built assets out to
+\code{inst/quarto-assets/}, \code{ui/www/}, and \code{docs/}.
 }
 }
 
 \subsection{Application Development Tools}{
 
 \itemize{
-\item \code{\link{create_quarto_documentation}}: Generate professional documentation
-websites with consistent branding and ethical AI annotations
-\item \code{\link{create_ui_workspace}}: Set up Node.js development environment
-with modern web tooling
+\item \code{\link{create_quarto_documentation}}: Generate a branded
+Quarto reference site from the package's \code{.Rd} files with
+ethical AI annotations.
+\item \code{\link{generate_ai_context}}: Produce Repomix-style AI
+context artifacts that cover \code{R/}, \code{man/}, \code{inst/},
+and the UI consumer layer.
 \item Multi-platform deployment to Quarto extensions, CDN, and Next.js applications
 }
 }
@@ -48,9 +54,12 @@ with modern web tooling
 \subsection{Design System & Asset Management}{
 
 \itemize{
-\item \strong{Design Tokens}: JSON-based design system with CSS custom properties
-\item \strong{SCSS Compilation}: Style Dictionary + Sass pipeline for consistent styling
-\item \strong{CDN Distribution}: jsDelivr-ready assets with SRI hashes for security
+\item \strong{Design Tokens}: Sourced from the \code{@dataimago/tokens} npm
+package (JSON + CSS custom properties + TS modules)
+\item \strong{Compiled CSS}: Shipped by \code{@dataimago/css}
+(\code{dataimago.css}, \code{dataimago.min.css}, \code{tailwind-preset.js})
+\item \strong{CDN Distribution}: jsDelivr-ready assets with SRI hashes served from
+\code{inst/quarto-assets/}
 \item \strong{Visual Identity}: SVG-based logos with automatic theme switching
 }
 }
@@ -83,8 +92,12 @@ This framework is designed from the ground up for both human developers and AI a
 \subsection{Rapid Development Workflow}{
 
 \itemize{
-\item \strong{One-Command Setup}: \code{create_ui_workspace()} initializes complete development environment
-\item \strong{Automated Asset Pipeline}: \code{build_design_system()} handles design token compilation to production CSS
+\item \strong{Package-Channel Bootstrap}: \verb{pnpm install} under \verb{ui/} fetches
+\verb{@dataimago/tokens}, \verb{@dataimago/css}, and \verb{@dataimago/ui} from
+public npm (scoped via \code{ui/.npmrc}; no auth token required)
+\item \strong{Automated Asset Pipeline}: \code{build_design_system()} runs
+\code{ui/build.js}, which redistributes the installed packages into
+\verb{ui/dist/}, \verb{inst/quarto-assets/}, and \verb{docs/}
 \item \strong{Multi-Platform Deployment}: Single source generates assets for Quarto, Shiny, Next.js, and CDN
 \item \strong{Consistent Branding}: Automatic application of design system and ethical AI principles
 }
@@ -115,14 +128,17 @@ Framework functions are optimized for AI-driven development:
 
 \subsection{Quick Start - Application Development Workflow}{
 
-Set up development environment and build your first application:
+Set up the UI consumer layer and rebuild branded assets:
 \preformatted{
 library(dataimago)
 
-# 1. Initialize development workspace
-create_ui_workspace()
+# 1. Install the design-system packages (one-time; no auth token
+#    required — all @dataimago/* packages ship from public npm)
+#    Run this in a shell from the package root:
+#      cd ui && pnpm install
 
-# 2. Build design system assets
+# 2. Build design system assets (copies node_modules/@dataimago/*
+#    into ui/dist/ and fans out to inst/, docs/, ui/www/)
 result <- build_design_system()
 
 # 3. Generate professional documentation
