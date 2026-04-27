@@ -1,6 +1,6 @@
 {
   "name": "@dataimago/design-system",
-  "builtAt": "2026-04-27T09:33:23.082Z",
+  "builtAt": "2026-04-27T09:39:09.777Z",
   "builtBy": "ui/build.js (package-channel)",
   "sources": {
     "@dataimago/tokens": "0.1.0-alpha.1",
