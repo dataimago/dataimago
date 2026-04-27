@@ -133,7 +133,11 @@ build_design_system <- function(force_rebuild = FALSE,
   # 1. Validate prerequisites
   ui_dir <- "ui"
   if (!dir_exists(ui_dir)) {
-    errors <- c(errors, glue("ui/ directory not found. See ui/README.md and dataimago-design/wiki/patterns/new-consumer-checklist.md for the package-channel setup."))
+    errors <- c(errors, glue(
+      "ui/ directory not found. See ui/README.md and ",
+      "dataimago-design/wiki/patterns/new-consumer-checklist.md ",
+      "for the package-channel setup."
+    ))
     list(
       success = FALSE, errors = errors, assets = assets,
       sri_hashes = sri_hashes, build_time = start_time, metadata = list()

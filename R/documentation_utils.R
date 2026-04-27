@@ -694,4 +694,3 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
 
   yml_content
 }
-
