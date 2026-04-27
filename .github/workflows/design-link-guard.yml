@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   guard:
-    name: No @dataimago/* link:/file: overrides on main
+    name: "No @dataimago/* link:/file: overrides on main"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -26,6 +26,8 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
+          # Opt out of pnpm auto-detection; this job only runs node directly.
+          package-manager-cache: false
 
       - name: Check ui/package.json for forbidden overrides
         run: node tools/check-no-link-overrides.mjs
