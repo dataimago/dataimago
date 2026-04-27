@@ -177,6 +177,23 @@ flow is now: prototype in a consumer repo against a `design:link`-ed
 checkout, push changes into `dataimago-design`, cut a Changesets release,
 and bump the consumers — instead of committing submodule-pointer bumps.
 
+### Alignment review note
+
+Starting with this release, every minor or major version of the
+`dataimago` R package is in scope for the **Tapestry Test** defined in
+`dataimago-design/wiki/patterns/alignment-review-harness.md`. The
+companion evidence bundle for the cross-cutting work — including
+`dataimago-rpkg`, `dataimago-design`, and `dataimago-ai` — lives at
+`dataimago-ai/docs/alignment/review-YYYY-MM-DD.{md,json}`. The
+0.0-5.0 baseline review is at
+`dataimago-ai/docs/alignment/review-2026-04-27.{md,json}` (decision:
+**hold**). Future R-API breaking changes — especially those that
+remove generated state or shift authority into the package channel —
+must be entered into the next review's `principle_mapping` and scored
+against dimensions 2 (emancipatory usefulness), 4 (democratic
+revisability), and 6 (anti-domination / human capability) before
+promotion.
+
 ---
 
 # dataimago 0.0-3.1

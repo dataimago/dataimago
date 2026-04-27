@@ -416,6 +416,34 @@ This R package is an instantiation of critical theory in code:
 - Asset management preserves visual identity integrity
 - Version control tracks both technical and ethical evolution
 
+### Release-Time Alignment Review
+
+Every minor or major version of `dataimago` is in scope for the
+**Tapestry Test** defined in
+`../../../dataimago-design/wiki/patterns/alignment-review-harness.md`.
+The cross-cutting evidence bundle for a release window — covering this
+package alongside `dataimago-design` and `dataimago-ai` — lives at
+`../../../dataimago-ai/docs/alignment/review-YYYY-MM-DD.{md,json}`. The
+0.0-5.0 baseline is `review-2026-04-27` (decision: `hold`).
+
+When this package ships an R-API breaking change — especially one that
+removes generated state (e.g. the 0.0-4.0 deletion of
+`build_design_framework`, `create_ui_workspace`,
+`scaffold_full_quarto_site`) or shifts authority into the npm package
+channel — the change must be entered into the next review's
+`principle_mapping` and scored against:
+
+- **Dimension 2 (emancipatory usefulness).** Does the change widen or
+  narrow the user's capacity to revise the generated artifact?
+- **Dimension 4 (democratic revisability).** Does the rationale live
+  somewhere a non-author can read?
+- **Dimension 6 (anti-domination / human capability).** Does the
+  change preserve the user's ability to supervise the system over
+  time, or does it consolidate authority into the harness?
+
+Updates to `NEWS.md` should include an "Alignment review note"
+subsection pointing at the relevant review when the answer is non-trivial.
+
 ---
 
 ## \U0001F4D0 Development Workflow
