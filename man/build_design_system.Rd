@@ -49,23 +49,30 @@ R-first workflows that wrap modern web development tools. The build process incl
 \strong{Build Process:}
 \enumerate{
 \item \strong{Node.js Dependency Check}: Verifies pnpm is available via \verb{which pnpm}
-\item \strong{Dependency Installation}: Runs \verb{pnpm install} in ui/ directory to install Style Dictionary, Sass, etc.
-\item \strong{SCSS Compilation}: Executes \verb{pnpm run build} to convert design tokens and SCSS to minified CSS
-\item \strong{Asset Distribution}: Copies built \code{dataimago.min.css} to multiple locations:
+\item \strong{Dependency Installation}: Runs \verb{pnpm install} in ui/ directory to fetch
+\verb{@dataimago/tokens}, \verb{@dataimago/css}, and \verb{@dataimago-ui/components}
+(the retired \verb{ui/src/dataimago-design/} submodule is no longer consumed;
+see \code{NEWS.md} 0.0-4.0)
+\item \strong{Asset Assembly}: Executes \verb{pnpm run build} so \code{ui/build.js} copies
+tokens, compiled CSS, and component bundles out of \verb{node_modules/@dataimago/*}
+into \verb{ui/dist/}
+\item \strong{Asset Distribution}: Copies built \code{dataimago.min.css} and friends into:
 \itemize{
 \item \verb{ui/www/_extensions/dataimago/ai-native/assets/css/} for Quarto extension distribution
 \item \verb{inst/quarto-assets/} for R package CDN distribution
 \item \verb{ui/www/assets/css/} for local website development
 }
 \item \strong{SRI Hash Generation}: Uses \verb{openssl dgst -sha384 -binary | openssl base64 -A} for subresource integrity
-\item \strong{Build Manifest}: Creates JSON metadata with paths, versions, checksums, and build timestamp
 }
 
 \strong{Design Token Philosophy:}
-The ui/ workspace uses Style Dictionary to convert semantic design tokens (color.json,
-typography.json, spacing.json) into CSS custom properties. This ensures design consistency
-across Quarto websites, R Shiny apps, and future Next.js applications while maintaining
-the ethical AI principles embedded in dataimago's visual identity.
+The \verb{@dataimago/tokens} package is the canonical source of design tokens
+(colors, theme-colors, typography, spacing, effects, ethical constraints) and
+emits CSS custom properties plus Sass/JS/TS modules. \code{ui/build.js} in this
+package simply redistributes those published artifacts so that Quarto, Shiny,
+and Next.js consumers all resolve the same identity. See
+\code{dataimago-design/wiki/decisions/publish-packages.md} for the rationale
+behind the package-channel model.
 
 \strong{Error Handling:}
 \itemize{
@@ -125,8 +132,7 @@ str(result$metadata)
 }
 \seealso{
 \code{\link{update_quarto_extension}} for extension asset management,
-\code{\link{generate_cdn_assets}} for CDN preparation,
-\code{\link{create_ui_workspace}} for UI workspace initialization
+\code{\link{generate_cdn_assets}} for CDN preparation
 }
 \concept{dataimago r-first-development MCP-compatible}
 \keyword{build-tools}

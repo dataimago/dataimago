@@ -110,7 +110,13 @@ build_design_components <- function(project_path,
     {
       # Validate project path exists
       if (!fs::dir_exists(project_path)) {
-        stop(glue::glue("Project path '{project_path}' does not exist. Run build_design_framework() first."),
+        stop(
+          glue::glue(
+            "Project path '{project_path}' does not exist. Bootstrap the ",
+            "target project by hand using ",
+            "dataimago-design/wiki/patterns/new-consumer-checklist.md; the ",
+            "in-package scaffolders were retired in dataimago 0.0-4.0."
+          ),
           call. = FALSE
         )
       }

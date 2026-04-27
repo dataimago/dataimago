@@ -47,12 +47,12 @@ comprehensive codebase context for AI assistants. The generated artifact include
 \itemize{
 \item All R functions with roxygen2 documentation (\verb{R/}, \verb{man/})
 \item UI consumer layer that pulls the design system from published packages
-(\code{ui/build.js}, \code{ui/package.json}, \code{ui/.npmrc}) -- the retired
+(\code{ui/build.js}, \code{ui/package.json}, \code{ui/.npmrc}) — the retired
 \verb{ui/src/dataimago-design/} git submodule is no longer part of this
 package (see \code{NEWS.md} 0.0-4.0). The authoritative design-system
 source of truth now lives in the sibling \code{dataimago-design} repo and
-ships via \code{@dataimago/tokens}, \code{@dataimago/css}, and
-\code{@dataimago-ui/components}; ingest its context separately when needed.
+ships via \verb{@dataimago/tokens}, \verb{@dataimago/css}, and
+\verb{@dataimago-ui/components}; ingest its context separately when needed.
 \item Build system patterns and multi-platform distribution
 }
 

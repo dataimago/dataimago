@@ -93,34 +93,38 @@ When a source R package is provided, executes the full meta-tool pipeline:
 R functions -> REST API -> MCP tools -> TypeScript types -> Web Application.
 The generated application inherits dataimago's ethical constraints structurally.
 
-The ai() function implements dataimago's complete application generation pipeline:
+The \code{ai()} function is the public entry point to dataimago's application
+generation pipeline. In the current \verb{0.0-4.x} release, generation is
+delegated to the dataimago-ai platform over HTTPS; the in-package local
+scaffolder was retired alongside the \verb{ui/src/dataimago-design/} submodule
+(see \code{NEWS.md} 0.0-4.0).
 
-\strong{Meta-Tool Pipeline (when source_pkg provided):}
-\enumerate{
-\item \code{build_design_framework()} - Creates directory structure, configs, workflows
-\item \code{build_design_components()} - Generates API, MCP tools, types from R package
-\item \code{build_design_system()} - Compiles design assets
-\item \code{export_static_api()} - Pre-computes JSON for serverless deployment
-}
+\strong{Remote mode (\code{mode = "remote"}, recommended):}
+Calls \verb{https://dataimago.ai/api/orchestrate} with a bearer token from
+\code{DATAIMAGO_API_KEY}. The platform assembles the project using canonical
+templates from the sibling \code{dataimago-design} repo and the published
+\verb{@dataimago/*} packages, and returns a file manifest that \code{ai()} writes
+to disk.
 
-\strong{Scaffold Pipeline (when source_pkg is NULL):}
-\enumerate{
-\item \code{build_design_framework()} - Creates directory structure, configs, workflows
-\item \code{build_design_components()} - Populates with templates and documentation
-\item \code{build_design_system()} - Compiles design assets
-}
+\strong{Local mode (\code{mode = "local"}):}
+Currently unavailable. The in-package scaffolders
+(\code{build_design_framework()}, \code{create_ui_workspace()}) were removed in
+0.0-4.0 because they wrote against the retired design-system submodule
+layout. New local scaffolders tracking the package-channel model are
+planned for a later release. Follow
+\code{dataimago-design/wiki/patterns/new-consumer-checklist.md} to wire a new
+project to the \verb{@dataimago/*} packages by hand in the meantime.
 
 \strong{Ethical AI Integration:}
-Every generated application includes dataimago's ethical AI principles embedded
-at the code, design, and architectural level. Ethical constraints propagate
-structurally from dataimago-design through the build pipeline.
+Every generated application inherits dataimago's ethical AI principles
+structurally because the design tokens, CSS, and components it consumes
+from the \verb{@dataimago/*} packages already encode them.
 
 \strong{System Requirements:}
 \itemize{
 \item R 4.0+
-\item Node.js 18+ with pnpm installed globally
-\item Git (for repository initialization)
-\item Write permissions to target directory
+\item \code{httr2} and \code{jsonlite} (for remote mode)
+\item \code{DATAIMAGO_API_KEY} environment variable (for remote mode)
 }
 }
 \examples{

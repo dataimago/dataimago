@@ -21,8 +21,11 @@ NULL
 #'   functions should drive the generated application. This is the "R as Source
 #'   of Truth" -- all APIs, MCP tools, types, and UI derive from this package.
 #'   If NULL, creates scaffolding without the derivation pipeline.
-#' @param mode Character. Generation mode: "local" runs the full pipeline locally,
-#'   "remote" delegates to the dataimago-ai platform API. Default: "local"
+#' @param mode Character. Generation mode: "remote" delegates to the
+#'   dataimago-ai platform API (recommended; requires `DATAIMAGO_API_KEY`).
+#'   "local" was retired in 0.0-4.0 and now throws an explanatory error
+#'   pointing to "remote" or to the manual new-consumer checklist.
+#'   Default: "remote".
 #' @param api_url Character. URL of the dataimago-ai orchestration API.
 #'   Default: "https://dataimago.ai/api/orchestrate"
 #' @param api_key Character. API key for remote mode. If NULL, reads from
@@ -53,29 +56,37 @@ NULL
 #' @return List with project metadata, file paths, and build information
 #'
 #' @details
-#' The ai() function implements dataimago's complete application generation pipeline:
+#' The `ai()` function is the public entry point to dataimago's application
+#' generation pipeline. In the current `0.0-4.x` release, generation is
+#' delegated to the dataimago-ai platform over HTTPS; the in-package local
+#' scaffolder was retired alongside the `ui/src/dataimago-design/` submodule
+#' (see `NEWS.md` 0.0-4.0).
 #'
-#' **Meta-Tool Pipeline (when source_pkg provided):**
-#' 1. `build_design_framework()` - Creates directory structure, configs, workflows
-#' 2. `build_design_components()` - Generates API, MCP tools, types from R package
-#' 3. `build_design_system()` - Compiles design assets
-#' 4. `export_static_api()` - Pre-computes JSON for serverless deployment
+#' **Remote mode (`mode = "remote"`, recommended):**
+#' Calls `https://dataimago.ai/api/orchestrate` with a bearer token from
+#' `DATAIMAGO_API_KEY`. The platform assembles the project using canonical
+#' templates from the sibling `dataimago-design` repo and the published
+#' `@dataimago/*` packages, and returns a file manifest that `ai()` writes
+#' to disk.
 #'
-#' **Scaffold Pipeline (when source_pkg is NULL):**
-#' 1. `build_design_framework()` - Creates directory structure, configs, workflows
-#' 2. `build_design_components()` - Populates with templates and documentation
-#' 3. `build_design_system()` - Compiles design assets
+#' **Local mode (`mode = "local"`):**
+#' Currently unavailable. The in-package scaffolders
+#' (`build_design_framework()`, `create_ui_workspace()`) were removed in
+#' 0.0-4.0 because they wrote against the retired design-system submodule
+#' layout. New local scaffolders tracking the package-channel model are
+#' planned for a later release. Follow
+#' `dataimago-design/wiki/patterns/new-consumer-checklist.md` to wire a new
+#' project to the `@dataimago/*` packages by hand in the meantime.
 #'
 #' **Ethical AI Integration:**
-#' Every generated application includes dataimago's ethical AI principles embedded
-#' at the code, design, and architectural level. Ethical constraints propagate
-#' structurally from dataimago-design through the build pipeline.
+#' Every generated application inherits dataimago's ethical AI principles
+#' structurally because the design tokens, CSS, and components it consumes
+#' from the `@dataimago/*` packages already encode them.
 #'
 #' **System Requirements:**
 #' - R 4.0+
-#' - Node.js 18+ with pnpm installed globally
-#' - Git (for repository initialization)
-#' - Write permissions to target directory
+#' - `httr2` and `jsonlite` (for remote mode)
+#' - `DATAIMAGO_API_KEY` environment variable (for remote mode)
 #'
 #' @examples
 #' \dontrun{
@@ -102,7 +113,7 @@ NULL
 ai <- function(project_name,
                project_path = getwd(),
                source_pkg = NULL,
-               mode = c("local", "remote"),
+               mode = c("remote", "local"),
                api_url = "https://dataimago.ai/api/orchestrate",
                api_key = NULL,
                domain_type = c("research", "explorer", "framework"),
@@ -169,197 +180,25 @@ ai <- function(project_name,
     ))
   }
 
-  # Initialize results list
-  results <- list(
-    project_name = project_name,
-    project_path = full_project_path,
-    source_pkg = source_pkg,
-    framework = framework,
-    theme = theme,
-    features = features,
-    ai_providers = ai_providers,
-    ethical_framework = ethical_framework,
-    foundation_docs = foundation_docs,
-    timestamp = Sys.time(),
-    success = FALSE,
-    errors = character(0)
+  # ---- LOCAL MODE: retired in 0.0-4.0; remains unavailable ----
+  #
+  # The local scaffolders (build_design_framework(), create_ui_workspace())
+  # were retired with the ui/src/dataimago-design/ submodule in 0.0-4.0.
+  # Use mode = "remote" (with DATAIMAGO_API_KEY set) or bootstrap a new
+  # consumer by hand following
+  # dataimago-design/wiki/patterns/new-consumer-checklist.md.
+  stop(
+    paste0(
+      "ai(mode = \"local\") is unavailable. ",
+      "The in-package scaffolders were retired alongside the ",
+      "ui/src/dataimago-design/ submodule in 0.0-4.0. Either:\n",
+      "  1. Call ai(mode = \"remote\") with DATAIMAGO_API_KEY set, or\n",
+      "  2. Bootstrap the project by hand following\n",
+      "     dataimago-design/wiki/patterns/new-consumer-checklist.md.\n",
+      "See NEWS.md 0.0-4.0 for the original migration note."
+    ),
+    call. = FALSE
   )
-
-  tryCatch(
-    {
-      # PHASE 1: Build Design Framework
-      if (verbose) ui_info("\\U0001F3D7\\uFE0F Phase 1: Building design framework...")
-
-      framework_result <- build_design_framework(
-        project_path = full_project_path,
-        framework = framework,
-        verbose = verbose
-      )
-
-      results$framework_result <- framework_result
-
-      # PHASE 2: Build Design Components (+ meta-tool pipeline if source_pkg)
-      if (verbose) ui_info("\\U0001F4E6 Phase 2: Building design components...")
-
-      components_result <- build_design_components(
-        project_path = full_project_path,
-        source_pkg = source_pkg,
-        features = features,
-        ai_providers = ai_providers,
-        theme = theme,
-        foundation_docs = foundation_docs,
-        ethical_framework = ethical_framework,
-        verbose = verbose
-      )
-
-      results$components_result <- components_result
-
-      # PHASE 3: Build Design System (if framework created UI workspace)
-      if (framework_result$has_ui_workspace) {
-        if (verbose) ui_info("\\U0001F3A8 Phase 3: Building design system...")
-
-        # Change to project directory for build_design_system
-        original_wd <- getwd()
-        setwd(full_project_path)
-
-        tryCatch({
-          system_result <- build_design_system(verbose = verbose)
-          results$system_result <- system_result
-        }, finally = {
-          setwd(original_wd)
-        })
-      }
-
-      # PHASE 4: Export Static API (if source_pkg provided and export_static)
-      if (!is.null(source_pkg) && export_static) {
-        if (verbose) ui_info("\\U0001F4BE Phase 4: Exporting static API data...")
-
-        static_output_dir <- fs::path(full_project_path, "public", "api")
-        tryCatch(
-          {
-            static_result <- export_static_api(
-              pkg_path = source_pkg,
-              output_dir = static_output_dir,
-              verbose = verbose
-            )
-            results$static_result <- static_result
-          },
-          error = function(e) {
-            if (verbose) {
-              ui_warn(glue::glue("Static export encountered issues: {e$message}"))
-              ui_info("Static export is optional -- the app will work in live API mode")
-            }
-          }
-        )
-      }
-
-      # PHASE 5: Recursive Loop (CLAUDE.md, Wiki, Ethical CI, Self-MCP)
-      if (verbose) ui_info("\\U0001F504 Phase 5: Wiring recursive loop...")
-
-      # 5a: Generate project-specific CLAUDE.md
-      tryCatch(
-        {
-          claude_result <- generate_claude_md(
-            project_path = full_project_path,
-            project_name = project_name,
-            source_pkg = source_pkg,
-            framework = framework,
-            features = features,
-            verbose = verbose
-          )
-          results$claude_result <- claude_result
-        },
-        error = function(e) {
-          if (verbose) ui_warn(glue::glue("CLAUDE.md generation encountered issues: {e$message}"))
-        }
-      )
-
-      # 5b: Bootstrap wiki (if foundation_docs enabled)
-      if (foundation_docs) {
-        tryCatch(
-          {
-            wiki_result <- bootstrap_wiki(
-              project_path = full_project_path,
-              project_name = project_name,
-              source_pkg = source_pkg,
-              verbose = verbose
-            )
-            results$wiki_result <- wiki_result
-          },
-          error = function(e) {
-            if (verbose) ui_warn(glue::glue("Wiki bootstrap encountered issues: {e$message}"))
-          }
-        )
-      }
-
-      # 5c: Generate ethical CI pipeline
-      if (ethical_framework) {
-        tryCatch(
-          {
-            ci_result <- generate_ethical_ci(
-              project_path = full_project_path,
-              framework = framework,
-              verbose = verbose
-            )
-            results$ci_result <- ci_result
-          },
-          error = function(e) {
-            if (verbose) ui_warn(glue::glue("Ethical CI generation encountered issues: {e$message}"))
-          }
-        )
-      }
-
-      # 5d: Generate dataimago self-description MCP (in project for reference)
-      tryCatch(
-        {
-          self_mcp_path <- fs::path(full_project_path, "dataimago-mcp-schema.json")
-          self_mcp_result <- generate_self_mcp(
-            output_path = self_mcp_path,
-            verbose = verbose
-          )
-          results$self_mcp_result <- self_mcp_result
-        },
-        error = function(e) {
-          if (verbose) ui_warn(glue::glue("Self-MCP generation encountered issues: {e$message}"))
-        }
-      )
-
-      results$success <- TRUE
-
-      if (verbose) {
-        ui_done(glue::glue("\\U0001F389 AI-native application '{project_name}' created successfully!"))
-        ui_info(glue::glue("\\U0001F4C1 Location: {full_project_path}"))
-
-        # Provide next steps based on framework
-        if (framework == "quarto") {
-          ui_info("\\U0001F680 Next steps:")
-          ui_info(glue::glue("   cd {project_name}"))
-          ui_info("   quarto preview")
-        } else if (framework == "shiny") {
-          ui_info("\\U0001F680 Next steps:")
-          ui_info(glue::glue("   cd {project_name}"))
-          ui_info("   R -e \"shiny::runApp()\"")
-        } else if (framework %in% c("nextjs", "full")) {
-          ui_info("\\U0001F680 Next steps:")
-          ui_info(glue::glue("   cd {project_name}"))
-          if (!is.null(source_pkg)) {
-            ui_info(glue::glue("   # Start R API server:"))
-            ui_info(glue::glue("   R -e \"{pkg_name}::run_{pkg_name}_api()\""))
-            ui_info(glue::glue("   # In another terminal, start NextJS:"))
-          }
-          ui_info("   pnpm install && pnpm dev")
-        }
-      }
-    },
-    error = function(e) {
-      results$errors <- c(results$errors, as.character(e))
-      if (verbose) {
-        ui_oops(glue::glue("Failed to create AI application: {e$message}"))
-      }
-    }
-  )
-
-  invisible(results)
 }
 
 
@@ -423,23 +262,21 @@ ai_remote <- function(project_name,
     error = function(e) {
       if (verbose) {
         ui_warn(glue::glue("Remote API call failed: {e$message}"))
-        ui_info("Falling back to local generation pipeline...")
       }
       NULL
     }
   )
 
   if (is.null(response)) {
-    return(ai(
-      project_name = project_name,
-      project_path = dirname(full_project_path),
-      source_pkg = source_pkg,
-      mode = "local",
-      domain_type = domain_type,
-      domain_name = domain_name,
-      force_overwrite = force_overwrite,
-      verbose = verbose
-    ))
+    stop(
+      paste0(
+        "Remote orchestration API at ", api_url, " is unreachable. ",
+        "Local fallback was retired in dataimago 0.0-4.0; see ",
+        "dataimago-design/wiki/patterns/new-consumer-checklist.md to ",
+        "bootstrap the project by hand."
+      ),
+      call. = FALSE
+    )
   }
 
   result <- httr2::resp_body_json(response)
