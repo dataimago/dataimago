@@ -94,9 +94,12 @@ Automated generation of branded websites with consistent styling
 <!-- Technical preview START -->
 ::: {.technical-preview}
 #### Quick Start Workflow
+```bash
+# One-time bootstrap (Node bootstrap is manual as of 0.0-4.0):
+cd ui && pnpm install
+```
 ```r
-create_ui_workspace()        # Setup environment
-build_design_system()        # Compile assets  
+build_design_system()         # Compile + distribute @dataimago/* assets
 create_quarto_documentation() # Generate docs
 ```
 <!-- Technical preview END -->

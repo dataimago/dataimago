@@ -51,8 +51,8 @@ comprehensive codebase context for AI assistants. The generated artifact include
 \verb{ui/src/dataimago-design/} git submodule is no longer part of this
 package (see \code{NEWS.md} 0.0-4.0). The authoritative design-system
 source of truth now lives in the sibling \code{dataimago-design} repo and
-ships via \verb{@dataimago/tokens}, \verb{@dataimago/css}, and
-\verb{@dataimago-ui/components}; ingest its context separately when needed.
+ships via \verb{@dataimago/tokens}, \verb{@dataimago/css}, and \verb{@dataimago/ui}
+on public npm; ingest its context separately when needed.
 \item Build system patterns and multi-platform distribution
 }
 

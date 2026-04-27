@@ -50,9 +50,9 @@ R-first workflows that wrap modern web development tools. The build process incl
 \enumerate{
 \item \strong{Node.js Dependency Check}: Verifies pnpm is available via \verb{which pnpm}
 \item \strong{Dependency Installation}: Runs \verb{pnpm install} in ui/ directory to fetch
-\verb{@dataimago/tokens}, \verb{@dataimago/css}, and \verb{@dataimago-ui/components}
-(the retired \verb{ui/src/dataimago-design/} submodule is no longer consumed;
-see \code{NEWS.md} 0.0-4.0)
+\verb{@dataimago/tokens}, \verb{@dataimago/css}, and \verb{@dataimago/ui} from public
+npm (the retired \verb{ui/src/dataimago-design/} submodule is no longer
+consumed; see \code{NEWS.md} 0.0-4.0 + 0.0-5.0 for the scope unification)
 \item \strong{Asset Assembly}: Executes \verb{pnpm run build} so \code{ui/build.js} copies
 tokens, compiled CSS, and component bundles out of \verb{node_modules/@dataimago/*}
 into \verb{ui/dist/}

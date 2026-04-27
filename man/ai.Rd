@@ -8,7 +8,7 @@ ai(
   project_name,
   project_path = getwd(),
   source_pkg = NULL,
-  mode = c("local", "remote"),
+  mode = c("remote", "local"),
   api_url = "https://dataimago.ai/api/orchestrate",
   api_key = NULL,
   domain_type = c("research", "explorer", "framework"),
@@ -34,8 +34,11 @@ functions should drive the generated application. This is the "R as Source
 of Truth" -- all APIs, MCP tools, types, and UI derive from this package.
 If NULL, creates scaffolding without the derivation pipeline.}
 
-\item{mode}{Character. Generation mode: "local" runs the full pipeline locally,
-"remote" delegates to the dataimago-ai platform API. Default: "local"}
+\item{mode}{Character. Generation mode: "remote" delegates to the
+dataimago-ai platform API (recommended; requires \code{DATAIMAGO_API_KEY}).
+"local" was retired in 0.0-4.0 and now throws an explanatory error
+pointing to "remote" or to the manual new-consumer checklist.
+Default: "remote".}
 
 \item{api_url}{Character. URL of the dataimago-ai orchestration API.
 Default: "https://dataimago.ai/api/orchestrate"}

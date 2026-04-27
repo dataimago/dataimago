@@ -93,8 +93,8 @@ This framework is designed from the ground up for both human developers and AI a
 
 \itemize{
 \item \strong{Package-Channel Bootstrap}: \verb{pnpm install} under \verb{ui/} fetches
-\verb{@dataimago/tokens}, \verb{@dataimago/css}, and \verb{@dataimago-ui/components}
-from npm + GitHub Packages (scoped via \code{ui/.npmrc})
+\verb{@dataimago/tokens}, \verb{@dataimago/css}, and \verb{@dataimago/ui} from
+public npm (scoped via \code{ui/.npmrc}; no auth token required)
 \item \strong{Automated Asset Pipeline}: \code{build_design_system()} runs
 \code{ui/build.js}, which redistributes the installed packages into
 \verb{ui/dist/}, \verb{inst/quarto-assets/}, and \verb{docs/}
@@ -132,8 +132,8 @@ Set up the UI consumer layer and rebuild branded assets:
 \preformatted{
 library(dataimago)
 
-# 1. Install the design-system packages (one-time; needs
-#    GITHUB_PACKAGES_TOKEN for @dataimago-ui/components)
+# 1. Install the design-system packages (one-time; no auth token
+#    required — all @dataimago/* packages ship from public npm)
 #    Run this in a shell from the package root:
 #      cd ui && pnpm install
 
