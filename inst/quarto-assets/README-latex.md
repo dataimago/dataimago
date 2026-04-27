@@ -1,27 +1,40 @@
 # dataimago.sty - LaTeX Design System Package
 
-> **Version:** 0.1.0  
-> **Date:** October 19, 2025  
-> **License:** MIT  
-> **Location:** `dataimago-design/src/latex/` (design system submodule)
+> **Version:** 0.1.0
+> **Date:** October 19, 2025
+> **License:** MIT
+> **Status (Apr 2026):** The automatic LaTeX distribution step that used to
+> source this file from the `ui/src/dataimago-design/src/latex/` git
+> submodule was retired in `dataimago` 0.0-4.0 (see `NEWS.md`). A future
+> `@dataimago/latex` package will replace it; until then, consumers who
+> need PDF styling should copy `dataimago.sty` into their own project
+> directly and follow the manual instructions below. The authoritative
+> source of truth lives in the sibling `dataimago-design` repo; see
+> `dataimago-design/wiki/patterns/new-consumer-checklist.md`.
 
 A unified LaTeX package providing consistent typography, colors, and layout for PDF documents aligned with the **dataimago design system**.
 
 ## 🎯 Design System Integration
 
-This LaTeX package is part of the **dataimago design system** and is distributed automatically to all consumer repositories via the build system:
+`dataimago.sty` is the PDF/LaTeX arm of the dataimago design system. As of
+dataimago-rpkg 0.0-4.0 it is **no longer auto-distributed**; it is shipped
+in this package purely for reference and manual copy-out. The packaged
+channel will be restored via a future `@dataimago/latex` npm package.
 
-**Source Location:** `ui/src/dataimago-design/src/latex/` (git submodule)
+**Manual distribution in the interim:**
 
-**Distribution Channels:**
-1. **CDN Distribution** - `inst/quarto-assets/` (jsDelivr via GitHub)
-2. **Quarto Extension** - `ui/www/_extensions/dataimago/ai-native/assets/latex/`
-3. **Website Assets** - `ui/www/assets/latex/` (local development)
-4. **Documentation** - `docs/assets/latex/` (GitHub Pages)
+1. Copy this file into your consumer project under `styles/dataimago.sty`
+   (or wherever your LaTeX preamble expects it).
+2. Follow the [Installation](#installation) instructions below.
+3. Pin the source commit in your consumer so that regressions are
+   auditable.
 
-**Automated Build:** Assets are distributed via `build_design_system()` in R package
+**Historical automated channels (pre-0.0-4.0 — no longer populated):**
 
-**Consumer Repositories:** Available in dataimago-rpkg, sgpFlow, HelloWorld, and all future dataimago projects
+- `inst/quarto-assets/` (CDN distribution via jsDelivr)
+- `ui/www/_extensions/dataimago/ai-native/assets/latex/` (Quarto extension)
+- `ui/www/assets/latex/` (local website)
+- `docs/assets/latex/` (GitHub Pages)
 
 ---
 
@@ -462,10 +475,12 @@ To adjust page margins:
 
 `dataimago.sty` is designed to integrate with the broader **dataimago design system**, which includes:
 
-1. **Node.js/TypeScript Design System** (`dataimago-design`)
-   - Token definitions (colors, typography, spacing)
-   - Sass/SCSS variables
-   - CSS custom properties
+1. **Design System Packages** (sibling `dataimago-design` monorepo)
+   - `@dataimago/tokens` — token definitions (colors, typography, spacing)
+     published to npm, the canonical source of truth
+   - `@dataimago/css` — compiled CSS custom properties
+   - `@dataimago/ui` — React/Web-component UI (public npm; unified from
+     the interim `@dataimago-ui/components` scope in 0.0-5.0)
 
 2. **R Package** (`dataimago` R package)
    - HTML/Quarto themes
@@ -475,6 +490,7 @@ To adjust page margins:
 3. **LaTeX Package** (`dataimago.sty`) ← *This file*
    - PDF typography and styling
    - Memoir/article class support
+   - Currently distributed only by manual copy (see status note above)
 
 ### Token Alignment
 

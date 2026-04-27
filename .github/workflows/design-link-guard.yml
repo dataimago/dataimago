@@ -1,0 +1,31 @@
+name: Design-Link Guard
+
+# Fails any PR (or push to `main`) that still has `link:` or `file:` overrides
+# for `@dataimago/*` packages in `ui/package.json`. Those overrides power the
+# prototype-in-consumer loop documented in dataimago-design's wiki
+# (`wiki/patterns/prototype-in-consumer.md`) and must never merge to main.
+#
+# This workflow is the symmetric partner of the `design-link-guard` job in
+# `dataimago-ai/.github/workflows/ci.yml`.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: No @dataimago/* link:/file: overrides on main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Check ui/package.json for forbidden overrides
+        run: node tools/check-no-link-overrides.mjs

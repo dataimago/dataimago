@@ -11,8 +11,8 @@
  *
  * What it does:
  *   - Writes a `pnpm.overrides` block into `ui/package.json` mapping
- *     @dataimago/tokens, @dataimago/css, @dataimago-ui/components to
- *     `link:<DATAIMAGO_DESIGN_PATH>/packages/{tokens,css,components}`.
+ *     @dataimago/tokens, @dataimago/css, @dataimago/ui to
+ *     `link:<DATAIMAGO_DESIGN_PATH>/packages/{tokens,css,ui}`.
  *   - Runs `pnpm install` inside `ui/` so the link targets take effect.
  *   - `unlink` strips the overrides and reinstalls against registry
  *     versions.
@@ -34,7 +34,7 @@ const pkgJsonPath = path.join(uiDir, 'package.json');
 const PACKAGES = {
   '@dataimago/tokens': 'packages/tokens',
   '@dataimago/css': 'packages/css',
-  '@dataimago-ui/components': 'packages/components',
+  '@dataimago/ui': 'packages/ui',
 };
 
 function readJson(file) {

@@ -133,130 +133,126 @@ dataimago/
 ├── R/                           # Core R functions
 │   ├── dataimago-package.R      # Package documentation and exports
 │   ├── documentation_utils.R    # Quarto documentation generation
-│   └── design_system.R         # CSS build system (R-first)
-├── inst/                       # Installed package assets
-│   ├── dataimago/              # Foundation documents and assets
-│   └── quarto-assets/          # CDN-ready CSS files (CRITICAL)
-├── ui/                         # Node.js design system workspace
-│   ├── src/                    
-│   │   └── dataimago-design/   # Git submodule - SOURCE OF TRUTH
-│   │       ├── src/
-│   │       │   ├── tokens/     # JSON design tokens (colors, typography, etc.)
-│   │       │   ├── styles/     # SCSS source files with proper imports
-│   │       │   └── js/         # JavaScript modules
-│   │       └── packages/       # npm workspace packages
-│   ├── dist/                   # Built CSS assets (regenerable)
-│   ├── build.js               # Build script adapted for submodule paths
-│   └── package.json           # Node.js dependencies
-├── ui/www/                    # Complete Quarto website structure
-│   ├── _extensions/           # dataimago Quarto extension
-│   ├── assets/               # Website-specific assets
-│   └── *.qmd                 # Quarto content files
-├── man/                      # R documentation (.Rd files)
-└── .github/workflows/        # CI/CD automation
+│   └── design_system.R          # CSS build orchestration (R-first)
+├── inst/                        # Installed package assets
+│   ├── dataimago/               # Foundation documents and assets
+│   └── quarto-assets/           # CDN-ready CSS files (CRITICAL)
+├── ui/                          # Thin consumer of @dataimago/* packages
+│   ├── .npmrc                   # Pins @dataimago scope to public npm
+│   ├── package.json             # Pins @dataimago/tokens, @dataimago/css,
+│   │                            # @dataimago/ui
+│   ├── build.js                 # Pulls node_modules/@dataimago/* into ui/dist/
+│   │                            # and fans assets out to inst/, docs/, ui/www/
+│   ├── dist/                    # Built CSS assets (regenerable)
+│   └── www/                     # Complete Quarto website
+│       ├── _extensions/         # dataimago/ai-native Quarto extension
+│       ├── assets/              # Website-specific assets
+│       └── *.qmd                # Quarto content files
+├── man/                         # R documentation (.Rd files)
+└── .github/workflows/           # CI/CD automation
 ```
+
+> The authoritative design-system sources (tokens, SCSS, components)
+> live in the sibling `dataimago-design` monorepo and are consumed here
+> via the `@dataimago/tokens`, `@dataimago/css`, and `@dataimago/ui`
+> packages on public npm. The former `ui/src/dataimago-design/` submodule
+> was retired in 0.0-4.0; the `@dataimago-ui/components` interim scope
+> was unified into `@dataimago/ui` on public npm in 0.0-5.0.
 
 ### 🔄 Build Flow & Dependencies
 
-The package uses a sophisticated build system that maintains "R as source of truth" while leveraging modern web tooling. **Recent Update**: Established complete SCSS source-of-truth pipeline eliminating 404 errors and enabling confident asset management.
+The package keeps `R as source of truth` for orchestration while consuming
+the design system through the `@dataimago/*` package channels (see the
+[`publish-packages` ADR](../../dataimago-design/wiki/decisions/publish-packages.md)).
+`ui/build.js` pulls installed packages out of `node_modules/@dataimago/*`
+and fans the resulting assets into every distribution target.
 
 ```mermaid
 flowchart TD
-    %% Design System Build Process
     START([Developer Initiates Build])
-    
-    subgraph "Input Sources"
-        TOKENS[Design Tokens<br/>ui/src/tokens/*.json]
-        SCSS[SCSS Styles<br/>ui/src/styles/*.scss]
-        CONFIG[Build Configuration<br/>package.json, build.js]
+
+    subgraph "Input Sources (published packages)"
+        TOKENS[@dataimago/tokens<br/>tokens.css, tokens.scss, JSON]
+        CSS[@dataimago/css<br/>dataimago.css, dataimago.min.css,<br/>tailwind-preset.js]
+        COMPONENTS[@dataimago/ui<br/>React bundle — optional]
+        CONFIG[ui/build.js, ui/package.json, ui/.npmrc]
     end
 
     subgraph "R Interface"
-        WORKSPACE[create_ui_workspace<br/>Sets up Node.js environment]
-        BUILD[build_design_system<br/>Orchestrates entire pipeline]
-        DETECT{Sophisticated<br/>system exists?}
+        BUILD[build_design_system<br/>pnpm install + pnpm build]
     end
 
-    subgraph "Node.js Processing Pipeline"
-        SD[Style Dictionary<br/>Token Processing]
-        SASS_COMP[Sass Compiler<br/>SCSS → CSS]
-        POSTCSS[PostCSS Pipeline<br/>Optimization]
-        
-        SD --> CUSTOM_PROPS[CSS Custom Properties]
-        SASS_COMP --> COMPILED_CSS[Compiled CSS]
-        POSTCSS --> MINIFIED[Minified CSS]
+    subgraph "Node.js Copy Pipeline (ui/build.js)"
+        COPY_TOKENS[Copy tokens]
+        COPY_CSS[Copy compiled CSS]
+        COPY_COMPONENTS[Copy component JS]
+        DERIVE_THEMES[Derive dataimago-light/-dark.scss]
     end
 
     subgraph "Output Destinations"
         DIST[ui/dist/<br/>Development Assets]
         CDN_ASSETS[inst/quarto-assets/<br/>CDN Distribution]
         QUARTO_EXT[_extensions/<br/>Quarto Extension]
-        NEXT_PRESET[tailwind-preset.js<br/>Next.js Integration]
+        WWW_ASSETS[ui/www/assets/<br/>Local Website]
+        DOCS[docs/<br/>Rendered Website]
     end
 
     subgraph "Distribution Channels"
         JSDELIVR[jsDelivr CDN<br/>External Projects]
-        QUARTO_SITES[Quarto Websites<br/>Extension Usage]
-        NEXTJS_APPS[Next.js Apps<br/>Preset Integration]
+        QUARTO_SITES[Quarto Websites]
+        NEXTJS_APPS[Next.js Apps<br/>Tailwind Preset]
         R_PACKAGE[R Package<br/>system.file access]
     end
 
-    %% Flow connections
     START --> BUILD
-    BUILD --> DETECT
-    DETECT -->|Yes| EXISTING[Use Existing System]
-    DETECT -->|No| WORKSPACE
-    WORKSPACE --> CREATE_MINIMAL[Create Minimal Fallback]
-    EXISTING --> TOKENS
-    CREATE_MINIMAL --> TOKENS
-    
-    TOKENS --> SD
-    SCSS --> SASS_COMP
-    CONFIG --> SD
-    CONFIG --> SASS_COMP
-    
-    CUSTOM_PROPS --> POSTCSS
-    COMPILED_CSS --> POSTCSS
-    
-    MINIFIED --> DIST
+    BUILD --> COPY_TOKENS
+    BUILD --> COPY_CSS
+    BUILD --> COPY_COMPONENTS
+    BUILD --> DERIVE_THEMES
+
+    TOKENS --> COPY_TOKENS
+    CSS --> COPY_CSS
+    COMPONENTS --> COPY_COMPONENTS
+    CONFIG --> BUILD
+
+    COPY_TOKENS --> DIST
+    COPY_CSS --> DIST
+    COPY_COMPONENTS --> DIST
+    DERIVE_THEMES --> DIST
+
     DIST --> CDN_ASSETS
     DIST --> QUARTO_EXT
-    DIST --> NEXT_PRESET
-    
+    DIST --> WWW_ASSETS
+    DIST --> DOCS
+
     CDN_ASSETS --> JSDELIVR
     CDN_ASSETS --> R_PACKAGE
     QUARTO_EXT --> QUARTO_SITES
-    NEXT_PRESET --> NEXTJS_APPS
+    CSS --> NEXTJS_APPS
 
-    %% Decision flows
-    DETECT -->|Force Rebuild| WORKSPACE
-
-    %% Styling
     classDef input fill:#3498db,stroke:#2c3e50,stroke-width:2px,color:#fff
     classDef rInterface fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
     classDef processing fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#fff
     classDef output fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:#fff
     classDef distribution fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
-    classDef decision fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
 
-    class TOKENS,SCSS,CONFIG input
-    class WORKSPACE,BUILD,EXISTING,CREATE_MINIMAL rInterface
-    class SD,SASS_COMP,POSTCSS,CUSTOM_PROPS,COMPILED_CSS,MINIFIED processing
-    class DIST,CDN_ASSETS,QUARTO_EXT,NEXT_PRESET output
+    class TOKENS,CSS,COMPONENTS,CONFIG input
+    class BUILD rInterface
+    class COPY_TOKENS,COPY_CSS,COPY_COMPONENTS,DERIVE_THEMES processing
+    class DIST,CDN_ASSETS,QUARTO_EXT,WWW_ASSETS,DOCS output
     class JSDELIVR,QUARTO_SITES,NEXTJS_APPS,R_PACKAGE distribution
-    class DETECT decision
 ```
 
 **Distribution Channels:**
 - `ui/dist/` → Build artifacts (with source maps for development)
-- `inst/quarto-assets/` → CDN distribution via jsDelivr 
+- `inst/quarto-assets/` → CDN distribution via jsDelivr
 - `_extensions/.../assets/` → Quarto extension packaging
 
 ### ⚠️ Critical Directories
 
 **NEVER DELETE THESE:**
 - `inst/quarto-assets/` - Enables CDN access via jsDelivr
-- `ui/src/` - Source design tokens and SCSS files
+- `ui/package.json`, `ui/.npmrc`, `ui/build.js` - Design-system consumer glue
 - `_extensions/dataimago/ai-native/` - Quarto extension distribution
 
 **OK TO REGENERATE:**
@@ -266,10 +262,15 @@ flowchart TD
 ## Key Features
 
 ### ⚡ Rapid Application Development
-- **`create_ui_workspace()`**: One-command setup for complete Node.js development environment
-- **`build_design_system()`**: Automated CSS compilation from design tokens to production assets
-- **`create_quarto_documentation()`**: Generate professional documentation with consistent branding
-- **Multi-Platform Deployment**: Single source generates assets for Quarto, Shiny, Next.js, and CDN
+- **Package-channel consumption**: `ui/` already declares the
+  `@dataimago/*` dependencies; `pnpm install` in `ui/` is the only
+  one-time bootstrap (see
+  [`new-consumer-checklist.md`](../../dataimago-design/wiki/patterns/new-consumer-checklist.md)).
+- **`build_design_system()`**: Runs `pnpm install && pnpm build` in
+  `ui/` and fans the resulting `@dataimago/*` assets out to every
+  distribution channel.
+- **`create_quarto_documentation()`**: Generate professional documentation with consistent branding.
+- **Multi-Platform Deployment**: Single source generates assets for Quarto, Shiny, Next.js, and CDN.
 
 ### 🎨 Complete Design System
 - **Design Tokens**: JSON-based system with CSS custom properties for consistent styling
@@ -316,17 +317,28 @@ flowchart TD
 devtools::load_all()
 ```
 
-### Git Submodule Setup
+### Clone + Bootstrap
 
-The design system is managed as a git submodule. When cloning for development:
+The former `ui/src/dataimago-design/` git submodule was retired in
+0.0-4.0; no `--recursive` clone is required. The design system is
+consumed through published packages:
 
 ```bash
-# Clone with submodules
-git clone --recursive https://github.com/dataimago/dataimago-rpkg
+# Standard clone — no submodules
+git clone https://github.com/dataimago/dataimago-rpkg
+cd dataimago-rpkg/dataimago/ui
 
-# OR if already cloned, initialize submodules
-git submodule update --init --recursive
+# All three @dataimago/* packages ship from public npm — no auth token
+# is needed for read access.
+pnpm install   # fetches @dataimago/tokens, @dataimago/css, @dataimago/ui
+pnpm build     # writes ui/dist/ and fans assets into inst/, docs/, ui/www/
 ```
+
+See [`ui/README.md`](ui/README.md) and
+[`publish-packages` ADR](../../dataimago-design/wiki/decisions/publish-packages.md)
+for details, and
+[`prototype-in-consumer.md`](../../dataimago-design/wiki/patterns/prototype-in-consumer.md)
+for the local-checkout workflow (`pnpm design:link`).
 
 ## Quick Start - Application Development Workflow
 
@@ -335,10 +347,12 @@ git submodule update --init --recursive
 ```r
 library(dataimago)
 
-# 1. Initialize development workspace (one-time setup)
-create_ui_workspace()
+# 1. One-time Node bootstrap (see Clone + Bootstrap section above):
+#      cd ui && pnpm install
+#    The in-package create_ui_workspace() scaffolder was retired in 0.0-4.0
+#    alongside the dataimago-design submodule.
 
-# 2. Build complete design system (UPDATED: now with SCSS source-of-truth)
+# 2. Build complete design system from @dataimago/* packages
 result <- build_design_system(verbose = TRUE)
 
 # 3. Generate professional documentation
@@ -346,10 +360,9 @@ create_quarto_documentation()
 
 # Check results
 if (result$success) {
-  cat("✅ Framework ready! Generated", length(result$assets), "assets")
-  cat("🔐 Security: SRI hashes generated") 
-  cat("🚀 Deploy: Assets available for Quarto, Shiny, Next.js")
-  cat("✅ Source-of-Truth: All changes in /ui/src/ propagate automatically")
+  cat("Framework ready: generated", length(result$assets), "assets\n")
+  cat("SRI hashes generated for CDN distribution\n")
+  cat("Deploy targets: Quarto, Shiny, Next.js\n")
 }
 ```
 
@@ -366,28 +379,33 @@ build_design_system(update_extension = TRUE)  # Update Quarto extension
 
 ### ✅ Confident Asset Management Workflow
 
-**The following workflow now works end-to-end:**
-
 ```r
-# 1. EDIT SOURCE FILES in /ui/src/
-#    - Modify design tokens: ui/src/tokens/*.json
-#    - Update styles: ui/src/styles/*.scss
-#    - Adjust theme colors: ui/src/styles/themes/theme-variables.scss
+# 1. PICK UP A NEW DESIGN-SYSTEM RELEASE
+#    cd ui
+#    pnpm update @dataimago/tokens @dataimago/css @dataimago/ui
+#    (or, for local prototyping:
+#       export DATAIMAGO_DESIGN_PATH=/abs/path/to/dataimago-design
+#       pnpm design:link   # link: overrides into ui/package.json
+#       …iterate…
+#       pnpm design:unlink # restore registry versions before committing)
 
 # 2. RUN BUILD SYSTEM from R
 result <- build_design_system(verbose = TRUE)
 
 # 3. AUTOMATIC PROPAGATION to all deployment targets:
-#    ✅ ui/dist/ (compiled development assets)
-#    ✅ ui/www/assets/css/ (website development)  
-#    ✅ ui/www/_extensions/dataimago/ai-native/assets/css/ (Quarto extension)
-#    ✅ inst/quarto-assets/ (CDN distribution)
-#    ✅ docs/ (rendered website)
+#    - ui/dist/ (compiled development assets)
+#    - ui/www/assets/css/ (website development)
+#    - ui/www/_extensions/dataimago/ai-native/assets/css/ (Quarto extension)
+#    - inst/quarto-assets/ (CDN distribution)
+#    - docs/ (rendered website)
 
-# 4. NO BREAKAGE - Quarto render/preview work without 404 errors
+# 4. COMMIT the bumped ui/package.json + regenerated CSS in docs/.
 ```
 
-**Key Achievement**: Fixed SCSS import chain eliminates runtime CSS import requests that caused 404 errors. Now everything compiles properly and distributes automatically.
+**Upstream edits** happen in the sibling `dataimago-design` repo (not in
+this package). Run `pnpm changeset` there, merge the Changesets "Version
+Packages" PR, then bump `ui/package.json` here. CI fails any branch that
+ships `link:` / `file:` overrides to `main`.
 
 ### Deploy Design System
 
@@ -435,17 +453,17 @@ dataimago/
 ├── R/                          # Core functions
 │   ├── documentation_utils.R   # Documentation generation
 │   └── design_system.R         # R-first CSS build pipeline
-├── ui/                         # Complete frontend development workspace
-│   ├── src/
-│   │   └── dataimago-design/   # Git submodule - design system repository
-│   │       ├── src/
-│   │       │   ├── tokens/     # Design tokens (JSON) - SOURCE OF TRUTH
-│   │       │   ├── styles/     # SCSS source files - SOURCE OF TRUTH
-│   │       │   └── js/         # JavaScript modules - SOURCE OF TRUTH
-│   │       └── packages/       # npm workspace packages
+├── ui/                         # Thin consumer of @dataimago/* packages
+│   ├── .npmrc                  # Pins @dataimago scope to public npm
+│   ├── package.json            # Pins @dataimago/tokens, @dataimago/css,
+│   │                           # @dataimago/ui
+│   ├── build.js                # Fans @dataimago/* assets into ui/dist/,
+│   │                           # inst/, docs/, ui/www/
 │   ├── dist/                   # Built CSS assets (regenerable)
 │   └── www/                    # Quarto website project
 │       └── _extensions/dataimago/ai-native/ # Quarto extension
+├── tools/
+│   └── design-link.mjs         # `pnpm design:link` / `design:unlink`
 ├── inst/
 │   ├── dataimago/              # Complete foundation documents
 │   │   ├── 01_Foundations/     # Mission, vision, philosophy
@@ -455,11 +473,17 @@ dataimago/
 │   ├── quarto-assets/          # CDN-ready assets
 │   ├── CLAUDE.md               # AI agent context
 │   └── AGENT_INDEX.md          # Agent coordination
-
 ├── docs/                       # Rendered website
 ├── man/                        # Generated documentation
 └── tests/                      # Package tests
 ```
+
+The authoritative design-system source of truth lives in the sibling
+`dataimago-design` repo and ships via `@dataimago/tokens`,
+`@dataimago/css`, and `@dataimago/ui` on public npm. The former
+`ui/src/dataimago-design/` submodule was retired in 0.0-4.0; the
+`@dataimago-ui/components` interim scope was unified into `@dataimago/ui`
+on public npm in 0.0-5.0.
 
 ## Documentation
 
@@ -626,12 +650,16 @@ For detailed integration guidance, see [REPOMIX_INTEGRATION.md](REPOMIX_INTEGRAT
 - Complete Quarto website generation
 
 ### ✅ Phase 3: R-First Design System (COMPLETE)
-- `create_ui_workspace()` - Node.js workspace setup
-- `build_design_system()` - **FIXED**: Complete SCSS compilation with proper imports
-- `update_quarto_extension()` - Extension asset management  
+- Package-channel consumer: `ui/package.json` + `ui/.npmrc` +
+  `ui/build.js` pull `@dataimago/tokens`, `@dataimago/css`, and
+  `@dataimago/ui` into `ui/dist/`
+- `build_design_system()` - Orchestrates `pnpm install && pnpm build`
+  and fan-out into distribution targets
+- `update_quarto_extension()` - Extension asset management
 - `generate_cdn_assets()` - Multi-platform distribution
-- **✅ Source-of-Truth Architecture**: Fixed 404 errors, established `/ui/src/` as authoritative
-- **✅ Asset Propagation**: Single source → multiple deployment targets working perfectly
+- **Package-channel architecture (0.0-4.0)**: replaced the retired
+  `ui/src/dataimago-design/` submodule; single published source →
+  multiple deployment targets
 
 ### ✅ Phase 4: CI/CD Automation (COMPLETE)
 - **Multi-platform testing**: R CMD check across Windows, macOS, Linux

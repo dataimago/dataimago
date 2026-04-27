@@ -33,20 +33,27 @@ ui_oops <- function(x) cat(crayon::red(paste0("\u2717", " ", x, "\n")))
 #'
 #' **Build Process:**
 #' 1. **Node.js Dependency Check**: Verifies pnpm is available via `which pnpm`
-#' 2. **Dependency Installation**: Runs `pnpm install` in ui/ directory to install Style Dictionary, Sass, etc.
-#' 3. **SCSS Compilation**: Executes `pnpm run build` to convert design tokens and SCSS to minified CSS
-#' 4. **Asset Distribution**: Copies built `dataimago.min.css` to multiple locations:
+#' 2. **Dependency Installation**: Runs `pnpm install` in ui/ directory to fetch
+#'    `@dataimago/tokens`, `@dataimago/css`, and `@dataimago/ui` from public
+#'    npm (the retired `ui/src/dataimago-design/` submodule is no longer
+#'    consumed; see `NEWS.md` 0.0-4.0 + 0.0-5.0 for the scope unification)
+#' 3. **Asset Assembly**: Executes `pnpm run build` so `ui/build.js` copies
+#'    tokens, compiled CSS, and component bundles out of `node_modules/@dataimago/*`
+#'    into `ui/dist/`
+#' 4. **Asset Distribution**: Copies built `dataimago.min.css` and friends into:
 #'    - `ui/www/_extensions/dataimago/ai-native/assets/css/` for Quarto extension distribution
 #'    - `inst/quarto-assets/` for R package CDN distribution
 #'    - `ui/www/assets/css/` for local website development
 #' 5. **SRI Hash Generation**: Uses `openssl dgst -sha384 -binary | openssl base64 -A` for subresource integrity
-#' 6. **Build Manifest**: Creates JSON metadata with paths, versions, checksums, and build timestamp
 #'
 #' **Design Token Philosophy:**
-#' The ui/ workspace uses Style Dictionary to convert semantic design tokens (color.json,
-#' typography.json, spacing.json) into CSS custom properties. This ensures design consistency
-#' across Quarto websites, R Shiny apps, and future Next.js applications while maintaining
-#' the ethical AI principles embedded in dataimago's visual identity.
+#' The `@dataimago/tokens` package is the canonical source of design tokens
+#' (colors, theme-colors, typography, spacing, effects, ethical constraints) and
+#' emits CSS custom properties plus Sass/JS/TS modules. `ui/build.js` in this
+#' package simply redistributes those published artifacts so that Quarto, Shiny,
+#' and Next.js consumers all resolve the same identity. See
+#' `dataimago-design/wiki/decisions/publish-packages.md` for the rationale
+#' behind the package-channel model.
 #'
 #' **Error Handling:**
 #' - Validates Node.js/pnpm availability before attempting build
@@ -105,8 +112,7 @@ ui_oops <- function(x) cat(crayon::red(paste0("\u2717", " ", x, "\n")))
 #'
 #' @seealso
 #' \code{\link{update_quarto_extension}} for extension asset management,
-#' \code{\link{generate_cdn_assets}} for CDN preparation,
-#' \code{\link{create_ui_workspace}} for UI workspace initialization
+#' \code{\link{generate_cdn_assets}} for CDN preparation
 #'
 #' @keywords design-system css build-tools ethical-ai
 #' @concept dataimago r-first-development MCP-compatible
@@ -127,7 +133,7 @@ build_design_system <- function(force_rebuild = FALSE,
   # 1. Validate prerequisites
   ui_dir <- "ui"
   if (!dir_exists(ui_dir)) {
-    errors <- c(errors, glue("ui/ directory not found. Run create_ui_workspace() first."))
+    errors <- c(errors, glue("ui/ directory not found. See ui/README.md and dataimago-design/wiki/patterns/new-consumer-checklist.md for the package-channel setup."))
     list(
       success = FALSE, errors = errors, assets = assets,
       sri_hashes = sri_hashes, build_time = start_time, metadata = list()
@@ -245,84 +251,7 @@ build_design_system <- function(force_rebuild = FALSE,
 
   assets <- c(assets, main_css)
 
-  # 5. Distribute LaTeX assets from design system submodule
-  if (verbose) {
-    ui_info("Distributing LaTeX assets from design system...")
-  }
-
-  # Source location in design system submodule
-  design_system_dir <- file.path(ui_dir, "src", "dataimago-design")
-  latex_source <- file.path(design_system_dir, "src", "latex")
-
-  if (dir_exists(latex_source)) {
-    # Define all distribution channels (relative to package root)
-    latex_channels <- list(
-      cdn = file.path("inst", "quarto-assets"),
-      extension = file.path("ui", "www", "_extensions", "dataimago", "ai-native", "assets", "latex"),
-      website = file.path("ui", "www", "assets", "latex"),
-      docs = file.path("docs", "assets", "latex")
-    )
-
-    latex_files_distributed <- 0
-
-    # Distribute dataimago.sty to all channels
-    sty_source <- file.path(latex_source, "dataimago.sty")
-    if (file_exists(sty_source)) {
-      for (channel_name in names(latex_channels)) {
-        channel_dir <- latex_channels[[channel_name]]
-        tryCatch(
-          {
-            if (!dir_exists(channel_dir)) {
-              dir_create(channel_dir, recursive = TRUE)
-            }
-            sty_target <- file.path(channel_dir, "dataimago.sty")
-            file_copy(sty_source, sty_target, overwrite = TRUE)
-            latex_files_distributed <- latex_files_distributed + 1
-            if (verbose) {
-              ui_info(glue("   dataimago.sty -> {channel_name}"))
-            }
-          },
-          error = function(e) {
-            errors <- c(errors, glue("Failed to copy dataimago.sty to {channel_name}: {e$message}"))
-          }
-        )
-      }
-    } else {
-      if (verbose) {
-        ui_warn("dataimago.sty not found in design system submodule")
-      }
-    }
-
-    # Copy README.md to CDN distribution only (with different name to avoid conflicts)
-    readme_source <- file.path(latex_source, "README.md")
-    if (file_exists(readme_source)) {
-      cdn_dir <- latex_channels$cdn
-      tryCatch(
-        {
-          readme_target <- file.path(cdn_dir, "README-latex.md")
-          file_copy(readme_source, readme_target, overwrite = TRUE)
-          latex_files_distributed <- latex_files_distributed + 1
-          if (verbose) {
-            ui_info("   README.md -> cdn (as README-latex.md)")
-          }
-        },
-        error = function(e) {
-          errors <- c(errors, glue("Failed to copy README.md to CDN: {e$message}"))
-        }
-      )
-    }
-
-    if (verbose && latex_files_distributed > 0) {
-      ui_done(glue("Distributed LaTeX assets to {length(latex_channels)} channels"))
-    }
-  } else {
-    if (verbose) {
-      ui_warn(glue("LaTeX source directory not found: {latex_source}"))
-      ui_info("   LaTeX assets will not be distributed (design system submodule may need initialization)")
-    }
-  }
-
-  # 6. Generate SRI hashes if requested
+  # 5. Generate SRI hashes if requested
   if (include_sri) {
     if (verbose) {
       ui_info("Generating SRI hashes for CDN security...")
@@ -366,7 +295,7 @@ build_design_system <- function(force_rebuild = FALSE,
     }
   }
 
-  # 7. Update Quarto extension if requested
+  # 6. Update Quarto extension if requested
   if (update_extension) {
     if (verbose) {
       ui_info("Updating Quarto extension assets...")
@@ -378,7 +307,7 @@ build_design_system <- function(force_rebuild = FALSE,
     }
   }
 
-  # 8. Generate CDN assets
+  # 7. Generate CDN assets
   cdn_result <- generate_cdn_assets(verbose = verbose)
   if (!cdn_result$success) {
     errors <- c(errors, cdn_result$errors)
@@ -386,7 +315,7 @@ build_design_system <- function(force_rebuild = FALSE,
     assets <- c(assets, cdn_result$assets)
   }
 
-  # 9. Synchronize Quarto assets (ensure consistency across directories)
+  # 8. Synchronize Quarto assets (ensure consistency across directories)
   if (verbose) {
     ui_info("Synchronizing Quarto assets across directories...")
   }
@@ -408,7 +337,7 @@ build_design_system <- function(force_rebuild = FALSE,
     }
   )
 
-  # 10. Create build metadata
+  # 9. Create build metadata
   build_time <- Sys.time()
   metadata <- list(
     package_manager = package_manager,
@@ -423,7 +352,7 @@ build_design_system <- function(force_rebuild = FALSE,
     sri_hashes_generated = length(sri_hashes)
   )
 
-  # 11. Final status
+  # 10. Final status
   success <- length(errors) == 0
 
   if (verbose) {
@@ -445,451 +374,6 @@ build_design_system <- function(force_rebuild = FALSE,
     sri_hashes = sri_hashes,
     build_time = build_time,
     metadata = metadata,
-    errors = errors
-  )
-}
-
-#' Create UI Workspace for Design System
-#'
-#' Sets up the Node.js workspace structure and configuration files needed for
-#' CSS compilation and design token processing. This function creates the complete
-#' ui/ directory structure with package.json, build scripts, and source files.
-#'
-#' @param force_overwrite Logical. Overwrite existing ui/ directory if it exists. Default: FALSE
-#' @param verbose Logical. Print detailed progress information. Default: TRUE
-#'
-#' @details
-#' **Created Directory Structure:**
-#' ```
-#' ui/
-#' +-- package.json              # Node.js dependencies (Style Dictionary, Sass, etc.)
-#' +-- build.js                  # Custom build script for compilation
-#' +-- src/
-#' |   +-- tokens/
-#' |   |   +-- colors.json       # dataimago color palette
-#' |   |   +-- typography.json   # Font definitions and scales
-#' |   |   +-- spacing.json      # Spacing scale and dimensions
-#' |   +-- styles/
-#' |       +-- base.scss         # Base styles using design tokens
-#' |       +-- components.scss   # UI component styles
-#' |       +-- utilities.scss    # Utility classes
-#' +-- dist/                     # Build output directory (created by build process)
-#' ```
-#'
-#' **Design Token Philosophy:**
-#' The design tokens follow dataimago's ethical AI principles:
-#' - **Semantic Naming**: Colors like `primary`, `accent`, `ethical-highlight`
-#' - **Accessibility First**: WCAG AA contrast ratios and reduced motion support
-#' - **Cultural Sensitivity**: Avoid culturally-biased color assumptions
-#' - **Future-Proof**: JSON structure enables multiple output formats
-#'
-#' **Build Tool Configuration:**
-#' - **Style Dictionary**: Converts design tokens to CSS custom properties
-#' - **Sass/SCSS**: Compiles component styles with token integration
-#' - **PostCSS**: Adds vendor prefixes and optimizations
-#' - **CSSnano**: Minification for production distribution
-#'
-#' @return List containing setup results:
-#'   - success: Logical indicating setup success
-#'   - created_files: Character vector of files created
-#'   - errors: Character vector of any error messages
-#'
-#' @examples
-#' \dontrun{
-#' # Create new ui workspace
-#' result <- create_ui_workspace()
-#'
-#' # Force recreate existing workspace
-#' result <- create_ui_workspace(force_overwrite = TRUE)
-#'
-#' # Check what was created
-#' if (result$success) {
-#'   cat("Created files:", paste(result$created_files, collapse = "\n  "))
-#' }
-#' }
-#'
-#' @export
-create_ui_workspace <- function(force_overwrite = FALSE, verbose = TRUE) {
-  ui_dir <- "ui"
-  created_files <- character(0)
-  errors <- character(0)
-
-  if (verbose) {
-    ui_info("Creating UI workspace for design system...")
-  }
-
-  # Check if ui/ directory exists and assess its type
-  if (dir_exists(ui_dir)) {
-    # Check if this is a sophisticated build system (has real source files)
-    has_sophisticated_system <- file.exists(file.path(ui_dir, "src", "styles")) &&
-      file.exists(file.path(ui_dir, "src", "tokens")) &&
-      file.exists(file.path(ui_dir, "build.js"))
-
-    if (has_sophisticated_system && !force_overwrite) {
-      if (verbose) {
-        ui_info("Found existing sophisticated UI build system - preserving it")
-        ui_info("  Use force_overwrite = TRUE to replace with minimal system")
-      }
-      # Return success without creating anything new - the sophisticated system is already there
-      list(
-        success = TRUE, created_files = character(0),
-        errors = character(0),
-        note = "Preserved existing sophisticated UI build system"
-      )
-    } else if (!force_overwrite) {
-      errors <- c(errors, "ui/ directory already exists. Use force_overwrite = TRUE to recreate.")
-      list(success = FALSE, created_files = created_files, errors = errors)
-    } else {
-      if (verbose) {
-        if (has_sophisticated_system) {
-          ui_warn("Removing existing sophisticated ui/ directory and replacing with minimal system...")
-        } else {
-          ui_warn("Removing existing ui/ directory...")
-        }
-      }
-      unlink(ui_dir, recursive = TRUE)
-    }
-  }
-
-  # Create directory structure
-  tryCatch(
-    {
-      dir_create(file.path(ui_dir, "src", "tokens"))
-      dir_create(file.path(ui_dir, "src", "styles"))
-      dir_create(file.path(ui_dir, "dist")) # Will be populated by build
-
-      if (verbose) {
-        ui_info("Created directory structure")
-      }
-    },
-    error = function(e) {
-      errors <- c(errors, glue("Error creating directories: {e$message}"))
-      list(success = FALSE, created_files = created_files, errors = errors)
-    }
-  )
-
-  # Create package.json
-  package_json <- list(
-    name = "@dataimago/design-system",
-    private = TRUE,
-    version = "0.1.0",
-    description = "dataimago ethical AI design system - CSS compilation workspace",
-    scripts = list(
-      build = "node build.js",
-      watch = "node build.js --watch",
-      clean = "rm -rf dist/*",
-      tokens = "style-dictionary build"
-    ),
-    keywords = c("dataimago", "design-system", "css", "ethical-ai"),
-    devDependencies = list(
-      "style-dictionary" = "^4.0.0",
-      "sass" = "^1.69.0",
-      "postcss" = "^8.4.0",
-      "autoprefixer" = "^10.4.0",
-      "cssnano" = "^6.0.0",
-      "postcss-cli" = "^11.0.0"
-    )
-  )
-
-  package_json_file <- file.path(ui_dir, "package.json")
-  tryCatch(
-    {
-      writeLines(
-        jsonlite::toJSON(package_json, pretty = TRUE, auto_unbox = TRUE),
-        package_json_file
-      )
-      created_files <- c(created_files, package_json_file)
-      if (verbose) {
-        ui_info("Created package.json with Node.js dependencies")
-      }
-    },
-    error = function(e) {
-      errors <- c(errors, glue("Error creating package.json: {e$message}"))
-    }
-  )
-
-  # Create design tokens - colors.json
-  colors_tokens <- list(
-    color = list(
-      brand = list(
-        primary = list(value = "#2C3E50", description = "dataimago primary brand color"),
-        secondary = list(value = "#34495E", description = "dataimago secondary brand color"),
-        accent = list(value = "#3498DB", description = "dataimago accent color for highlights"),
-        ethical = list(value = "#E74C3C", description = "Ethical AI emphasis color")
-      ),
-      semantic = list(
-        success = list(value = "#27AE60", description = "Success states and positive actions"),
-        warning = list(value = "#F39C12", description = "Warning states and caution"),
-        error = list(value = "#E74C3C", description = "Error states and critical issues"),
-        info = list(value = "#3498DB", description = "Informational content")
-      ),
-      text = list(
-        primary = list(value = "#2C3E50", description = "Primary text color"),
-        secondary = list(value = "#7F8C8D", description = "Secondary text color"),
-        muted = list(value = "#95A5A6", description = "Muted text color"),
-        inverse = list(value = "#FFFFFF", description = "Inverse text for dark backgrounds")
-      ),
-      background = list(
-        page = list(value = "#FFFFFF", description = "Main page background"),
-        surface = list(
-          value = "#F8F9FA",
-          description = "Card and surface backgrounds"
-        ),
-        overlay = list(
-          value = "#000000",
-          description = "Modal overlay background"
-        )
-      ),
-      border = list(
-        default = list(value = "#E9ECEF", description = "Default border color"),
-        focus = list(value = "#3498DB", description = "Focus ring border color")
-      )
-    )
-  )
-
-  colors_file <- file.path(ui_dir, "src", "tokens", "colors.json")
-  tryCatch(
-    {
-      writeLines(
-        jsonlite::toJSON(colors_tokens,
-          pretty = TRUE,
-          auto_unbox = TRUE
-        ),
-        colors_file
-      )
-      created_files <- c(created_files, colors_file)
-    },
-    error = function(e) {
-      errors <- c(errors, glue("Error creating colors.json: {e$message}"))
-    }
-  )
-
-  # Create design tokens - typography.json
-  typography_tokens <- list(
-    font = list(
-      family = list(
-        sans = list(value = paste0(
-          "Inter, system-ui, -apple-system, ",
-          "Segoe UI, Roboto, sans-serif"
-        )),
-        mono = list(value = paste0(
-          "JetBrains Mono, SF Mono, Monaco, ",
-          "Inconsolata, monospace"
-        )),
-        display = list(value = "Inter, system-ui, sans-serif")
-      ),
-      size = list(
-        xs = list(value = "0.75rem"),
-        sm = list(value = "0.875rem"),
-        base = list(value = "1rem"),
-        lg = list(value = "1.125rem"),
-        xl = list(value = "1.25rem"),
-        "2xl" = list(value = "1.5rem"),
-        "3xl" = list(value = "1.875rem"),
-        "4xl" = list(value = "2.25rem")
-      ),
-      weight = list(
-        normal = list(value = "400"),
-        medium = list(value = "500"),
-        semibold = list(value = "600"),
-        bold = list(value = "700")
-      ),
-      lineHeight = list(
-        tight = list(value = "1.25"),
-        normal = list(value = "1.5"),
-        relaxed = list(value = "1.625")
-      )
-    )
-  )
-
-  typography_file <- file.path(
-    ui_dir, "src", "tokens",
-    "typography.json"
-  )
-  tryCatch(
-    {
-      writeLines(
-        jsonlite::toJSON(typography_tokens, pretty = TRUE, auto_unbox = TRUE),
-        typography_file
-      )
-      created_files <- c(created_files, typography_file)
-    },
-    error = function(e) {
-      errors <- c(errors, glue("Error creating typography.json: {e$message}"))
-    }
-  )
-
-  # Create design tokens - spacing.json
-  spacing_tokens <- list(
-    spacing = list(
-      xs = list(value = "0.25rem"),
-      sm = list(value = "0.5rem"),
-      md = list(value = "1rem"),
-      lg = list(value = "1.5rem"),
-      xl = list(value = "2rem"),
-      "2xl" = list(value = "3rem"),
-      "3xl" = list(value = "4rem")
-    ),
-    radius = list(
-      sm = list(value = "0.25rem"),
-      md = list(value = "0.5rem"),
-      lg = list(value = "0.75rem"),
-      xl = list(value = "1rem"),
-      full = list(value = "9999px")
-    ),
-    shadow = list(
-      sm = list(value = "0 1px 2px 0 rgb(0 0 0 / 0.05)"),
-      md = list(value = "0 4px 6px -1px rgb(0 0 0 / 0.1)"),
-      lg = list(value = "0 10px 15px -3px rgb(0 0 0 / 0.1)"),
-      xl = list(value = paste0(
-        "0 20px 25px -5px ",
-        "rgb(0 0 0 / 0.1)"
-      ))
-    )
-  )
-
-  spacing_file <- file.path(ui_dir, "src", "tokens", "spacing.json")
-  tryCatch(
-    {
-      writeLines(
-        jsonlite::toJSON(spacing_tokens, pretty = TRUE, auto_unbox = TRUE),
-        spacing_file
-      )
-      created_files <- c(created_files, spacing_file)
-    },
-    error = function(e) {
-      errors <- c(errors, glue("Error creating spacing.json: {e$message}"))
-    }
-  )
-
-  # Create build.js script
-  build_js_content <- c(
-    "#!/usr/bin/env node",
-    "",
-    "/**",
-    " * dataimago Design System Build Script",
-    " * Compiles SCSS and design tokens into production CSS",
-    " */",
-    "",
-    "const fs = require('fs');",
-    "const path = require('path');",
-    "const { execSync } = require('child_process');",
-    "",
-    "// Ensure dist directory exists",
-    "const distDir = path.join(__dirname, 'dist');",
-    "if (!fs.existsSync(distDir)) {",
-    "  fs.mkdirSync(distDir, { recursive: true });",
-    "}",
-    "",
-    "console.log('Building dataimago design system...');",
-    "",
-    "try {",
-    "  // For now, create a minimal CSS file until full build system is implemented",
-    "  const minimalCSS = [",
-    "    '/* dataimago Design System v0.1.0 */',",
-    "    '/* Generated by build.js - Minimal implementation */',",
-    "    '',",
-    "    ':root {',",
-    "    '  --dataimago-primary: #2C3E50;',",
-    "    '  --dataimago-secondary: #34495E;',",
-    "    '  --dataimago-accent: #3498DB;',",
-    "    '  --dataimago-ethical: #E74C3C;',",
-    "    '}',",
-    "    '',",
-    "    '.dataimago-container {',",
-    "    '  max-width: 1200px;',",
-    "    '  margin: 0 auto;',",
-    "    '  padding: 1rem;',",
-    "    '}',",
-    "    '',",
-    "    '.dataimago-button {',",
-    "    '  background: var(--dataimago-primary);',",
-    "    '  color: white;',",
-    "    '  border: none;',",
-    "    '  padding: 0.5rem 1rem;',",
-    "    '  border-radius: 0.25rem;',",
-    "    '  cursor: pointer;',",
-    "    '}',",
-    "    '',",
-    "    '.dataimago-button:hover {',",
-    "    '  background: var(--dataimago-secondary);',",
-    "    '}'",
-    "  ].join('\\n');",
-    "",
-    "  // Write main CSS file",
-    "  fs.writeFileSync(path.join(distDir, 'dataimago.min.css'), minimalCSS);",
-    "  ",
-    "  // Create tokens CSS",
-    "  const tokensCSS = [",
-    "    '/* dataimago Design Tokens */',",
-    "    ':root {',",
-    "    '  --dataimago-primary: #2C3E50;',",
-    "    '  --dataimago-secondary: #34495E;',",
-    "    '  --dataimago-accent: #3498DB;',",
-    "    '  --dataimago-ethical: #E74C3C;',",
-    "    '  --dataimago-success: #27AE60;',",
-    "    '  --dataimago-warning: #F39C12;',",
-    "    '  --dataimago-error: #E74C3C;',",
-    "    '  --dataimago-info: #3498DB;',",
-    "    '}'",
-    "  ].join('\\n');",
-    "  ",
-    "  fs.writeFileSync(path.join(distDir, 'tokens.css'), tokensCSS);",
-    "  ",
-    "  // Create manifest",
-    "  const manifest = {",
-    "    name: '@dataimago/design-system',",
-    "    version: '0.1.0',",
-    "    files: ['dataimago.min.css', 'tokens.css'],",
-    "    buildTime: new Date().toISOString()",
-    "  };",
-    "  ",
-    "  fs.writeFileSync(path.join(distDir, 'manifest.json'),",
-    "                    JSON.stringify(manifest, null, 2));",
-    "  ",
-    "  console.log('\\u2713 Build completed successfully');",
-    "  console.log('  Generated files:');",
-    "  console.log('    - dataimago.min.css');",
-    "  console.log('    - tokens.css');",
-    "  console.log('    - manifest.json');",
-    "",
-    "} catch (error) {",
-    "  console.error('Build failed:', error.message);",
-    "  process.exit(1);",
-    "}"
-  )
-  build_js_file <- file.path(ui_dir, "build.js")
-  tryCatch(
-    {
-      writeLines(build_js_content, build_js_file)
-      created_files <- c(created_files, build_js_file)
-      if (verbose) {
-        ui_info("Created build.js script")
-      }
-    },
-    error = function(e) {
-      errors <- c(errors, glue("Error creating build.js: {e$message}"))
-    }
-  )
-
-  success <- length(errors) == 0
-
-  if (verbose) {
-    if (success) {
-      ui_done(glue("UI workspace created successfully"))
-      ui_info(glue("   Created {length(created_files)} files"))
-      ui_info("   Run build_design_system() to compile CSS assets")
-    } else {
-      ui_oops("UI workspace setup failed")
-      for (error in errors) {
-        ui_oops(glue("   - {error}"))
-      }
-    }
-  }
-
-  list(
-    success = success,
-    created_files = created_files,
     errors = errors
   )
 }
@@ -1291,8 +775,8 @@ generate_cdn_assets <- function(verbose = TRUE) {
 #'   `ui/src/dataimago-design/` git submodule is no longer part of this
 #'   package (see `NEWS.md` 0.0-4.0). The authoritative design-system
 #'   source of truth now lives in the sibling `dataimago-design` repo and
-#'   ships via `@dataimago/tokens`, `@dataimago/css`, and
-#'   `@dataimago-ui/components`; ingest its context separately when needed.
+#'   ships via `@dataimago/tokens`, `@dataimago/css`, and `@dataimago/ui`
+#'   on public npm; ingest its context separately when needed.
 #' - Build system patterns and multi-platform distribution
 #'
 #' **AI Agent Context:**
@@ -1479,7 +963,7 @@ generate_ai_context <- function(output_file = NULL,
       ui_info("  - Prototype-in-consumer helper (tools/design-link.mjs)")
       ui_info("  Note: design-system source of truth lives in the sibling")
       ui_info("        dataimago-design repo (@dataimago/tokens, @dataimago/css,")
-      ui_info("        @dataimago-ui/components); ingest its context separately if needed.")
+      ui_info("        @dataimago/ui); ingest its context separately if needed.")
       if (token_count > 0) {
         ui_info(glue("  - Token count: {format(token_count, big.mark = ',')}"))
       }

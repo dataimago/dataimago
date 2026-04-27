@@ -58,8 +58,8 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Retired ui/src/dataimago-design/ submodule — design system is now
-# consumed from @dataimago/tokens, @dataimago/css, @dataimago-ui/components.
-# Ignore the legacy path so a stray checkout can't re-introduce it.
+# consumed from @dataimago/tokens, @dataimago/css, @dataimago/ui on
+# public npm. Ignore the legacy path so a stray checkout can't re-introduce it.
 ui/src/dataimago-design/
 ui/src/
 
@@ -240,6 +240,9 @@ Icon
 # npm
 .npm/
 .npmrc
+# Track the package-channel consumer .npmrc explicitly (no secrets;
+# pins the @dataimago scope to public npm). See ui/README.md.
+!ui/.npmrc
 
 # Yarn
 .yarn/
@@ -303,6 +306,7 @@ local.env
 #
 # Deprecated / retired (explicitly ignored above):
 # - ui/src/dataimago-design/ - Retired submodule; design system now ships as
-#   @dataimago/tokens + @dataimago/css + @dataimago-ui/components. See
-#   NEWS.md 0.0-4.0 and wiki/decisions/publish-packages.md in dataimago-design.
+#   @dataimago/tokens + @dataimago/css + @dataimago/ui on public npm. See
+#   NEWS.md 0.0-4.0 / 0.0-5.0 and wiki/decisions/publish-packages.md in
+#   dataimago-design.
 # =============================================================================

@@ -171,12 +171,30 @@ The AI-native extension provides:
 ## \U0001F527 Customization
 
 ### Styling Customizations
-Modify design tokens in the R workspace:
-```r
-# Edit ui/src/tokens/colors.json for color changes
-# Edit ui/src/styles/components.scss for component styling
-# Run build_design_system() to apply changes
+
+The design tokens and component styles live in the sibling
+`dataimago-design` monorepo and are consumed here through the
+`@dataimago/*` packages. To change them:
+
+```bash
+# 1. Make the change in dataimago-design (packages/tokens/src/...,
+#    packages/css/src/styles/...). Run `pnpm changeset` and merge the
+#    "Version Packages" PR so a new @dataimago/tokens or @dataimago/css
+#    release is published.
+# 2. Bump this package's pin:
+cd ui
+pnpm update @dataimago/tokens @dataimago/css @dataimago/ui
 ```
+
+```r
+# 3. Rebuild and fan out to every deployment target:
+build_design_system()
+```
+
+To iterate locally before publishing, use the prototype-in-consumer
+flow: `export DATAIMAGO_DESIGN_PATH=/abs/path/to/dataimago-design` and
+`pnpm design:link` (restore with `pnpm design:unlink` before
+committing).
 
 ### Content Customizations
 - **Page content** - Edit .qmd files directly

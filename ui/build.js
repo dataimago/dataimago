@@ -5,9 +5,12 @@
  * Consumes the design system from three installed packages instead of the
  * retired `ui/src/dataimago-design` git submodule + two-stage build:
  *
- *   - @dataimago/tokens        → canonical token JSON, tokens.css, tokens.scss
- *   - @dataimago/css           → dataimago.css, dataimago.min.css, tailwind-preset
- *   - @dataimago-ui/components → React component bundle (ESM + CJS)
+ *   - @dataimago/tokens → canonical token JSON, tokens.css, tokens.scss
+ *   - @dataimago/css    → dataimago.css, dataimago.min.css, tailwind-preset
+ *   - @dataimago/ui     → React component bundle (ESM + CJS)
+ *
+ * All three packages ship from public npm under the unified `@dataimago/*`
+ * scope, matching the registry posture of `dataimago-ai`.
  *
  * Output file names are preserved bit-for-bit where the R side expects them
  * (inst/quarto-assets/, docs/assets/, etc.) so that `dataimago::` exports
@@ -18,8 +21,8 @@
  *
  * Prerequisites:
  *   1. `pnpm install` has been run in `ui/` so node_modules/@dataimago/* are
- *      present. `.npmrc` provides the scope → registry mapping; local dev
- *      must export GITHUB_PACKAGES_TOKEN before the first install.
+ *      present. `.npmrc` pins the `@dataimago` scope to public npm; no
+ *      auth token is needed for read access.
  *   2. To prototype design-system changes without republishing, run
  *      `DATAIMAGO_DESIGN_PATH=... node tools/design-link.mjs link`
  *      at the repo root, then re-run this script.
@@ -37,7 +40,7 @@ const nodeModulesDir = path.join(uiDir, 'node_modules');
 const packages = {
   tokens:     path.join(nodeModulesDir, '@dataimago', 'tokens'),
   css:        path.join(nodeModulesDir, '@dataimago', 'css'),
-  components: path.join(nodeModulesDir, '@dataimago-ui', 'components'),
+  components: path.join(nodeModulesDir, '@dataimago', 'ui'),
 };
 
 function requirePkg(name, absPath, { required = true } = {}) {
@@ -87,7 +90,7 @@ console.log('🚀 dataimago-rpkg UI build — consuming @dataimago packages from
 
 requirePkg('@dataimago/tokens', packages.tokens);
 requirePkg('@dataimago/css',    packages.css);
-requirePkg('@dataimago-ui/components', packages.components, { required: false });
+requirePkg('@dataimago/ui',     packages.components, { required: false });
 
 ensureDir(distDir);
 
@@ -171,7 +174,7 @@ if (fs.existsSync(path.join(distDir, 'dataimago.min.css'))) {
 }
 
 // ─── Stage 3: component JS bundle (optional) ───────────────────────────────
-console.log('🧩 Stage 3: @dataimago-ui/components bundle');
+console.log('🧩 Stage 3: @dataimago/ui bundle');
 
 const componentsJsDir = path.join(distDir, 'js', 'dataimago-ui');
 if (fs.existsSync(packages.components)) {
@@ -180,10 +183,10 @@ if (fs.existsSync(packages.components)) {
     copyRecursive(componentsDist, componentsJsDir);
     console.log('   ✓ dist/js/dataimago-ui/ populated');
   } else {
-    console.warn('   ⚠️  @dataimago-ui/components has no dist/ — skipping JS copy');
+    console.warn('   ⚠️  @dataimago/ui has no dist/ — skipping JS copy');
   }
 } else {
-  console.log('   (skipped — @dataimago-ui/components not installed)');
+  console.log('   (skipped — @dataimago/ui not installed)');
 }
 
 // ─── Stage 4: manifest.json (stable shape; R side parses this) ─────────────
@@ -192,9 +195,9 @@ const manifest = {
   builtAt: new Date().toISOString(),
   builtBy: 'ui/build.js (package-channel)',
   sources: {
-    '@dataimago/tokens':        readPkgVersion(packages.tokens),
-    '@dataimago/css':           readPkgVersion(packages.css),
-    '@dataimago-ui/components': readPkgVersion(packages.components),
+    '@dataimago/tokens': readPkgVersion(packages.tokens),
+    '@dataimago/css':    readPkgVersion(packages.css),
+    '@dataimago/ui':     readPkgVersion(packages.components),
   },
   artifacts: fs.readdirSync(distDir).sort(),
 };
