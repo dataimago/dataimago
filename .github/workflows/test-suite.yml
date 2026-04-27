@@ -21,7 +21,10 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::lintr, any::styler
+          extra-packages: any::lintr, any::styler, any::pkgload
+
+      - name: Install Package
+        run: R CMD INSTALL .
 
       - name: Lint R Code
         run: |
