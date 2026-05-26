@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "description": "dataimago-rpkg UI assets — consumes the @dataimago design packages and distributes compiled assets to inst/, docs/, and ui/www/.",
   "scripts": {
-    "build":   "node build.js",
-    "watch":   "node build.js --watch",
-    "clean":   "rm -rf dist/*",
-    "design:link":   "node ../tools/design-link.mjs link",
+    "build": "node build.js",
+    "watch": "node build.js --watch",
+    "clean": "rm -rf dist/*",
+    "design:link": "node ../tools/design-link.mjs link",
     "design:unlink": "node ../tools/design-link.mjs unlink",
     "design:status": "node ../tools/design-link.mjs status"
   },
@@ -19,8 +19,8 @@
     "ethical-ai"
   ],
   "dependencies": {
-    "@dataimago/tokens": "^0.1.0-alpha.1",
-    "@dataimago/css":    "^0.1.0-alpha.1",
-    "@dataimago/ui":     "^0.1.0-alpha.1"
+    "@dataimago/css": "0.1.0-alpha.4",
+    "@dataimago/tokens": "0.1.0-alpha.4",
+    "@dataimago/ui": "0.1.0-alpha.4"
   }
 }
