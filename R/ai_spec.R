@@ -7,7 +7,7 @@ NULL
 # ----------------------------------------------------------------------------
 # `ai(spec_path = ...)` reads a user's `dataimago-spec.yaml`, validates it,
 # locates the R package it points at, and runs the producer-driver generators
-# gated by the spec's `features` flags — writing the integration-contract
+# gated by the spec's `features` flags -- writing the integration-contract
 # artifact family (discover.json + static JSON, types.ts, mcp-schema.json,
 # optional live api.R). Generation runs in the user's repo CI (Framing C); the
 # CI commits the result.
@@ -20,8 +20,8 @@ NULL
 #'
 #' Lightweight structural validation (no JSON-Schema dependency this release;
 #' the schema is carried in `inst/schemas/` for reference). Checks the
-#' load-bearing invariants — including the `source.rPackage` ⇔ `source.case`
-#' cross-field rule that does NOT survive `zod-to-json-schema` — then fills in
+#' load-bearing invariants -- including the `source.rPackage` <-> `source.case`
+#' cross-field rule that does NOT survive `zod-to-json-schema` -- then fills in
 #' the optional `features` / `generator` defaults and returns the normalized
 #' spec.
 #'
@@ -62,7 +62,7 @@ validate_spec <- function(spec) {
     }
   }
 
-  # Defaults — most spec fields are optional with sensible defaults (the
+  # Defaults -- most spec fields are optional with sensible defaults (the
   # "spec accommodates, interview asks the critical subset" principle).
   feature_defaults <- list(
     quartoBuild = TRUE, thesisPdf = TRUE, mcpTools = TRUE,
@@ -124,7 +124,7 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
   # no-r: nothing in the producer-driver family to generate.
   if (identical(spec$source$case, "no-r")) {
     if (verbose) {
-      ui_info("source.case = 'no-r' — no R-derived artifacts to generate.")
+      ui_info("source.case = 'no-r' -- no R-derived artifacts to generate.")
     }
     return(invisible(spec_result(
       spec, project_path, out,
@@ -187,7 +187,7 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
 
   if (verbose) {
     ui_done(glue::glue(
-      "ai(spec_path) complete — {length(generators_run)} generators run."
+      "ai(spec_path) complete -- {length(generators_run)} generators run."
     ))
   }
 

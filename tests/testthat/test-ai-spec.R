@@ -10,6 +10,9 @@
 #     mcp-schema.json) under generator.outputDir.
 #
 # Uses make_fixture_pkg() from helper-fixtures.R + withr::local_tempdir().
+# Fixture setup is inlined in each test_that() block (rather than a shared
+# closure) so object_usage_linter doesn't flag the helper as an undefined
+# global -- matching the convention in test-phase-2e-generators.R.
 # ============================================================================
 
 # A complete, valid spec as an R list. Tests mutate fields directly before
@@ -38,32 +41,26 @@ make_spec <- function() {
   )
 }
 
-# Write a spec + a fixture rpkg at submodulePath under a fresh tempdir; return
-# the tempdir + spec path.
-setup_spec_project <- function(spec = make_spec()) {
-  tmp <- withr::local_tempdir(.local_envir = parent.frame())
-  if (!is.null(spec$source$rPackage)) {
-    make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
-  }
-  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
-  yaml::write_yaml(spec, spec_path)
-  list(tmp = tmp, spec_path = spec_path)
-}
-
 test_that("ai(spec_path) writes the producer-driver artifact family", {
-  p <- setup_spec_project()
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(make_spec(), spec_path)
 
-  res <- suppressWarnings(ai(spec_path = p$spec_path, verbose = FALSE))
+  suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
-  expect_true(fs::file_exists(fs::path(p$tmp, "public", "api", "discover.json")))
-  expect_true(fs::file_exists(fs::path(p$tmp, "packages", "shared-utils", "src", "types.ts")))
-  expect_true(fs::file_exists(fs::path(p$tmp, "public", "api", "mcp-schema.json")))
+  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "discover.json")))
+  expect_true(fs::file_exists(fs::path(tmp, "packages", "shared-utils", "src", "types.ts")))
+  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "mcp-schema.json")))
 })
 
 test_that("ai(spec_path) returns a spec-mode result carrying the project name", {
-  p <- setup_spec_project()
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(make_spec(), spec_path)
 
-  res <- suppressWarnings(ai(spec_path = p$spec_path, verbose = FALSE))
+  res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
   expect_equal(res$mode, "spec")
   expect_equal(res$project_name, "test-project")
@@ -74,25 +71,30 @@ test_that("ai(spec_path) returns a spec-mode result carrying the project name", 
 test_that("features$mcpTools = FALSE skips mcp-schema.json", {
   spec <- make_spec()
   spec$features$mcpTools <- FALSE
-  p <- setup_spec_project(spec)
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
 
-  res <- suppressWarnings(ai(spec_path = p$spec_path, verbose = FALSE))
+  suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
-  expect_false(fs::file_exists(fs::path(p$tmp, "public", "api", "mcp-schema.json")))
+  expect_false(fs::file_exists(fs::path(tmp, "public", "api", "mcp-schema.json")))
   # the always-on generators still ran
-  expect_true(fs::file_exists(fs::path(p$tmp, "public", "api", "discover.json")))
+  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "discover.json")))
 })
 
 test_that("source$case = 'no-r' is a no-op for the producer-driver family", {
   spec <- make_spec()
   spec$source$case <- "no-r"
   spec$source$rPackage <- NULL
-  p <- setup_spec_project(spec)
+  tmp <- withr::local_tempdir()
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
 
-  res <- suppressWarnings(ai(spec_path = p$spec_path, verbose = FALSE))
+  res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
   expect_equal(length(res$generators_run), 0)
-  expect_false(fs::dir_exists(fs::path(p$tmp, "public", "api")))
+  expect_false(fs::dir_exists(fs::path(tmp, "public", "api")))
 })
 
 test_that("validate_spec rejects a non-dataimago apiVersion", {
@@ -109,7 +111,7 @@ test_that("validate_spec rejects a missing metadata$name", {
 
 test_that("validate_spec rejects 'no-r' carrying an rPackage", {
   spec <- make_spec()
-  spec$source$case <- "no-r" # rPackage still present → invariant violation
+  spec$source$case <- "no-r" # rPackage still present -> invariant violation
   expect_error(validate_spec(spec), "no-r")
 })
 
