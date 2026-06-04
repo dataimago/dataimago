@@ -1,5 +1,21 @@
 # dataimago 0.0-5.0
 
+## SGPc rpkg Dogfood Refinements (2026-06-04)
+
+### Changed
+
+* `ai(spec_path)` now preserves curated wiki pages and existing `KNOWLEDGE.md`
+  by default. `knowledge.wikiMode` controls whether regeneration merges seeded
+  content, bootstraps from scratch, or skips the knowledge layer.
+* Retrofit specs default `mcpTools` and `apiScaffolding` to `FALSE`, keeping
+  generated MCP/live API artifacts opt-in for existing R packages.
+* `generator.staticExport` supports `full`, `discover-only`, and `off` modes so
+  continuous-parameter packages can emit route metadata without misleading
+  static fixture grids.
+* Roxygen parsing now rejects ambiguous `c()` defaults unless they are scalar
+  `match.arg()` enums, and quoted examples no longer become enums without an
+  explicit enum marker.
+
 ## Package-Channel Migration + R API Cleanup (2026-04-27)
 
 This release ships the `0.0-4.x` package-channel transition end-to-end. The

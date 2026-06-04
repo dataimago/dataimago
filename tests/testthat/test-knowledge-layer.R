@@ -56,6 +56,30 @@ test_that("generate_knowledge_md renders the framework template with no leftover
   expect_false(grepl("\\{\\{", txt)) # no unrendered mustache tokens
 })
 
+test_that("generate_knowledge_md preserves existing KNOWLEDGE.md by default", {
+  tmp <- withr::local_tempdir()
+  km <- fs::path(tmp, "KNOWLEDGE.md")
+  writeLines(c(
+    "---",
+    "title: Curated Manual",
+    "curated: true",
+    "---",
+    "",
+    "# Curated domain manual",
+    "",
+    "Do not overwrite this content."
+  ), km)
+
+  res <- generate_knowledge_md(
+    project_path = tmp, project_name = "SGPc", domain_type = "framework",
+    domain_name = "Copula Growth Methodology", source_pkg = NULL, verbose = FALSE
+  )
+
+  txt <- paste(readLines(km), collapse = "\n")
+  expect_match(txt, "Do not overwrite this content", fixed = TRUE)
+  expect_true(isTRUE(res$skipped))
+})
+
 test_that("ai(spec_path) with a knowledge block scaffolds wiki/ + raw/ + KNOWLEDGE.md", {
   tmp <- withr::local_tempdir()
   make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")

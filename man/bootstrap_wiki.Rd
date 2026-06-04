@@ -9,6 +9,7 @@ bootstrap_wiki(
   project_name,
   source_pkg = NULL,
   domain_type = c("framework", "research", "explorer"),
+  overwrite = FALSE,
   verbose = TRUE
 )
 }
@@ -23,6 +24,8 @@ bootstrap_wiki(
 structure: "framework" (principles/patterns/decisions/connections/...),
 "research" (sources/theories/methods/findings/...), or "explorer"
 (dimensions/attributes/datasets/...). Default: "framework".}
+
+\item{overwrite}{Logical. Replace existing curated wiki pages. Default: FALSE.}
 
 \item{verbose}{Logical. Print progress. Default: TRUE}
 }

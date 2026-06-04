@@ -64,19 +64,36 @@ validate_spec <- function(spec) {
 
   # Defaults -- most spec fields are optional with sensible defaults (the
   # "spec accommodates, interview asks the critical subset" principle).
+  user_features <- if (is.null(spec$features)) list() else spec$features
   feature_defaults <- list(
-    quartoBuild = TRUE, thesisPdf = TRUE, mcpTools = TRUE,
-    aiContext = TRUE, apiScaffolding = TRUE
+    quartoBuild = TRUE, thesisPdf = TRUE,
+    mcpTools = if (identical(case, "retrofit")) FALSE else TRUE,
+    aiContext = TRUE,
+    apiScaffolding = if (identical(case, "retrofit")) FALSE else TRUE
   )
   generator_defaults <- list(
-    rpkgVersion = ">=0.5.0", designVersion = ">=2.0.0", outputDir = "."
+    rpkgVersion = ">=0.5.0", designVersion = ">=2.0.0",
+    outputDir = ".", staticExport = "full"
   )
-  spec$features <- modifyList(
-    feature_defaults, if (is.null(spec$features)) list() else spec$features
-  )
+  spec$features <- modifyList(feature_defaults, user_features)
   spec$generator <- modifyList(
     generator_defaults, if (is.null(spec$generator)) list() else spec$generator
   )
+
+  if (!spec$generator$staticExport %in% c("full", "discover-only", "off")) {
+    cli::cli_abort("Invalid spec generator$staticExport: expected one of 'full', 'discover-only', or 'off'.")
+  }
+
+  knowledge_was_declared <- !is.null(spec$vertical$rpkg$knowledge) || !is.null(spec$knowledge)
+  knowledge <- spec$vertical$rpkg$knowledge
+  if (is.null(knowledge)) knowledge <- spec$knowledge
+  knowledge_defaults <- list(wikiMode = "merge-seeded")
+  knowledge <- modifyList(knowledge_defaults, if (is.null(knowledge)) list() else knowledge)
+  if (!knowledge$wikiMode %in% c("bootstrap", "merge-seeded", "skip")) {
+    cli::cli_abort("Invalid spec knowledge$wikiMode: expected one of 'bootstrap', 'merge-seeded', or 'skip'.")
+  }
+  knowledge$.declared <- knowledge_was_declared
+  spec$knowledge <- knowledge
 
   spec
 }
@@ -146,15 +163,20 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
 
   if (verbose) ui_info(glue::glue("Introspecting R package: {pkg_path}"))
 
-  # Always (an R package is present): static export + shared TS utils. These
-  # are the core integration surface the NextJS app needs to function.
-  export_static_api(
-    pkg_path = pkg_path,
-    output_dir = fs::path(out, "public", "api"),
-    verbose = verbose
-  )
-  generators_run <- c(generators_run, "export_static_api")
+  # Static export mode controls whether dataimago writes the StaticProducerDriver
+  # input contract at all, and whether it writes only the manifest/OpenAPI pair or
+  # full endpoint fixture data.
+  if (!identical(spec$generator$staticExport, "off")) {
+    export_static_api(
+      pkg_path = pkg_path,
+      output_dir = fs::path(out, "public", "api"),
+      mode = spec$generator$staticExport,
+      verbose = verbose
+    )
+    generators_run <- c(generators_run, "export_static_api")
+  }
 
+  # Shared TS utils are independent from static JSON fixtures.
   utils_res <- generate_shared_utils(
     pkg_path = pkg_path,
     output_dir = fs::path(out, "packages", "shared-utils", "src"),
@@ -191,34 +213,40 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
   # This is committed, curated source (seeded-vs-curated), distinct from the
   # producer-driver build artifacts above. Seeding from raw/ is an in-repo-AI
   # task; here we scaffold the structure + the KNOWLEDGE.md how-to.
-  knowledge <- spec$vertical$rpkg$knowledge
-  if (is.null(knowledge)) knowledge <- spec$knowledge
-  if (!is.null(knowledge) || isTRUE(features$aiContext)) {
+  knowledge <- spec$knowledge
+  if (isTRUE(features$aiContext) || isTRUE(knowledge$.declared)) {
     domain_type <- knowledge$domainType
     if (is.null(domain_type)) domain_type <- "framework"
     domain_name <- knowledge$domainName
     if (is.null(domain_name)) domain_name <- spec$project$title
     if (is.null(domain_name)) domain_name <- spec$metadata$name
 
-    bootstrap_wiki(
-      project_path = out,
-      project_name = spec$metadata$name,
-      source_pkg = pkg_path,
-      domain_type = domain_type,
-      verbose = verbose
-    )
-    generators_run <- c(generators_run, "bootstrap_wiki")
+    if (!identical(knowledge$wikiMode, "skip")) {
+      overwrite_knowledge <- identical(knowledge$wikiMode, "bootstrap")
+      bootstrap_wiki(
+        project_path = out,
+        project_name = spec$metadata$name,
+        source_pkg = pkg_path,
+        domain_type = domain_type,
+        overwrite = overwrite_knowledge,
+        verbose = verbose
+      )
+      generators_run <- c(generators_run, "bootstrap_wiki")
 
-    generate_knowledge_md(
-      project_path = out,
-      project_name = spec$metadata$name,
-      domain_type = domain_type,
-      domain_name = domain_name,
-      source_pkg = pkg_path,
-      verbose = verbose
-    )
-    generators_run <- c(generators_run, "generate_knowledge_md")
-    files_written <- c(files_written, "KNOWLEDGE.md")
+      knowledge_res <- generate_knowledge_md(
+        project_path = out,
+        project_name = spec$metadata$name,
+        domain_type = domain_type,
+        domain_name = domain_name,
+        source_pkg = pkg_path,
+        overwrite = overwrite_knowledge,
+        verbose = verbose
+      )
+      generators_run <- c(generators_run, "generate_knowledge_md")
+      if (!isTRUE(knowledge_res$skipped)) {
+        files_written <- c(files_written, "KNOWLEDGE.md")
+      }
+    }
   }
 
   if (verbose) {

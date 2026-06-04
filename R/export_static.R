@@ -50,6 +50,9 @@ NULL
 #'   combinations are inferred from roxygen enum values and defaults.
 #' @param max_combinations Integer. Safety limit on total combinations per
 #'   function. Default: 500
+#' @param mode Character. Export mode: "full" writes endpoint fixtures plus
+#'   discover/openapi metadata; "discover-only" writes only metadata. Default:
+#'   "full".
 #' @param verbose Logical. Print progress. Default: TRUE
 #'
 #' @return List with: files_created (count), total_size_kb, functions_exported,
@@ -88,7 +91,9 @@ export_static_api <- function(pkg_path,
                               pkg_name = NULL,
                               param_grid = NULL,
                               max_combinations = 500L,
+                              mode = c("full", "discover-only"),
                               verbose = TRUE) {
+  mode <- match.arg(mode)
   start_time <- Sys.time()
 
   # Read package name
@@ -126,51 +131,55 @@ export_static_api <- function(pkg_path,
   total_bytes <- 0L
   functions_exported <- character(0)
 
-  for (fn_name in names(exports)) {
-    fn_meta <- exports[[fn_name]]
-    endpoint <- fn_to_endpoint(fn_name)
+  if (identical(mode, "full")) {
+    for (fn_name in names(exports)) {
+      fn_meta <- exports[[fn_name]]
+      endpoint <- fn_to_endpoint(fn_name)
 
-    # Create endpoint directory
-    endpoint_dir <- fs::path(output_dir, endpoint)
-    if (!fs::dir_exists(endpoint_dir)) {
-      fs::dir_create(endpoint_dir, recurse = TRUE)
-    }
+      # Create endpoint directory
+      endpoint_dir <- fs::path(output_dir, endpoint)
+      if (!fs::dir_exists(endpoint_dir)) {
+        fs::dir_create(endpoint_dir, recurse = TRUE)
+      }
 
-    if (verbose) {
-      ui_info(glue::glue("  Exporting: {fn_name} -> /{endpoint}/"))
-    }
+      if (verbose) {
+        ui_info(glue::glue("  Exporting: {fn_name} -> /{endpoint}/"))
+      }
 
-    # Generate parameter combinations
-    if (!is.null(param_grid) && fn_name %in% names(param_grid)) {
-      combos <- param_grid[[fn_name]]
-    } else {
-      combos <- generate_param_combinations(fn_meta$params, max_combinations)
-    }
+      # Generate parameter combinations
+      if (!is.null(param_grid) && fn_name %in% names(param_grid)) {
+        combos <- param_grid[[fn_name]]
+      } else {
+        combos <- generate_param_combinations(fn_meta$params, max_combinations)
+      }
 
-    # Export default (no params) call
-    result <- safe_call_function(pkg_name, fn_name, list())
-    if (!is.null(result)) {
-      json_content <- jsonlite::toJSON(result, auto_unbox = TRUE, dataframe = "rows", pretty = FALSE)
-      default_path <- fs::path(endpoint_dir, "default.json")
-      writeLines(json_content, default_path)
-      total_files <- total_files + 1L
-      total_bytes <- total_bytes + nchar(json_content)
-    }
-
-    # Export each parameter combination
-    for (combo in combos) {
-      result <- safe_call_function(pkg_name, fn_name, combo)
+      # Export default (no params) call
+      result <- safe_call_function(pkg_name, fn_name, list())
       if (!is.null(result)) {
-        filename <- combo_to_filename(combo)
         json_content <- jsonlite::toJSON(result, auto_unbox = TRUE, dataframe = "rows", pretty = FALSE)
-        json_path <- fs::path(endpoint_dir, filename)
-        writeLines(json_content, json_path)
+        default_path <- fs::path(endpoint_dir, "default.json")
+        writeLines(json_content, default_path)
         total_files <- total_files + 1L
         total_bytes <- total_bytes + nchar(json_content)
       }
-    }
 
-    functions_exported <- c(functions_exported, fn_name)
+      # Export each parameter combination
+      for (combo in combos) {
+        result <- safe_call_function(pkg_name, fn_name, combo)
+        if (!is.null(result)) {
+          filename <- combo_to_filename(combo)
+          json_content <- jsonlite::toJSON(result, auto_unbox = TRUE, dataframe = "rows", pretty = FALSE)
+          json_path <- fs::path(endpoint_dir, filename)
+          writeLines(json_content, json_path)
+          total_files <- total_files + 1L
+          total_bytes <- total_bytes + nchar(json_content)
+        }
+      }
+
+      functions_exported <- c(functions_exported, fn_name)
+    }
+  } else {
+    functions_exported <- names(exports)
   }
 
   # Export discovery manifest (Phase-2e shape: discover.json at the root)

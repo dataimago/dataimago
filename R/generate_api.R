@@ -97,6 +97,7 @@ parse_roxygen_exports <- function(pkg_path, verbose = FALSE) {
       # Parse function signature for defaults
       sig_defaults <- parse_function_defaults(lines, func_line_num)
       func_meta$params <- merge_param_defaults(func_meta$params, sig_defaults)
+      validate_roxygen_contract(func_meta, lines, func_line_num)
 
       all_functions[[func_name]] <- func_meta
     }
@@ -402,12 +403,15 @@ merge_param_defaults <- function(roxygen_params, sig_defaults) {
 
     if (param_name %in% names(roxygen_params)) {
       roxygen_params[[param_name]]$default <- default_val
+      roxygen_params[[param_name]]$signature_default <- default_val
 
       # If default is c("a", "b", "c"), treat as enum
       if (!is.na(default_val) && grepl("^c\\(", default_val)) {
         enum_vals <- extract_c_values(default_val)
-        if (length(enum_vals) > 0 && length(roxygen_params[[param_name]]$enum) == 0) {
-          roxygen_params[[param_name]]$enum <- enum_vals
+        if (length(enum_vals) > 0) {
+          if (length(roxygen_params[[param_name]]$enum) == 0) {
+            roxygen_params[[param_name]]$enum <- enum_vals
+          }
           # First value is the default
           roxygen_params[[param_name]]$default <- paste0('"', enum_vals[1], '"')
         }
@@ -430,7 +434,8 @@ merge_param_defaults <- function(roxygen_params, sig_defaults) {
         description = param_name,
         type = infer_type_from_default(default_val),
         enum = NULL,
-        default = default_val
+        default = default_val,
+        signature_default = default_val
       )
     }
   }
@@ -445,6 +450,52 @@ merge_param_defaults <- function(roxygen_params, sig_defaults) {
   }
 
   roxygen_params
+}
+
+
+#' Validate generator-facing roxygen/signature contracts
+#' @noRd
+validate_roxygen_contract <- function(func_meta, lines, start_line) {
+  for (param_name in names(func_meta$params)) {
+    param <- func_meta$params[[param_name]]
+    sig_default <- param$signature_default
+    has_c_default <- !is.null(sig_default) &&
+      !identical(sig_default, NA) &&
+      grepl("^c\\(", sig_default)
+
+    if (!has_c_default) next
+
+    if (identical(param$type, "array")) {
+      stop(glue::glue(
+        "Invalid dataimago roxygen contract for `{func_meta$name}({param_name})`: ",
+        "vector parameters must not use c() signature defaults. Make the array ",
+        "parameter required or provide values through an explicit static export grid."
+      ), call. = FALSE)
+    }
+
+    if (!function_uses_match_arg(lines, start_line, param_name)) {
+      stop(glue::glue(
+        "Invalid dataimago roxygen contract for `{func_meta$name}({param_name})`: ",
+        "c() defaults are only supported for scalar enum parameters validated with ",
+        "`{param_name} <- match.arg({param_name})`. Use a scalar default, make the ",
+        "parameter required, or add the match.arg() validation."
+      ), call. = FALSE)
+    }
+  }
+}
+
+
+#' Detect scalar enum validation in the function body
+#' @noRd
+function_uses_match_arg <- function(lines, start_line, param_name) {
+  end_line <- min(start_line + 200L, length(lines))
+  body <- lines[start_line:end_line]
+  pattern <- paste0(
+    "\\b", param_name,
+    "\\s*<-\\s*match\\.arg\\s*\\(\\s*",
+    param_name, "\\b"
+  )
+  any(grepl(pattern, body))
 }
 
 
@@ -493,9 +544,15 @@ infer_type_from_default <- function(default_val) {
 #' Extract enum values from roxygen description text
 #' @noRd
 extract_enum_values <- function(desc) {
+  desc_lower <- tolower(desc)
+  has_enum_marker <- grepl(
+    "\\bone of\\b|allowed values?|options?:|choices?",
+    desc_lower
+  )
+
   # Pattern: "option1", "option2", "option3"
   quoted <- regmatches(desc, gregexpr('"[^"]*"', desc))[[1]]
-  if (length(quoted) >= 2) {
+  if (has_enum_marker && length(quoted) >= 2) {
     return(unique(gsub('"', "", quoted)))
   }
 

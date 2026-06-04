@@ -30,6 +30,44 @@ seeded_meta_lines <- function() {
   )
 }
 
+seeded_file_is_protected <- function(path) {
+  if (!fs::file_exists(path)) {
+    return(FALSE)
+  }
+
+  lines <- readLines(path, warn = FALSE)
+  if (length(lines) == 0 || !identical(lines[1], "---")) {
+    return(TRUE)
+  }
+
+  end <- which(lines[-1] == "---")[1]
+  if (is.na(end)) {
+    return(TRUE)
+  }
+
+  frontmatter <- lines[seq.int(2, end)]
+  if (any(grepl("^curated:\\s*false\\s*$", frontmatter))) {
+    return(FALSE)
+  }
+
+  TRUE
+}
+
+write_seeded_file <- function(path, content, relative_path, results, overwrite = FALSE) {
+  if (seeded_file_is_protected(path) && !isTRUE(overwrite)) {
+    return(results)
+  }
+
+  writeLines(content, path)
+  results$files_created <- c(results$files_created, relative_path)
+  results
+}
+
+append_wiki_log_entry <- function(path, entry) {
+  existing <- readLines(path, warn = FALSE)
+  writeLines(c(existing, "", "---", "", entry), path)
+}
+
 #' Bootstrap a Wiki in a Generated Project
 #'
 #' Initializes a wiki/ directory in the generated project, seeded with
@@ -46,6 +84,7 @@ seeded_meta_lines <- function() {
 #'   structure: "framework" (principles/patterns/decisions/connections/...),
 #'   "research" (sources/theories/methods/findings/...), or "explorer"
 #'   (dimensions/attributes/datasets/...). Default: "framework".
+#' @param overwrite Logical. Replace existing curated wiki pages. Default: FALSE.
 #' @param verbose Logical. Print progress. Default: TRUE
 #'
 #' @return List with files created and wiki structure
@@ -55,6 +94,7 @@ bootstrap_wiki <- function(project_path,
                            project_name,
                            source_pkg = NULL,
                            domain_type = c("framework", "research", "explorer"),
+                           overwrite = FALSE,
                            verbose = TRUE) {
   domain_type <- match.arg(domain_type)
   if (verbose) ui_info(glue::glue("Bootstrapping {domain_type} project wiki..."))
@@ -100,15 +140,30 @@ bootstrap_wiki <- function(project_path,
 
       # Create index.md
       index_content <- create_wiki_index(project_name, source_pkg)
-      writeLines(index_content, fs::path(wiki_dir, "index.md"))
-      results$files_created <- c(results$files_created, "wiki/index.md")
+      results <- write_seeded_file(
+        fs::path(wiki_dir, "index.md"), index_content, "wiki/index.md", results,
+        overwrite = overwrite
+      )
 
       # Create glossary.md
       glossary_content <- create_wiki_glossary(project_name, source_pkg)
-      writeLines(glossary_content, fs::path(wiki_dir, "glossary.md"))
-      results$files_created <- c(results$files_created, "wiki/glossary.md")
+      results <- write_seeded_file(
+        fs::path(wiki_dir, "glossary.md"), glossary_content, "wiki/glossary.md", results,
+        overwrite = overwrite
+      )
 
       # Create log.md
+      log_entry <- c(
+        glue::glue("## [{Sys.Date()}] bootstrap | Wiki initialized by dataimago"),
+        "",
+        glue::glue("Project '{project_name}' wiki created by dataimago::ai()."),
+        if (!is.null(source_pkg)) {
+          glue::glue("Seeded with domain context from source R package.")
+        } else {
+          "Minimal wiki created without source package context."
+        },
+        ""
+      )
       log_content <- c(
         "---",
         "title: Activity Log",
@@ -124,23 +179,22 @@ bootstrap_wiki <- function(project_path,
         "",
         "---",
         "",
-        glue::glue("## [{Sys.Date()}] bootstrap | Wiki initialized by dataimago"),
-        "",
-        glue::glue("Project '{project_name}' wiki created by dataimago::ai()."),
-        if (!is.null(source_pkg)) {
-          glue::glue("Seeded with domain context from source R package.")
-        } else {
-          "Minimal wiki created without source package context."
-        },
-        ""
+        log_entry
       )
-      writeLines(log_content, fs::path(wiki_dir, "log.md"))
-      results$files_created <- c(results$files_created, "wiki/log.md")
+      log_path <- fs::path(wiki_dir, "log.md")
+      if (fs::file_exists(log_path) && !isTRUE(overwrite)) {
+        append_wiki_log_entry(log_path, log_entry)
+      } else {
+        writeLines(log_content, log_path)
+        results$files_created <- c(results$files_created, "wiki/log.md")
+      }
 
       # Create overview.md
       overview_content <- create_wiki_overview(project_name, source_pkg)
-      writeLines(overview_content, fs::path(wiki_dir, "overview.md"))
-      results$files_created <- c(results$files_created, "wiki/overview.md")
+      results <- write_seeded_file(
+        fs::path(wiki_dir, "overview.md"), overview_content, "wiki/overview.md", results,
+        overwrite = overwrite
+      )
 
       # If source package provided, create source summary + ADR. These land in
       # wiki/sources and wiki/decisions; ensure those dirs exist (they are not
@@ -149,20 +203,24 @@ bootstrap_wiki <- function(project_path,
         pkg_source <- create_pkg_source_page(source_pkg, verbose)
         if (!is.null(pkg_source)) {
           fs::dir_create(fs::path(wiki_dir, "sources"), recurse = TRUE)
-          writeLines(pkg_source$content, fs::path(wiki_dir, "sources", pkg_source$filename))
-          results$files_created <- c(
-            results$files_created,
-            fs::path("wiki", "sources", pkg_source$filename)
+          results <- write_seeded_file(
+            fs::path(wiki_dir, "sources", pkg_source$filename),
+            pkg_source$content,
+            fs::path("wiki", "sources", pkg_source$filename),
+            results,
+            overwrite = overwrite
           )
         }
 
         # Create architecture decision record
         fs::dir_create(fs::path(wiki_dir, "decisions"), recurse = TRUE)
         adr_content <- create_initial_adr(project_name, source_pkg)
-        writeLines(adr_content, fs::path(wiki_dir, "decisions", "001-dataimago-generation.md"))
-        results$files_created <- c(
-          results$files_created,
-          "wiki/decisions/001-dataimago-generation.md"
+        results <- write_seeded_file(
+          fs::path(wiki_dir, "decisions", "001-dataimago-generation.md"),
+          adr_content,
+          "wiki/decisions/001-dataimago-generation.md",
+          results,
+          overwrite = overwrite
         )
       }
 
