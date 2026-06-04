@@ -7,8 +7,7 @@ NULL
 # Domain-type-aware wiki subdirectories (see dataimago-design ADR
 # domain-type-generator-spec.md). raw/ is the same across all types.
 wiki_subdirs_for <- function(domain_type) {
-  switch(
-    domain_type,
+  switch(domain_type,
     framework = c("principles", "patterns", "decisions", "connections", "personas", "analyses"),
     research  = c("sources", "theories", "methods", "findings", "arguments", "personas", "analyses"),
     explorer  = c("dimensions", "attributes", "datasets", "sources", "personas", "analyses"),
