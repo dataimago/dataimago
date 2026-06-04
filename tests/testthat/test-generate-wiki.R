@@ -1,4 +1,4 @@
-test_that("bootstrap_wiki creates wiki directory structure", {
+test_that("bootstrap_wiki creates the framework-type wiki structure by default", {
   tmp <- withr::local_tempdir()
 
   result <- bootstrap_wiki(
@@ -10,10 +10,10 @@ test_that("bootstrap_wiki creates wiki directory structure", {
 
   expect_true(result$success)
   expect_true(fs::dir_exists(fs::path(tmp, "wiki")))
-  expect_true(fs::dir_exists(fs::path(tmp, "wiki", "sources")))
-  expect_true(fs::dir_exists(fs::path(tmp, "wiki", "patterns")))
-  expect_true(fs::dir_exists(fs::path(tmp, "wiki", "decisions")))
-  expect_true(fs::dir_exists(fs::path(tmp, "wiki", "analyses")))
+  # Default domain_type is "framework" (see wiki_subdirs_for()).
+  for (sd in c("principles", "patterns", "decisions", "connections", "personas", "analyses")) {
+    expect_true(fs::dir_exists(fs::path(tmp, "wiki", sd)), info = sd)
+  }
 })
 
 test_that("bootstrap_wiki creates raw/ directories (Karpathy 3-layer)", {

@@ -185,6 +185,42 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
     generators_run <- c(generators_run, "generate_api_scaffolding")
   }
 
+  # Knowledge layer: scaffold wiki/ + raw/ + KNOWLEDGE.md -- the AI-native
+  # package's domain knowledge base (the "populate raw -> seed wiki -> build"
+  # opening workflow). Gated on a `knowledge` block or features$aiContext.
+  # This is committed, curated source (seeded-vs-curated), distinct from the
+  # producer-driver build artifacts above. Seeding from raw/ is an in-repo-AI
+  # task; here we scaffold the structure + the KNOWLEDGE.md how-to.
+  knowledge <- spec$vertical$rpkg$knowledge
+  if (is.null(knowledge)) knowledge <- spec$knowledge
+  if (!is.null(knowledge) || isTRUE(features$aiContext)) {
+    domain_type <- knowledge$domainType
+    if (is.null(domain_type)) domain_type <- "framework"
+    domain_name <- knowledge$domainName
+    if (is.null(domain_name)) domain_name <- spec$project$title
+    if (is.null(domain_name)) domain_name <- spec$metadata$name
+
+    bootstrap_wiki(
+      project_path = out,
+      project_name = spec$metadata$name,
+      source_pkg = pkg_path,
+      domain_type = domain_type,
+      verbose = verbose
+    )
+    generators_run <- c(generators_run, "bootstrap_wiki")
+
+    generate_knowledge_md(
+      project_path = out,
+      project_name = spec$metadata$name,
+      domain_type = domain_type,
+      domain_name = domain_name,
+      source_pkg = pkg_path,
+      verbose = verbose
+    )
+    generators_run <- c(generators_run, "generate_knowledge_md")
+    files_written <- c(files_written, "KNOWLEDGE.md")
+  }
+
   if (verbose) {
     ui_done(glue::glue(
       "ai(spec_path) complete -- {length(generators_run)} generators run."

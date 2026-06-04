@@ -4,7 +4,13 @@
 \alias{bootstrap_wiki}
 \title{Bootstrap a Wiki in a Generated Project}
 \usage{
-bootstrap_wiki(project_path, project_name, source_pkg = NULL, verbose = TRUE)
+bootstrap_wiki(
+  project_path,
+  project_name,
+  source_pkg = NULL,
+  domain_type = c("framework", "research", "explorer"),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{project_path}{Character. Root directory of the generated project}
@@ -12,6 +18,11 @@ bootstrap_wiki(project_path, project_name, source_pkg = NULL, verbose = TRUE)
 \item{project_name}{Character. Name of the project}
 
 \item{source_pkg}{Character. Path to the source R package (NULL for minimal wiki)}
+
+\item{domain_type}{Character. Wiki domain type controlling the subdirectory
+structure: "framework" (principles/patterns/decisions/connections/...),
+"research" (sources/theories/methods/findings/...), or "explorer"
+(dimensions/attributes/datasets/...). Default: "framework".}
 
 \item{verbose}{Logical. Print progress. Default: TRUE}
 }

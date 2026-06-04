@@ -15,8 +15,8 @@ The normalized spec list (defaults applied).
 \description{
 Lightweight structural validation (no JSON-Schema dependency this release;
 the schema is carried in \verb{inst/schemas/} for reference). Checks the
-load-bearing invariants — including the \code{source.rPackage} ⇔ \code{source.case}
-cross-field rule that does NOT survive \code{zod-to-json-schema} — then fills in
+load-bearing invariants -- including the \code{source.rPackage} <-> \code{source.case}
+cross-field rule that does NOT survive \code{zod-to-json-schema} -- then fills in
 the optional \code{features} / \code{generator} defaults and returns the normalized
 spec.
 }
