@@ -1,7 +1,35 @@
 #' @importFrom fs dir_exists dir_create path file_exists
 #' @importFrom glue glue
 #' @importFrom crayon green silver yellow red bold blue
+#' @importFrom utils packageVersion
 NULL
+
+# Domain-type-aware wiki subdirectories (see dataimago-design ADR
+# domain-type-generator-spec.md). raw/ is the same across all types.
+wiki_subdirs_for <- function(domain_type) {
+  switch(
+    domain_type,
+    framework = c("principles", "patterns", "decisions", "connections", "personas", "analyses"),
+    research  = c("sources", "theories", "methods", "findings", "arguments", "personas", "analyses"),
+    explorer  = c("dimensions", "attributes", "datasets", "sources", "personas", "analyses"),
+    stop(sprintf("Unknown domain_type '%s'", domain_type))
+  )
+}
+
+# Generator version stamped into seeded pages (seeded-vs-curated convention).
+dataimago_generator_version <- function() {
+  tryCatch(as.character(utils::packageVersion("dataimago")), error = function(e) "dev")
+}
+
+# The seeded-vs-curated frontmatter lines: a freshly generated page is
+# `curated: false` (safe to regenerate) until a human edits it and flips it.
+seeded_meta_lines <- function() {
+  c(
+    "curated: false",
+    "generator: dataimago-rpkg",
+    glue::glue("generator_version: {dataimago_generator_version()}")
+  )
+}
 
 #' Bootstrap a Wiki in a Generated Project
 #'
@@ -15,6 +43,10 @@ NULL
 #' @param project_path Character. Root directory of the generated project
 #' @param project_name Character. Name of the project
 #' @param source_pkg Character. Path to the source R package (NULL for minimal wiki)
+#' @param domain_type Character. Wiki domain type controlling the subdirectory
+#'   structure: "framework" (principles/patterns/decisions/connections/...),
+#'   "research" (sources/theories/methods/findings/...), or "explorer"
+#'   (dimensions/attributes/datasets/...). Default: "framework".
 #' @param verbose Logical. Print progress. Default: TRUE
 #'
 #' @return List with files created and wiki structure
@@ -23,8 +55,10 @@ NULL
 bootstrap_wiki <- function(project_path,
                            project_name,
                            source_pkg = NULL,
+                           domain_type = c("framework", "research", "explorer"),
                            verbose = TRUE) {
-  if (verbose) ui_info("Bootstrapping project wiki...")
+  domain_type <- match.arg(domain_type)
+  if (verbose) ui_info(glue::glue("Bootstrapping {domain_type} project wiki..."))
 
   wiki_dir <- fs::path(project_path, "wiki")
   results <- list(
@@ -34,19 +68,19 @@ bootstrap_wiki <- function(project_path,
 
   tryCatch(
     {
-      # Create wiki directory structure
-      dirs <- c(
-        wiki_dir,
-        fs::path(wiki_dir, "sources"),
-        fs::path(wiki_dir, "patterns"),
-        fs::path(wiki_dir, "decisions"),
-        fs::path(wiki_dir, "analyses")
-      )
+      # Create wiki directory structure (domain-type-aware)
+      subdirs <- wiki_subdirs_for(domain_type)
+      dirs <- c(wiki_dir, fs::path(wiki_dir, subdirs))
 
       for (d in dirs) {
         if (!fs::dir_exists(d)) {
           fs::dir_create(d, recurse = TRUE)
         }
+      }
+      # .gitkeep so empty domain subdirs are tracked
+      for (sd in subdirs) {
+        gk <- fs::path(wiki_dir, sd, ".gitkeep")
+        if (!fs::file_exists(gk)) writeLines(character(0), gk)
       }
 
       # Create raw/ directory structure (Karpathy 3-layer pattern)
@@ -82,6 +116,7 @@ bootstrap_wiki <- function(project_path,
         "type: log",
         glue::glue("created: {Sys.Date()}"),
         glue::glue("updated: {Sys.Date()}"),
+        seeded_meta_lines(),
         "---",
         "",
         "# Wiki Activity Log",
@@ -108,10 +143,13 @@ bootstrap_wiki <- function(project_path,
       writeLines(overview_content, fs::path(wiki_dir, "overview.md"))
       results$files_created <- c(results$files_created, "wiki/overview.md")
 
-      # If source package provided, create source summary and pattern pages
+      # If source package provided, create source summary + ADR. These land in
+      # wiki/sources and wiki/decisions; ensure those dirs exist (they are not
+      # in every domain type's canonical subdir list).
       if (!is.null(source_pkg)) {
         pkg_source <- create_pkg_source_page(source_pkg, verbose)
         if (!is.null(pkg_source)) {
+          fs::dir_create(fs::path(wiki_dir, "sources"), recurse = TRUE)
           writeLines(pkg_source$content, fs::path(wiki_dir, "sources", pkg_source$filename))
           results$files_created <- c(
             results$files_created,
@@ -120,6 +158,7 @@ bootstrap_wiki <- function(project_path,
         }
 
         # Create architecture decision record
+        fs::dir_create(fs::path(wiki_dir, "decisions"), recurse = TRUE)
         adr_content <- create_initial_adr(project_name, source_pkg)
         writeLines(adr_content, fs::path(wiki_dir, "decisions", "001-dataimago-generation.md"))
         results$files_created <- c(
@@ -178,6 +217,7 @@ create_wiki_index <- function(project_name, source_pkg) {
     "type: index",
     glue::glue("created: {Sys.Date()}"),
     glue::glue("updated: {Sys.Date()}"),
+    seeded_meta_lines(),
     "---",
     "",
     glue::glue("# {project_name} Knowledge Base"),
@@ -211,6 +251,7 @@ create_wiki_glossary <- function(project_name, source_pkg) {
     "type: glossary",
     glue::glue("created: {Sys.Date()}"),
     glue::glue("updated: {Sys.Date()}"),
+    seeded_meta_lines(),
     "---",
     "",
     "# Glossary",
@@ -234,6 +275,7 @@ create_wiki_overview <- function(project_name, source_pkg) {
     "type: overview",
     glue::glue("created: {Sys.Date()}"),
     glue::glue("updated: {Sys.Date()}"),
+    seeded_meta_lines(),
     "---",
     "",
     glue::glue("# {project_name}"),
@@ -301,6 +343,7 @@ create_pkg_source_page <- function(source_pkg, verbose) {
     "type: source",
     glue::glue("created: {Sys.Date()}"),
     glue::glue("updated: {Sys.Date()}"),
+    seeded_meta_lines(),
     "tags:",
     "  - r-package",
     "  - source-of-truth",
@@ -332,6 +375,7 @@ create_initial_adr <- function(project_name, source_pkg) {
     "type: decision",
     glue::glue("created: {Sys.Date()}"),
     glue::glue("updated: {Sys.Date()}"),
+    seeded_meta_lines(),
     "tags:",
     "  - architecture",
     "  - generation",
