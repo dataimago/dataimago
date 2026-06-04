@@ -5,9 +5,10 @@
 \title{Create Complete AI-Native Application}
 \usage{
 ai(
-  project_name,
+  project_name = NULL,
   project_path = getwd(),
   source_pkg = NULL,
+  spec_path = NULL,
   mode = c("remote", "local"),
   api_url = "https://dataimago.ai/api/orchestrate",
   api_key = NULL,
@@ -33,6 +34,14 @@ ai(
 functions should drive the generated application. This is the "R as Source
 of Truth" -- all APIs, MCP tools, types, and UI derive from this package.
 If NULL, creates scaffolding without the derivation pipeline.}
+
+\item{spec_path}{Character. Path to a \code{dataimago-spec.yaml}. When supplied,
+\code{ai()} runs the spec-driven local pipeline (D.2.3.b): it reads + validates
+the spec, locates the R package at \code{source.rPackage.submodulePath}, and
+runs the producer-driver generators gated by the spec's \code{features},
+writing the integration-contract artifacts under \code{generator.outputDir}.
+\code{project_name} is derived from the spec and not required in this path.
+Takes precedence over \code{mode}. Default: NULL.}
 
 \item{mode}{Character. Generation mode: "remote" delegates to the
 dataimago-ai platform API (recommended; requires \code{DATAIMAGO_API_KEY}).
