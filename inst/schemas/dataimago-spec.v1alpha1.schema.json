@@ -1,0 +1,906 @@
+{
+  "$ref": "#/definitions/DataimagoSpec",
+  "definitions": {
+    "DataimagoSpec": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "const": "dataimago.ai/v1alpha1"
+        },
+        "kind": {
+          "type": "string",
+          "const": "ProjectSpec"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]*$"
+            },
+            "vertical": {
+              "type": "string",
+              "const": "dissertation"
+            },
+            "generatedBy": {
+              "type": "string",
+              "minLength": 1
+            },
+            "generatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "specVersion": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "name",
+            "vertical",
+            "generatedBy",
+            "generatedAt",
+            "specVersion"
+          ],
+          "additionalProperties": false
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "githubUsername": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "name",
+            "email",
+            "githubUsername"
+          ],
+          "additionalProperties": false
+        },
+        "project": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "description"
+          ],
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "case": {
+              "type": "string",
+              "enum": [
+                "extension",
+                "retrofit",
+                "no-r"
+              ]
+            },
+            "rPackage": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9-]*$"
+                    },
+                    "submoduleUrl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "submodulePath": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "quartoRoot": {
+                      "type": "string",
+                      "minLength": 1,
+                      "default": "ui/www"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "submoduleUrl",
+                    "submodulePath"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "case",
+            "rPackage"
+          ],
+          "additionalProperties": false
+        },
+        "vertical": {
+          "type": "object",
+          "properties": {
+            "dissertation": {
+              "type": "object",
+              "properties": {
+                "institution": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "degreeProgram": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "department": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "expectedDefenseYear": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 2000,
+                          "maximum": 2100
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "submissionDeadline": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "archiveUrl": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "administratorContact": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "email": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "role": {
+                          "type": "string",
+                          "default": ""
+                        }
+                      },
+                      "additionalProperties": false,
+                      "default": {
+                        "name": "",
+                        "email": "",
+                        "role": ""
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "degreeProgram",
+                    "expectedDefenseYear"
+                  ],
+                  "additionalProperties": false
+                },
+                "advisors": {
+                  "type": "object",
+                  "properties": {
+                    "chair": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "institution": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "committee": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "email": {
+                            "type": "string",
+                            "format": "email"
+                          },
+                          "institution": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "chair",
+                    "committee"
+                  ],
+                  "additionalProperties": false
+                },
+                "timeline": {
+                  "type": "object",
+                  "properties": {
+                    "proposalDate": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "defenseDate": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "submissionDate": {
+                      "type": "string",
+                      "default": ""
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "thesis": {
+                  "type": "object",
+                  "properties": {
+                    "workingTitle": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "workingSubtitle": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "researchQuestion": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "background": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "contribution": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "chapters": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z][a-z0-9-]*$"
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "minItems": 1
+                    },
+                    "methodology": {
+                      "type": "object",
+                      "properties": {
+                        "approach": {
+                          "type": "string",
+                          "enum": [
+                            "quantitative",
+                            "qualitative",
+                            "mixed-methods",
+                            "computational"
+                          ]
+                        },
+                        "summary": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "approach",
+                        "summary"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "bibliography": {
+                      "type": "object",
+                      "properties": {
+                        "file": {
+                          "type": "string",
+                          "minLength": 1,
+                          "default": "references.bib"
+                        },
+                        "citationStyle": {
+                          "type": "string",
+                          "enum": [
+                            "apa-7",
+                            "chicago",
+                            "mla",
+                            "harvard",
+                            "custom"
+                          ],
+                          "default": "apa-7"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "classFile": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "shipped",
+                            "vendored",
+                            "generated",
+                            "custom"
+                          ]
+                        },
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "default": "thesis.cls"
+                        },
+                        "guidelinesDocuments": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "filename": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "path": {
+                                "type": "string"
+                              },
+                              "sourceUrl": {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              "title": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "description": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": [
+                              "filename",
+                              "title",
+                              "description"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "default": []
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "embargo": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "none",
+                            "one-year",
+                            "two-year",
+                            "custom"
+                          ],
+                          "default": "none"
+                        },
+                        "durationMonths": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "default": 0
+                        },
+                        "reason": {
+                          "type": "string",
+                          "default": ""
+                        }
+                      },
+                      "additionalProperties": false,
+                      "default": {
+                        "type": "none",
+                        "durationMonths": 0,
+                        "reason": ""
+                      }
+                    },
+                    "coauthors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "primary",
+                              "co-author"
+                            ],
+                            "default": "co-author"
+                          },
+                          "chaptersContributed": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": []
+                          },
+                          "affiliation": {
+                            "type": "string",
+                            "default": ""
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "default": []
+                    }
+                  },
+                  "required": [
+                    "workingTitle",
+                    "researchQuestion",
+                    "background",
+                    "contribution",
+                    "chapters",
+                    "methodology",
+                    "bibliography",
+                    "classFile"
+                  ],
+                  "additionalProperties": false
+                },
+                "context": {
+                  "type": "object",
+                  "properties": {
+                    "researchDocuments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "filename": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "sourceUrl": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "author": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "year": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "relationship": {
+                            "type": "string",
+                            "enum": [
+                              "building-on",
+                              "citing",
+                              "critiquing",
+                              "replicating",
+                              "parallel-work"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "filename",
+                          "title",
+                          "author",
+                          "description"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "default": []
+                    },
+                    "advisorWritings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "filename": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "sourceUrl": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "author": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "year": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "chair",
+                              "committee"
+                            ]
+                          },
+                          "description": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "filename",
+                          "title",
+                          "author",
+                          "role",
+                          "description"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "default": []
+                    },
+                    "styleExemplars": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "filename": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "sourceUrl": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "author": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "description": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "notes": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "filename",
+                          "title",
+                          "author",
+                          "description"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "default": []
+                    },
+                    "background": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "filename": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "sourceUrl": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "description": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "filename",
+                          "title",
+                          "description"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "default": []
+                    },
+                    "additionalNotes": {
+                      "type": "string",
+                      "default": ""
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "rEcosystem": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "tidyverse",
+                      "data-table",
+                      "collapse",
+                      "base",
+                      "stan",
+                      "tidymodels",
+                      "shiny",
+                      "targets"
+                    ]
+                  },
+                  "default": []
+                },
+                "compliance": {
+                  "type": "object",
+                  "properties": {
+                    "irb": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "pending",
+                            "approved",
+                            "exempt",
+                            "not-required"
+                          ],
+                          "default": "not-required"
+                        },
+                        "number": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "expirationDate": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "link": {
+                          "type": "string",
+                          "default": ""
+                        }
+                      },
+                      "additionalProperties": false,
+                      "default": {
+                        "status": "not-required",
+                        "number": "",
+                        "expirationDate": "",
+                        "link": ""
+                      }
+                    },
+                    "dua": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "reference": {
+                            "type": "string",
+                            "default": ""
+                          },
+                          "restrictions": {
+                            "type": "string",
+                            "default": ""
+                          }
+                        },
+                        "required": [
+                          "source"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "default": []
+                    }
+                  },
+                  "additionalProperties": false,
+                  "default": {
+                    "irb": {
+                      "status": "not-required",
+                      "number": "",
+                      "expirationDate": "",
+                      "link": ""
+                    },
+                    "dua": []
+                  }
+                },
+                "funding": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "grantNumber": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "period": {
+                        "type": "string",
+                        "default": ""
+                      },
+                      "role": {
+                        "type": "string",
+                        "enum": [
+                          "primary",
+                          "co-pi",
+                          "student-fellowship"
+                        ],
+                        "default": "student-fellowship"
+                      },
+                      "acknowledgmentText": {
+                        "type": "string",
+                        "default": ""
+                      }
+                    },
+                    "required": [
+                      "source"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "default": []
+                }
+              },
+              "required": [
+                "institution",
+                "advisors",
+                "timeline",
+                "thesis",
+                "context"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "dissertation"
+          ],
+          "additionalProperties": false
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "quartoBuild": {
+              "type": "boolean",
+              "default": true
+            },
+            "thesisPdf": {
+              "type": "boolean",
+              "default": true
+            },
+            "mcpTools": {
+              "type": "boolean",
+              "default": true
+            },
+            "aiContext": {
+              "type": "boolean",
+              "default": true
+            },
+            "apiScaffolding": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "generator": {
+          "type": "object",
+          "properties": {
+            "rpkgVersion": {
+              "type": "string",
+              "minLength": 1,
+              "default": ">=0.5.0"
+            },
+            "designVersion": {
+              "type": "string",
+              "minLength": 1,
+              "default": ">=2.0.0"
+            },
+            "outputDir": {
+              "type": "string",
+              "minLength": 1,
+              "default": "."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "apiVersion",
+        "kind",
+        "metadata",
+        "user",
+        "project",
+        "source",
+        "vertical",
+        "features",
+        "generator"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

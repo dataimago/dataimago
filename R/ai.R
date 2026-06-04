@@ -21,6 +21,13 @@ NULL
 #'   functions should drive the generated application. This is the "R as Source
 #'   of Truth" -- all APIs, MCP tools, types, and UI derive from this package.
 #'   If NULL, creates scaffolding without the derivation pipeline.
+#' @param spec_path Character. Path to a `dataimago-spec.yaml`. When supplied,
+#'   `ai()` runs the spec-driven local pipeline (D.2.3.b): it reads + validates
+#'   the spec, locates the R package at `source.rPackage.submodulePath`, and
+#'   runs the producer-driver generators gated by the spec's `features`,
+#'   writing the integration-contract artifacts under `generator.outputDir`.
+#'   `project_name` is derived from the spec and not required in this path.
+#'   Takes precedence over `mode`. Default: NULL.
 #' @param mode Character. Generation mode: "remote" delegates to the
 #'   dataimago-ai platform API (recommended; requires `DATAIMAGO_API_KEY`).
 #'   "local" was retired in 0.0-4.0 and now throws an explanatory error
@@ -110,9 +117,10 @@ NULL
 #' }
 #'
 #' @export
-ai <- function(project_name,
+ai <- function(project_name = NULL,
                project_path = getwd(),
                source_pkg = NULL,
+               spec_path = NULL,
                mode = c("remote", "local"),
                api_url = "https://dataimago.ai/api/orchestrate",
                api_key = NULL,
@@ -127,6 +135,18 @@ ai <- function(project_name,
                export_static = TRUE,
                force_overwrite = FALSE,
                verbose = TRUE) {
+  # ---- SPEC-DRIVEN MODE (D.2.3.b): read dataimago-spec.yaml + generate locally ----
+  # When `spec_path` is supplied, dispatch to the spec-driven pipeline and
+  # ignore the remote/local mode machinery. `project_name` is derived from the
+  # spec, so it is not required in this path.
+  if (!is.null(spec_path)) {
+    return(ai_from_spec(
+      spec_path = spec_path,
+      project_path = if (missing(project_path)) NULL else project_path,
+      verbose = verbose
+    ))
+  }
+
   # Validate arguments
   mode <- rlang::arg_match(mode)
   domain_type <- rlang::arg_match(domain_type)
