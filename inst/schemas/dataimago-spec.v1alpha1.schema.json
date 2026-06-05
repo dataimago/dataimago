@@ -1141,6 +1141,37 @@
             }
           },
           "additionalProperties": false
+        },
+        "aiAgent": {
+          "type": "object",
+          "properties": {
+            "skillBundle": {
+              "type": "boolean",
+              "default": true
+            },
+            "mcpTools": {
+              "type": "boolean"
+            },
+            "skillMode": {
+              "type": "string",
+              "enum": [
+                "bootstrap",
+                "merge-seeded",
+                "skip"
+              ],
+              "default": "merge-seeded"
+            },
+            "includeWikiResources": {
+              "type": "boolean",
+              "default": true
+            },
+            "includePrototypeFunctions": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
         }
       },
       "required": [

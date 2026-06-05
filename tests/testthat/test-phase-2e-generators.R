@@ -23,7 +23,6 @@
 # `make_fixture_pkg()` now lives in tests/testthat/helper-fixtures.R (shared
 # with test-ai-spec.R); testthat sources helpers before test files.
 
-
 # ============================================================================
 # (a) export_static_api() file layout and naming
 # ============================================================================
@@ -44,16 +43,20 @@ test_that("export_static_api() writes discover.json + openapi.json at the root",
     silent = TRUE
   ))
 
-  expect_true(fs::file_exists(fs::path(out, "discover.json")),
+  expect_true(
+    fs::file_exists(fs::path(out, "discover.json")),
     info = "Phase 2e requires discover.json at the root"
   )
-  expect_true(fs::file_exists(fs::path(out, "openapi.json")),
+  expect_true(
+    fs::file_exists(fs::path(out, "openapi.json")),
     info = "Phase 2e requires openapi.json at the root"
   )
-  expect_false(fs::file_exists(fs::path(out, "manifest.json")),
+  expect_false(
+    fs::file_exists(fs::path(out, "manifest.json")),
     info = "legacy manifest.json must not be emitted alongside discover.json"
   )
-  expect_false(fs::dir_exists(fs::path(out, "discover")),
+  expect_false(
+    fs::dir_exists(fs::path(out, "discover")),
     info = "legacy discover/ directory must not be emitted"
   )
 })
@@ -85,7 +88,8 @@ test_that("discover.json carries the Phase-2e manifest shape", {
   expect_equal(hello$path, "/hello")
   expect_equal(hello$method, "GET")
   expect_true(any(vapply(
-    hello$params, function(p) p$name == "language",
+    hello$params,
+    function(p) p$name == "language",
     logical(1)
   )))
 })
@@ -132,19 +136,24 @@ test_that("generated api-client.ts is single-path and calls /api/data/", {
   expect_true(fs::file_exists(client_path))
   client_src <- paste(readLines(client_path, warn = FALSE), collapse = "\n")
 
-  expect_match(client_src, "/api/data/",
+  expect_match(
+    client_src,
+    "/api/data/",
     fixed = TRUE,
     info = "client must target the NextJS route tree"
   )
   expect_match(client_src, "/api/discover", fixed = TRUE)
   expect_match(client_src, "/api/openapi.json", fixed = TRUE)
-  expect_false(grepl("NEXT_PUBLIC_API_MODE", client_src, fixed = TRUE),
+  expect_false(
+    grepl("NEXT_PUBLIC_API_MODE", client_src, fixed = TRUE),
     info = "Phase 2e client must not branch on NEXT_PUBLIC_API_MODE"
   )
-  expect_false(grepl("staticRequest", client_src, fixed = TRUE),
+  expect_false(
+    grepl("staticRequest", client_src, fixed = TRUE),
     info = "dual-mode staticRequest method is removed"
   )
-  expect_false(grepl("liveRequest", client_src, fixed = TRUE),
+  expect_false(
+    grepl("liveRequest", client_src, fixed = TRUE),
     info = "dual-mode liveRequest method is removed"
   )
 })
@@ -161,7 +170,8 @@ test_that("generated types.ts marks ApiMode/ApiConfig as deprecated", {
     verbose = FALSE
   )
 
-  types_src <- paste(readLines(fs::path(out, "types.ts"), warn = FALSE),
+  types_src <- paste(
+    readLines(fs::path(out, "types.ts"), warn = FALSE),
     collapse = "\n"
   )
   # Both kept, both deprecated.
@@ -198,11 +208,45 @@ test_that("MCP tools reference /api/data/<endpoint> and a producer hint", {
   expect_equal(hello_tool$implementation$producer, "default")
   expect_equal(hello_tool$implementation$r_function, "hello")
   expect_equal(hello_tool$implementation$r_package, "fixtpkg")
+  expect_equal(hello_tool$annotations$readOnlyHint, FALSE)
+  expect_equal(hello_tool$annotations$destructiveHint, FALSE)
+  expect_equal(hello_tool$annotations$idempotentHint, FALSE)
+  expect_equal(hello_tool$annotations$openWorldHint, FALSE)
+  expect_equal(hello_tool$dataimago$prototype, FALSE)
+  expect_equal(hello_tool$dataimago$usesPrivateData, FALSE)
+  expect_equal(hello_tool$dataimago$requiresApproval, TRUE)
+  expect_equal(hello_tool$dataimago$safeForStaticExport, FALSE)
+  expect_equal(hello_tool$outputSchema$type, "object")
+  expect_equal(schema$resources[[2]]$uri, "/api/openapi.json")
+  expect_equal(schema$capabilities$api_services$live_rest_api, TRUE)
 
   # API-start tool carries producer = "live"
   api_start_idx <- which(tool_names == "fixtpkg_api_start")
   expect_length(api_start_idx, 1L)
   expect_equal(schema$tools[[api_start_idx]]$implementation$producer, "live")
+  expect_equal(schema$tools[[api_start_idx]]$annotations$readOnlyHint, FALSE)
+  expect_equal(schema$tools[[api_start_idx]]$dataimago$requiresApproval, TRUE)
+})
+
+test_that("MCP schema excludes live API tools and metadata by default", {
+  parent <- withr::local_tempdir()
+  pkg_dir <- make_fixture_pkg(parent)
+  out <- withr::local_tempfile(fileext = ".json")
+
+  generate_mcp_tools(
+    pkg_path = pkg_dir,
+    output_path = out,
+    verbose = FALSE
+  )
+
+  schema <- jsonlite::fromJSON(out, simplifyDataFrame = FALSE)
+  tool_names <- vapply(schema$tools, function(t) t$name, character(1))
+
+  expect_false("fixtpkg_api_start" %in% tool_names)
+  expect_equal(schema$resources[[2]]$uri, "/api/openapi.json")
+  expect_equal(schema$capabilities$api_services$nextjs_api, TRUE)
+  expect_equal(schema$capabilities$api_services$live_rest_api, FALSE)
+  expect_equal(schema$capabilities$api_services$cors_enabled, FALSE)
 })
 
 
@@ -216,10 +260,14 @@ test_that("self-MCP tools reference /api/mcp/<tool> endpoints", {
   generate_self_mcp(output_path = out, verbose = FALSE)
 
   schema <- jsonlite::fromJSON(out, simplifyDataFrame = FALSE)
-  by_name <- setNames(schema$tools, vapply(
-    schema$tools, function(t) t$name,
-    character(1)
-  ))
+  by_name <- setNames(
+    schema$tools,
+    vapply(
+      schema$tools,
+      function(t) t$name,
+      character(1)
+    )
+  )
 
   for (tool in c("dataimago_scaffold", "dataimago_build", "dataimago_status")) {
     expect_true(tool %in% names(by_name), info = paste("missing tool:", tool))
@@ -238,7 +286,14 @@ test_that("self-MCP tools reference /api/mcp/<tool> endpoints", {
 test_that("generate_api_scaffolding() refuses to write into src/app/api/**", {
   parent <- withr::local_tempdir()
   pkg_dir <- make_fixture_pkg(parent)
-  forbidden <- fs::path(withr::local_tempdir(), "apps", "template", "src", "app", "api")
+  forbidden <- fs::path(
+    withr::local_tempdir(),
+    "apps",
+    "template",
+    "src",
+    "app",
+    "api"
+  )
 
   expect_error(
     generate_api_scaffolding(

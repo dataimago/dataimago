@@ -46,7 +46,10 @@ seeded_file_is_protected <- function(path) {
   }
 
   frontmatter <- lines[seq.int(2, end)]
-  if (any(grepl("^curated:\\s*false\\s*$", frontmatter))) {
+  # Allow leading whitespace so a nested `metadata:\n  curated: false` (used by
+  # the .claude/skills SKILL.md frontmatter) is still detected, not just a
+  # top-level `curated: false`.
+  if (any(grepl("^\\s*curated:\\s*false\\s*$", frontmatter))) {
     return(FALSE)
   }
 
