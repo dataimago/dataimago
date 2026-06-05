@@ -138,8 +138,15 @@ skill_slug_for <- function(name) {
 # YAML-safe line within the 1024-char limit, leading with what the package is
 # and the key exported functions, ending with a "use when" trigger phrase.
 build_skill_description <- function(pkg_meta, fn_names, domain_name) {
+  # Normalize a fragment to a single whitespace-collapsed, period-terminated
+  # sentence so the parts read cleanly when joined (the title rarely ends in
+  # punctuation and would otherwise run into the description).
+  as_sentence <- function(s) {
+    s <- trimws(gsub("\\s+", " ", s))
+    if (nzchar(s) && !grepl("[.!?]$", s)) paste0(s, ".") else s
+  }
   fns <- if (length(fn_names) > 0) {
-    glue::glue("Key functions: {paste(fn_names, collapse = ', ')}.")
+    paste0("Key functions: ", paste(fn_names, collapse = ", "), ".")
   } else {
     NULL
   }
@@ -152,8 +159,8 @@ build_skill_description <- function(pkg_meta, fn_names, domain_name) {
       "for {domain_name}, or to interpret its outputs."
     )
   )
-  text <- paste(parts[nzchar(parts)], collapse = " ")
-  text <- trimws(gsub("\\s+", " ", text))
+  parts <- vapply(parts[nzchar(parts)], as_sentence, character(1))
+  text <- paste(parts, collapse = " ")
   if (nchar(text) > 1024) {
     text <- paste0(substr(text, 1, 1021), "...")
   }
