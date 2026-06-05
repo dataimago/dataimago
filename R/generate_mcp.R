@@ -445,8 +445,7 @@ build_mcp_capabilities <- function(exports, include_api_tools = FALSE) {
 #' Convert R type string to JSON Schema type
 #' @noRd
 r_type_to_json_schema <- function(r_type) {
-  switch(
-    r_type,
+  switch(r_type,
     "boolean" = "boolean",
     "integer" = "integer",
     "number" = "number",
@@ -463,8 +462,7 @@ r_type_to_json_schema <- function(r_type) {
 coerce_default_value <- function(default_str, type) {
   default_str <- gsub('^"|"$', "", as.character(default_str))
 
-  switch(
-    type,
+  switch(type,
     "boolean" = {
       if (tolower(default_str) %in% c("true", "t")) {
         TRUE
