@@ -22,7 +22,11 @@ make_spec <- function() {
     apiVersion = "dataimago.ai/v1alpha1",
     kind = "ProjectSpec",
     metadata = list(name = "test-project"),
-    user = list(name = "Tester", email = "t@example.com", githubUsername = "tester"),
+    user = list(
+      name = "Tester",
+      email = "t@example.com",
+      githubUsername = "tester"
+    ),
     project = list(title = "Test", description = "A test project"),
     source = list(
       case = "retrofit",
@@ -34,8 +38,11 @@ make_spec <- function() {
       )
     ),
     features = list(
-      quartoBuild = TRUE, thesisPdf = TRUE, mcpTools = TRUE,
-      aiContext = TRUE, apiScaffolding = TRUE
+      quartoBuild = TRUE,
+      thesisPdf = TRUE,
+      mcpTools = TRUE,
+      aiContext = TRUE,
+      apiScaffolding = TRUE
     ),
     generator = list(outputDir = ".")
   )
@@ -50,8 +57,19 @@ test_that("ai(spec_path) writes the producer-driver artifact family", {
   suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
   expect_true(fs::file_exists(fs::path(tmp, "public", "api", "discover.json")))
-  expect_true(fs::file_exists(fs::path(tmp, "packages", "shared-utils", "src", "types.ts")))
-  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "mcp-schema.json")))
+  expect_true(fs::file_exists(fs::path(
+    tmp,
+    "packages",
+    "shared-utils",
+    "src",
+    "types.ts"
+  )))
+  expect_true(fs::file_exists(fs::path(
+    tmp,
+    "public",
+    "api",
+    "mcp-schema.json"
+  )))
 })
 
 test_that("ai(spec_path) returns a spec-mode result carrying the project name", {
@@ -68,6 +86,48 @@ test_that("ai(spec_path) returns a spec-mode result carrying the project name", 
   expect_true("export_static_api" %in% res$generators_run)
 })
 
+test_that("ai(spec_path) writes an AI skill bundle by default for R packages", {
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(make_spec(), spec_path)
+
+  res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+
+  expect_true("generate_ai_skill" %in% res$generators_run)
+  skill_md <- res$files_written[grepl("^\\.claude/skills/.+/SKILL\\.md$", res$files_written)]
+  expect_length(skill_md, 1L)
+  expect_true(fs::file_exists(fs::path(tmp, skill_md)))
+})
+
+test_that("ai(spec_path) skips the AI skill bundle when aiAgent skillMode is skip", {
+  spec <- make_spec()
+  spec$aiAgent <- list(skillBundle = TRUE, skillMode = "skip")
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+
+  expect_false("generate_ai_skill" %in% res$generators_run)
+  expect_false(fs::dir_exists(fs::path(tmp, ".claude", "skills")))
+})
+
+test_that("ai(spec_path) includes all generated AI skill files in files_written", {
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(make_spec(), spec_path)
+
+  res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+
+  skill_files <- res$files_written[grepl("^\\.claude/skills/", res$files_written)]
+  expect_true(any(grepl("/SKILL\\.md$", skill_files)))
+  expect_true(any(grepl("/workflows\\.md$", skill_files)))
+  expect_true(any(grepl("/examples\\.md$", skill_files)))
+})
+
 test_that("features$mcpTools = FALSE skips mcp-schema.json", {
   spec <- make_spec()
   spec$features$mcpTools <- FALSE
@@ -78,9 +138,35 @@ test_that("features$mcpTools = FALSE skips mcp-schema.json", {
 
   suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
-  expect_false(fs::file_exists(fs::path(tmp, "public", "api", "mcp-schema.json")))
+  expect_false(fs::file_exists(fs::path(
+    tmp,
+    "public",
+    "api",
+    "mcp-schema.json"
+  )))
   # the always-on generators still ran
   expect_true(fs::file_exists(fs::path(tmp, "public", "api", "discover.json")))
+})
+
+test_that("aiAgent$mcpTools does not emit api_start when apiScaffolding is disabled", {
+  spec <- make_spec()
+  spec$features$mcpTools <- FALSE
+  spec$features$apiScaffolding <- FALSE
+  spec$aiAgent <- list(mcpTools = TRUE)
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+
+  schema <- jsonlite::fromJSON(
+    fs::path(tmp, "public", "api", "mcp-schema.json"),
+    simplifyDataFrame = FALSE
+  )
+  tool_names <- vapply(schema$tools, function(t) t$name, character(1))
+  expect_true("fixtpkg_hello" %in% tool_names)
+  expect_false("fixtpkg_api_start" %in% tool_names)
 })
 
 test_that("source$case = 'no-r' is a no-op for the producer-driver family", {
@@ -127,9 +213,23 @@ test_that("validate_spec applies feature + generator defaults when absent", {
   expect_equal(normalized$generator$staticExport, "full")
   expect_equal(normalized$generator$outputDir, ".")
   expect_equal(normalized$knowledge$wikiMode, "merge-seeded")
+  expect_true(normalized$aiAgent$skillBundle)
+  expect_false(normalized$aiAgent$mcpTools)
+  expect_equal(normalized$aiAgent$skillMode, "merge-seeded")
+  expect_true(normalized$aiAgent$includeWikiResources)
+  expect_false(normalized$aiAgent$includePrototypeFunctions)
 })
 
-test_that("validate_spec rejects invalid static export and wiki modes", {
+test_that("validate_spec mirrors explicit feature MCP opt-in into aiAgent defaults", {
+  spec <- make_spec()
+
+  normalized <- validate_spec(spec)
+
+  expect_true(normalized$features$mcpTools)
+  expect_true(normalized$aiAgent$mcpTools)
+})
+
+test_that("validate_spec rejects invalid static export, wiki, and aiAgent modes", {
   spec <- make_spec()
   spec$generator$staticExport <- "cartesian-everything"
   expect_error(validate_spec(spec), "staticExport")
@@ -137,6 +237,10 @@ test_that("validate_spec rejects invalid static export and wiki modes", {
   spec <- make_spec()
   spec$knowledge <- list(wikiMode = "clobber")
   expect_error(validate_spec(spec), "wikiMode")
+
+  spec <- make_spec()
+  spec$aiAgent <- list(skillMode = "clobber")
+  expect_error(validate_spec(spec), "skillMode")
 })
 
 test_that("generator$staticExport = 'off' skips static API export", {
@@ -153,7 +257,13 @@ test_that("generator$staticExport = 'off' skips static API export", {
 
   expect_false("export_static_api" %in% res$generators_run)
   expect_false(fs::dir_exists(fs::path(tmp, "public", "api")))
-  expect_true(fs::file_exists(fs::path(tmp, "packages", "shared-utils", "src", "types.ts")))
+  expect_true(fs::file_exists(fs::path(
+    tmp,
+    "packages",
+    "shared-utils",
+    "src",
+    "types.ts"
+  )))
 })
 
 test_that("generator$staticExport = 'discover-only' omits endpoint fixtures", {

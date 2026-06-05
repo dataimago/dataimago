@@ -1,5 +1,13 @@
 # dataimago 0.0-5.0
 
+## First-Class AI Analytic Engine Support (2026-06-05)
+
+### Added
+
+* `ai(spec_path)` now generates a real Claude Code skill at `.claude/skills/<slug>/` (`SKILL.md` with `name` + `description` frontmatter, plus `workflows.md` and `examples.md` supporting files) so Claude Code auto-discovers and auto-invokes it when the generated repo is opened. The skill teaches an agent when, why, and how to use the R package before invoking generated tools; `.claude/` is added to `.Rbuildignore` automatically.
+* `aiAgent` spec controls (`skillBundle`, `skillMode`, `mcpTools`, `includeWikiResources`, `includePrototypeFunctions`) govern skill generation and MCP exposure with conservative defaults for retrofit projects.
+* Generated MCP tools now include protocol annotations, dataimago safety metadata, and conservative output schema metadata.
+
 ## SGPc rpkg Dogfood Refinements (2026-06-04)
 
 ### Changed

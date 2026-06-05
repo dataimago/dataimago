@@ -8,7 +8,7 @@ generate_mcp_tools(
   pkg_path,
   output_path,
   pkg_name = NULL,
-  include_api_tools = TRUE,
+  include_api_tools = FALSE,
   verbose = TRUE
 )
 }
@@ -19,7 +19,8 @@ generate_mcp_tools(
 
 \item{pkg_name}{Character. Package name. If NULL, read from DESCRIPTION.}
 
-\item{include_api_tools}{Logical. Include API server start/stop tools. Default: TRUE}
+\item{include_api_tools}{Logical. Include API server start/stop tools.
+Default: FALSE.}
 
 \item{verbose}{Logical. Print progress. Default: TRUE}
 }

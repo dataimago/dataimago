@@ -30,30 +30,44 @@ NULL
 #' @keywords internal
 validate_spec <- function(spec) {
   if (!is.list(spec)) {
-    cli::cli_abort("Spec must be a parsed YAML mapping; got {.cls {class(spec)[1]}}.")
+    cli::cli_abort(
+      "Spec must be a parsed YAML mapping; got {.cls {class(spec)[1]}}."
+    )
   }
 
   api <- spec$apiVersion
   if (is.null(api) || !grepl("^dataimago\\.ai/", api)) {
-    cli::cli_abort("Invalid spec apiVersion: expected a value beginning with 'dataimago.ai/'.")
+    cli::cli_abort(
+      "Invalid spec apiVersion: expected a value beginning with 'dataimago.ai/'."
+    )
   }
   if (!identical(spec$kind, "ProjectSpec")) {
     cli::cli_abort("Invalid spec kind: expected 'ProjectSpec'.")
   }
-  if (is.null(spec$metadata) || is.null(spec$metadata$name) || !nzchar(spec$metadata$name)) {
+  if (
+    is.null(spec$metadata) ||
+      is.null(spec$metadata$name) ||
+      !nzchar(spec$metadata$name)
+  ) {
     cli::cli_abort("Spec is missing the required field metadata$name.")
   }
 
   case <- spec$source$case
   if (is.null(case) || !case %in% c("extension", "retrofit", "no-r")) {
-    cli::cli_abort("Invalid spec source$case: expected one of 'extension', 'retrofit', or 'no-r'.")
+    cli::cli_abort(
+      "Invalid spec source$case: expected one of 'extension', 'retrofit', or 'no-r'."
+    )
   }
   has_rpkg <- !is.null(spec$source$rPackage)
   if (case == "no-r" && has_rpkg) {
-    cli::cli_abort("Invalid spec: source$rPackage must be absent when source$case is 'no-r'.")
+    cli::cli_abort(
+      "Invalid spec: source$rPackage must be absent when source$case is 'no-r'."
+    )
   }
   if (case != "no-r" && !has_rpkg) {
-    cli::cli_abort("Invalid spec: source$rPackage is required when source$case is 'extension' or 'retrofit'.")
+    cli::cli_abort(
+      "Invalid spec: source$rPackage is required when source$case is 'extension' or 'retrofit'."
+    )
   }
   if (has_rpkg) {
     sp <- spec$source$rPackage$submodulePath
@@ -66,41 +80,78 @@ validate_spec <- function(spec) {
   # "spec accommodates, interview asks the critical subset" principle).
   user_features <- if (is.null(spec$features)) list() else spec$features
   feature_defaults <- list(
-    quartoBuild = TRUE, thesisPdf = TRUE,
+    quartoBuild = TRUE,
+    thesisPdf = TRUE,
     mcpTools = if (identical(case, "retrofit")) FALSE else TRUE,
     aiContext = TRUE,
     apiScaffolding = if (identical(case, "retrofit")) FALSE else TRUE
   )
   generator_defaults <- list(
-    rpkgVersion = ">=0.5.0", designVersion = ">=2.0.0",
-    outputDir = ".", staticExport = "full"
+    rpkgVersion = ">=0.5.0",
+    designVersion = ">=2.0.0",
+    outputDir = ".",
+    staticExport = "full"
   )
   spec$features <- modifyList(feature_defaults, user_features)
   spec$generator <- modifyList(
-    generator_defaults, if (is.null(spec$generator)) list() else spec$generator
+    generator_defaults,
+    if (is.null(spec$generator)) list() else spec$generator
   )
 
   if (!spec$generator$staticExport %in% c("full", "discover-only", "off")) {
-    cli::cli_abort("Invalid spec generator$staticExport: expected one of 'full', 'discover-only', or 'off'.")
+    cli::cli_abort(
+      "Invalid spec generator$staticExport: expected one of 'full', 'discover-only', or 'off'."
+    )
   }
 
-  knowledge_was_declared <- !is.null(spec$vertical$rpkg$knowledge) || !is.null(spec$knowledge)
+  knowledge_was_declared <- !is.null(spec$vertical$rpkg$knowledge) ||
+    !is.null(spec$knowledge)
   knowledge <- spec$vertical$rpkg$knowledge
-  if (is.null(knowledge)) knowledge <- spec$knowledge
+  if (is.null(knowledge)) {
+    knowledge <- spec$knowledge
+  }
   knowledge_defaults <- list(wikiMode = "merge-seeded")
-  knowledge <- modifyList(knowledge_defaults, if (is.null(knowledge)) list() else knowledge)
+  knowledge <- modifyList(
+    knowledge_defaults,
+    if (is.null(knowledge)) list() else knowledge
+  )
   if (!knowledge$wikiMode %in% c("bootstrap", "merge-seeded", "skip")) {
-    cli::cli_abort("Invalid spec knowledge$wikiMode: expected one of 'bootstrap', 'merge-seeded', or 'skip'.")
+    cli::cli_abort(
+      "Invalid spec knowledge$wikiMode: expected one of 'bootstrap', 'merge-seeded', or 'skip'."
+    )
   }
   knowledge$.declared <- knowledge_was_declared
   spec$knowledge <- knowledge
+
+  ai_agent_defaults <- list(
+    skillBundle = TRUE,
+    mcpTools = isTRUE(spec$features$mcpTools),
+    skillMode = "merge-seeded",
+    includeWikiResources = TRUE,
+    includePrototypeFunctions = FALSE
+  )
+  spec$aiAgent <- modifyList(
+    ai_agent_defaults,
+    if (is.null(spec$aiAgent)) list() else spec$aiAgent
+  )
+  if (!spec$aiAgent$skillMode %in% c("bootstrap", "merge-seeded", "skip")) {
+    cli::cli_abort(
+      "Invalid spec aiAgent$skillMode: expected one of 'bootstrap', 'merge-seeded', or 'skip'."
+    )
+  }
 
   spec
 }
 
 #' Build the invisible result list returned by spec-driven generation.
 #' @keywords internal
-spec_result <- function(spec, project_path, out, generators_run, files_written) {
+spec_result <- function(
+  spec,
+  project_path,
+  out,
+  generators_run,
+  files_written
+) {
   list(
     mode = "spec",
     project_name = spec$metadata$name,
@@ -111,6 +162,26 @@ spec_result <- function(spec, project_path, out, generators_run, files_written) 
     success = TRUE,
     errors = character(0),
     timestamp = Sys.time()
+  )
+}
+
+spec_domain_context <- function(spec, knowledge) {
+  domain_type <- knowledge$domainType
+  if (is.null(domain_type)) {
+    domain_type <- "framework"
+  }
+
+  domain_name <- knowledge$domainName
+  if (is.null(domain_name)) {
+    domain_name <- spec$project$title
+  }
+  if (is.null(domain_name)) {
+    domain_name <- spec$metadata$name
+  }
+
+  list(
+    domain_type = domain_type,
+    domain_name = domain_name
   )
 }
 
@@ -131,12 +202,16 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
     cli::cli_abort("Spec file not found: {.path {spec_path}}.")
   }
   spec_path <- fs::path_abs(spec_path)
-  if (is.null(project_path)) project_path <- fs::path_dir(spec_path)
+  if (is.null(project_path)) {
+    project_path <- fs::path_dir(spec_path)
+  }
 
   spec <- validate_spec(yaml::read_yaml(spec_path))
   out <- fs::path_abs(fs::path(project_path, spec$generator$outputDir))
 
-  if (verbose) ui_info(glue::glue("Reading spec: {spec_path}"))
+  if (verbose) {
+    ui_info(glue::glue("Reading spec: {spec_path}"))
+  }
 
   # no-r: nothing in the producer-driver family to generate.
   if (identical(spec$source$case, "no-r")) {
@@ -144,8 +219,11 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
       ui_info("source.case = 'no-r' -- no R-derived artifacts to generate.")
     }
     return(invisible(spec_result(
-      spec, project_path, out,
-      generators_run = character(0), files_written = character(0)
+      spec,
+      project_path,
+      out,
+      generators_run = character(0),
+      files_written = character(0)
     )))
   }
 
@@ -161,7 +239,9 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
   files_written <- character(0)
   features <- spec$features
 
-  if (verbose) ui_info(glue::glue("Introspecting R package: {pkg_path}"))
+  if (verbose) {
+    ui_info(glue::glue("Introspecting R package: {pkg_path}"))
+  }
 
   # Static export mode controls whether dataimago writes the StaticProducerDriver
   # input contract at all, and whether it writes only the manifest/OpenAPI pair or
@@ -185,11 +265,14 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
   generators_run <- c(generators_run, "generate_shared_utils")
   files_written <- c(files_written, utils_res$files_created)
 
-  # mcpTools: MCP tool schema (canonical location: public/api/mcp-schema.json).
-  if (isTRUE(features$mcpTools)) {
+  # aiAgent$mcpTools: MCP tool schema (canonical location:
+  # public/api/mcp-schema.json). features$mcpTools remains backward-compatible
+  # and is mirrored into aiAgent defaults during validation.
+  if (isTRUE(spec$aiAgent$mcpTools)) {
     generate_mcp_tools(
       pkg_path = pkg_path,
       output_path = fs::path(out, "public", "api", "mcp-schema.json"),
+      include_api_tools = isTRUE(features$apiScaffolding),
       verbose = verbose
     )
     generators_run <- c(generators_run, "generate_mcp_tools")
@@ -214,20 +297,15 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
   # producer-driver build artifacts above. Seeding from raw/ is an in-repo-AI
   # task; here we scaffold the structure + the KNOWLEDGE.md how-to.
   knowledge <- spec$knowledge
+  domain <- spec_domain_context(spec, knowledge)
   if (isTRUE(features$aiContext) || isTRUE(knowledge$.declared)) {
-    domain_type <- knowledge$domainType
-    if (is.null(domain_type)) domain_type <- "framework"
-    domain_name <- knowledge$domainName
-    if (is.null(domain_name)) domain_name <- spec$project$title
-    if (is.null(domain_name)) domain_name <- spec$metadata$name
-
     if (!identical(knowledge$wikiMode, "skip")) {
       overwrite_knowledge <- identical(knowledge$wikiMode, "bootstrap")
       bootstrap_wiki(
         project_path = out,
         project_name = spec$metadata$name,
         source_pkg = pkg_path,
-        domain_type = domain_type,
+        domain_type = domain$domain_type,
         overwrite = overwrite_knowledge,
         verbose = verbose
       )
@@ -236,8 +314,8 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
       knowledge_res <- generate_knowledge_md(
         project_path = out,
         project_name = spec$metadata$name,
-        domain_type = domain_type,
-        domain_name = domain_name,
+        domain_type = domain$domain_type,
+        domain_name = domain$domain_name,
         source_pkg = pkg_path,
         overwrite = overwrite_knowledge,
         verbose = verbose
@@ -247,6 +325,26 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
         files_written <- c(files_written, "KNOWLEDGE.md")
       }
     }
+  }
+
+  # AI skill bundle: an instructional layer for agents. This can ship before
+  # executable MCP exposure because it teaches safe workflows rather than
+  # granting tool access.
+  if (
+    isTRUE(spec$aiAgent$skillBundle) &&
+      !identical(spec$aiAgent$skillMode, "skip")
+  ) {
+    skill_res <- generate_ai_skill(
+      project_path = out,
+      project_name = spec$metadata$name,
+      domain_type = domain$domain_type,
+      domain_name = domain$domain_name,
+      source_pkg = pkg_path,
+      overwrite = identical(spec$aiAgent$skillMode, "bootstrap"),
+      verbose = verbose
+    )
+    generators_run <- c(generators_run, "generate_ai_skill")
+    files_written <- c(files_written, skill_res$files_created)
   }
 
   if (verbose) {
