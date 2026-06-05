@@ -43,6 +43,7 @@ format_exported_functions <- function(source_pkg) {
 #' @param source_pkg Character. Path to the source R package whose exported
 #'   functions fill `{{EXPORTED_FUNCTIONS}}`. NULL leaves a placeholder.
 #' @param framework_wiki_url Character. Fills `{{FRAMEWORK_WIKI_URL}}`.
+#' @param overwrite Logical. Replace an existing `KNOWLEDGE.md`. Default: FALSE.
 #' @param verbose Logical. Print progress. Default: TRUE.
 #'
 #' @return Invisible list with the written file path + domain_type.
@@ -53,8 +54,15 @@ generate_knowledge_md <- function(project_path,
                                   domain_name = project_name,
                                   source_pkg = NULL,
                                   framework_wiki_url = "https://github.com/dataimago/dataimago-design",
+                                  overwrite = FALSE,
                                   verbose = TRUE) {
   domain_type <- match.arg(domain_type)
+  out_file <- fs::path(project_path, "KNOWLEDGE.md")
+
+  if (fs::file_exists(out_file) && !isTRUE(overwrite)) {
+    if (verbose) ui_info("Preserving existing KNOWLEDGE.md")
+    return(invisible(list(file = "KNOWLEDGE.md", domain_type = domain_type, skipped = TRUE)))
+  }
 
   template_path <- system.file(
     "templates", paste0("KNOWLEDGE-", domain_type, ".md"),
@@ -73,9 +81,8 @@ generate_knowledge_md <- function(project_path,
     EXPORTED_FUNCTIONS = format_exported_functions(source_pkg)
   ))
 
-  out_file <- fs::path(project_path, "KNOWLEDGE.md")
   writeLines(rendered, out_file)
   if (verbose) ui_done(glue::glue("Generated KNOWLEDGE.md ({domain_type} domain)"))
 
-  invisible(list(file = "KNOWLEDGE.md", domain_type = domain_type))
+  invisible(list(file = "KNOWLEDGE.md", domain_type = domain_type, skipped = FALSE))
 }

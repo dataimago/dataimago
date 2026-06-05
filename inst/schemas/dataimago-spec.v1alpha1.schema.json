@@ -1063,6 +1063,15 @@
                         "data",
                         "references"
                       ]
+                    },
+                    "wikiMode": {
+                      "type": "string",
+                      "enum": [
+                        "bootstrap",
+                        "merge-seeded",
+                        "skip"
+                      ],
+                      "default": "merge-seeded"
                     }
                   },
                   "additionalProperties": false,
@@ -1120,6 +1129,15 @@
               "type": "string",
               "minLength": 1,
               "default": "."
+            },
+            "staticExport": {
+              "type": "string",
+              "enum": [
+                "full",
+                "discover-only",
+                "off"
+              ],
+              "default": "full"
             }
           },
           "additionalProperties": false

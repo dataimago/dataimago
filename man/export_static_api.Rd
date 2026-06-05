@@ -10,6 +10,7 @@ export_static_api(
   pkg_name = NULL,
   param_grid = NULL,
   max_combinations = 500L,
+  mode = c("full", "discover-only"),
   verbose = TRUE
 )
 }
@@ -26,6 +27,10 @@ combinations are inferred from roxygen enum values and defaults.}
 
 \item{max_combinations}{Integer. Safety limit on total combinations per
 function. Default: 500}
+
+\item{mode}{Character. Export mode: "full" writes endpoint fixtures plus
+discover/openapi metadata; "discover-only" writes only metadata. Default:
+"full".}
 
 \item{verbose}{Logical. Print progress. Default: TRUE}
 }

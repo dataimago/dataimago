@@ -11,6 +11,7 @@ generate_knowledge_md(
   domain_name = project_name,
   source_pkg = NULL,
   framework_wiki_url = "https://github.com/dataimago/dataimago-design",
+  overwrite = FALSE,
   verbose = TRUE
 )
 }
@@ -29,6 +30,8 @@ Default: \code{project_name}.}
 functions fill \code{{{EXPORTED_FUNCTIONS}}}. NULL leaves a placeholder.}
 
 \item{framework_wiki_url}{Character. Fills \code{{{FRAMEWORK_WIKI_URL}}}.}
+
+\item{overwrite}{Logical. Replace an existing \code{KNOWLEDGE.md}. Default: FALSE.}
 
 \item{verbose}{Logical. Print progress. Default: TRUE.}
 }

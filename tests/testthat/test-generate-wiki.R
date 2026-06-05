@@ -95,3 +95,101 @@ test_that("bootstrap_wiki is idempotent on directories", {
 
   expect_true(result2$success)
 })
+
+test_that("bootstrap_wiki preserves curated root pages on rerun", {
+  tmp <- withr::local_tempdir()
+
+  bootstrap_wiki(
+    project_path = tmp,
+    project_name = "test-project",
+    source_pkg = NULL,
+    verbose = FALSE
+  )
+
+  index_path <- fs::path(tmp, "wiki", "index.md")
+  writeLines(c(
+    "---",
+    "title: Curated Index",
+    "type: index",
+    "curated: true",
+    "---",
+    "",
+    "# Curated index",
+    "",
+    "Human-authored content."
+  ), index_path)
+
+  bootstrap_wiki(
+    project_path = tmp,
+    project_name = "test-project",
+    source_pkg = NULL,
+    verbose = FALSE
+  )
+
+  index_content <- paste(readLines(index_path), collapse = "\n")
+  expect_match(index_content, "Human-authored content", fixed = TRUE)
+  expect_false(grepl("This wiki was bootstrapped by dataimago", index_content, fixed = TRUE))
+})
+
+test_that("bootstrap_wiki treats pages without curated frontmatter as protected", {
+  tmp <- withr::local_tempdir()
+
+  bootstrap_wiki(
+    project_path = tmp,
+    project_name = "test-project",
+    source_pkg = NULL,
+    verbose = FALSE
+  )
+
+  overview_path <- fs::path(tmp, "wiki", "overview.md")
+  writeLines(c(
+    "# Manually authored overview",
+    "",
+    "No generator frontmatter here."
+  ), overview_path)
+
+  bootstrap_wiki(
+    project_path = tmp,
+    project_name = "test-project",
+    source_pkg = NULL,
+    verbose = FALSE
+  )
+
+  overview_content <- paste(readLines(overview_path), collapse = "\n")
+  expect_match(overview_content, "No generator frontmatter here", fixed = TRUE)
+})
+
+test_that("bootstrap_wiki appends to existing log instead of truncating", {
+  tmp <- withr::local_tempdir()
+
+  bootstrap_wiki(
+    project_path = tmp,
+    project_name = "test-project",
+    source_pkg = NULL,
+    verbose = FALSE
+  )
+
+  log_path <- fs::path(tmp, "wiki", "log.md")
+  writeLines(c(
+    "---",
+    "title: Activity Log",
+    "type: log",
+    "curated: true",
+    "---",
+    "",
+    "# Wiki Activity Log",
+    "",
+    "Existing curated entry."
+  ), log_path)
+
+  bootstrap_wiki(
+    project_path = tmp,
+    project_name = "test-project",
+    source_pkg = NULL,
+    verbose = FALSE
+  )
+
+  log_content <- paste(readLines(log_path), collapse = "\n")
+  expect_match(log_content, "Existing curated entry", fixed = TRUE)
+  expect_match(log_content, "bootstrap | Wiki initialized by dataimago", fixed = TRUE)
+})

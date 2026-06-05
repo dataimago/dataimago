@@ -122,7 +122,71 @@ test_that("validate_spec applies feature + generator defaults when absent", {
 
   normalized <- validate_spec(spec)
 
-  expect_true(normalized$features$apiScaffolding)
-  expect_true(normalized$features$mcpTools)
+  expect_false(normalized$features$apiScaffolding)
+  expect_false(normalized$features$mcpTools)
+  expect_equal(normalized$generator$staticExport, "full")
   expect_equal(normalized$generator$outputDir, ".")
+  expect_equal(normalized$knowledge$wikiMode, "merge-seeded")
+})
+
+test_that("validate_spec rejects invalid static export and wiki modes", {
+  spec <- make_spec()
+  spec$generator$staticExport <- "cartesian-everything"
+  expect_error(validate_spec(spec), "staticExport")
+
+  spec <- make_spec()
+  spec$knowledge <- list(wikiMode = "clobber")
+  expect_error(validate_spec(spec), "wikiMode")
+})
+
+test_that("generator$staticExport = 'off' skips static API export", {
+  spec <- make_spec()
+  spec$features$mcpTools <- FALSE
+  spec$features$apiScaffolding <- FALSE
+  spec$generator$staticExport <- "off"
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+
+  expect_false("export_static_api" %in% res$generators_run)
+  expect_false(fs::dir_exists(fs::path(tmp, "public", "api")))
+  expect_true(fs::file_exists(fs::path(tmp, "packages", "shared-utils", "src", "types.ts")))
+})
+
+test_that("generator$staticExport = 'discover-only' omits endpoint fixtures", {
+  spec <- make_spec()
+  spec$features$mcpTools <- FALSE
+  spec$features$apiScaffolding <- FALSE
+  spec$generator$staticExport <- "discover-only"
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+
+  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "discover.json")))
+  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "openapi.json")))
+  expect_false(fs::dir_exists(fs::path(tmp, "public", "api", "hello")))
+})
+
+test_that("knowledge$wikiMode = 'skip' skips wiki and KNOWLEDGE scaffolding", {
+  spec <- make_spec()
+  spec$features$mcpTools <- FALSE
+  spec$features$apiScaffolding <- FALSE
+  spec$knowledge <- list(domainType = "framework", wikiMode = "skip")
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+
+  expect_false("bootstrap_wiki" %in% res$generators_run)
+  expect_false("generate_knowledge_md" %in% res$generators_run)
+  expect_false(fs::dir_exists(fs::path(tmp, "wiki")))
+  expect_false(fs::file_exists(fs::path(tmp, "KNOWLEDGE.md")))
 })
