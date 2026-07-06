@@ -1,6 +1,56 @@
 # Shared test fixtures. testthat sources helper-*.R before any test file, so
-# `make_fixture_pkg()` is available to every test (test-phase-2e-generators.R,
-# test-ai-spec.R, ...).
+# `make_fixture_pkg()` and `make_spec()` are available to every test
+# (test-phase-2e-generators.R, test-ai-spec.R, test-knowledge-layer.R, ...).
+
+# A complete, valid ProjectSpec as an R list. Tests mutate fields directly
+# before writing, so nested merges aren't needed. Kept fully JSON-Schema-valid
+# (complete metadata + exactly one vertical) so ai(spec_path) tests pass the
+# bundled-schema gate when jsonvalidate is installed.
+make_spec <- function() {
+  list(
+    apiVersion = "dataimago.ai/v1alpha1",
+    kind = "ProjectSpec",
+    metadata = list(
+      name = "test-project",
+      vertical = "rpkg",
+      generatedBy = "test-suite",
+      generatedAt = "2026-07-05T12:00:00Z",
+      specVersion = 1L
+    ),
+    user = list(
+      name = "Tester",
+      email = "t@example.com",
+      githubUsername = "tester"
+    ),
+    project = list(title = "Test", description = "A test project"),
+    source = list(
+      case = "retrofit",
+      rPackage = list(
+        name = "fixtpkg",
+        submoduleUrl = "https://github.com/x/fixtpkg",
+        submodulePath = "packages/r-packages/fixtpkg",
+        quartoRoot = "ui/www"
+      )
+    ),
+    vertical = list(
+      rpkg = list(
+        package = list(
+          name = "fixtpkg",
+          title = "Fixture Package for Generator Tests",
+          description = "Synthetic package used by the test suite."
+        )
+      )
+    ),
+    features = list(
+      quartoBuild = TRUE,
+      thesisPdf = TRUE,
+      mcpTools = TRUE,
+      aiContext = TRUE,
+      apiScaffolding = TRUE
+    ),
+    generator = list(outputDir = ".")
+  )
+}
 
 #' Build a synthetic R package under `parent_dir`.
 #'

@@ -13,11 +13,11 @@ validate_spec(spec)
 The normalized spec list (defaults applied).
 }
 \description{
-Lightweight structural validation (no JSON-Schema dependency this release;
-the schema is carried in \verb{inst/schemas/} for reference). Checks the
-load-bearing invariants -- including the \code{source.rPackage} <-> \code{source.case}
-cross-field rule that does NOT survive \code{zod-to-json-schema} -- then fills in
-the optional \code{features} / \code{generator} defaults and returns the normalized
-spec.
+Structural validation of the load-bearing invariants -- including the Zod
+\code{superRefine} cross-field rules that do NOT survive \code{zod-to-json-schema}
+(\code{source.rPackage} is null iff \code{source.case == "no-r"}; exactly one
+vertical present) -- then fills in the optional \code{features} / \code{generator}
+defaults and returns the normalized spec. Full JSON-Schema validation is
+\code{\link[=validate_spec_schema]{validate_spec_schema()}}'s job; this always runs, schema engine or not.
 }
 \keyword{internal}

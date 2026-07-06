@@ -35,7 +35,8 @@ Suggests:
     testthat (>= 3.2.0),
     quarto (>= 1.4.0),
     shiny (>= 1.8.0),
-    plumber (>= 1.2.0)
+    plumber (>= 1.2.0),
+    jsonvalidate (>= 1.3.0)
 URL: https://dataimago.github.io/dataimago/
 BugReports: https://github.com/dataimago/dataimago/issues/
 License: MIT + file LICENSE

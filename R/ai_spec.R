@@ -16,14 +16,139 @@ NULL
 # wiki/decisions/spec-to-artifact-bridge.md.
 # ============================================================================
 
+#' Validate a spec file against the bundled JSON Schema.
+#'
+#' The Zod schema in dissertation-ai (`apps/hub/src/lib/spec/schema.ts`) is the
+#' source of truth; `inst/schemas/dataimago-spec.v1alpha1.schema.json` is
+#' auto-generated from it (`pnpm generate-spec-schema` in dissertation-ai's
+#' `apps/hub`) and bundled here so `ai(spec_path)` validates without Node at R
+#' runtime -- the spec-to-artifact-bridge contract (decision 4).
+#'
+#' Engine-gated: runs when `jsonvalidate` (Suggests) is installed and its ajv
+#' engine compiles the schema; otherwise it is skipped with a warning and the
+#' structural checks in [validate_spec()] remain the only gate. Cross-field
+#' invariants that do not survive `zod-to-json-schema` (the Zod `superRefine`
+#' rules) are re-checked in R by [validate_spec()] regardless.
+#'
+#' @param spec_path Path to a `dataimago-spec.yaml`.
+#' @return Invisibly: `TRUE` when the spec validates, `NA` when the engine is
+#'   unavailable (with a warning). Aborts with per-error details when the spec
+#'   violates the schema.
+#' @keywords internal
+validate_spec_schema <- function(spec_path) {
+  if (!requireNamespace("jsonvalidate", quietly = TRUE)) {
+    cli::cli_warn(c(
+      "!" = "Package {.pkg jsonvalidate} is not installed -- skipping JSON-Schema validation of {.path {spec_path}}.",
+      i = "Structural checks still run; install {.pkg jsonvalidate} for full schema validation."
+    ))
+    return(invisible(NA))
+  }
+
+  schema_path <- system.file(
+    "schemas",
+    "dataimago-spec.v1alpha1.schema.json",
+    package = "dataimago"
+  )
+  if (!nzchar(schema_path)) {
+    cli::cli_warn(
+      "Bundled spec schema not found -- skipping JSON-Schema validation."
+    )
+    return(invisible(NA))
+  }
+
+  # Re-parse with every YAML sequence kept as a list so single-element
+  # sequences serialize back to JSON arrays. (yaml's default simplification
+  # turns a one-item sequence into a scalar vector, which auto_unbox would
+  # then emit as a JSON scalar -- a false schema violation.)
+  spec <- yaml::read_yaml(
+    spec_path,
+    handlers = list(seq = function(x) as.list(x))
+  )
+
+  # Legacy compatibility: a top-level `knowledge` block predates
+  # vertical.rpkg.knowledge and is still honored by validate_spec(), but the
+  # schema (additionalProperties: false) rejects it. Strip it for validation
+  # and nudge toward the canonical location.
+  if (!is.null(spec$knowledge)) {
+    cli::cli_warn(c(
+      "!" = "Top-level {.field knowledge} is deprecated; move it under {.field vertical.rpkg.knowledge}.",
+      i = "It is still honored this release, but is excluded from JSON-Schema validation."
+    ))
+    spec$knowledge <- NULL
+  }
+
+  # R lists cannot hold an explicit trailing null the way YAML can
+  # (`rPackage: null`); a spec written from R via yaml::write_yaml drops the
+  # key entirely. The schema requires the key (nullable), so restore the
+  # explicit null before serializing -- semantically identical for consumers.
+  if (is.list(spec$source) && !("rPackage" %in% names(spec$source))) {
+    spec$source["rPackage"] <- list(NULL)
+  }
+
+  spec_json <- jsonlite::toJSON(
+    spec,
+    auto_unbox = TRUE,
+    null = "null",
+    digits = NA
+  )
+
+  result <- tryCatch(
+    jsonvalidate::json_validate(
+      spec_json,
+      schema_path,
+      engine = "ajv",
+      verbose = TRUE
+    ),
+    error = function(e) {
+      cli::cli_warn(c(
+        "!" = "JSON-Schema validation engine failed -- skipping schema validation.",
+        i = conditionMessage(e)
+      ))
+      NA
+    }
+  )
+  if (is.na(result)) {
+    return(invisible(NA))
+  }
+
+  if (!isTRUE(result)) {
+    errors <- attr(result, "errors")
+    details <- character(0)
+    if (is.data.frame(errors) && nrow(errors) > 0) {
+      where <- errors$instancePath
+      if (is.null(where)) {
+        where <- errors$dataPath # older engine field name
+      }
+      if (is.null(where)) {
+        where <- rep(NA_character_, nrow(errors))
+      }
+      details <- paste0(
+        ifelse(is.na(where) | !nzchar(where), "(root)", where),
+        ": ",
+        errors$message
+      )
+      # cli interpolates {}; escape any braces coming from engine messages.
+      details <- gsub("\\{", "{{", gsub("\\}", "}}", details))
+      names(details) <- rep("x", length(details))
+    }
+    cli::cli_abort(c(
+      "Spec fails JSON-Schema validation: {.path {spec_path}}.",
+      details,
+      i = "Schema: {.path {schema_path}} (generated from the Zod source of truth in dissertation-ai)."
+    ))
+  }
+
+  invisible(TRUE)
+}
+
 #' Validate a parsed `dataimago-spec.yaml` and apply defaults.
 #'
-#' Lightweight structural validation (no JSON-Schema dependency this release;
-#' the schema is carried in `inst/schemas/` for reference). Checks the
-#' load-bearing invariants -- including the `source.rPackage` <-> `source.case`
-#' cross-field rule that does NOT survive `zod-to-json-schema` -- then fills in
-#' the optional `features` / `generator` defaults and returns the normalized
-#' spec.
+#' Structural validation of the load-bearing invariants -- including the Zod
+#' `superRefine` cross-field rules that do NOT survive `zod-to-json-schema`
+#' (`source.rPackage` is null iff `source.case == "no-r"`; exactly one
+#' vertical present) -- then fills in the optional `features` / `generator`
+#' defaults and returns the normalized spec. Full JSON-Schema validation is
+#' [validate_spec_schema()]'s job; this always runs, schema engine or not.
 #'
 #' @param spec A list (parsed YAML).
 #' @return The normalized spec list (defaults applied).
@@ -53,9 +178,12 @@ validate_spec <- function(spec) {
   }
 
   case <- spec$source$case
-  if (is.null(case) || !case %in% c("extension", "retrofit", "no-r")) {
+  if (
+    is.null(case) ||
+      !case %in% c("extension", "retrofit", "no-r", "greenfield")
+  ) {
     cli::cli_abort(
-      "Invalid spec source$case: expected one of 'extension', 'retrofit', or 'no-r'."
+      "Invalid spec source$case: expected one of 'extension', 'retrofit', 'no-r', or 'greenfield'."
     )
   }
   has_rpkg <- !is.null(spec$source$rPackage)
@@ -66,7 +194,21 @@ validate_spec <- function(spec) {
   }
   if (case != "no-r" && !has_rpkg) {
     cli::cli_abort(
-      "Invalid spec: source$rPackage is required when source$case is 'extension' or 'retrofit'."
+      "Invalid spec: source$rPackage is required unless source$case is 'no-r'."
+    )
+  }
+  # superRefine parity: exactly one vertical (dissertation | rpkg) present.
+  verticals <- c("dissertation", "rpkg")
+  present <- verticals[
+    vapply(
+      verticals,
+      function(k) !is.null(spec$vertical[[k]]),
+      logical(1)
+    )
+  ]
+  if (length(present) != 1L) {
+    cli::cli_abort(
+      "Invalid spec: exactly one vertical (dissertation or rpkg) must be present; found {length(present)}."
     )
   }
   if (has_rpkg) {
@@ -206,11 +348,22 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
     project_path <- fs::path_dir(spec_path)
   }
 
+  validate_spec_schema(spec_path)
   spec <- validate_spec(yaml::read_yaml(spec_path))
   out <- fs::path_abs(fs::path(project_path, spec$generator$outputDir))
 
   if (verbose) {
     ui_info(glue::glue("Reading spec: {spec_path}"))
+  }
+
+  # greenfield (generate the R package FROM the spec's vertical.rpkg.package
+  # block) is schema-valid but not yet implemented R-side. Fail honestly and
+  # early rather than with a confusing missing-DESCRIPTION error below.
+  if (identical(spec$source$case, "greenfield")) {
+    cli::cli_abort(c(
+      "source$case = 'greenfield' (generate the R package from the spec) is not implemented in this release.",
+      i = "Use 'extension' or 'retrofit' with an existing package, or 'no-r'. Greenfield generation is tracked in the rpkg-spec design."
+    ))
   }
 
   # no-r: nothing in the producer-driver family to generate.
