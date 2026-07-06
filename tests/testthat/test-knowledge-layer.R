@@ -83,18 +83,13 @@ test_that("generate_knowledge_md preserves existing KNOWLEDGE.md by default", {
 test_that("ai(spec_path) with a knowledge block scaffolds wiki/ + raw/ + KNOWLEDGE.md", {
   tmp <- withr::local_tempdir()
   make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
-  spec <- list(
-    apiVersion = "dataimago.ai/v1alpha1",
-    kind = "ProjectSpec",
-    metadata = list(name = "demo"),
-    source = list(
-      case = "retrofit",
-      rPackage = list(name = "fixtpkg", submodulePath = "packages/r-packages/fixtpkg")
-    ),
-    features = list(mcpTools = FALSE, apiScaffolding = FALSE),
-    knowledge = list(domainType = "framework", domainName = "Demo Methodology"),
-    generator = list(outputDir = ".")
-  )
+  spec <- make_spec()
+  spec$metadata$name <- "demo"
+  spec$features$mcpTools <- FALSE
+  spec$features$apiScaffolding <- FALSE
+  # Deliberately the LEGACY top-level knowledge location (still honored;
+  # validate_spec_schema warns and excludes it from schema validation).
+  spec$knowledge <- list(domainType = "framework", domainName = "Demo Methodology")
   spec_path <- fs::path(tmp, "dataimago-spec.yaml")
   yaml::write_yaml(spec, spec_path)
 

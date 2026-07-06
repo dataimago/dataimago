@@ -1,5 +1,29 @@
 # dataimago 0.0-5.0
 
+## JSON-Schema Bridge Validation (2026-07-05)
+
+### Added
+
+* `ai(spec_path)` now validates the spec against the bundled JSON Schema
+  (`inst/schemas/dataimago-spec.v1alpha1.schema.json`, auto-generated from the
+  Zod source of truth in dissertation-ai) when `jsonvalidate` (new in Suggests)
+  is installed — completing decision 4 of the spec-to-artifact-bridge ADR.
+  Without `jsonvalidate`, validation is skipped with a warning and the
+  structural checks still run. Cross-field invariants that don't survive
+  `zod-to-json-schema` (the Zod `superRefine` rules) are re-checked in R:
+  `source.rPackage` is null iff `source.case == "no-r"`, and exactly one
+  vertical (`dissertation` | `rpkg`) must be present.
+* `source.case = "greenfield"` is now accepted as schema-valid (parity with the
+  Zod schema) with the everything-on feature stance; `ai(spec_path)` fails
+  early and honestly that greenfield package generation is not yet implemented.
+
+### Deprecated
+
+* A top-level `knowledge` block is deprecated in favor of
+  `vertical.rpkg.knowledge`. It is still honored this release but is excluded
+  from JSON-Schema validation (the schema rejects unknown top-level keys) and
+  emits a warning.
+
 ## First-Class AI Analytic Engine Support (2026-06-05)
 
 ### Added

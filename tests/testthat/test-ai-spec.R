@@ -15,38 +15,8 @@
 # global -- matching the convention in test-phase-2e-generators.R.
 # ============================================================================
 
-# A complete, valid spec as an R list. Tests mutate fields directly before
-# writing, so nested merges aren't needed.
-make_spec <- function() {
-  list(
-    apiVersion = "dataimago.ai/v1alpha1",
-    kind = "ProjectSpec",
-    metadata = list(name = "test-project"),
-    user = list(
-      name = "Tester",
-      email = "t@example.com",
-      githubUsername = "tester"
-    ),
-    project = list(title = "Test", description = "A test project"),
-    source = list(
-      case = "retrofit",
-      rPackage = list(
-        name = "fixtpkg",
-        submoduleUrl = "https://github.com/x/fixtpkg",
-        submodulePath = "packages/r-packages/fixtpkg",
-        quartoRoot = "ui/www"
-      )
-    ),
-    features = list(
-      quartoBuild = TRUE,
-      thesisPdf = TRUE,
-      mcpTools = TRUE,
-      aiContext = TRUE,
-      apiScaffolding = TRUE
-    ),
-    generator = list(outputDir = ".")
-  )
-}
+# make_spec() -- the complete, schema-valid ProjectSpec fixture -- lives in
+# helper-fixtures.R (shared with test-knowledge-layer.R).
 
 test_that("ai(spec_path) writes the producer-driver artifact family", {
   tmp <- withr::local_tempdir()
@@ -281,6 +251,88 @@ test_that("generator$staticExport = 'discover-only' omits endpoint fixtures", {
   expect_true(fs::file_exists(fs::path(tmp, "public", "api", "discover.json")))
   expect_true(fs::file_exists(fs::path(tmp, "public", "api", "openapi.json")))
   expect_false(fs::dir_exists(fs::path(tmp, "public", "api", "hello")))
+})
+
+test_that("validate_spec accepts 'greenfield' with the everything-on feature stance", {
+  spec <- make_spec()
+  spec$source$case <- "greenfield"
+  spec$features <- NULL
+
+  normalized <- validate_spec(spec)
+
+  # Retrofit gating must NOT apply to greenfield.
+  expect_true(normalized$features$mcpTools)
+  expect_true(normalized$features$apiScaffolding)
+})
+
+test_that("ai(spec_path) aborts honestly for 'greenfield' (not yet implemented)", {
+  spec <- make_spec()
+  spec$source$case <- "greenfield"
+  tmp <- withr::local_tempdir()
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  expect_error(
+    suppressWarnings(ai(spec_path = spec_path, verbose = FALSE)),
+    "greenfield"
+  )
+})
+
+test_that("validate_spec requires exactly one vertical (superRefine parity)", {
+  spec <- make_spec()
+  spec$vertical <- NULL
+  expect_error(validate_spec(spec), "vertical")
+
+  spec <- make_spec()
+  spec$vertical$dissertation <- list(institution = list(name = "X"))
+  expect_error(validate_spec(spec), "vertical")
+})
+
+test_that("validate_spec_schema validates a well-formed spec against the bundled schema", {
+  skip_if_not_installed("jsonvalidate")
+  tmp <- withr::local_tempdir()
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(make_spec(), spec_path)
+
+  res <- suppressWarnings(validate_spec_schema(spec_path))
+  skip_if(is.na(res), "jsonvalidate engine unavailable for the bundled schema")
+  expect_true(res)
+})
+
+test_that("validate_spec_schema rejects a schema-invalid spec, naming the violating path", {
+  skip_if_not_installed("jsonvalidate")
+  tmp <- withr::local_tempdir()
+
+  # Prove the engine is live on this machine first (valid twin passes).
+  twin <- fs::path(tmp, "valid.yaml")
+  yaml::write_yaml(make_spec(), twin)
+  live <- suppressWarnings(validate_spec_schema(twin))
+  skip_if(is.na(live), "jsonvalidate engine unavailable for the bundled schema")
+
+  spec <- make_spec()
+  spec$source$case <- "bogus-case"
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  expect_error(validate_spec_schema(spec_path), "case")
+})
+
+test_that("validate_spec_schema warns on (and tolerates) a legacy top-level knowledge block", {
+  skip_if_not_installed("jsonvalidate")
+  tmp <- withr::local_tempdir()
+
+  twin <- fs::path(tmp, "valid.yaml")
+  yaml::write_yaml(make_spec(), twin)
+  live <- suppressWarnings(validate_spec_schema(twin))
+  skip_if(is.na(live), "jsonvalidate engine unavailable for the bundled schema")
+
+  spec <- make_spec()
+  spec$knowledge <- list(wikiMode = "skip")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  expect_warning(res <- validate_spec_schema(spec_path), "knowledge")
+  expect_true(res)
 })
 
 test_that("knowledge$wikiMode = 'skip' skips wiki and KNOWLEDGE scaffolding", {
