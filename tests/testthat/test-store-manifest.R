@@ -19,7 +19,9 @@
 
 export_fixture <- function(out, ...) {
   parent <- withr::local_tempdir()
-  pkg_dir <- make_fixture_pkg(parent)
+  # `make_fixture_pkg()` is defined in helper-fixtures.R, which testthat sources
+  # before every test file. lintr analyses this file in isolation and cannot see it.
+  pkg_dir <- make_fixture_pkg(parent) # nolint: object_usage_linter.
   suppressWarnings(try(
     export_static_api(pkg_path = pkg_dir, output_dir = out, verbose = FALSE, ...),
     silent = TRUE

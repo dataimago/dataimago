@@ -510,7 +510,7 @@ export_openapi_stub <- function(exports, pkg_name, pkg_version, output_dir) {
 # a nullable provenance.git_sha, and every artifact's path / sha256 / classification.
 # ============================================================================
 
-STORE_SCHEMA_VERSION <- "dataimago.store.v1"
+store_schema_version <- "dataimago.store.v1"
 
 
 #' Rows in a result, when the notion applies
@@ -615,7 +615,7 @@ write_store_manifest <- function(output_dir, store_id, domain_schema, exports, a
   })
 
   manifest <- list(
-    schema_version = STORE_SCHEMA_VERSION,
+    schema_version = store_schema_version,
     store = list(id = store_id, kind = "static", domain_schema = domain_schema),
     provenance = store_provenance(output_dir),
     artifacts = artifacts,
