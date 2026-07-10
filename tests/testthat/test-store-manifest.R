@@ -37,6 +37,17 @@ read_manifest <- function(out) {
 }
 
 
+test_that("the default output_dir is not under public/, which NextJS serves verbatim", {
+  # A store written to `public/api/` is reachable as a raw static asset:
+  # `public/api/discover.json` answers at `GET /api/discover.json`, bypassing the
+  # driver and the manifest gate entirely. The default must stay outside `public/`,
+  # and must match `staticRoot()` in @dataimago/shared-utils/producers/resolve.ts.
+  default_dir <- formals(export_static_api)$output_dir
+  expect_identical(default_dir, "data/api")
+  expect_false(grepl("^public/", default_dir))
+})
+
+
 test_that("export_static_api() writes a dataimago.store.v1 manifest at the root", {
   out <- withr::local_tempdir()
   export_fixture(out)

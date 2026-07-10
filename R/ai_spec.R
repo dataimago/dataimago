@@ -402,7 +402,7 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
   if (!identical(spec$generator$staticExport, "off")) {
     export_static_api(
       pkg_path = pkg_path,
-      output_dir = fs::path(out, "public", "api"),
+      output_dir = fs::path(out, "data", "api"),
       mode = spec$generator$staticExport,
       verbose = verbose
     )

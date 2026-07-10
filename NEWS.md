@@ -2,6 +2,18 @@
 
 ## Static stores carry a manifest (2026-07-09)
 
+### Breaking changes
+
+* `export_static_api()` now writes to `data/api/` by default, not `public/api/`.
+  NextJS serves everything under `public/` verbatim, so a store written there was
+  *also* reachable as a raw static asset -- `public/api/discover.json` answered at
+  `GET /api/discover.json`, bypassing the driver, the manifest, and every check it
+  performs. A store must reach the functions, never the static surface. `ai()` and
+  the `dataimago-ai` template default were moved in lockstep.
+
+  `public/api/mcp-schema.json` is unchanged: it is an agent-facing contract
+  document, not a store artifact.
+
 ### Added
 
 * `export_static_api()` now writes `store.manifest.json` (schema
