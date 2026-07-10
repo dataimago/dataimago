@@ -1,6 +1,7 @@
-#' @importFrom fs dir_exists dir_create path file_exists
+#' @importFrom fs dir_exists dir_create path file_exists path_rel
 #' @importFrom glue glue
 #' @importFrom jsonlite toJSON
+#' @importFrom digest digest
 #' @importFrom crayon green silver yellow red bold blue
 #' @importFrom utils getFromNamespace
 NULL
@@ -17,6 +18,7 @@ NULL
 # `@dataimago/shared-utils/producers`.
 #
 # Filename convention (must match StaticProducerDriver.filenameFor):
+#   <output_dir>/store.manifest.json                  - the store contract (see below)
 #   <output_dir>/discover.json                        - manifest (Phase-2e shape)
 #   <output_dir>/openapi.json                         - OpenAPI spec (stub OK)
 #   <output_dir>/<endpoint>/default.json              - no-param response
@@ -24,9 +26,23 @@ NULL
 #                                                       (values only, lowercased,
 #                                                        whitespace -> "_")
 #
+# `store.manifest.json` (schema `dataimago.store.v1`) is what makes this a *store*
+# rather than a directory of JSON. It answers the three questions a bare directory
+# cannot: which build produced this (provenance), has it been tampered with
+# (per-artifact sha256), and may it be exposed (classification). The
+# StaticProducerDriver refuses to serve any file the manifest does not list, and
+# verifies the hash before returning bytes -- so a manifest that lies is a 500,
+# not a silently-served stale file.
+#
+# The writer owns provenance. That is why it is emitted here and not by a
+# downstream Node build step: only this process knows which commit the data was
+# derived from.
+#
 # Pattern: R functions x parameter combinations -> <output_dir>/**/*.json
 # Reference:
 #   - packages/shared-utils/src/producers/static-driver.ts (contract)
+#   - packages/shared-utils/src/store/ (the manifest reader + gate)
+#   - dataimago-design wiki: patterns/data-store-contract.md
 #   - dataimago-design wiki: patterns/producer-driver-pattern.md
 # ============================================================================
 
@@ -53,6 +69,9 @@ NULL
 #' @param mode Character. Export mode: "full" writes endpoint fixtures plus
 #'   discover/openapi metadata; "discover-only" writes only metadata. Default:
 #'   "full".
+#' @param domain_schema Character. The vertical this store's data belongs to
+#'   (e.g. "sgp", "dissertation"), recorded in `store.manifest.json`. Defaults
+#'   to the package name.
 #' @param verbose Logical. Print progress. Default: TRUE
 #'
 #' @return List with: files_created (count), total_size_kb, functions_exported,
@@ -71,6 +90,9 @@ NULL
 #'
 #' File naming convention (mirrors `StaticProducerDriver.filenameFor`):
 #' \itemize{
+#'   \item \code{output_dir/store.manifest.json} -- the `dataimago.store.v1`
+#'     contract: provenance, per-artifact sha256, and classification. Only files
+#'     listed here are reachable through the driver.
 #'   \item \code{output_dir/discover.json} -- Phase-2e producer manifest
 #'   \item \code{output_dir/openapi.json} -- OpenAPI 3.0 spec (stub acceptable)
 #'   \item \code{output_dir/<endpoint>/default.json} -- no-parameter result
@@ -92,6 +114,7 @@ export_static_api <- function(pkg_path,
                               param_grid = NULL,
                               max_combinations = 500L,
                               mode = c("full", "discover-only"),
+                              domain_schema = NULL,
                               verbose = TRUE) {
   mode <- match.arg(mode)
   start_time <- Sys.time()
@@ -130,6 +153,11 @@ export_static_api <- function(pkg_path,
   total_files <- 0L
   total_bytes <- 0L
   functions_exported <- character(0)
+  # Every file written this run, hashed as it lands. Files left over from a
+  # previous export are deliberately NOT listed: an unlisted artifact is
+  # unreachable through the driver, which is how a stale fixture stops being
+  # served the moment the store is rebuilt.
+  artifacts <- list()
 
   if (identical(mode, "full")) {
     for (fn_name in names(exports)) {
@@ -159,6 +187,9 @@ export_static_api <- function(pkg_path,
         json_content <- jsonlite::toJSON(result, auto_unbox = TRUE, dataframe = "rows", pretty = FALSE)
         default_path <- fs::path(endpoint_dir, "default.json")
         writeLines(json_content, default_path)
+        artifacts <- c(artifacts, list(
+          artifact_entry(default_path, output_dir, "aggregate", result_row_count(result))
+        ))
         total_files <- total_files + 1L
         total_bytes <- total_bytes + nchar(json_content)
       }
@@ -171,6 +202,9 @@ export_static_api <- function(pkg_path,
           json_content <- jsonlite::toJSON(result, auto_unbox = TRUE, dataframe = "rows", pretty = FALSE)
           json_path <- fs::path(endpoint_dir, filename)
           writeLines(json_content, json_path)
+          artifacts <- c(artifacts, list(
+            artifact_entry(json_path, output_dir, "aggregate", result_row_count(result))
+          ))
           total_files <- total_files + 1L
           total_bytes <- total_bytes + nchar(json_content)
         }
@@ -186,10 +220,27 @@ export_static_api <- function(pkg_path,
   pkg_version <- read_pkg_version(pkg_path)
   discover_result <- export_discover_endpoint(exports, pkg_name, pkg_version, output_dir)
   total_files <- total_files + discover_result$files
+  artifacts <- c(artifacts, list(
+    artifact_entry(fs::path(output_dir, "discover.json"), output_dir, "metadata")
+  ))
 
   # Export OpenAPI stub (StaticProducerDriver.readOpenApi contract)
   openapi_result <- export_openapi_stub(exports, pkg_name, pkg_version, output_dir)
   total_files <- total_files + openapi_result$files
+  artifacts <- c(artifacts, list(
+    artifact_entry(fs::path(output_dir, "openapi.json"), output_dir, "metadata")
+  ))
+
+  # The store contract. Written last: every artifact it lists must already exist
+  # on disk, because each sha256 is taken from the bytes as written.
+  store_result <- write_store_manifest(
+    output_dir = output_dir,
+    store_id = pkg_name,
+    domain_schema = domain_schema %||% pkg_name,
+    exports = exports,
+    artifacts = artifacts
+  )
+  total_files <- total_files + store_result$files
 
   elapsed <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
 
@@ -197,7 +248,9 @@ export_static_api <- function(pkg_path,
     files_created = total_files,
     total_size_kb = round(total_bytes / 1024, 1),
     functions_exported = functions_exported,
-    elapsed_seconds = round(elapsed, 1)
+    elapsed_seconds = round(elapsed, 1),
+    store_manifest = as.character(fs::path(output_dir, "store.manifest.json")),
+    provenance = store_result$provenance
   )
 
   if (verbose) {
@@ -205,6 +258,18 @@ export_static_api <- function(pkg_path,
       "Exported {total_files} JSON files ({results$total_size_kb} KB) ",
       "for {length(functions_exported)} functions in {results$elapsed_seconds}s"
     ))
+    prov <- store_result$provenance
+    if (is.null(prov$git_sha)) {
+      ui_warn(paste(
+        "store.manifest.json has no git_sha -- the output is outside a git repository.",
+        "Integrity still holds; provenance does not."
+      ))
+    } else {
+      ui_done(glue::glue(
+        "store.manifest.json: {length(artifacts)} artifacts, ",
+        "git_sha {substr(prov$git_sha, 1, 7)}{if (isTRUE(prov$dirty)) ' (dirty)' else ''}"
+      ))
+    }
   }
 
   invisible(results)
@@ -433,6 +498,144 @@ export_openapi_stub <- function(exports, pkg_name, pkg_version, output_dir) {
   )
 
   list(files = 1L)
+}
+
+
+# ============================================================================
+# Internal: the `dataimago.store.v1` contract
+# ============================================================================
+#
+# Read by `loadStoreManifest()` in `@dataimago/shared-utils/store`. Keep the two
+# in lockstep: the reader validates schema_version, store.id, provenance.built_at,
+# a nullable provenance.git_sha, and every artifact's path / sha256 / classification.
+# ============================================================================
+
+STORE_SCHEMA_VERSION <- "dataimago.store.v1"
+
+
+#' Rows in a result, when the notion applies
+#'
+#' Mirrors what `jsonlite::toJSON(dataframe = "rows")` actually emits: a
+#' data.frame becomes an array of row objects, an unnamed list becomes an array.
+#' Anything else (a named list, a scalar) has no top-level array, so no count.
+#'
+#' @noRd
+result_row_count <- function(x) {
+  if (is.data.frame(x)) {
+    return(nrow(x))
+  }
+  if (is.list(x) && is.null(names(x))) {
+    return(length(x))
+  }
+  NULL
+}
+
+
+#' Describe one written file as a manifest artifact
+#'
+#' The hash is taken from the bytes on disk, not from the JSON string that
+#' produced them -- `writeLines()` appends a trailing newline, so hashing the
+#' string would record a digest the reader could never reproduce.
+#'
+#' @noRd
+artifact_entry <- function(file_path, output_dir, classification, row_count = NULL) {
+  rel <- as.character(fs::path_rel(file_path, output_dir))
+  list(
+    role = sub("\\.json$", "", rel),
+    path = rel,
+    format = "application/json",
+    sha256 = digest::digest(file_path, algo = "sha256", file = TRUE),
+    row_count = row_count,
+    classification = classification
+  )
+}
+
+
+#' Provenance of the repository that owns the data
+#'
+#' Not the provenance of `dataimago` itself. A store's `git_sha` names the commit
+#' of the project whose data this is, so the question "which build produced this
+#' file?" has an answer a human can check out.
+#'
+#' Outside a git repository there is no honest answer, so `git_sha` is `NULL` and
+#' `dirty` is `TRUE`: an unknown working tree is assumed dirty rather than clean.
+#' Integrity (sha256) does not depend on git and still holds.
+#'
+#' @noRd
+store_provenance <- function(dir) {
+  built_at <- format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+  unknown <- list(git_sha = NULL, dirty = TRUE, built_at = built_at)
+
+  if (!nzchar(Sys.which("git"))) {
+    return(unknown)
+  }
+
+  run_git <- function(...) {
+    # system2() pastes its args into a shell command without quoting them, so an
+    # unquoted path breaks on the first space -- and "~/My Project/" is an
+    # ordinary place to keep a project.
+    out <- suppressWarnings(
+      system2("git", c("-C", shQuote(dir), ...), stdout = TRUE, stderr = FALSE)
+    )
+    status <- attr(out, "status")
+    if (!is.null(status) && !identical(as.integer(status), 0L)) {
+      return(NULL)
+    }
+    out
+  }
+
+  sha <- run_git("rev-parse", "HEAD")
+  if (is.null(sha) || length(sha) == 0 || !nzchar(sha[1])) {
+    return(unknown)
+  }
+
+  porcelain <- run_git("status", "--porcelain")
+  # A failed `status` leaves us unable to prove the tree is clean, so say dirty.
+  dirty <- is.null(porcelain) || length(porcelain) > 0
+
+  list(git_sha = sha[1], dirty = dirty, built_at = built_at)
+}
+
+
+#' Write `<output_dir>/store.manifest.json`
+#'
+#' `rawSql` is `FALSE` and `restricted` never appears in `disclosure`: a static
+#' JSON store has no SQL engine, and exposing restricted data is not something
+#' this writer can express.
+#'
+#' @noRd
+write_store_manifest <- function(output_dir, store_id, domain_schema, exports, artifacts) {
+  named_queries <- lapply(names(exports), function(fn_name) {
+    list(
+      name = fn_to_endpoint(fn_name),
+      # as.list(): a length-1 character vector would auto_unbox into a bare
+      # string, and `params` must always be a JSON array.
+      params = as.list(names(exports[[fn_name]]$params) %||% character(0))
+    )
+  })
+
+  manifest <- list(
+    schema_version = STORE_SCHEMA_VERSION,
+    store = list(id = store_id, kind = "static", domain_schema = domain_schema),
+    provenance = store_provenance(output_dir),
+    artifacts = artifacts,
+    disclosure = list(
+      api = as.list(c("aggregate", "metadata")),
+      mcp = as.list(c("aggregate", "metadata"))
+    ),
+    capabilities = list(
+      rawSql = FALSE,
+      maxRows = 5000L,
+      namedQueries = named_queries
+    )
+  )
+
+  writeLines(
+    jsonlite::toJSON(manifest, auto_unbox = TRUE, pretty = TRUE, null = "null"),
+    fs::path(output_dir, "store.manifest.json")
+  )
+
+  list(files = 1L, provenance = manifest$provenance)
 }
 
 

@@ -1,5 +1,35 @@
 # dataimago 0.0-5.0
 
+## Static stores carry a manifest (2026-07-09)
+
+### Added
+
+* `export_static_api()` now writes `store.manifest.json` (schema
+  `dataimago.store.v1`) alongside the JSON it already emitted. The manifest
+  records **provenance** (the git sha of the repository that owns the data,
+  and whether its tree was dirty), **integrity** (a SHA-256 of every artifact,
+  taken from the bytes on disk), and **disclosure** (a `classification` of
+  `metadata` or `aggregate`; `restricted` is not expressible here).
+
+  This is the writer's half of the Level-1 data-store contract. Its reader is
+  `loadStoreManifest()` in `@dataimago/shared-utils/store`, which serves only
+  artifacts the manifest lists and verifies each hash before returning bytes.
+  A file left behind by an earlier export is therefore unreachable rather than
+  quietly stale.
+
+  Outside a git repository, `provenance.git_sha` is `null` and `dirty` is
+  `true`: there is no honest answer, so none is invented. Integrity still holds.
+
+* `export_static_api(domain_schema = )` records which vertical the store's data
+  belongs to. Defaults to the package name.
+
+### Fixed
+
+* Provenance is no longer silently lost when the project path contains a space.
+  `system2()` pastes its arguments into a shell command without quoting them,
+  so `git -C ~/My Project` parsed as two paths, exited 128, and the manifest
+  recorded `git_sha: null` as though the project were not a repository at all.
+
 ## JSON-Schema Bridge Validation (2026-07-05)
 
 ### Added

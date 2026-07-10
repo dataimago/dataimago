@@ -11,6 +11,7 @@ export_static_api(
   param_grid = NULL,
   max_combinations = 500L,
   mode = c("full", "discover-only"),
+  domain_schema = NULL,
   verbose = TRUE
 )
 }
@@ -31,6 +32,10 @@ function. Default: 500}
 \item{mode}{Character. Export mode: "full" writes endpoint fixtures plus
 discover/openapi metadata; "discover-only" writes only metadata. Default:
 "full".}
+
+\item{domain_schema}{Character. The vertical this store's data belongs to
+(e.g. "sgp", "dissertation"), recorded in \code{store.manifest.json}. Defaults
+to the package name.}
 
 \item{verbose}{Logical. Print progress. Default: TRUE}
 }
@@ -65,6 +70,9 @@ The export process:
 
 File naming convention (mirrors \code{StaticProducerDriver.filenameFor}):
 \itemize{
+\item \code{output_dir/store.manifest.json} -- the \code{dataimago.store.v1}
+contract: provenance, per-artifact sha256, and classification. Only files
+listed here are reachable through the driver.
 \item \code{output_dir/discover.json} -- Phase-2e producer manifest
 \item \code{output_dir/openapi.json} -- OpenAPI 3.0 spec (stub acceptable)
 \item \code{output_dir/<endpoint>/default.json} -- no-parameter result
