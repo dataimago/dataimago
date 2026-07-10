@@ -6,7 +6,7 @@
 \usage{
 export_static_api(
   pkg_path,
-  output_dir = "public/api",
+  output_dir = "data/api",
   pkg_name = NULL,
   param_grid = NULL,
   max_combinations = 500L,
@@ -19,7 +19,8 @@ export_static_api(
 \item{pkg_path}{Character. Path to the R package source directory}
 
 \item{output_dir}{Character. Directory for JSON output files (typically
-\code{public/api/} in the NextJS project). Default: "public/api"}
+\code{data/api/} in the NextJS project -- deliberately not \code{public/},
+which NextJS would serve verbatim). Default: "data/api"}
 
 \item{pkg_name}{Character. Package name. If NULL, read from DESCRIPTION.}
 

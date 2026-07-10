@@ -17,6 +17,14 @@ NULL
 # is "static", the route handlers read these files via the driver in
 # `@dataimago/shared-utils/producers`.
 #
+# That claim holds only because the output goes to `data/api/`, NOT `public/api/`.
+# NextJS serves everything under `public/` verbatim, so a store written there is
+# *also* reachable as a raw static asset: `public/api/discover.json` answers at
+# `GET /api/discover.json`, bypassing the driver, the manifest, and every check
+# described below. A store must reach the functions, never the static surface.
+# (`public/api/mcp-schema.json` is a deliberate exception -- an agent-facing
+# contract document written by generate_mcp_tools(), not a store artifact.)
+#
 # Filename convention (must match StaticProducerDriver.filenameFor):
 #   <output_dir>/store.manifest.json                  - the store contract (see below)
 #   <output_dir>/discover.json                        - manifest (Phase-2e shape)
@@ -60,7 +68,8 @@ NULL
 #'
 #' @param pkg_path Character. Path to the R package source directory
 #' @param output_dir Character. Directory for JSON output files (typically
-#'   \code{public/api/} in the NextJS project). Default: "public/api"
+#'   \code{data/api/} in the NextJS project -- deliberately not \code{public/},
+#'   which NextJS would serve verbatim). Default: "data/api"
 #' @param pkg_name Character. Package name. If NULL, read from DESCRIPTION.
 #' @param param_grid List. Custom parameter combinations to enumerate. If NULL,
 #'   combinations are inferred from roxygen enum values and defaults.
@@ -109,7 +118,7 @@ NULL
 #'
 #' @export
 export_static_api <- function(pkg_path,
-                              output_dir = "public/api",
+                              output_dir = "data/api",
                               pkg_name = NULL,
                               param_grid = NULL,
                               max_combinations = 500L,

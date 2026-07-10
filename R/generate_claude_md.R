@@ -187,7 +187,7 @@ build_patterns_section <- function(framework) {
       "### Dual-Mode API Client\n",
       "The `@dataimago/shared-utils` package provides a client that switches between:\n",
       "- **Live mode** (`NEXT_PUBLIC_API_MODE=live`): HTTP requests to R API server\n",
-      "- **Static mode** (`NEXT_PUBLIC_API_MODE=static`): Reads pre-computed JSON from `public/api/`\n\n",
+      "- **Static mode** (`NEXT_PUBLIC_API_MODE=static`): Reads pre-computed JSON from `data/api/`\n\n",
       "### MCP Tool Integration\n",
       "AI agents interact with this application through MCP tools defined in `mcp-schema.json`.\n",
       "The `@dataimago/mcp-tools` package validates parameters and routes calls through the API client.\n\n",

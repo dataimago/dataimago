@@ -26,7 +26,7 @@ test_that("ai(spec_path) writes the producer-driver artifact family", {
 
   suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
-  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "discover.json")))
+  expect_true(fs::file_exists(fs::path(tmp, "data", "api", "discover.json")))
   expect_true(fs::file_exists(fs::path(
     tmp,
     "packages",
@@ -115,7 +115,7 @@ test_that("features$mcpTools = FALSE skips mcp-schema.json", {
     "mcp-schema.json"
   )))
   # the always-on generators still ran
-  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "discover.json")))
+  expect_true(fs::file_exists(fs::path(tmp, "data", "api", "discover.json")))
 })
 
 test_that("aiAgent$mcpTools does not emit api_start when apiScaffolding is disabled", {
@@ -150,7 +150,7 @@ test_that("source$case = 'no-r' is a no-op for the producer-driver family", {
   res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
   expect_equal(length(res$generators_run), 0)
-  expect_false(fs::dir_exists(fs::path(tmp, "public", "api")))
+  expect_false(fs::dir_exists(fs::path(tmp, "data", "api")))
 })
 
 test_that("validate_spec rejects a non-dataimago apiVersion", {
@@ -226,7 +226,7 @@ test_that("generator$staticExport = 'off' skips static API export", {
   res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
   expect_false("export_static_api" %in% res$generators_run)
-  expect_false(fs::dir_exists(fs::path(tmp, "public", "api")))
+  expect_false(fs::dir_exists(fs::path(tmp, "data", "api")))
   expect_true(fs::file_exists(fs::path(
     tmp,
     "packages",
@@ -248,9 +248,36 @@ test_that("generator$staticExport = 'discover-only' omits endpoint fixtures", {
 
   suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
 
-  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "discover.json")))
-  expect_true(fs::file_exists(fs::path(tmp, "public", "api", "openapi.json")))
-  expect_false(fs::dir_exists(fs::path(tmp, "public", "api", "hello")))
+  expect_true(fs::file_exists(fs::path(tmp, "data", "api", "discover.json")))
+  expect_true(fs::file_exists(fs::path(tmp, "data", "api", "openapi.json")))
+  expect_false(fs::dir_exists(fs::path(tmp, "data", "api", "hello")))
+})
+
+test_that("ai() never writes a store artifact into public/, which NextJS serves verbatim", {
+  spec <- make_spec()
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+
+  # `public/api/mcp-schema.json` is the one deliberate resident: an agent-facing
+  # contract document, not a store artifact, and nothing in the manifest lists it.
+  # Anything else under public/api would answer at GET /api/<name>.json, bypassing
+  # the driver, the manifest gate, and the sha256 check.
+  public_api <- fs::path(tmp, "public", "api")
+  leaked <- character(0)
+  if (fs::dir_exists(public_api)) {
+    leaked <- setdiff(
+      basename(fs::dir_ls(public_api, recurse = TRUE, type = "file")),
+      "mcp-schema.json"
+    )
+  }
+  expect_identical(leaked, character(0))
+
+  # And the store really is where the driver's staticRoot() looks for it.
+  expect_true(fs::file_exists(fs::path(tmp, "data", "api", "store.manifest.json")))
 })
 
 test_that("validate_spec accepts 'greenfield' with the everything-on feature stance", {
