@@ -18,11 +18,12 @@ NULL
 
 #' Validate a spec file against the bundled JSON Schema.
 #'
-#' The Zod schema in dissertation-ai (`apps/hub/src/lib/spec/schema.ts`) is the
-#' source of truth; `inst/schemas/dataimago-spec.v1alpha1.schema.json` is
-#' auto-generated from it (`pnpm generate-spec-schema` in dissertation-ai's
-#' `apps/hub`) and bundled here so `ai(spec_path)` validates without Node at R
-#' runtime -- the spec-to-artifact-bridge contract (decision 4).
+#' The Zod schema exported by `@dataimago/spec` in
+#' `dataimago-ai/packages/spec` is authoritative.
+#' `inst/schemas/dataimago-spec.v1alpha1.schema.json` is generated from it with
+#' the package's `dataimago-spec-json-schema --kind ProjectSpec` bin and bundled
+#' here so `ai(spec_path)` validates without Node at R runtime -- the
+#' spec-to-artifact-bridge contract (decision 4).
 #'
 #' Engine-gated: runs when `jsonvalidate` (Suggests) is installed and its ajv
 #' engine compiles the schema; otherwise it is skipped with a warning and the
@@ -134,7 +135,7 @@ validate_spec_schema <- function(spec_path) {
     cli::cli_abort(c(
       "Spec fails JSON-Schema validation: {.path {spec_path}}.",
       details,
-      i = "Schema: {.path {schema_path}} (generated from the Zod source of truth in dissertation-ai)."
+      i = "Schema: {.path {schema_path}} (generated from authoritative {.pkg @dataimago/spec} in dataimago-ai)."
     ))
   }
 

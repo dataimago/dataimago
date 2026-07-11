@@ -15,11 +15,12 @@ unavailable (with a warning). Aborts with per-error details when the spec
 violates the schema.
 }
 \description{
-The Zod schema in dissertation-ai (\code{apps/hub/src/lib/spec/schema.ts}) is the
-source of truth; \code{inst/schemas/dataimago-spec.v1alpha1.schema.json} is
-auto-generated from it (\verb{pnpm generate-spec-schema} in dissertation-ai's
-\code{apps/hub}) and bundled here so \code{ai(spec_path)} validates without Node at R
-runtime -- the spec-to-artifact-bridge contract (decision 4).
+The Zod schema exported by \verb{@dataimago/spec} in
+\code{dataimago-ai/packages/spec} is authoritative.
+\code{inst/schemas/dataimago-spec.v1alpha1.schema.json} is generated from it with
+the package's \verb{dataimago-spec-json-schema --kind ProjectSpec} bin and bundled
+here so \code{ai(spec_path)} validates without Node at R runtime -- the
+spec-to-artifact-bridge contract (decision 4).
 }
 \details{
 Engine-gated: runs when \code{jsonvalidate} (Suggests) is installed and its ajv

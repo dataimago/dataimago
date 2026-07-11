@@ -48,8 +48,9 @@
 
 * `ai(spec_path)` now validates the spec against the bundled JSON Schema
   (`inst/schemas/dataimago-spec.v1alpha1.schema.json`, auto-generated from the
-  Zod source of truth in dissertation-ai) when `jsonvalidate` (new in Suggests)
-  is installed — completing decision 4 of the spec-to-artifact-bridge ADR.
+  authoritative `@dataimago/spec` Zod source in dataimago-ai) when
+  `jsonvalidate` (new in Suggests) is installed — completing decision 4 of the
+  spec-to-artifact-bridge ADR.
   Without `jsonvalidate`, validation is skipped with a warning and the
   structural checks still run. Cross-field invariants that don't survive
   `zod-to-json-schema` (the Zod `superRefine` rules) are re-checked in R:
