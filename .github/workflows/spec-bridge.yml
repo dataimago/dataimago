@@ -1,0 +1,41 @@
+name: ProjectSpec Bridge
+
+on:
+  pull_request:
+    paths:
+      - 'inst/schemas/dataimago-spec.v1alpha1.schema.json'
+      - '.github/workflows/spec-bridge.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'inst/schemas/dataimago-spec.v1alpha1.schema.json'
+      - '.github/workflows/spec-bridge.yml'
+
+permissions:
+  contents: read
+
+# Update this single pin when adopting a newer published schema authority.
+env:
+  DATAIMAGO_SPEC_PACKAGE: '@dataimago/spec@0.1.0-alpha.0'
+
+jobs:
+  check-project-spec:
+    name: Verify committed ProjectSpec schema
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      - name: Check ProjectSpec schema against published authority
+        run: >-
+          npx --yes "$DATAIMAGO_SPEC_PACKAGE"
+          --kind ProjectSpec
+          --check inst/schemas/dataimago-spec.v1alpha1.schema.json
