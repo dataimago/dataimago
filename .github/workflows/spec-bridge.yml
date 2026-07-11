@@ -35,7 +35,19 @@ jobs:
           package-manager-cache: false
 
       - name: Check ProjectSpec schema against published authority
-        run: >-
-          npx --yes "$DATAIMAGO_SPEC_PACKAGE"
-          --kind ProjectSpec
-          --check inst/schemas/dataimago-spec.v1alpha1.schema.json
+        shell: bash
+        working-directory: ${{ runner.temp }}
+        env:
+          NPM_CONFIG_USERCONFIG: ${{ runner.temp }}/dataimago-spec.npmrc
+        run: |
+          printf '%s\n' \
+            'registry=https://registry.npmjs.org/' \
+            '@dataimago:registry=https://registry.npmjs.org/' \
+            > "$NPM_CONFIG_USERCONFIG"
+
+          test "$(npm config get registry)" = "https://registry.npmjs.org/"
+          test "$(npm config get @dataimago:registry)" = "https://registry.npmjs.org/"
+
+          npx --yes "$DATAIMAGO_SPEC_PACKAGE" \
+            --kind ProjectSpec \
+            --check "$GITHUB_WORKSPACE/inst/schemas/dataimago-spec.v1alpha1.schema.json"
