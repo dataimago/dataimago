@@ -419,12 +419,29 @@ This R package is an instantiation of critical theory in code:
 ### Release-Time Alignment Review
 
 Every minor or major version of `dataimago` is in scope for the
-**Tapestry Test** defined in
-`../../../dataimago-design/wiki/patterns/alignment-review-harness.md`.
-The cross-cutting evidence bundle for a release window — covering this
-package alongside `dataimago-design` and `dataimago-ai` — lives at
-`../../../dataimago-ai/docs/alignment/review-YYYY-MM-DD.{md,json}`. The
-0.0-5.0 baseline is `review-2026-04-27` (decision: `hold`).
+**Tapestry Test** defined by the canonical
+[Alignment Review Harness](https://github.com/dataimago/dataimago-design/blob/main/wiki/patterns/alignment-review-harness.md).
+The cross-cutting candidate-era artifacts are owned by
+`dataimago-ai/docs/alignment/`:
+
+- `candidates/<candidate-id>.json` binds exact heads across all three repos.
+- `evidence-<candidate-id>.json` is digest-bound mechanical evidence.
+- `review-<id>.proposal.{md,json}` is the model-pinned frontier Cloud
+  Agent-authored advisory proposal.
+- `review-<id>.{md,json}` is the human-owned final review and decision record.
+
+The 0.0-5.0 baseline `review-2026-04-27.{md,json}` predates candidate binding
+and remains a legacy human-final review (decision: `hold`); preserve its
+historical layout and validate it through the legacy path rather than treating
+it as current evidence or a proposal.
+
+Review is two-layered. Bugbot is the fast PR-diff layer governed by
+[`.cursor/BUGBOT.md`](.cursor/BUGBOT.md); its structured Alignment concerns are
+findings, never Tapestry scores or release decisions. At release cadence, a
+model-pinned Cloud Agent may author the candidate-bound advisory proposal; a
+human maintainer adjudicates every dimension and owns the final review and
+promotion decision. Bugbot effort/model selection and the Cloud Agent model pin
+are team/UI configuration, not settings in the repository rule.
 
 When this package ships an R-API breaking change — especially one that
 removes generated state (e.g. the 0.0-4.0 deletion of
