@@ -504,6 +504,30 @@
                         "additionalProperties": false
                       },
                       "default": []
+                    },
+                    "writingStyle": {
+                      "type": "object",
+                      "properties": {
+                        "mode": {
+                          "type": "string",
+                          "enum": [
+                            "shipped",
+                            "vendored",
+                            "generated"
+                          ],
+                          "default": "shipped"
+                        },
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "default": "writing/STYLE.md"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "default": {
+                        "mode": "shipped",
+                        "path": "writing/STYLE.md"
+                      }
                     }
                   },
                   "required": [
@@ -834,6 +858,26 @@
                     "additionalProperties": false
                   },
                   "default": []
+                },
+                "graphics": {
+                  "type": "object",
+                  "properties": {
+                    "engine": {
+                      "type": "string",
+                      "enum": [
+                        "pstricks",
+                        "tikz",
+                        "r-base",
+                        "ggplot2",
+                        "unspecified"
+                      ],
+                      "default": "unspecified"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "default": {
+                    "engine": "unspecified"
+                  }
                 }
               },
               "required": [
