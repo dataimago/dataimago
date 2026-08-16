@@ -9,7 +9,8 @@ create_quarto_documentation(
   output_path = "ui/www",
   include_description = TRUE,
   include_foundation_links = TRUE,
-  template = "dataimago"
+  template = "dataimago",
+  overwrite_config = FALSE
 )
 }
 \arguments{
@@ -32,11 +33,20 @@ Default: TRUE}
 \item{template}{Character. Documentation template to use for styling and
 structure.  Currently supports "dataimago" template with ethical
 AI branding.  Default: "dataimago"}
+
+\item{overwrite_config}{Logical. Whether to overwrite an existing
+\verb{_quarto.yml} in \code{output_path} with the generated scaffold. The scaffold is
+deliberately minimal, so overwriting a maintained site config discards its
+navbar, sidebar, themes, extensions, render filters, and font \verb{<link>} tags.
+When FALSE (the default) an existing config is left untouched and only the
+.qmd files are regenerated; a missing config is always scaffolded.
+Default: FALSE}
 }
 \value{
 Character (invisible). File path to the generated api_reference.qmd file.
-Side effects: Creates .qmd files and _quarto.yml in output_path directory
-and copies dataimago assets (logos, etc.) to assets/img/ subdirectory.
+Side effects: Creates .qmd files in output_path directory, scaffolds
+_quarto.yml if absent (or if \code{overwrite_config = TRUE}), and copies
+dataimago assets (logos, etc.) to assets/img/ subdirectory.
 }
 \description{
 Converts R package documentation (.Rd files) and metadata (DESCRIPTION)
