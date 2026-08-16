@@ -21,10 +21,7 @@
             },
             "vertical": {
               "type": "string",
-              "enum": [
-                "dissertation",
-                "rpkg"
-              ],
+              "pattern": "^[a-z][a-z0-9-]*$",
               "default": "dissertation"
             },
             "generatedBy": {
