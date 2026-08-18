@@ -185,7 +185,7 @@ create_quarto_documentation <- function(package_path = ".",
     writeLines(quarto_yml_content, quarto_yml_file)
   } else {
     cat(crayon::silver(
-      "ℹ Preserved existing _quarto.yml (pass overwrite_config = TRUE to regenerate)\n"
+      "\u2139 Preserved existing _quarto.yml (pass overwrite_config = TRUE to regenerate)\n"
     ))
   }
 
