@@ -9,25 +9,25 @@ importers:
   .:
     dependencies:
       '@dataimago/css':
-        specifier: 0.1.0-alpha.11
-        version: 0.1.0-alpha.11
+        specifier: 0.1.0-alpha.13
+        version: 0.1.0-alpha.13
       '@dataimago/tokens':
-        specifier: 0.1.0-alpha.11
-        version: 0.1.0-alpha.11
+        specifier: 0.1.0-alpha.13
+        version: 0.1.0-alpha.13
       '@dataimago/ui':
         specifier: 0.1.0-alpha.11
-        version: 0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.11)(@dataimago/tokens@0.1.0-alpha.11)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        version: 0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
 packages:
 
   '@dataimago/brand@0.1.0-alpha.7':
     resolution: {integrity: sha512-QgBEYyw9NciGQbCP2MkrZmSHz7eFDQO+paHJozi8giN3j2NWULVC2v9OORl2fmYdJibMisBXDDtf2XVaNs/jzA==}
 
-  '@dataimago/css@0.1.0-alpha.11':
-    resolution: {integrity: sha512-4tDiUCGmZCqmjfpHiW2AhFwSCItqokDKde9gz3iMA+nQl5lKfZtvlo6/nk1qyIlTUXRCKWH/XSqHKHwXKjOxnA==}
+  '@dataimago/css@0.1.0-alpha.13':
+    resolution: {integrity: sha512-BIdTdh4QpKCxpL95IYr56H9jk1688xYh2rSVeokZSBR73Y8v+mar9eRQYmNJo7bAd1upanOdja/Lxln4U20AJw==}
 
-  '@dataimago/tokens@0.1.0-alpha.11':
-    resolution: {integrity: sha512-ku8ib6un19elMUi70cqp0YI/SMaWN08I+Mm/Bp4fPYQf5gx/Kay8iuNqHBGm3xgeTdsjmg2x37Mn/VAeyr6Anw==}
+  '@dataimago/tokens@0.1.0-alpha.13':
+    resolution: {integrity: sha512-5hMbU4CQzbbaGlbs+9XmrrLNlD/BJ0PTTASk0077g1OIfDsvKLequNokZi3cCXzCboY64XbBX7RYwXE7UrKXHg==}
 
   '@dataimago/ui@0.1.0-alpha.11':
     resolution: {integrity: sha512-1TRtHRm1xmnmHoYlnQxcLvn6WZvhfOrbyh5SZrCzxlv2KdReiC8jJ11A+kFbNZM4YS0bTTHDRtgHZUzpuy8qbA==}
@@ -54,17 +54,17 @@ snapshots:
 
   '@dataimago/brand@0.1.0-alpha.7': {}
 
-  '@dataimago/css@0.1.0-alpha.11':
+  '@dataimago/css@0.1.0-alpha.13':
     dependencies:
-      '@dataimago/tokens': 0.1.0-alpha.11
+      '@dataimago/tokens': 0.1.0-alpha.13
 
-  '@dataimago/tokens@0.1.0-alpha.11': {}
+  '@dataimago/tokens@0.1.0-alpha.13': {}
 
-  '@dataimago/ui@0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.11)(@dataimago/tokens@0.1.0-alpha.11)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@dataimago/ui@0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@dataimago/brand': 0.1.0-alpha.7
-      '@dataimago/css': 0.1.0-alpha.11
-      '@dataimago/tokens': 0.1.0-alpha.11
+      '@dataimago/css': 0.1.0-alpha.13
+      '@dataimago/tokens': 0.1.0-alpha.13
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
 

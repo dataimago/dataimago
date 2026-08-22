@@ -1,10 +1,10 @@
 {
   "name": "@dataimago/design-system",
-  "builtAt": "2026-08-15T22:21:57.439Z",
+  "builtAt": "2026-08-22T01:36:58.747Z",
   "builtBy": "ui/build.js (package-channel)",
   "sources": {
-    "@dataimago/tokens": "0.1.0-alpha.11",
-    "@dataimago/css": "0.1.0-alpha.11",
+    "@dataimago/tokens": "0.1.0-alpha.13",
+    "@dataimago/css": "0.1.0-alpha.13",
     "@dataimago/ui": "0.1.0-alpha.11"
   },
   "artifacts": [
