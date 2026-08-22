@@ -1,0 +1,13 @@
+# pnpm 11 settings file (pnpm moved configuration out of .npmrc).
+#
+# minimumReleaseAgeExclude: pnpm refuses freshly-published versions by default as
+# a supply-chain guard. These two were published from dataimago-design minutes
+# before this pin bump (release e63031e6, #185), so both a local install and CI —
+# which installs pnpm fresh and runs immediately — would otherwise be gated.
+# Written by `pnpm install`, kept deliberately rather than dropped: without it the
+# R-CMD-check and netlify-deploy workflows cannot resolve the pins this PR sets.
+# Entries naming an old version are inert once the age gate passes, so this list
+# is safe to prune whenever the pins next move.
+minimumReleaseAgeExclude:
+  - '@dataimago/css@0.1.0-alpha.13'
+  - '@dataimago/tokens@0.1.0-alpha.13'

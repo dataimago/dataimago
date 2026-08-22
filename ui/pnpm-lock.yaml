@@ -9,26 +9,30 @@ importers:
   .:
     dependencies:
       '@dataimago/css':
-        specifier: 0.1.0-alpha.4
-        version: 0.1.0-alpha.4
+        specifier: 0.1.0-alpha.13
+        version: 0.1.0-alpha.13
       '@dataimago/tokens':
-        specifier: 0.1.0-alpha.4
-        version: 0.1.0-alpha.4
+        specifier: 0.1.0-alpha.13
+        version: 0.1.0-alpha.13
       '@dataimago/ui':
-        specifier: 0.1.0-alpha.4
-        version: 0.1.0-alpha.4(@dataimago/css@0.1.0-alpha.4)(@dataimago/tokens@0.1.0-alpha.4)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        specifier: 0.1.0-alpha.11
+        version: 0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
 packages:
 
-  '@dataimago/css@0.1.0-alpha.4':
-    resolution: {integrity: sha512-KLYULankPT7tAUtfN0LIMTwHqLXE7kAjNrTHVod+z7uGXYq5cTOB4TYY5P1EdYNF4y8vKAGIhVrGr2g1tpiBOQ==}
+  '@dataimago/brand@0.1.0-alpha.7':
+    resolution: {integrity: sha512-QgBEYyw9NciGQbCP2MkrZmSHz7eFDQO+paHJozi8giN3j2NWULVC2v9OORl2fmYdJibMisBXDDtf2XVaNs/jzA==}
 
-  '@dataimago/tokens@0.1.0-alpha.4':
-    resolution: {integrity: sha512-3tljjE53VkMa/gNkZIWTfHfIg8bmvXoXWpuRL9TmKqrgSK22mlWg1Cf1jq6ysoKHKuYutnSfUkw/hygHL2DPhg==}
+  '@dataimago/css@0.1.0-alpha.13':
+    resolution: {integrity: sha512-BIdTdh4QpKCxpL95IYr56H9jk1688xYh2rSVeokZSBR73Y8v+mar9eRQYmNJo7bAd1upanOdja/Lxln4U20AJw==}
 
-  '@dataimago/ui@0.1.0-alpha.4':
-    resolution: {integrity: sha512-jrX0y/sbTfJtZo/LzLMilFqjE6bzO9bSoiiHuwMuFvBRS/O3D230qqUsSGpcv6kiEgF1t4gY1EOxvXlRqN67Dw==}
+  '@dataimago/tokens@0.1.0-alpha.13':
+    resolution: {integrity: sha512-5hMbU4CQzbbaGlbs+9XmrrLNlD/BJ0PTTASk0077g1OIfDsvKLequNokZi3cCXzCboY64XbBX7RYwXE7UrKXHg==}
+
+  '@dataimago/ui@0.1.0-alpha.11':
+    resolution: {integrity: sha512-1TRtHRm1xmnmHoYlnQxcLvn6WZvhfOrbyh5SZrCzxlv2KdReiC8jJ11A+kFbNZM4YS0bTTHDRtgHZUzpuy8qbA==}
     peerDependencies:
+      '@dataimago/brand': ^0.1.0-alpha.0
       '@dataimago/css': ^0.1.0-alpha.0
       '@dataimago/tokens': ^0.1.0-alpha.0
       react: '>=18'
@@ -48,16 +52,19 @@ packages:
 
 snapshots:
 
-  '@dataimago/css@0.1.0-alpha.4':
-    dependencies:
-      '@dataimago/tokens': 0.1.0-alpha.4
+  '@dataimago/brand@0.1.0-alpha.7': {}
 
-  '@dataimago/tokens@0.1.0-alpha.4': {}
-
-  '@dataimago/ui@0.1.0-alpha.4(@dataimago/css@0.1.0-alpha.4)(@dataimago/tokens@0.1.0-alpha.4)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@dataimago/css@0.1.0-alpha.13':
     dependencies:
-      '@dataimago/css': 0.1.0-alpha.4
-      '@dataimago/tokens': 0.1.0-alpha.4
+      '@dataimago/tokens': 0.1.0-alpha.13
+
+  '@dataimago/tokens@0.1.0-alpha.13': {}
+
+  '@dataimago/ui@0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      '@dataimago/brand': 0.1.0-alpha.7
+      '@dataimago/css': 0.1.0-alpha.13
+      '@dataimago/tokens': 0.1.0-alpha.13
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
 

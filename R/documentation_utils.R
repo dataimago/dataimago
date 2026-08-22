@@ -35,10 +35,18 @@ NULL
 #' @param template Character. Documentation template to use for styling and
 #'   structure.  Currently supports "dataimago" template with ethical
 #'   AI branding.  Default: "dataimago"
+#' @param overwrite_config Logical. Whether to overwrite an existing
+#'   `_quarto.yml` in `output_path` with the generated scaffold. The scaffold is
+#'   deliberately minimal, so overwriting a maintained site config discards its
+#'   navbar, sidebar, themes, extensions, render filters, and font `<link>` tags.
+#'   When FALSE (the default) an existing config is left untouched and only the
+#'   .qmd files are regenerated; a missing config is always scaffolded.
+#'   Default: FALSE
 #'
 #' @return Character (invisible). File path to the generated api_reference.qmd file.
-#'   Side effects: Creates .qmd files and _quarto.yml in output_path directory
-#'   and copies dataimago assets (logos, etc.) to assets/img/ subdirectory.
+#'   Side effects: Creates .qmd files in output_path directory, scaffolds
+#'   _quarto.yml if absent (or if `overwrite_config = TRUE`), and copies
+#'   dataimago assets (logos, etc.) to assets/img/ subdirectory.
 #'
 #' @details
 #' This function implements dataimago's framework approach to documentation generation:
@@ -118,7 +126,8 @@ create_quarto_documentation <- function(package_path = ".",
                                         output_path = "ui/www",
                                         include_description = TRUE,
                                         include_foundation_links = TRUE,
-                                        template = "dataimago") {
+                                        template = "dataimago",
+                                        overwrite_config = FALSE) {
   # Validate inputs
   if (!dir.exists(package_path)) {
     stop("Package path does not exist: ", package_path)
@@ -161,9 +170,24 @@ create_quarto_documentation <- function(package_path = ".",
   writeLines(api_reference_content, api_file)
 
   # Generate and write _quarto.yml
-  quarto_yml_content <- generate_quarto_yml(desc_content, template)
+  #
+  # `generate_quarto_yml()` emits a minimal scaffold (theme: cosmo, a two-item
+  # navbar, no font loading, no dataimago assets). That is the right output for
+  # a brand-new site and catastrophically wrong for an established one: writing
+  # it over a maintained config silently discards the navbar, sidebar, themes,
+  # extensions, render filters, and font <link> tags. Scaffold only when there
+  # is nothing to lose; require an explicit opt-in to clobber.
   quarto_yml_file <- file.path(output_path, "_quarto.yml")
-  writeLines(quarto_yml_content, quarto_yml_file)
+  config_exists <- file.exists(quarto_yml_file)
+
+  if (!config_exists || isTRUE(overwrite_config)) {
+    quarto_yml_content <- generate_quarto_yml(desc_content, template)
+    writeLines(quarto_yml_content, quarto_yml_file)
+  } else {
+    cat(crayon::silver(
+      "\u2139 Preserved existing _quarto.yml (pass overwrite_config = TRUE to regenerate)\n"
+    ))
+  }
 
   # Update dataimago assets if template is dataimago
   if (template == "dataimago") {
@@ -172,7 +196,10 @@ create_quarto_documentation <- function(package_path = ".",
 
   cat(crayon::green("\u2713 Quarto documentation generated successfully\n"))
   cat(crayon::silver("  API reference: "), api_file, "\n")
-  cat(crayon::silver("  Quarto config: "), quarto_yml_file, "\n")
+  cat(
+    crayon::silver("  Quarto config: "), quarto_yml_file,
+    if (config_exists && !isTRUE(overwrite_config)) " (preserved)" else " (written)", "\n"
+  )
 
   invisible(api_file)
 }
