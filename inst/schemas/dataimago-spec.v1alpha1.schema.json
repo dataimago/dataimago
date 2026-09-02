@@ -138,6 +138,27 @@
                   "type": "null"
                 }
               ]
+            },
+            "referencedRepo": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
             }
           },
           "required": [
