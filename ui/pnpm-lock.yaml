@@ -16,7 +16,7 @@ importers:
         version: 0.1.0-alpha.13
       '@dataimago/ui':
         specifier: 0.1.0-alpha.11
-        version: 0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        version: 0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
 
 packages:
 
@@ -38,13 +38,13 @@ packages:
       react: '>=18'
       react-dom: '>=18'
 
-  react-dom@19.2.5:
-    resolution: {integrity: sha512-J5bAZz+DXMMwW/wV3xzKke59Af6CHY7G4uYLN1OvBcKEsWOs4pQExj86BBKamxl/Ik5bx9whOrvBlSDfWzgSag==}
+  react-dom@19.2.8:
+    resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
     peerDependencies:
-      react: ^19.2.5
+      react: ^19.2.8
 
-  react@19.2.5:
-    resolution: {integrity: sha512-llUJLzz1zTUBrskt2pwZgLq59AemifIftw4aB7JxOqf1HY2FDaGDxgwpAPVzHU1kdWabH7FauP4i1oEeer2WCA==}
+  react@19.2.8:
+    resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
     engines: {node: '>=0.10.0'}
 
   scheduler@0.27.0:
@@ -60,19 +60,19 @@ snapshots:
 
   '@dataimago/tokens@0.1.0-alpha.13': {}
 
-  '@dataimago/ui@0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@dataimago/ui@0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@dataimago/brand': 0.1.0-alpha.7
       '@dataimago/css': 0.1.0-alpha.13
       '@dataimago/tokens': 0.1.0-alpha.13
-      react: 19.2.5
-      react-dom: 19.2.5(react@19.2.5)
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
 
-  react-dom@19.2.5(react@19.2.5):
+  react-dom@19.2.8(react@19.2.8):
     dependencies:
-      react: 19.2.5
+      react: 19.2.8
       scheduler: 0.27.0
 
-  react@19.2.5: {}
+  react@19.2.8: {}
 
   scheduler@0.27.0: {}
