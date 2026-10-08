@@ -16,7 +16,7 @@ permissions:
 
 # Update this single pin when adopting a newer published schema authority.
 env:
-  DATAIMAGO_SPEC_PACKAGE: '@dataimago/spec@0.1.0-alpha.19'
+  DATAIMAGO_SPEC_PACKAGE: '@dataimago/spec@0.1.0-alpha.21'
 
 jobs:
   check-project-spec:
