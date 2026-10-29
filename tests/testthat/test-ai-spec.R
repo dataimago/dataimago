@@ -153,6 +153,84 @@ test_that("source$case = 'no-r' is a no-op for the producer-driver family", {
   expect_false(fs::dir_exists(fs::path(tmp, "data", "api")))
 })
 
+# source$referencedRepo: an `extension` author's existing repository is the
+# whole dissertation, not an R package (@dataimago/spec 0.1.0-alpha.21
+# superRefine; the dissertation hub's extensionRepoKind = project).
+test_that("validate_spec accepts an extension spec that references a repo instead of a package", {
+  spec <- make_spec()
+  spec$source$case <- "extension"
+  spec$source$rPackage <- NULL
+  spec$source$referencedRepo <- list(url = "https://github.com/tester/my-dissertation")
+  out <- validate_spec(spec)
+  expect_equal(out$source$referencedRepo$url, "https://github.com/tester/my-dissertation")
+})
+
+test_that("validate_spec still requires rPackage for extension without a referenced repo", {
+  spec <- make_spec()
+  spec$source$case <- "extension"
+  spec$source$rPackage <- NULL
+  expect_error(validate_spec(spec), "rPackage is required")
+})
+
+test_that("validate_spec allows referencedRepo only for the extension case", {
+  for (case in c("retrofit", "greenfield", "no-r")) {
+    spec <- make_spec()
+    spec$source$case <- case
+    spec$source$rPackage <- NULL
+    spec$source$referencedRepo <- list(url = "https://github.com/tester/x")
+    expect_error(validate_spec(spec), "only valid when source\\$case is 'extension'", info = case)
+  }
+})
+
+test_that("validate_spec rejects referencedRepo together with rPackage", {
+  spec <- make_spec()
+  spec$source$case <- "extension"
+  spec$source$referencedRepo <- list(url = "https://github.com/tester/x")
+  expect_error(validate_spec(spec), "mutually exclusive")
+})
+
+test_that("validate_spec rejects a referencedRepo without a repository URL", {
+  for (ref in list(list(url = ""), list(url = "not a url"), list(), "https://github.com/tester/x")) {
+    spec <- make_spec()
+    spec$source$case <- "extension"
+    spec$source$rPackage <- NULL
+    spec$source$referencedRepo <- ref
+    expect_error(validate_spec(spec), "referencedRepo\\$url")
+  }
+})
+
+test_that("ai(spec_path) generates nothing for a referenced repo and records the pointer", {
+  spec <- make_spec()
+  spec$source$case <- "extension"
+  spec$source$rPackage <- NULL
+  spec$source$referencedRepo <- list(url = "https://github.com/tester/my-dissertation")
+  tmp <- withr::local_tempdir()
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+
+  expect_true(res$success)
+  expect_equal(length(res$generators_run), 0)
+  expect_equal(res$referenced_repo, "https://github.com/tester/my-dissertation")
+  expect_false(fs::dir_exists(fs::path(tmp, "data", "api")))
+})
+
+test_that("validate_spec_schema accepts the referenced-repo shape the hub writes", {
+  skip_if_not_installed("jsonvalidate")
+  spec <- make_spec()
+  spec$source$case <- "extension"
+  spec$source$rPackage <- NULL # written as an explicit null, as the hub does
+  spec$source$referencedRepo <- list(url = "https://github.com/tester/my-dissertation")
+  tmp <- withr::local_tempdir()
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+
+  res <- suppressWarnings(validate_spec_schema(spec_path))
+  skip_if(is.na(res), "jsonvalidate engine unavailable for the bundled schema")
+  expect_true(res)
+})
+
 test_that("validate_spec rejects a non-dataimago apiVersion", {
   spec <- make_spec()
   spec$apiVersion <- "example.com/v1"
