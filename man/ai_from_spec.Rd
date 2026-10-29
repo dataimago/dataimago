@@ -20,6 +20,10 @@ Invisible list with generation metadata (see \code{\link[=spec_result]{spec_resu
 \description{
 Reads + validates \code{spec_path}, locates the R package at
 \code{source$rPackage$submodulePath} (relative to \code{generator$outputDir}), and
-runs the producer-driver generators gated by \code{features}.
+runs the producer-driver generators gated by \code{features}. A spec with no R
+package -- \code{source$case = "no-r"}, or an \code{extension} spec whose
+\code{source$referencedRepo} names an existing repository that is the whole
+dissertation -- generates nothing and returns the result list (which
+carries \code{referenced_repo}).
 }
 \keyword{internal}

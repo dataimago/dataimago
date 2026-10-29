@@ -146,8 +146,10 @@ validate_spec_schema <- function(spec_path) {
 #'
 #' Structural validation of the load-bearing invariants -- including the Zod
 #' `superRefine` cross-field rules that do NOT survive `zod-to-json-schema`
-#' (`source.rPackage` is null iff `source.case == "no-r"`; exactly one
-#' vertical present) -- then fills in the optional `features` / `generator`
+#' (`source.rPackage` is null iff `source.case == "no-r"` or
+#' `source.referencedRepo` is set; `referencedRepo` belongs only to the
+#' `extension` case and never coexists with `rPackage`; exactly one vertical
+#' present) -- then fills in the optional `features` / `generator`
 #' defaults and returns the normalized spec. Full JSON-Schema validation is
 #' [validate_spec_schema()]'s job; this always runs, schema engine or not.
 #'
@@ -188,14 +190,38 @@ validate_spec <- function(spec) {
     )
   }
   has_rpkg <- !is.null(spec$source$rPackage)
+  # referencedRepo: an `extension` author's existing repository is the whole
+  # dissertation, not an R package, so it stands in for rPackage
+  # (@dataimago/spec core.ts superRefine, spec 0.1.0-alpha.21).
+  has_ref <- !is.null(spec$source$referencedRepo)
+  if (has_ref) {
+    url <- if (is.list(spec$source$referencedRepo)) {
+      spec$source$referencedRepo$url
+    }
+    if (!is.character(url) || length(url) != 1L || !grepl("^https?://", url)) {
+      cli::cli_abort(
+        "Invalid spec: source$referencedRepo$url must be a repository URL."
+      )
+    }
+  }
   if (case == "no-r" && has_rpkg) {
     cli::cli_abort(
       "Invalid spec: source$rPackage must be absent when source$case is 'no-r'."
     )
   }
-  if (case != "no-r" && !has_rpkg) {
+  if (case != "no-r" && !has_rpkg && !has_ref) {
     cli::cli_abort(
-      "Invalid spec: source$rPackage is required unless source$case is 'no-r'."
+      "Invalid spec: source$rPackage is required unless source$case is 'no-r' or source$referencedRepo is set."
+    )
+  }
+  if (has_ref && case != "extension") {
+    cli::cli_abort(
+      "Invalid spec: source$referencedRepo is only valid when source$case is 'extension'."
+    )
+  }
+  if (has_ref && has_rpkg) {
+    cli::cli_abort(
+      "Invalid spec: source$referencedRepo and source$rPackage are mutually exclusive."
     )
   }
   # superRefine parity: exactly one vertical (dissertation | rpkg) present.
@@ -298,6 +324,9 @@ spec_result <- function(
   list(
     mode = "spec",
     project_name = spec$metadata$name,
+    # The existing repository an `extension` spec points at instead of an R
+    # package (source$referencedRepo$url); NULL otherwise.
+    referenced_repo = spec$source$referencedRepo$url,
     project_path = as.character(project_path),
     output_dir = as.character(out),
     generators_run = generators_run,
@@ -332,7 +361,11 @@ spec_domain_context <- function(spec, knowledge) {
 #'
 #' Reads + validates `spec_path`, locates the R package at
 #' `source$rPackage$submodulePath` (relative to `generator$outputDir`), and
-#' runs the producer-driver generators gated by `features`.
+#' runs the producer-driver generators gated by `features`. A spec with no R
+#' package -- `source$case = "no-r"`, or an `extension` spec whose
+#' `source$referencedRepo` names an existing repository that is the whole
+#' dissertation -- generates nothing and returns the result list (which
+#' carries `referenced_repo`).
 #'
 #' @param spec_path Path to a `dataimago-spec.yaml`.
 #' @param project_path Directory the spec's `outputDir` is resolved against.
@@ -365,6 +398,27 @@ ai_from_spec <- function(spec_path, project_path = NULL, verbose = TRUE) {
       "source$case = 'greenfield' (generate the R package from the spec) is not implemented in this release.",
       i = "Use 'extension' or 'retrofit' with an existing package, or 'no-r'. Greenfield generation is tracked in the rpkg-spec design."
     ))
+  }
+
+  # A referenced repo (extension + source$referencedRepo): the author's
+  # existing repository is the dissertation itself, not an R package, so there
+  # is no package to introspect and nothing in the producer-driver family to
+  # generate. Same path as no-r; the result records the pointer.
+  if (!is.null(spec$source$referencedRepo)) {
+    if (verbose) {
+      ui_info(glue::glue(
+        "source.referencedRepo = {spec$source$referencedRepo$url} -- the ",
+        "dissertation lives in that repository, not in an R package; ",
+        "no R-derived artifacts to generate."
+      ))
+    }
+    return(invisible(spec_result(
+      spec,
+      project_path,
+      out,
+      generators_run = character(0),
+      files_written = character(0)
+    )))
   }
 
   # no-r: nothing in the producer-driver family to generate.

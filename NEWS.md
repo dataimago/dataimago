@@ -1,5 +1,22 @@
 # dataimago 0.0-5.0
 
+## An extension spec may reference a repository instead of a package (2026-10-28)
+
+### Bug fixes
+
+* `validate_spec()` now mirrors all three `source.referencedRepo` rules from
+  `@dataimago/spec` 0.1.0-alpha.21. `source.rPackage` may be null when
+  `source.case` is `"no-r"` **or** `source.referencedRepo` is set;
+  `referencedRepo` is valid only for `"extension"`; and it never coexists with
+  `rPackage`. Before, the shape the dissertation hub writes for an author whose
+  existing repository is the whole dissertation (`case: extension`,
+  `rPackage: null`, `referencedRepo: {url}`) passed JSON-Schema validation and
+  then aborted with "source$rPackage is required unless source$case is
+  'no-r'", so that author could not run `ai()`.
+* `ai(spec_path = )` treats such a spec like `"no-r"`: there is no R package to
+  introspect, so it generates nothing. The result list now carries
+  `referenced_repo` (the URL; `NULL` for every other spec).
+
 ## Static stores carry a manifest (2026-07-09)
 
 ### Breaking changes

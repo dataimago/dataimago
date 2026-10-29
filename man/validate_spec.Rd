@@ -15,8 +15,10 @@ The normalized spec list (defaults applied).
 \description{
 Structural validation of the load-bearing invariants -- including the Zod
 \code{superRefine} cross-field rules that do NOT survive \code{zod-to-json-schema}
-(\code{source.rPackage} is null iff \code{source.case == "no-r"}; exactly one
-vertical present) -- then fills in the optional \code{features} / \code{generator}
+(\code{source.rPackage} is null iff \code{source.case == "no-r"} or
+\code{source.referencedRepo} is set; \code{referencedRepo} belongs only to the
+\code{extension} case and never coexists with \code{rPackage}; exactly one vertical
+present) -- then fills in the optional \code{features} / \code{generator}
 defaults and returns the normalized spec. Full JSON-Schema validation is
 \code{\link[=validate_spec_schema]{validate_spec_schema()}}'s job; this always runs, schema engine or not.
 }
