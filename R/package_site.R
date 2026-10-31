@@ -325,6 +325,27 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   list(yaml = character(0), body = lines)
 }
 
+# Quarto only understands ISO-like dates. R vignettes often carry prose dates such as
+# "September 26th, 2017"; turn those into ISO dates, and drop what cannot be parsed so the
+# page does not show "Invalid Date".
+.normalize_date <- function(x) {
+  x <- trimws(paste(as.character(x), collapse = " "))
+  if (!nzchar(x)) {
+    return(NA_character_)
+  }
+  x <- gsub("([0-9])(st|nd|rd|th)\\b", "\\1", x)
+  old <- Sys.getlocale("LC_TIME")
+  on.exit(Sys.setlocale("LC_TIME", old), add = TRUE)
+  Sys.setlocale("LC_TIME", "C")
+  for (fmt in c("%Y-%m-%d", "%B %d, %Y", "%b %d, %Y", "%B %d %Y", "%d %B %Y", "%b %d %Y")) {
+    d <- as.Date(x, format = fmt)
+    if (!is.na(d)) {
+      return(format(d, "%Y-%m-%d"))
+    }
+  }
+  NA_character_
+}
+
 .vignette_to_article <- function(path) {
   parts <- .split_front_matter(readLines(path, warn = FALSE, encoding = "UTF-8"))
   meta <- tryCatch(yaml::yaml.load(paste(parts$yaml, collapse = "\n")), error = function(e) list())
@@ -333,7 +354,8 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   front <- c("---", paste0("title: ", .yaml_quote(title)))
   if (!is.null(meta$author)) front <- c(front, paste0("author: ", .yaml_quote(paste(unlist(meta$author), collapse = ", "))))
   if (!is.null(meta$date) && !grepl("Sys.Date|`r", paste(meta$date, collapse = ""))) {
-    front <- c(front, paste0("date: ", .yaml_quote(as.character(meta$date))))
+    date <- .normalize_date(meta$date)
+    if (!is.na(date)) front <- c(front, paste0("date: ", .yaml_quote(date)))
   }
   front <- c(front, "toc: true", "---", "")
   c(front, parts$body)

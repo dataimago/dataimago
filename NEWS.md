@@ -1,5 +1,13 @@
 # dataimago 0.0-5.0
 
+## Prose vignette dates (2026-10-31)
+
+### Bug fixes
+
+* `create_package_site()` turns vignette dates such as "September 26th, 2017"
+  into ISO dates, and drops dates it cannot read. Quarto displayed the prose
+  form as "Invalid Date".
+
 ## Package sites: per-topic reference pages, news page and a full scaffold (2026-10-31)
 
 ### New features
