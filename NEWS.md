@@ -1,5 +1,13 @@
 # dataimago 0.0-5.0
 
+## Figures in reference pages (2026-10-31)
+
+### Bug fixes
+
+* `create_package_reference()` copies `man/figures/` into `assets/figures/` and
+  points `\figure{}` images at it, so the logo on a package's `-package` page no
+  longer links to `help/figures/`, which does not exist in the site.
+
 ## Prose vignette dates (2026-10-31)
 
 ### Bug fixes
