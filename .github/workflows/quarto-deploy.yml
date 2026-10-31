@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -41,7 +41,7 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: Setup Node.js for Design System
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -77,7 +77,7 @@ jobs:
           quarto render --output-dir ../../docs
 
       - name: Upload to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: docs
 
@@ -94,4 +94,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

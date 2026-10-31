@@ -21,9 +21,9 @@ jobs:
     name: "No @dataimago/* link:/file: overrides on main"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           # Opt out of pnpm auto-detection; this job only runs node directly.

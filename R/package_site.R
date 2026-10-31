@@ -576,7 +576,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "  build:",
     "    runs-on: ubuntu-latest",
     "    steps:",
-    "      - uses: actions/checkout@v4",
+    "      - uses: actions/checkout@v7",
     "      - uses: quarto-dev/quarto-actions/setup@v2",
     "      - uses: r-lib/actions/setup-r@v2",
     "        with:",
@@ -594,7 +594,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "        with:",
     "          args: --offline --no-progress --root-dir ${{ github.workspace }}/ui/www/_site 'ui/www/_site/**/*.html'",
     "          fail: true",
-    "      - uses: actions/upload-pages-artifact@v3",
+    "      - uses: actions/upload-pages-artifact@v5",
     "        with:",
     "          path: ui/www/_site",
     "",
@@ -610,7 +610,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "      url: ${{ steps.deployment.outputs.page_url }}",
     "    steps:",
     "      - id: deployment",
-    "        uses: actions/deploy-pages@v4"
+    "        uses: actions/deploy-pages@v5"
   )
 }
 
