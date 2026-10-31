@@ -42,6 +42,19 @@ NULL
 #'   When FALSE (the default) an existing config is left untouched and only the
 #'   .qmd files are regenerated; a missing config is always scaffolded.
 #'   Default: FALSE
+#' @param reference Character. `"single"` (the default) writes one
+#'   `api_reference.qmd`. `"topics"` instead writes one `reference/<topic>.qmd` page per
+#'   Rd topic, a `reference/index.qmd` and a `news.qmd` built from `NEWS.md` (see
+#'   [create_package_reference()] and [create_package_news()]).
+#' @param navbar_pinned Logical or `NULL`. Whether a scaffolded `_quarto.yml` pins the
+#'   navbar. `NULL` (the default) writes no `pinned` key, which is Quarto's default and
+#'   matches earlier output; `TRUE` pins it; `FALSE` writes `pinned: false` explicitly
+#'   (hide on scroll down, show on scroll up).
+#' @param self_host_fonts Logical. When `TRUE`, copies Josefin Sans, Noto Sans, Noto Sans
+#'   Mono and Noto Sans Math (woff2) and `assets/css/fonts.css` into `output_path` so no
+#'   font CDN is needed, and links the stylesheet from a scaffolded `_quarto.yml`.
+#' @param reference_config Optional list or YAML path of reference-index sections, used
+#'   when `reference = "topics"` (see [create_package_reference()]).
 #'
 #' @return Character (invisible). File path to the generated api_reference.qmd file.
 #'   Side effects: Creates .qmd files in output_path directory, scaffolds
@@ -127,7 +140,12 @@ create_quarto_documentation <- function(package_path = ".",
                                         include_description = TRUE,
                                         include_foundation_links = TRUE,
                                         template = "dataimago",
-                                        overwrite_config = FALSE) {
+                                        overwrite_config = FALSE,
+                                        reference = c("single", "topics"),
+                                        navbar_pinned = NULL,
+                                        self_host_fonts = FALSE,
+                                        reference_config = NULL) {
+  reference <- match.arg(reference)
   # Validate inputs
   if (!dir.exists(package_path)) {
     stop("Package path does not exist: ", package_path)
@@ -157,17 +175,24 @@ create_quarto_documentation <- function(package_path = ".",
   # Convert .Rd files to qmd format using Rd2md
   rd_content <- convert_rd_files_to_qmd(rd_files)
 
-  # Generate api_reference.qmd
-  api_reference_content <- generate_api_reference_qmd(
-    desc_content = desc_content,
-    rd_content = rd_content,
-    include_description = include_description,
-    include_foundation_links = include_foundation_links
-  )
-
-  # Write api_reference.qmd
   api_file <- file.path(output_path, "api_reference.qmd")
-  writeLines(api_reference_content, api_file)
+  if (identical(reference, "topics")) {
+    create_package_reference(package_path, output_path, reference_config = reference_config)
+    create_package_news(package_path, output_path)
+    api_file <- file.path(output_path, "reference", "index.qmd")
+  } else {
+    # Generate api_reference.qmd
+    api_reference_content <- generate_api_reference_qmd(
+      desc_content = desc_content,
+      rd_content = rd_content,
+      include_description = include_description,
+      include_foundation_links = include_foundation_links
+    )
+
+    # Write api_reference.qmd
+    writeLines(api_reference_content, api_file)
+  }
+  if (isTRUE(self_host_fonts)) .copy_pkgsite_fonts(output_path)
 
   # Generate and write _quarto.yml
   #
@@ -181,7 +206,10 @@ create_quarto_documentation <- function(package_path = ".",
   config_exists <- file.exists(quarto_yml_file)
 
   if (!config_exists || isTRUE(overwrite_config)) {
-    quarto_yml_content <- generate_quarto_yml(desc_content, template)
+    quarto_yml_content <- generate_quarto_yml(
+      desc_content, template,
+      navbar_pinned = navbar_pinned, reference = reference, self_host_fonts = self_host_fonts
+    )
     writeLines(quarto_yml_content, quarto_yml_file)
   } else {
     cat(crayon::silver(
@@ -638,9 +666,13 @@ add_function_docs_sections <- function(rd_content) {
 #'
 #' @param desc_content Parsed DESCRIPTION content
 #' @param template Template type (currently supports "dataimago")
+#' @param navbar_pinned `NULL` (no key), `TRUE` or `FALSE`
+#' @param reference `"single"` or `"topics"`, which sets the reference nav target
+#' @param self_host_fonts Link `assets/css/fonts.css` from the format
 #' @return Character vector with _quarto.yml content
 #' @keywords internal
-generate_quarto_yml <- function(desc_content, template = "dataimago") {
+generate_quarto_yml <- function(desc_content, template = "dataimago", navbar_pinned = NULL,
+                                reference = "single", self_host_fonts = FALSE) {
   yml_content <- c()
 
   # Basic project configuration
@@ -684,10 +716,17 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
     yml_content,
     paste0("    title: \"", desc_content$package, "\"")
   )
+  if (!is.null(navbar_pinned)) {
+    yml_content <- c(
+      yml_content,
+      paste0("    pinned: ", if (isTRUE(navbar_pinned)) "true" else "false")
+    )
+  }
   yml_content <- c(yml_content, "    left:")
   yml_content <- c(yml_content, "      - href: index.qmd")
   yml_content <- c(yml_content, "        text: Home")
-  yml_content <- c(yml_content, "      - href: api_reference.qmd")
+  ref_target <- if (identical(reference, "topics")) "reference/index.qmd" else "api_reference.qmd"
+  yml_content <- c(yml_content, paste0("      - href: ", ref_target))
   yml_content <- c(yml_content, "        text: API Reference")
   yml_content <- c(yml_content, "")
 
@@ -699,7 +738,7 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
   yml_content <- c(yml_content, "      - section: \"Getting Started\"")
   yml_content <- c(yml_content, "        contents:")
   yml_content <- c(yml_content, "          - index.qmd")
-  yml_content <- c(yml_content, "          - api_reference.qmd")
+  yml_content <- c(yml_content, paste0("          - ", ref_target))
   yml_content <- c(yml_content, "")
 
   # Format configuration
@@ -710,6 +749,9 @@ generate_quarto_yml <- function(desc_content, template = "dataimago") {
   yml_content <- c(yml_content, "    toc-depth: 3")
   yml_content <- c(yml_content, "    code-copy: true")
   yml_content <- c(yml_content, "    code-overflow: wrap")
+  if (isTRUE(self_host_fonts)) {
+    yml_content <- c(yml_content, "    css: assets/css/fonts.css")
+  }
 
   # Add dataimago-specific configuration if using dataimago template
   if (template == "dataimago") {

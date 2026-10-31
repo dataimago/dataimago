@@ -10,7 +10,11 @@ create_quarto_documentation(
   include_description = TRUE,
   include_foundation_links = TRUE,
   template = "dataimago",
-  overwrite_config = FALSE
+  overwrite_config = FALSE,
+  reference = c("single", "topics"),
+  navbar_pinned = NULL,
+  self_host_fonts = FALSE,
+  reference_config = NULL
 )
 }
 \arguments{
@@ -41,6 +45,23 @@ navbar, sidebar, themes, extensions, render filters, and font \verb{<link>} tags
 When FALSE (the default) an existing config is left untouched and only the
 .qmd files are regenerated; a missing config is always scaffolded.
 Default: FALSE}
+
+\item{reference}{Character. \code{"single"} (the default) writes one
+\code{api_reference.qmd}. \code{"topics"} instead writes one \verb{reference/<topic>.qmd} page per
+Rd topic, a \code{reference/index.qmd} and a \code{news.qmd} built from \code{NEWS.md} (see
+\code{\link[=create_package_reference]{create_package_reference()}} and \code{\link[=create_package_news]{create_package_news()}}).}
+
+\item{navbar_pinned}{Logical or \code{NULL}. Whether a scaffolded \verb{_quarto.yml} pins the
+navbar. \code{NULL} (the default) writes no \code{pinned} key, which is Quarto's default and
+matches earlier output; \code{TRUE} pins it; \code{FALSE} writes \code{pinned: false} explicitly
+(hide on scroll down, show on scroll up).}
+
+\item{self_host_fonts}{Logical. When \code{TRUE}, copies Josefin Sans, Noto Sans, Noto Sans
+Mono and Noto Sans Math (woff2) and \code{assets/css/fonts.css} into \code{output_path} so no
+font CDN is needed, and links the stylesheet from a scaffolded \verb{_quarto.yml}.}
+
+\item{reference_config}{Optional list or YAML path of reference-index sections, used
+when \code{reference = "topics"} (see \code{\link[=create_package_reference]{create_package_reference()}}).}
 }
 \value{
 Character (invisible). File path to the generated api_reference.qmd file.
