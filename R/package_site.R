@@ -457,21 +457,25 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     paste0("    pinned: ", if (isTRUE(navbar_pinned)) "true" else "false"),
     "    left:",
     left,
-    if (!is.null(repo_url)) c(
-      "    right:",
-      "      - icon: github",
-      paste0("        href: ", repo_url),
-      paste0("        aria-label: ", .yaml_quote(paste(pkg, "on GitHub")))
-    ),
+    if (!is.null(repo_url)) {
+      c(
+        "    right:",
+        "      - icon: github",
+        paste0("        href: ", repo_url),
+        paste0("        aria-label: ", .yaml_quote(paste(pkg, "on GitHub")))
+      )
+    },
     "  page-footer:",
     paste0("    left: ", .yaml_quote(paste0("\u00a9 ", year, " ", owner, if (!is.null(org)) paste0(" \u00b7 ", org) else ""))),
-    if (!is.null(org_url)) c(
-      "    right:",
-      paste0("      - text: ", .yaml_quote(org)),
-      paste0("        href: ", org_url),
-      "      - text: \"Design system\"",
-      "        href: https://dataimago.ai"
-    ),
+    if (!is.null(org_url)) {
+      c(
+        "    right:",
+        paste0("      - text: ", .yaml_quote(org)),
+        paste0("        href: ", org_url),
+        "      - text: \"Design system\"",
+        "        href: https://dataimago.ai"
+      )
+    },
     "",
     "format:",
     "  pkgsite-html:",
