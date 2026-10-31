@@ -215,3 +215,21 @@ test_that("the default navbar scaffold is unchanged (no pinned key)", {
   expect_false(grepl("pinned", yml, fixed = TRUE))
   expect_true(file.exists(file.path(out, "api_reference.qmd")))
 })
+
+test_that(".normalize_date turns prose dates into ISO dates and drops what it cannot read", {
+  expect_equal(.normalize_date("September 26th, 2017"), "2017-09-26")
+  expect_equal(.normalize_date("April 21st, 2021"), "2021-04-21")
+  expect_equal(.normalize_date("January 1st, 2019"), "2019-01-01")
+  expect_equal(.normalize_date("2020-12-18"), "2020-12-18")
+  expect_equal(.normalize_date("Jun 5, 2011"), "2011-06-05")
+  expect_true(is.na(.normalize_date("sometime in spring")))
+})
+
+test_that("vignette dates reach the article front matter in ISO form", {
+  v <- tempfile(fileext = ".Rmd")
+  writeLines(c("---", "title: T", "date: \"September 26th, 2017\"", "---", "", "Body"), v)
+  out <- .vignette_to_article(v)
+  expect_true(any(out == "date: \"2017-09-26\""))
+  writeLines(c("---", "title: T", "date: \"whenever\"", "---", "", "Body"), v)
+  expect_false(any(grepl("^date:", .vignette_to_article(v))))
+})
