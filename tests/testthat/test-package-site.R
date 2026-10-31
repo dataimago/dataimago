@@ -34,7 +34,8 @@ make_site_fixture <- function(dir = withr::local_tempdir(.local_envir = parent.f
   ), file.path(pkg, "man", "hidden.Rd"))
   writeLines(c(
     "\\name{sitepkg-package}", "\\docType{package}", "\\alias{sitepkg-package}",
-    "\\title{sitepkg: A fixture}", "\\description{The fixture.}"
+    "\\title{sitepkg: A fixture}",
+    "\\description{The fixture. \\if{html}{\\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}}"
   ), file.path(pkg, "man", "sitepkg-package.Rd"))
   news <- c("# sitepkg 1.2-3.0", "", "## New", "", "* Louder.", "", "# sitepkg 1.0-0.0", "", "* First.")
   writeLines(news, file.path(pkg, "NEWS.md"))
@@ -232,4 +233,15 @@ test_that("vignette dates reach the article front matter in ISO form", {
   expect_true(any(out == "date: \"2017-09-26\""))
   writeLines(c("---", "title: T", "date: \"whenever\"", "---", "", "Body"), v)
   expect_false(any(grepl("^date:", .vignette_to_article(v))))
+})
+
+test_that("figures included with \\figure{} are copied and linked from the site", {
+  skip_without_pandoc()
+  pkg <- make_site_fixture()
+  out <- file.path(pkg, "ui", "www")
+  create_package_reference(pkg, out)
+  page <- paste(readLines(file.path(out, "reference", "sitepkg-package.qmd")), collapse = "\n")
+  expect_false(grepl("help/figures", page, fixed = TRUE))
+  expect_true(grepl("../assets/figures/logo.svg", page, fixed = TRUE))
+  expect_true(file.exists(file.path(out, "assets", "figures", "logo.svg")))
 })

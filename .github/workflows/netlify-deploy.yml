@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -37,7 +37,7 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: Setup Node.js for Design System
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -73,7 +73,7 @@ jobs:
           quarto render --output-dir ../../netlify-build
 
       - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3.0
+        uses: nwtgck/actions-netlify@v4.0
         with:
           publish-dir: './netlify-build'
           production-branch: main

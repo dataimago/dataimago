@@ -1,5 +1,19 @@
 # dataimago 0.0-5.0
 
+## GitHub Actions upgraded (2026-10-31)
+
+* The Pages workflow written by `create_package_site()` and this repository's own
+  workflows use current action majors: `actions/checkout@v7`,
+  `actions/upload-pages-artifact@v5`, `actions/deploy-pages@v5`, and so on.
+
+## Figures in reference pages (2026-10-31)
+
+### Bug fixes
+
+* `create_package_reference()` copies `man/figures/` into `assets/figures/` and
+  points `\figure{}` images at it, so the logo on a package's `-package` page no
+  longer links to `help/figures/`, which does not exist in the site.
+
 ## Prose vignette dates (2026-10-31)
 
 ### Bug fixes

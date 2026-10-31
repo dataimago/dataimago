@@ -125,7 +125,7 @@ NULL
   html
 }
 
-.rd_topic_markdown <- function(meta, package) {
+.rd_topic_markdown <- function(meta, package, figures_prefix = "../assets/figures/") {
   out <- tempfile(fileext = ".html")
   on.exit(unlink(out), add = TRUE)
   rd <- meta$rd
@@ -144,6 +144,8 @@ NULL
   html <- sub("(?s)<h3>Title</h3>\\s*<p>.*?</p>\\s*", "", html, perl = TRUE)
   html <- sub("<h3>Name</h3>\\s*[^<]*", "", html, perl = TRUE)
   html <- gsub("<h3>NA</h3>\\s*", "", html, perl = TRUE)
+  # \figure{} (the hex logo on the package page) is written as ../help/figures/<file>.
+  html <- gsub("(\\.\\./)?help/figures/", figures_prefix, html, perl = TRUE)
   html <- .rewrite_rd_links(html, package)
   html <- .rd_tables_to_dl(html)
   html <- gsub("<h3>", "<h2>", html, fixed = TRUE)
@@ -246,8 +248,18 @@ create_package_reference <- function(package_path = ".", output_path = "ui/www",
   dir.create(ref_path, recursive = TRUE, showWarnings = FALSE)
   written <- character(0)
 
+  # Figures that Rd files include with \figure{} travel with the site.
+  fig_dir <- file.path(package_path, "man", "figures")
+  if (dir.exists(fig_dir)) {
+    dest <- file.path(output_path, "assets", "figures")
+    dir.create(dest, recursive = TRUE, showWarnings = FALSE)
+    file.copy(list.files(fig_dir, full.names = TRUE), dest, overwrite = TRUE)
+  }
+  up <- paste(rep("..", length(strsplit(reference_dir, "/", fixed = TRUE)[[1]])), collapse = "/")
+  figures_prefix <- paste0(up, "/assets/figures/")
+
   for (t in topics) {
-    body <- .rd_topic_markdown(t, package)
+    body <- .rd_topic_markdown(t, package, figures_prefix)
     label <- if (t$is_function) paste0(t$name, "()") else t$name
     qmd <- c(
       "---",
@@ -564,7 +576,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "  build:",
     "    runs-on: ubuntu-latest",
     "    steps:",
-    "      - uses: actions/checkout@v4",
+    "      - uses: actions/checkout@v7",
     "      - uses: quarto-dev/quarto-actions/setup@v2",
     "      - uses: r-lib/actions/setup-r@v2",
     "        with:",
@@ -582,7 +594,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "        with:",
     "          args: --offline --no-progress --root-dir ${{ github.workspace }}/ui/www/_site 'ui/www/_site/**/*.html'",
     "          fail: true",
-    "      - uses: actions/upload-pages-artifact@v3",
+    "      - uses: actions/upload-pages-artifact@v5",
     "        with:",
     "          path: ui/www/_site",
     "",
@@ -598,7 +610,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "      url: ${{ steps.deployment.outputs.page_url }}",
     "    steps:",
     "      - id: deployment",
-    "        uses: actions/deploy-pages@v4"
+    "        uses: actions/deploy-pages@v5"
   )
 }
 
