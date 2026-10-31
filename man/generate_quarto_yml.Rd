@@ -4,12 +4,24 @@
 \alias{generate_quarto_yml}
 \title{Generate _quarto.yml Configuration File}
 \usage{
-generate_quarto_yml(desc_content, template = "dataimago")
+generate_quarto_yml(
+  desc_content,
+  template = "dataimago",
+  navbar_pinned = NULL,
+  reference = "single",
+  self_host_fonts = FALSE
+)
 }
 \arguments{
 \item{desc_content}{Parsed DESCRIPTION content}
 
 \item{template}{Template type (currently supports "dataimago")}
+
+\item{navbar_pinned}{\code{NULL} (no key), \code{TRUE} or \code{FALSE}}
+
+\item{reference}{\code{"single"} or \code{"topics"}, which sets the reference nav target}
+
+\item{self_host_fonts}{Link \code{assets/css/fonts.css} from the format}
 }
 \value{
 Character vector with _quarto.yml content

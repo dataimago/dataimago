@@ -1,5 +1,23 @@
 # dataimago 0.0-5.0
 
+## Package sites: per-topic reference pages, news page and a full scaffold (2026-10-31)
+
+### New features
+
+* `create_package_reference()` writes one `reference/<topic>.qmd` page per Rd
+  topic and a `reference/index.qmd` grouped by an optional `reference_config`.
+  Rd is rendered with `tools::Rd2HTML()` and converted by Pandoc, so usage,
+  arguments, value, examples and links (to topics, other packages and base R)
+  survive. Internal topics get a page but stay out of the index.
+* `create_package_news()` writes `news.qmd` from `NEWS.md`.
+* `create_package_site()` scaffolds a whole Quarto site for an R package: the
+  `pkgsite` theme extension (dataimago tokens, light and dark, hide-on-scroll
+  navbar), self-hosted Josefin Sans, Noto Sans, Noto Sans Mono and Noto Sans
+  Math, an index page built from the README, articles from the vignettes, a
+  citation page, a guard script for `_quarto.yml` and a GitHub Pages workflow.
+* `create_quarto_documentation()` gains `reference = "topics"`, `navbar_pinned`
+  and `self_host_fonts`. The defaults leave existing output unchanged.
+
 ## An extension spec may reference a repository instead of a package (2026-10-28)
 
 ### Bug fixes
