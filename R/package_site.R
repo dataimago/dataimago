@@ -117,8 +117,8 @@ NULL
   regmatches(html, m) <- lapply(regmatches(html, m), function(tabs) {
     vapply(tabs, function(tab) {
       inner <- sub(pat, "\\1", tab, perl = TRUE)
-      inner <- gsub("(?s)<tr[^>]*>\\s*<td[^>]*>(.*?)</td>\\s*<td[^>]*>(.*?)</td>\\s*</tr>",
-        "<dt>\\1</dt><dd>\\2</dd>", inner, perl = TRUE)
+      row_pat <- "(?s)<tr[^>]*>\\s*<td[^>]*>(.*?)</td>\\s*<td[^>]*>(.*?)</td>\\s*</tr>"
+      inner <- gsub(row_pat, "<dt>\\1</dt><dd>\\2</dd>", inner, perl = TRUE)
       paste0("<dl>", inner, "</dl>")
     }, character(1))
   })
@@ -392,15 +392,18 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   if (!is.null(cit)) {
     txt <- paste(format(cit, style = "text"), collapse = "\n\n")
     bib <- paste(format(cit, style = "Bibtex"), collapse = "\n\n")
-    out <- c(out, "## Citation", "", "To cite this package in publications, please use:", "", txt, "",
-      "A BibTeX entry:", "", "```bibtex", bib, "```", "")
+    cite_lines <- c(
+      "## Citation", "", "To cite this package in publications, please use:", "", txt, "",
+      "A BibTeX entry:", "", "```bibtex", bib, "```", ""
+    )
+    out <- c(out, cite_lines)
   }
   if (!is.null(people)) {
     out <- c(out, "## Authors", "")
     for (p in people) {
       roles <- paste(p$role %||% "", collapse = ", ")
-      out <- c(out, paste0("- ", format(p, include = c("given", "family")),
-        if (nzchar(roles)) paste0(" (", roles, ")") else ""))
+      nm <- format(p, include = c("given", "family"))
+      out <- c(out, paste0("- ", nm, if (nzchar(roles)) paste0(" (", roles, ")") else ""))
     }
     out <- c(out, "")
   }
@@ -489,7 +492,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "cfg <- yaml::read_yaml(path)",
     "problems <- character(0)",
     "if (!identical(cfg$project$`output-dir`, \"_site\")) problems <- c(problems, \"project.output-dir must be _site\")",
-    "if (!any(grepl(\"fonts\", unlist(cfg$project$resources)))) problems <- c(problems, \"project.resources must include assets/fonts/*.woff2\")",
+    "if (!any(grepl(\"fonts\", unlist(cfg$project$resources)))) {",
+    "  problems <- c(problems, \"project.resources must include assets/fonts/*.woff2\")",
+    "}",
     "if (is.null(cfg$format$`pkgsite-html`)) problems <- c(problems, \"format must be pkgsite-html\")",
     "if (!is.null(cfg$website$navbar$title) && is.null(cfg$website$`site-url`)) problems <- c(problems, \"website.site-url is missing\")",
     "if (length(problems)) {",
@@ -729,9 +734,9 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   assets <- .pkgsite_asset_dir()
   dir.create(file.path(site_dir, "assets", "fonts"), recursive = TRUE, showWarnings = FALSE)
   dir.create(file.path(site_dir, "assets", "css"), recursive = TRUE, showWarnings = FALSE)
-  file.copy(list.files(file.path(assets, "assets", "fonts"), full.names = TRUE),
-    file.path(site_dir, "assets", "fonts"), overwrite = TRUE)
-  file.copy(file.path(assets, "assets", "css", "fonts.css"),
-    file.path(site_dir, "assets", "css", "fonts.css"), overwrite = TRUE)
+  fonts <- list.files(file.path(assets, "assets", "fonts"), full.names = TRUE)
+  file.copy(fonts, file.path(site_dir, "assets", "fonts"), overwrite = TRUE)
+  css <- file.path(assets, "assets", "css", "fonts.css")
+  file.copy(css, file.path(site_dir, "assets", "css", "fonts.css"), overwrite = TRUE)
   invisible(TRUE)
 }

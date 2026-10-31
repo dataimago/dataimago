@@ -36,17 +36,21 @@ make_site_fixture <- function(dir = withr::local_tempdir(.local_envir = parent.f
     "\\name{sitepkg-package}", "\\docType{package}", "\\alias{sitepkg-package}",
     "\\title{sitepkg: A fixture}", "\\description{The fixture.}"
   ), file.path(pkg, "man", "sitepkg-package.Rd"))
-  writeLines(c("# sitepkg 1.2-3.0", "", "## New", "", "* Louder.", "", "# sitepkg 1.0-0.0", "", "* First."),
-    file.path(pkg, "NEWS.md"))
-  writeLines(c(
+  news <- c("# sitepkg 1.2-3.0", "", "## New", "", "* Louder.", "", "# sitepkg 1.0-0.0", "", "* First.")
+  writeLines(news, file.path(pkg, "NEWS.md"))
+  vig <- c(
     "---", "title: \"Getting started\"", "output: rmarkdown::html_vignette",
     "vignette: >", "  %\\VignetteIndexEntry{Getting started}", "---", "", "Hello.", ""
-  ), file.path(pkg, "vignettes", "sitepkg.Rmd"))
+  )
+  writeLines(vig, file.path(pkg, "vignettes", "sitepkg.Rmd"))
   writeLines(c("---", "title: \"Release 1.2\"", "---", "", "Notes."), file.path(pkg, "vignettes", "releases", "r12.Rmd"))
-  writeLines("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\"><path d=\"M0 0h10v10z\"/></svg>",
-    file.path(pkg, "man", "figures", "logo.svg"))
-  writeLines(c("# sitepkg", "", "[![CRAN](x.svg)](y)", "", "Shout and whisper words.", "", "## Install", "", "`install.packages(\"sitepkg\")`"),
-    file.path(pkg, "README.md"))
+  svg <- "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\"><path d=\"M0 0h10v10z\"/></svg>"
+  writeLines(svg, file.path(pkg, "man", "figures", "logo.svg"))
+  readme <- c(
+    "# sitepkg", "", "[![CRAN](x.svg)](y)", "", "Shout and whisper words.", "",
+    "## Install", "", "`install.packages(\"sitepkg\")`"
+  )
+  writeLines(readme, file.path(pkg, "README.md"))
   pkg
 }
 
