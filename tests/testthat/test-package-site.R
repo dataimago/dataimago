@@ -1502,3 +1502,15 @@ test_that("the guard finds nested and .mjs heroes", {
     c(file.path(site, "tools", "check-quarto-yml.R"), file.path(site, "_quarto.yml")), stdout = FALSE, stderr = FALSE))
   expect_equal(status, 1L)
 })
+
+test_that("matcher edge cases agree between the warning and the guard", {
+  skip_if_not_installed("yaml")
+  for (e in c("assets/hero/hero.js", "assets/hero/**/*.js")) {
+    r <- probe_hero_cover(res_list("assets/fonts/**", e))
+    expect_false(r$warned, info = e)
+    expect_true(r$guard_ok, info = e)
+  }
+  r <- probe_hero_cover(res_list("assets/fonts/**", "assets/*"))
+  expect_true(r$warned)
+  expect_false(r$guard_ok)
+})

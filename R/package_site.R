@@ -538,13 +538,15 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   res <- sub("^\\./", "", res)
   target <- "assets/hero/hero.js"
   any(vapply(res, function(e) {
-    base <- sub("(/\\*\\*|/\\*|/)$", "", e)
-    if (base %in% c("assets", "assets/hero")) return(TRUE)
+    base <- sub("(/\\*\\*|/)$", "", e)
+    if (base %in% c("assets", "assets/hero", target)) return(TRUE)
     if (!grepl("*", e, fixed = TRUE)) return(FALSE)
     rx <- gsub("([.+?^${}()|\\[\\]\\\\])", "\\\\\\1", e)
+    rx <- gsub("/**/", "\002", rx, fixed = TRUE)
     rx <- gsub("**", "\001", rx, fixed = TRUE)
     rx <- gsub("*", "[^/]*", rx, fixed = TRUE)
     rx <- gsub("\001", ".*", rx, fixed = TRUE)
+    rx <- gsub("\002", "(/.*)?/", rx, fixed = TRUE)
     grepl(paste0("^", rx, "$"), target)
   }, logical(1)))
 }
