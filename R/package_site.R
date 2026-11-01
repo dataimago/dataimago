@@ -606,45 +606,132 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   )
 }
 
-.readme_to_index <- function(package_path, desc, logo, site_url, repo_url, has_vignette_main) {
+# ---- landing data: _landing.yml (always regenerated) and index.qmd (author-owned) ----
+
+# Card descriptions are factual lines built from the package; each has a fallback so a card
+# never goes blank when a package has no vignettes, NEWS.md or repository.
+.card_descs <- function(package_path, desc, repo_url) {
   pkg <- desc$Package
+  rd_files <- list.files(file.path(package_path, "man"), pattern = "\\.Rd$", full.names = TRUE)
+  topics <- Filter(function(t) !t$internal && !t$is_package, lapply(rd_files, .rd_topic_meta))
+  n_data <- sum(vapply(topics, function(t) t$is_data, logical(1)))
+  n_fun <- length(topics) - n_data
+  api <- if (length(topics)) paste0(n_fun, " functions, ", n_data, " data sets") else "Function and data reference"
+
+  vigs <- list.files(file.path(package_path, "vignettes"), pattern = "\\.(Rmd|qmd)$", recursive = TRUE, full.names = TRUE)
+  docs <- "Guides and articles"
+  if (length(vigs)) {
+    docs <- paste0(length(vigs), if (length(vigs) == 1L) " article" else " articles")
+    main <- vigs[basename(vigs) %in% paste0(pkg, c(".Rmd", ".qmd"))][1]
+    if (!is.na(main)) {
+      fm <- .split_front_matter(readLines(main, warn = FALSE, encoding = "UTF-8"))$yaml
+      ttl <- tryCatch(yaml::yaml.load(paste(fm, collapse = "\n"))$title, error = function(e) NULL)
+      if (is.character(ttl) && length(ttl) == 1L && nzchar(ttl)) docs <- paste0(docs, "; start with ", ttl)
+    }
+  }
+
+  news_file <- file.path(package_path, c("NEWS.md", file.path("inst", "NEWS.md")))
+  news_file <- news_file[file.exists(news_file)][1]
+  news <- "Release notes"
+  if (!is.na(news_file)) {
+    h <- grep("^#+ ", readLines(news_file, warn = FALSE, encoding = "UTF-8"), value = TRUE)[1]
+    h <- trimws(sub("^#+\\s*", "", h))
+    if (!is.na(h) && nzchar(h)) news <- h
+  }
+
+  source <- if (!is.null(repo_url) && nzchar(repo_url)) sub("/+$", "", sub("^[a-z]+://", "", repo_url)) else "Source code"
+
+  list(
+    overview = paste0("Why ", pkg, " exists and how it works"),
+    documentation = docs, api = api, news = news, source = source
+  )
+}
+
+# `hero` is the seam for the hero inputs (ui/hero, Task B3): NULL gives the fallback.
+.landing_data <- function(package_path, desc, hero = NULL, repo_url = NULL) {
+  pkg <- desc$Package
+  if (is.null(hero)) hero <- list(kind = "fallback", alt = paste0("Animated illustration for ", pkg))
+  has <- function(x) !is.null(x) && !is.na(x) && nzchar(trimws(x))
+  links <- list()
+  if (has(repo_url)) links[[length(links) + 1L]] <- list(text = "GitHub", href = repo_url)
+  if (has(desc$URL) && grepl("cran.r-project.org", desc$URL, ignore.case = TRUE)) {
+    links[[length(links) + 1L]] <- list(text = "CRAN", href = paste0("https://cran.r-project.org/package=", pkg))
+  }
+  if (has(desc$BugReports)) links[[length(links) + 1L]] <- list(text = "Issues", href = trimws(desc$BugReports))
+  d <- .card_descs(package_path, desc, repo_url)
+  source_href <- if (has(repo_url)) repo_url else "#"
+  card <- function(key, title, href) list(key = key, title = title, href = href, desc = d[[key]])
+  list(pkgsite = list(
+    name = pkg, title = desc$Title %||% "", version = desc$Version %||% "",
+    hero = hero, links = links,
+    cards = list(
+      card("overview", "Overview", "overview/index.qmd"),
+      card("documentation", "Documentation", "documentation/index.qmd"),
+      card("api", "API", "reference/index.qmd"),
+      card("news", "What's new", "news.qmd"),
+      card("source", "Source", source_href)
+    )
+  ))
+}
+
+.landing_yaml_lines <- function(data) {
+  strsplit(sub("\n$", "", yaml::as.yaml(data, indent.mapping.sequence = TRUE)), "\n", fixed = TRUE)[[1]]
+}
+
+.write_landing_yml <- function(site_dir, data) {
+  invisible(.write_lines(.landing_yaml_lines(data), file.path(site_dir, "_landing.yml")))
+}
+
+# README body for the overview div: badges, logos and the first H1 are dropped; a raw-HTML
+# container the drop leaves empty is removed; a leading raw-HTML block is fenced as raw HTML
+# so an unbalanced tag cannot swallow the closing `:::`.
+.readme_overview_body <- function(package_path) {
   readme <- file.path(package_path, "README.md")
   body <- if (file.exists(readme)) readLines(readme, warn = FALSE, encoding = "UTF-8") else character(0)
   drop <- grepl("^\\s*\\[!\\[|^\\s*<img|^\\s*<a [^>]*>\\s*<img|<!--.*(badges|logo)|AppVeyor|Gitter|gitter", body)
   body <- body[!drop]
   first_h1 <- which(grepl("^# ", body))[1]
   if (!is.na(first_h1)) body <- body[-first_h1]
+  if (length(body)) {
+    txt <- paste(body, collapse = "\n")
+    repeat {
+      new <- gsub("<(p|div|center|a|span)\\b[^>]*>\\s*</\\1>", "", txt, ignore.case = TRUE)
+      if (identical(new, txt)) break
+      txt <- new
+    }
+    body <- strsplit(txt, "\n", fixed = TRUE)[[1]]
+  }
   while (length(body) && !nzchar(trimws(body[1]))) body <- body[-1]
+  if (length(body) && grepl("^\\s*<", body[1])) {
+    end <- which(!nzchar(trimws(body)))[1]
+    end <- if (is.na(end)) length(body) else end - 1L
+    body <- c("```{=html}", body[seq_len(end)], "```", body[-seq_len(end)])
+  }
+  # a fence in the README must not be able to run into the closing `:::`
+  if (sum(grepl("^\\s*```", body)) %% 2L == 1L) body <- c(body, "```")
+  body
+}
 
-  actions <- c(
-    if (!is.null(repo_url)) paste0("  <li><a href=\"", repo_url, "\">GitHub</a></li>"),
-    paste0("  <li><a href=\"https://CRAN.R-project.org/package=", pkg, "\">CRAN</a></li>"),
-    if (has_vignette_main) paste0("  <li><a href=\"articles/", pkg, ".html\">Get started</a></li>"),
-    "  <li><a href=\"reference/index.html\">Reference</a></li>"
-  )
-  c(
+.write_index_qmd <- function(site_dir, package_path, desc, overwrite = FALSE) {
+  path <- file.path(site_dir, "index.qmd")
+  if (file.exists(path) && !isTRUE(overwrite)) {
+    return(invisible(path))
+  }
+  .write_lines(c(
     "---",
-    paste0("pagetitle: ", .yaml_quote(paste0(pkg, ": ", desc$Title %||% ""))),
-    "page-layout: article",
-    "toc: false",
+    paste0("pagetitle: ", .yaml_quote(desc$Package)),
+    "page-layout: custom",
+    "metadata-files: [_landing.yml]",
     "---",
     "",
-    "```{=html}",
-    "<section class=\"pkg-hero\" aria-labelledby=\"pkg-name\">",
-    paste0("  <img class=\"pkg-hex\" src=\"", logo$hero, "\" alt=\"", pkg, " hex logo\">"),
-    "  <div>",
-    paste0("    <p id=\"pkg-name\" class=\"pkg-name\" role=\"heading\" aria-level=\"1\">", pkg, "</p>"),
-    paste0("    <p class=\"pkg-tagline\">", desc$Title %||% "", "</p>"),
-    "    <ul class=\"pill-links\">",
-    actions,
-    "    </ul>",
-    "  </div>",
-    "</section>",
-    "```",
+    "::: {.di-landing}",
+    "::: {.di-landing-overview}",
+    .readme_overview_body(package_path),
     "",
-    body,
+    ":::",
+    ":::",
     ""
-  )
+  ), path)
 }
 
 #' Scaffold a complete Quarto website for an R package
@@ -656,7 +743,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 #' articles, `news.qmd`, `citation.qmd`, a `_quarto.yml` guard script and a GitHub Pages workflow.
 #'
 #' Existing `_quarto.yml`, `index.qmd` and workflow files are kept unless
-#' `overwrite_config = TRUE`. Reference, article, news and citation pages are always
+#' `overwrite_config = TRUE`. `_landing.yml`, reference, article, news and citation pages are always
 #' regenerated, so edit their sources (`man/`, `vignettes/`, `NEWS.md`) rather than the
 #' pages.
 #'
@@ -748,10 +835,8 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
       has_vignette_main = has_main, logo = logo_paths, font_css = font_css
     ), yml_path)
   }
-  index_path <- file.path(site_dir, "index.qmd")
-  if (!file.exists(index_path) || isTRUE(overwrite_config)) {
-    .write_lines(.readme_to_index(package_path, desc, logo_paths, site_url, repo_url, has_main), index_path)
-  }
+  .write_landing_yml(site_dir, .landing_data(package_path, desc, hero = NULL, repo_url = repo_url))
+  .write_index_qmd(site_dir, package_path, desc, overwrite = overwrite_config)
   .write_lines(c("_site/", "/.quarto/", "_freeze/"), file.path(site_dir, ".gitignore"))
   if (isTRUE(workflow)) {
     wf <- file.path(package_path, ".github", "workflows", "quarto-publish.yml")

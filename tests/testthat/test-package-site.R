@@ -153,7 +153,9 @@ test_that("create_package_site scaffolds config, theme, fonts, articles and work
   expect_true(file.exists(file.path(site, "articles", "releases", "r12.qmd")))
 
   index <- paste(readLines(file.path(site, "index.qmd")), collapse = "\n")
-  expect_match(index, "pkg-hero", fixed = TRUE)
+  expect_match(index, "di-landing-overview", fixed = TRUE)
+  expect_false(grepl("pkg-hero", index, fixed = TRUE))
+  expect_true(file.exists(file.path(site, "_landing.yml")))
   expect_match(index, "Shout and whisper words.", fixed = TRUE)
   expect_false(grepl("[![CRAN]", index, fixed = TRUE))
 
@@ -505,4 +507,116 @@ test_that("inserted entries use the file's own indentation", {
   r <- merge_raw('{\n\t"package": "p",\n\t"version": "1"\n}\n')
   expect_match(r$after, '\n\t"outputs": {\n\t\t"', fixed = TRUE)
   expect_equal(r$parsed$outputs[["fonts/josefin/"]], "assets/fonts/josefin/")
+})
+
+# ---- landing data and the author-owned index.qmd ----
+
+test_that("landing yml matches the contract", {
+  pkg <- make_site_fixture()
+  desc <- c(readLines(file.path(pkg, "DESCRIPTION")), "URL: https://CRAN.R-project.org/package=sitepkg",
+            "BugReports: https://github.com/o/sitepkg/issues")
+  writeLines(desc, file.path(pkg, "DESCRIPTION"))
+  d <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = "https://github.com/o/sitepkg")
+  p <- d$pkgsite
+  expect_equal(names(d), "pkgsite")
+  expect_equal(names(p), c("name", "title", "version", "hero", "links", "cards"))
+  expect_equal(p$name, "sitepkg")
+  expect_equal(p$version, "1.2-3.0")
+  expect_equal(p$hero, list(kind = "fallback", alt = "Animated illustration for sitepkg"))
+  expect_equal(vapply(p$links, `[[`, "", "text"), c("GitHub", "CRAN", "Issues"))
+  expect_equal(p$links[[2]]$href, "https://cran.r-project.org/package=sitepkg")
+  expect_equal(p$links[[3]]$href, "https://github.com/o/sitepkg/issues")
+  expect_equal(vapply(p$cards, `[[`, "", "key"), c("overview", "documentation", "api", "news", "source"))
+  expect_equal(vapply(p$cards, `[[`, "", "href"), c(
+    "overview/index.qmd", "documentation/index.qmd", "reference/index.qmd", "news.qmd", "https://github.com/o/sitepkg"
+  ))
+  expect_equal(vapply(p$cards, `[[`, "", "title"), c("Overview", "Documentation", "API", "What's new", "Source"))
+  desc_of <- function(k) Filter(function(c) c$key == k, p$cards)[[1]]$desc
+  expect_equal(desc_of("api"), "2 functions, 1 data sets")
+  expect_equal(desc_of("overview"), "Why sitepkg exists and how it works")
+  expect_equal(desc_of("documentation"), "2 articles; start with Getting started")
+  expect_equal(desc_of("news"), "sitepkg 1.2-3.0")
+  expect_equal(desc_of("source"), "github.com/o/sitepkg")
+  hero <- list(kind = "svg", src = "assets/hero/hero.svg", alt = "A hero.")
+  expect_equal(.landing_data(pkg, .read_desc(pkg), hero = hero, repo_url = NULL)$pkgsite$hero, hero)
+})
+
+test_that("landing yml degrades", {
+  pkg <- make_site_fixture()
+  unlink(file.path(pkg, "vignettes"), recursive = TRUE)
+  unlink(file.path(pkg, "NEWS.md"))
+  unlink(file.path(pkg, "man", "figures"), recursive = TRUE)
+  p <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = NULL)$pkgsite
+  expect_equal(length(p$cards), 5L)
+  expect_equal(vapply(p$cards, `[[`, "", "key"), c("overview", "documentation", "api", "news", "source"))
+  desc_of <- function(k) Filter(function(c) c$key == k, p$cards)[[1]]$desc
+  expect_equal(desc_of("documentation"), "Guides and articles")
+  expect_equal(desc_of("news"), "Release notes")
+  expect_equal(desc_of("source"), "Source code")
+  for (k in c("overview", "documentation", "api", "news", "source")) expect_true(nzchar(desc_of(k)))
+  expect_equal(p$links, list())
+  txt <- paste(.landing_yaml_lines(list(pkgsite = p)), collapse = "\n")
+  expect_false(grepl("CRAN|Issues", txt))
+  # a non-CRAN URL does not earn a CRAN link
+  writeLines(c(readLines(file.path(pkg, "DESCRIPTION")), "URL: https://example.org/sitepkg"), file.path(pkg, "DESCRIPTION"))
+  p2 <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = "https://github.com/o/sitepkg")$pkgsite
+  expect_equal(vapply(p2$links, `[[`, "", "text"), "GitHub")
+})
+
+test_that("landing yml is written, round-trips, and is always regenerated", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  site <- file.path(pkg, "www")
+  dir.create(site)
+  data <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = NULL)
+  data$pkgsite$title <- "Cardinal & Ordinal: \"x\""
+  data$pkgsite$version <- "1.5"
+  .write_landing_yml(site, data)
+  back <- yaml::read_yaml(file.path(site, "_landing.yml"))
+  expect_equal(back$pkgsite$title, "Cardinal & Ordinal: \"x\"")
+  expect_identical(back$pkgsite$version, "1.5")
+  writeLines("stale", file.path(site, "_landing.yml"))
+  .write_landing_yml(site, data)
+  expect_identical(yaml::read_yaml(file.path(site, "_landing.yml"))$pkgsite$name, "sitepkg")
+})
+
+test_that("index.qmd wraps README in .di-landing-overview and is kept on regeneration", {
+  pkg <- make_site_fixture()
+  site <- file.path(pkg, "www")
+  dir.create(site)
+  .write_index_qmd(site, pkg, .read_desc(pkg), overwrite = FALSE)
+  idx <- readLines(file.path(site, "index.qmd"))
+  expect_equal(idx[1:5], c("---", "pagetitle: \"sitepkg\"", "page-layout: custom", "metadata-files: [_landing.yml]", "---"))
+  expect_equal(idx[7:9], c("::: {.di-landing}", "::: {.di-landing-overview}", "Shout and whisper words."))
+  expect_equal(tail(idx[nzchar(idx)], 2), c(":::", ":::"))
+  expect_false(any(grepl("^# sitepkg|\\[!\\[CRAN", idx)))
+  writeLines("mine", file.path(site, "index.qmd"))
+  .write_index_qmd(site, pkg, .read_desc(pkg), overwrite = FALSE)
+  expect_equal(readLines(file.path(site, "index.qmd")), "mine")
+  .write_index_qmd(site, pkg, .read_desc(pkg), overwrite = TRUE)
+  expect_equal(readLines(file.path(site, "index.qmd"))[2], "pagetitle: \"sitepkg\"")
+})
+
+test_that("README with leading raw HTML still yields a valid overview div", {
+  skip_without_pandoc()
+  pkg <- make_site_fixture()
+  writeLines(c(
+    "<p align=\"center\">", "  <img src=\"man/figures/logo.png\" width=\"120\">", "</p>", "",
+    "<p align=\"center\"><b>Bold tagline</b>", "<br>second line</p>", "",
+    "# sitepkg", "", "| a | b |", "|---|---|", "| 1 | 2 |", "", "Tail text."
+  ), file.path(pkg, "README.md"))
+  site <- file.path(pkg, "www")
+  dir.create(site)
+  .write_index_qmd(site, pkg, .read_desc(pkg), overwrite = TRUE)
+  idx <- readLines(file.path(site, "index.qmd"))
+  expect_false(any(grepl("<img", idx)))
+  expect_equal(sum(idx == ":::"), 2L)
+  html <- system2(.find_pandoc(), c("-f", "markdown", "-t", "html", file.path(site, "index.qmd")), stdout = TRUE)
+  html <- paste(html, collapse = "\n")
+  expect_match(html, "<div class=\"di-landing\">", fixed = TRUE)
+  expect_match(html, "<div class=\"di-landing-overview\">", fixed = TRUE)
+  # the overview div closes after the last README block, and the outer one after it
+  expect_match(html, "Tail text\\.</p>\\s*</div>\\s*</div>\\s*$")
+  expect_match(html, "Bold tagline", fixed = TRUE)
+  expect_match(html, "<table", fixed = TRUE)
 })
