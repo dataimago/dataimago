@@ -105,3 +105,28 @@ make_fixture_pkg <- function(parent_dir, pkg_name = "fixtpkg") {
 
   pkg_dir
 }
+
+# A schema-valid spec file at <tmp>/dataimago-spec.yaml with quartoBuild on (or off) and
+# an optional generator.siteMode; returns its path.
+site_spec_fixture <- function(tmp, site_mode = NULL, quarto = TRUE) {
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec <- make_spec()
+  spec$features$quartoBuild <- quarto
+  spec$features$aiContext <- FALSE
+  if (!is.null(site_mode)) spec$generator$siteMode <- site_mode
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+  spec_path
+}
+
+# The published spec schema does not carry generator.siteMode yet; schema-validated spec
+# files that set it are rejected until @dataimago/spec adds it. Skips automatically once
+# the bundled schema gains the property.
+skip_if_schema_lacks_sitemode <- function() {
+  schema <- jsonlite::read_json(system.file("schemas", "dataimago-spec.v1alpha1.schema.json", package = "dataimago"))
+  has_site_mode <- !is.null(schema$properties$generator$properties$siteMode)
+  testthat::skip_if_not(
+    has_site_mode,
+    "bundled spec schema has no generator.siteMode yet (wi-20261101-spec-generator-sitemode)"
+  )
+}

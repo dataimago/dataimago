@@ -494,10 +494,12 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "    type: overlay",
     "  navbar:",
     paste0("    title: ", .yaml_quote(pkg)),
-    if (!is.null(logo)) c(
-      paste0("    logo: ", logo$navbar),
-      paste0("    logo-alt: ", .yaml_quote(paste(pkg, "hex logo")))
-    ),
+    if (!is.null(logo)) {
+      c(
+        paste0("    logo: ", logo$navbar),
+        paste0("    logo-alt: ", .yaml_quote(paste(pkg, "hex logo")))
+      )
+    },
     paste0("    pinned: ", if (isTRUE(navbar_pinned)) "true" else "false"),
     "    left:",
     left,
@@ -536,13 +538,19 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 # guard script embeds this function's deparsed source, so the warning and the guard agree.
 .hero_covers <- function(res) {
   res <- unlist(res)
-  if (!is.character(res)) return(FALSE)
+  if (!is.character(res)) {
+    return(FALSE)
+  }
   res <- sub("^\\./", "", res)
   target <- "assets/hero/hero.js"
   any(vapply(res, function(e) {
     base <- sub("(/\\*\\*|/)$", "", e)
-    if (base %in% c("assets", "assets/hero", target)) return(TRUE)
-    if (!grepl("*", e, fixed = TRUE)) return(FALSE)
+    if (base %in% c("assets", "assets/hero", target)) {
+      return(TRUE)
+    }
+    if (!grepl("*", e, fixed = TRUE)) {
+      return(FALSE)
+    }
     rx <- gsub("([.+?^${}()|\\[\\]\\\\])", "\\\\\\1", e)
     rx <- gsub("/**/", "\002", rx, fixed = TRUE)
     rx <- gsub("**", "\001", rx, fixed = TRUE)
@@ -577,7 +585,10 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "site_dir <- dirname(path)",
     "hero_js <- list.files(file.path(site_dir, \"assets\", \"hero\"), pattern = \"\\\\.m?js$\", recursive = TRUE)",
     "if (length(hero_js) && !covers_hero(cfg$project$resources)) {",
-    "  problems <- c(problems, \"project.resources must include assets/hero/** (a JS hero is loaded by import(), which Quarto does not publish)\")",
+    paste0(
+      "  problems <- c(problems, \"project.resources must include assets/hero/** ",
+      "(a JS hero is loaded by import(), which Quarto does not publish)\")"
+    ),
     "}",
     "if (is.null(cfg$format$`pkgsite-html`)) problems <- c(problems, \"format must be pkgsite-html\")",
     "if (!is.null(cfg$website$navbar$title) && is.null(cfg$website$`site-url`)) problems <- c(problems, \"website.site-url is missing\")",
@@ -642,7 +653,10 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "      - name: Check design sync",
     paste0("        working-directory: ", op),
     "        run: |",
-    "          V=$(node -p \"require('./.dataimago/design.json').version\") || { echo '::error::missing or unreadable .dataimago/design.json' >&2; exit 1; }",
+    paste0(
+      "          V=$(node -p \"require('./.dataimago/design.json').version\") || ",
+      "{ echo '::error::missing or unreadable .dataimago/design.json' >&2; exit 1; }"
+    ),
     "          [ -n \"$V\" ] || { echo '::error::design.json has no version' >&2; exit 1; }",
     "          npx --yes -p \"@dataimago/css@${V}\" dataimago-sync --check",
     "      - name: Check _quarto.yml",
@@ -740,17 +754,25 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 
 # URLs in a DESCRIPTION URL field are separated by commas and/or whitespace.
 .has_cran_url <- function(url) {
-  if (is.null(url) || is.na(url)) return(FALSE)
+  if (is.null(url) || is.na(url)) {
+    return(FALSE)
+  }
   urls <- trimws(strsplit(url, "[,[:space:]]+")[[1]])
   any(grepl("^https?://(www\\.)?cran\\.r-project\\.org(/|$)", urls, ignore.case = TRUE))
 }
 
 # http(s) values are linked as they are, an email becomes mailto:, anything else is omitted.
 .issues_href <- function(x) {
-  if (is.null(x) || is.na(x)) return(NULL)
+  if (is.null(x) || is.na(x)) {
+    return(NULL)
+  }
   x <- trimws(x)
-  if (grepl("^https?://[^[:space:]]+$", x, ignore.case = TRUE)) return(x)
-  if (grepl("^[^@[:space:]<>]+@[^@[:space:]<>]+\\.[^@[:space:]<>]+$", x)) return(paste0("mailto:", x))
+  if (grepl("^https?://[^[:space:]]+$", x, ignore.case = TRUE)) {
+    return(x)
+  }
+  if (grepl("^[^@[:space:]<>]+@[^@[:space:]<>]+\\.[^@[:space:]<>]+$", x)) {
+    return(paste0("mailto:", x))
+  }
   NULL
 }
 
@@ -825,9 +847,13 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   atx <- which(!in_fence & grepl("^# ", body))[1]
   n <- length(body)
   setext <- if (n > 1L) {
-    which(!in_fence[-n] & !in_fence[-1] & nzchar(trimws(body[-n])) & !grepl("^\\s*(#|>|[-*+] )", body[-n]) &
-      grepl("^ {0,3}=+\\s*$", body[-1]))[1]
-  } else NA_integer_
+    which(
+      !in_fence[-n] & !in_fence[-1] & nzchar(trimws(body[-n])) & !grepl("^\\s*(#|>|[-*+] )", body[-n]) &
+        grepl("^ {0,3}=+\\s*$", body[-1])
+    )[1]
+  } else {
+    NA_integer_
+  }
   if (!is.na(setext) && (is.na(atx) || setext < atx)) {
     body <- body[-c(setext, setext + 1L)]
     in_fence <- in_fence[-c(setext, setext + 1L)]
@@ -887,7 +913,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     f <- if (length(m)) substr(trimws(m), 1L, 1L) else NA_character_
     if (is.null(marker)) {
       if (!is.na(f)) marker <- f
-    } else if (!is.na(f) && identical(f, marker)) marker <- NULL
+    } else if (!is.na(f) && identical(f, marker)) {
+      marker <- NULL
+    }
   }
   marker
 }
@@ -944,7 +972,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 }
 
 .parse_iso_date <- function(x) {
-  if (!grepl("^[0-9]{4}-[0-9]{2}(-[0-9]{2})?$", x)) return(NA)
+  if (!grepl("^[0-9]{4}-[0-9]{2}(-[0-9]{2})?$", x)) {
+    return(NA)
+  }
   full <- if (nchar(x) == 7L) paste0(x, "-01") else x
   d <- as.Date(full, format = "%Y-%m-%d")
   if (is.na(d) || format(d, "%Y-%m-%d") != full) NA else as.numeric(d)
@@ -953,12 +983,16 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 # Reads ui/<file>; NULL when absent or empty. Aborts naming the file, entry and field.
 .read_ui_list <- function(package_path, file, required) {
   path <- file.path(package_path, "ui", file)
-  if (!file.exists(path)) return(NULL)
+  if (!file.exists(path)) {
+    return(NULL)
+  }
   rel <- file.path("ui", file)
   x <- tryCatch(yaml::yaml.load_file(path), error = function(e) {
     stop(rel, " could not be parsed: ", conditionMessage(e), call. = FALSE)
   })
-  if (is.null(x) || length(x) == 0L) return(NULL)
+  if (is.null(x) || length(x) == 0L) {
+    return(NULL)
+  }
   if (!is.list(x) || !is.null(names(x))) stop(rel, " must be a list of entries.", call. = FALSE)
   for (i in seq_along(x)) {
     e <- x[[i]]
@@ -993,7 +1027,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 # Single-line fields: every whitespace run, newlines included, becomes one space.
 .field <- function(e, f) {
   v <- e[[f]]
-  if (is.null(v) || length(v) == 0L) return(NULL)
+  if (is.null(v) || length(v) == 0L) {
+    return(NULL)
+  }
   v <- trimws(gsub("[[:space:]]+", " ", paste(unlist(v), collapse = ", ")))
   if (is.na(v) || !nzchar(v)) NULL else v
 }
@@ -1001,9 +1037,13 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 # Abstract: a blockquote; a line cannot open a heading, list, quote or Quarto div.
 .abstract_block <- function(e) {
   v <- e$abstract
-  if (is.null(v)) return(NULL)
+  if (is.null(v)) {
+    return(NULL)
+  }
   lines <- trimws(strsplit(paste(unlist(v), collapse = "\n"), "\r?\n")[[1]])
-  if (!any(nzchar(lines))) return(NULL)
+  if (!any(nzchar(lines))) {
+    return(NULL)
+  }
   lines <- .md_escape(lines)
   lines <- sub("^(#|-|\\+|:|=|~)", "\\\\\\1", lines)
   lines <- sub("^([0-9]+)([.)])", "\\1\\\\\\2", lines)
@@ -1024,7 +1064,8 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   if (file.exists(path) && !.has_marker(path)) {
     stop(
       "The existing ", file, " is not generated, so your own ", file, " is kept. ",
-      "Remove ui/", sub("\\.qmd$", ".yml", file), " or delete the page.", call. = FALSE
+      "Remove ui/", sub("\\.qmd$", ".yml", file), " or delete the page.",
+      call. = FALSE
     )
   }
   invisible(.write_lines(build(entries), path))
@@ -1092,7 +1133,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 # Written only when missing: composed overview pages replace it later.
 .overview_placeholder <- function(site_dir, pkg) {
   path <- file.path(site_dir, "overview", "index.qmd")
-  if (file.exists(path)) return(invisible(path))
+  if (file.exists(path)) {
+    return(invisible(path))
+  }
   invisible(.write_lines(c(
     "---", "title: \"Overview\"", "page-layout: article", "toc: false", "---", "",
     paste0(
@@ -1129,23 +1172,35 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   stack <- character(0)
   buf <- character(0)
   out <- list()
-  flush_decl <- function() {
+  # The declaration in `buf` under the current `stack`, or NULL when it is not a declaration.
+  read_decl <- function(buf, stack) {
     seg <- trimws(paste(buf, collapse = ""))
-    buf <<- character(0)
     r <- regmatches(seg, regexec("^([A-Za-z-]+)\\s*:(.*)$", seg))[[1]]
-    if (length(r) == 3L) out[[length(out) + 1L]] <<- list(prop = tolower(r[2]), value = trimws(r[3]), in_np = any(stack == "np") && !any(stack == "media"))
+    if (length(r) != 3L) {
+      return(NULL)
+    }
+    list(
+      prop = tolower(r[2]), value = trimws(r[3]),
+      in_np = any(stack == "np") && !any(stack == "media")
+    )
   }
   for (ch in chars) {
     if (ch == "{") {
       prelude <- paste(buf, collapse = "")
       buf <- character(0)
-      kind <- if (.np_prelude(prelude)) "np" else if (grepl("^\\s*@(media|supports|container|layer)", prelude, ignore.case = TRUE)) "media" else "other"
+      kind <- if (.np_prelude(prelude)) {
+        "np"
+      } else if (grepl("^\\s*@(media|supports|container|layer)", prelude, ignore.case = TRUE)) {
+        "media"
+      } else {
+        "other"
+      }
       stack <- c(stack, kind)
-    } else if (ch == "}") {
-      flush_decl()
-      if (length(stack)) stack <- stack[-length(stack)]
-    } else if (ch == ";") {
-      flush_decl()
+    } else if (ch == "}" || ch == ";") {
+      decl <- read_decl(buf, stack)
+      if (!is.null(decl)) out[[length(out) + 1L]] <- decl
+      buf <- character(0)
+      if (ch == "}" && length(stack)) stack <- stack[-length(stack)]
     } else {
       buf <- c(buf, ch)
     }
@@ -1179,8 +1234,10 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     fail(cli::format_inline("contains a {.code {h}} element."), "Hero SVGs carry no scripts; use hero.js for scripted heroes.")
   }
   if (!is.null(h <- hit("animateTransform|animateMotion|animate|set"))) {
-    fail(cli::format_inline("uses the SMIL element {.code {h}}."),
-         "SMIL cannot be paused or lint-checked; animate with CSS inside @media (prefers-reduced-motion: no-preference).")
+    fail(
+      cli::format_inline("uses the SMIL element {.code {h}}."),
+      "SMIL cannot be paused or lint-checked; animate with CSS inside @media (prefers-reduced-motion: no-preference)."
+    )
   }
   if (!is.null(h <- hit("foreignObject|iframe|object|embed"))) {
     fail(cli::format_inline("contains {.code {h}}, which embeds foreign content."), "Remove it; hero SVGs are plain vector markup.")
@@ -1207,8 +1264,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   for (u in urls) {
     target <- trimws(sub("^(?i)url\\s*\\(\\s*[\"']?\\s*", "", u, perl = TRUE))
     if (!startsWith(target, "#")) {
-      shown <- substr(target, 1, 60)
-      fail(cli::format_inline("has a url() to {.url {shown}}."), "Only same-document url(#id) references are allowed.")
+      fail(cli::format_inline("has a url() to {.url {substr(target, 1, 60)}}."), "Only same-document url(#id) references are allowed.")
     }
   }
   markup <- txt
@@ -1225,8 +1281,10 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     val <- sub("^(?i)(?:xlink:)?href\\s*=\\s*", "", h, perl = TRUE)
     val <- trimws(gsub("^[\"']|[\"']$", "", val))
     if (!(startsWith(val, "#") || grepl("^data:image/(png|jpeg|jpg|gif|webp)[;,]", val, ignore.case = TRUE))) {
-      shown <- substr(val, 1, 60)
-      fail(cli::format_inline("has an href to {.url {shown}}."), "Only same-document fragments (#id) and raster data:image/ (png, jpeg, gif, webp) URIs are allowed.")
+      fail(
+        cli::format_inline("has an href to {.url {substr(val, 1, 60)}}."),
+        "Only same-document fragments (#id) and raster data:image/ (png, jpeg, gif, webp) URIs are allowed."
+      )
     }
   }
   styles
@@ -1248,14 +1306,18 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     }
     d <- Filter(function(d) grepl("^(-[a-z]+-)?(animation|transition)", d$prop), .css_declarations(css))
     if (length(d)) {
-      prop <- d[[1]]$prop
-      fail(cli::format_inline("declares {.code {prop}}."), "A poster is a still frame: no animation or transition declarations at all.")
+      fail(
+        cli::format_inline("declares {.code {d[[1]]$prop}}."),
+        "A poster is a still frame: no animation or transition declarations at all."
+      )
     }
     return(invisible(path))
   }
   if (grepl(inline, markup, perl = TRUE)) {
-    fail("an inline style attribute declares animation or transition, which is outside the prefers-reduced-motion: no-preference media query.",
-         "Move it into the <style> block, inside @media (prefers-reduced-motion: no-preference).")
+    fail(
+      "an inline style attribute declares animation or transition, which is outside the prefers-reduced-motion: no-preference media query.",
+      "Move it into the <style> block, inside @media (prefers-reduced-motion: no-preference)."
+    )
   }
 
   decls <- .css_declarations(css)
@@ -1264,22 +1326,28 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   is_trans <- function(d) grepl("^(-[a-z]+-)?transition(-duration|-delay)?$", d$prop)
   state <- Filter(is_state, decls)
   if (length(state)) {
-    prop <- state[[1]]$prop
-    fail(cli::format_inline("declares {.code {prop}}."), "The page's pause control owns animation-play-state; heroes must not set it.")
+    fail(
+      cli::format_inline("declares {.code {state[[1]]$prop}}."),
+      "The page's pause control owns animation-play-state; heroes must not set it."
+    )
   }
   anim <- Filter(is_anim, decls)
   outside <- Filter(function(d) !d$in_np, anim)
-  np <- "@media (prefers-reduced-motion: no-preference)"
   if (length(outside)) {
-    prop <- outside[[1]]$prop
-    fail(cli::format_inline("declares {.code {prop}} outside {.code {np}}."),
-         "All hero animation must live inside that media query so reduced-motion readers get a still frame.")
+    fail(
+      cli::format_inline("declares {.code {outside[[1]]$prop}} outside {.code @media (prefers-reduced-motion: no-preference)}."),
+      "All hero animation must live inside that media query so reduced-motion readers get a still frame."
+    )
   }
   long <- Filter(function(d) !d$in_np && is_trans(d) && any(.css_ms(d$value) > 300), decls)
   if (length(long)) {
-    prop <- long[[1]]$prop
-    fail(cli::format_inline("declares {.code {prop}} longer than 300ms outside {.code {np}}."),
-         "Keep transitions at 300ms or less, or move them inside the media query.")
+    fail(
+      cli::format_inline(
+        "declares {.code {long[[1]]$prop}} longer than 300ms ",
+        "outside {.code @media (prefers-reduced-motion: no-preference)}."
+      ),
+      "Keep transitions at 300ms or less, or move them inside the media query."
+    )
   }
 
   if (length(anim)) {
@@ -1342,7 +1410,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 .install_hero <- function(hero, site_dir) {
   dest <- file.path(site_dir, "assets", "hero")
   unlink(dest, recursive = TRUE)
-  if (identical(hero$kind, "fallback")) return(list(kind = "fallback", alt = hero$alt))
+  if (identical(hero$kind, "fallback")) {
+    return(list(kind = "fallback", alt = hero$alt))
+  }
   dir.create(dest, recursive = TRUE, showWarnings = FALSE)
   name <- paste0("hero.", tools::file_ext(hero$src))
   file.copy(hero$src, file.path(dest, name), overwrite = TRUE)
@@ -1409,8 +1479,9 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
     ))
   }
   segs <- strsplit(sub("^\\./", "", output_path), "/", fixed = TRUE)[[1]]
-  if (!nzchar(output_path) || startsWith(output_path, "/") || !length(segs) ||
-    any(!nzchar(segs)) || any(segs %in% c(".", ".."))) {
+  bad_path <- !nzchar(output_path) || startsWith(output_path, "/") || !length(segs) ||
+    any(!nzchar(segs)) || any(segs %in% c(".", ".."))
+  if (bad_path) {
     cli::cli_abort(c(
       "{.arg output_path} must be a relative sub-directory of the package.",
       x = "Got {.val {output_path}}: no leading {.code /}, {.code .}, {.code ..} or empty segments."
@@ -1514,8 +1585,8 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   u <- strsplit(trimws(paste(text, collapse = " ")), "[,[:space:]]+")[[1]]
   u <- sub("[#?].*$", "", u[nzchar(u)])
   site <- u[grepl("^https://[^/]+\\.github\\.io(/|$)", u)][1]
-  repo <- u[grepl("^https://github\\.com/[^/]+/[^/]+", u) &
-    !grepl("^https://github\\.com/(orgs|sponsors|settings)/", u)][1]
+  is_repo <- grepl("^https://github\\.com/[^/]+/[^/]+", u) & !grepl("^https://github\\.com/(orgs|sponsors|settings)/", u)
+  repo <- u[is_repo][1]
   if (!is.na(repo)) repo <- sub("\\.git$", "", sub("/+$", "", sub("^(https://github\\.com/[^/]+/[^/]+).*$", "\\1", repo)))
   list(site_url = if (is.na(site)) NULL else site, repo_url = if (is.na(repo)) NULL else repo)
 }
@@ -1530,7 +1601,9 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   txt <- if (file.exists(path)) rawToChar(readBin(path, "raw", file.size(path))) else ""
   have <- trimws(strsplit(txt, "\r?\n")[[1]])
   add <- setdiff(patterns, have)
-  if (!length(add)) return(invisible(path))
+  if (!length(add)) {
+    return(invisible(path))
+  }
   eol <- if (grepl("\r\n", txt, fixed = TRUE)) "\r\n" else "\n"
   if (nzchar(txt) && !grepl("\n$", txt)) {
     out <- paste0(txt, eol, paste(add, collapse = eol))
@@ -1707,17 +1780,19 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
     command <- "npx"
     args <- c("--yes", "-p", paste0("@dataimago/css@", version), "dataimago-sync")
   }
-  shown <- paste(c(command, args), collapse = " ")
   if (!nzchar(.tool_path(command))) {
     cli::cli_abort(c(
       "{.code {command}} was not found on the PATH, so the theme and fonts cannot be synced.",
       "i" = "Install Node.js, then run this in {.path {site_dir}}:",
-      " " = "{.code {shown}}"
+      " " = "{.code {paste(c(command, args), collapse = ' ')}}"
     ))
   }
   status <- .run_tool(command, args, wd = site_dir)
   if (!identical(as.integer(status), 0L)) {
-    cli::cli_abort(c("{.code {shown}} exited with status {status}.", "i" = "Run it in {.path {site_dir}} to see why."))
+    cli::cli_abort(c(
+      "{.code {paste(c(command, args), collapse = ' ')}} exited with status {status}.",
+      "i" = "Run it in {.path {site_dir}} to see why."
+    ))
   }
   invisible(status)
 }

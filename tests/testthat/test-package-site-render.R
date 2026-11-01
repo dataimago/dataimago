@@ -27,8 +27,14 @@ test_that("site renders with the synced leaf", {
   # the hero and cards are siblings of the overview, never inside it
   if (requireNamespace("xml2", quietly = TRUE)) {
     doc <- xml2::read_html(html)
-    inside <- function(cls) length(xml2::xml_find_all(doc, sprintf(
-      "//*[contains(concat(' ', normalize-space(@class), ' '), ' di-landing-overview ')]//*[contains(concat(' ', normalize-space(@class), ' '), ' %s ')]", cls)))
+    inside <- function(cls) {
+      length(xml2::xml_find_all(doc, sprintf(
+        paste0(
+          "//*[contains(concat(' ', normalize-space(@class), ' '), ' di-landing-overview ')]",
+          "//*[contains(concat(' ', normalize-space(@class), ' '), ' %s ')]"
+        ), cls
+      )))
+    }
     expect_equal(inside("di-landing-hero"), 0L)
     expect_equal(inside("di-landing-cards"), 0L)
     expect_equal(length(xml2::xml_find_all(doc, "//h1")), 1L)

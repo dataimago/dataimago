@@ -286,9 +286,17 @@ test_that("create_package_site syncs by default and skips with sync = FALSE", {
 test_that("missing npx aborts with the command", {
   site <- withr::local_tempdir()
   local_mocked_bindings(.tool_path = function(name) "")
-  expect_error(.run_dataimago_sync(site, "0.1.0-alpha.21", from = ""), "npx --yes -p @dataimago/css@0.1.0-alpha.21 dataimago-sync", fixed = TRUE)
+  expect_error(
+    .run_dataimago_sync(site, "0.1.0-alpha.21", from = ""),
+    "npx --yes -p @dataimago/css@0.1.0-alpha.21 dataimago-sync",
+    fixed = TRUE
+  )
   from <- normalizePath(withr::local_tempdir())
-  expect_error(.run_dataimago_sync(site, "0.1.0-alpha.21", from = from), paste("node", file.path(from, "packages/css/dist/bin/dataimago-sync.mjs"), "--from", from), fixed = TRUE)
+  expect_error(
+    .run_dataimago_sync(site, "0.1.0-alpha.21", from = from),
+    paste("node", file.path(from, "packages/css/dist/bin/dataimago-sync.mjs"), "--from", from),
+    fixed = TRUE
+  )
 })
 
 # ---- fix round 1 ---------------------------------------------------------------
@@ -342,8 +350,10 @@ test_that("font css paths follow the mapped destinations", {
   out[["fonts/latin/"]] <- "custom/"
   expect_equal(
     .pkgsite_font_css(as.list(out)),
-    c("custom/fonts.css", "assets/fonts/latin-ext/fonts.css", "assets/fonts/josefin/fonts.css",
-      "assets/fonts/math/fonts.css", "assets/fonts/lang.css")
+    c(
+      "custom/fonts.css", "assets/fonts/latin-ext/fonts.css", "assets/fonts/josefin/fonts.css",
+      "assets/fonts/math/fonts.css", "assets/fonts/lang.css"
+    )
   )
 })
 
@@ -353,7 +363,9 @@ test_that("self_host_fonts reads the font list from the site's merged design.jso
   out <- file.path(dirname(pkg), "www5")
   dir.create(file.path(out, ".dataimago"), recursive = TRUE)
   jsonlite::write_json(list(version = "9", outputs = list("fonts/latin/" = "custom/")),
-    file.path(out, ".dataimago", "design.json"), auto_unbox = TRUE)
+    file.path(out, ".dataimago", "design.json"),
+    auto_unbox = TRUE
+  )
   local_mocked_bindings(.run_dataimago_sync = function(...) invisible(0L))
   suppressMessages(utils::capture.output(
     create_quarto_documentation(pkg, out, self_host_fonts = TRUE, template = "plain")
@@ -425,14 +437,14 @@ test_that("CRLF and the trailing-newline state are kept; only the inserted lines
   expect_false(grepl("[^\r]\n", r$after))
   expect_true(endsWith(r$after, "\r\n"))
   expect_true(startsWith(r$after, '{\r\n  "package": "p",\r\n  "version": "1",\r\n  "outputs": {\r\n    "fonts/latin/": "x/"'))
-  expect_true(endsWith(r$after, '\r\n  }\r\n}\r\n'))
+  expect_true(endsWith(r$after, "\r\n  }\r\n}\r\n"))
   expect_equal(r$parsed$outputs[["fonts/math/"]], "assets/fonts/math/")
 
   bare <- '{\n  "package": "p",\n  "version": "1",\n  "outputs": {\n    "fonts/latin/": "x/"\n  }\n}'
   r <- merge_raw(bare)
   expect_false(endsWith(r$after, "\n"))
   expect_true(startsWith(r$after, '{\n  "package": "p",\n  "version": "1",\n  "outputs": {\n    "fonts/latin/": "x/"'))
-  expect_true(endsWith(r$after, '\n  }\n}'))
+  expect_true(endsWith(r$after, "\n  }\n}"))
   expect_equal(r$parsed$outputs[["fonts/latin-ext/"]], "assets/fonts/latin-ext/")
 })
 
@@ -440,11 +452,11 @@ test_that("inserted entries use the file's own indentation", {
   four <- '{\n    "package": "p",\n    "version": "1",\n    "outputs": {\n        "fonts/latin/": "x/"\n    }\n}\n'
   r <- merge_raw(four)
   expect_match(r$after, '\n        "fonts/math/": ', fixed = TRUE)
-  expect_true(endsWith(r$after, '\n    }\n}\n'))
+  expect_true(endsWith(r$after, "\n    }\n}\n"))
   tab <- '{\n\t"package": "p",\n\t"version": "1",\n\t"outputs": {\n\t\t"fonts/latin/": "x/"\n\t}\n}\n'
   r <- merge_raw(tab)
   expect_match(r$after, '\n\t\t"fonts/math/": ', fixed = TRUE)
-  expect_true(endsWith(r$after, '\n\t}\n}\n'))
+  expect_true(endsWith(r$after, "\n\t}\n}\n"))
   expect_false(grepl("\n  ", r$after))
   # absent outputs: the new member follows the file's indent too
   r <- merge_raw('{\n\t"package": "p",\n\t"version": "1"\n}\n')
@@ -456,8 +468,10 @@ test_that("inserted entries use the file's own indentation", {
 
 test_that("landing yml matches the contract", {
   pkg <- make_site_fixture()
-  desc <- c(readLines(file.path(pkg, "DESCRIPTION")), "URL: https://CRAN.R-project.org/package=sitepkg",
-            "BugReports: https://github.com/o/sitepkg/issues")
+  desc <- c(
+    readLines(file.path(pkg, "DESCRIPTION")), "URL: https://CRAN.R-project.org/package=sitepkg",
+    "BugReports: https://github.com/o/sitepkg/issues"
+  )
   writeLines(desc, file.path(pkg, "DESCRIPTION"))
   d <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = "https://github.com/o/sitepkg")
   p <- d$pkgsite
@@ -554,7 +568,10 @@ test_that("API card uses singular and plural forms and counts only public functi
   expect_equal(api(), "2 functions, 1 data set")
   unlink(file.path(pkg, "man", "whisper.Rd"))
   expect_equal(api(), "1 function, 1 data set")
-  writeLines(c("\\name{extra}", "\\alias{extra}", "\\title{Extra data}", "\\docType{data}", "\\keyword{datasets}"), file.path(pkg, "man", "extra.Rd"))
+  writeLines(
+    c("\\name{extra}", "\\alias{extra}", "\\title{Extra data}", "\\docType{data}", "\\keyword{datasets}"),
+    file.path(pkg, "man", "extra.Rd")
+  )
   expect_equal(api(), "1 function, 2 data sets")
 })
 
@@ -577,7 +594,10 @@ test_that("README lead block: only a real block-level tag is fenced", {
 
 test_that("the first-H1 strip ignores comment lines inside code fences", {
   pkg <- make_site_fixture()
-  writeLines(c("Intro first.", "", "```bash", "# not a heading", "echo hi", "```", "", "# sitepkg", "", "After."), file.path(pkg, "README.md"))
+  writeLines(
+    c("Intro first.", "", "```bash", "# not a heading", "echo hi", "```", "", "# sitepkg", "", "After."),
+    file.path(pkg, "README.md")
+  )
   b <- .readme_overview_body(pkg)
   expect_true("# not a heading" %in% b)
   expect_false("# sitepkg" %in% b)
@@ -633,7 +653,13 @@ test_that("index.qmd wraps README in .di-landing-overview and is kept on regener
   dir.create(site)
   .write_index_qmd(site, pkg, .read_desc(pkg), overwrite = FALSE)
   idx <- readLines(file.path(site, "index.qmd"))
-  expect_equal(idx[1:7], c("---", "pagetitle: \"sitepkg\"", "page-layout: custom", "toc: false", "shift-heading-level-by: 1", "metadata-files: [_landing.yml]", "---"))
+  expect_equal(
+    idx[1:7],
+    c(
+      "---", "pagetitle: \"sitepkg\"", "page-layout: custom", "toc: false",
+      "shift-heading-level-by: 1", "metadata-files: [_landing.yml]", "---"
+    )
+  )
   expect_equal(idx[9:11], c("::: {.di-landing}", "::: {.di-landing-overview}", "Shout and whisper words."))
   expect_equal(tail(idx[nzchar(idx)], 2), c(":::", ":::"))
   expect_false(any(grepl("^# sitepkg|\\[!\\[CRAN", idx)))
@@ -700,15 +726,17 @@ test_that("the man/figures rewrite skips fenced code", {
 # ---- hero slot (Task B3) ----
 
 good_hero_svg <- function(extra_style = "", body = "") {
-  c('<!-- built -->',
+  c(
+    "<!-- built -->",
     '<svg class="h" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">',
-    '<style>',
-    '@media (prefers-reduced-motion: no-preference) {',
-    '  .h .a { animation: spin 2s ease; animation-iteration-count: 3; }',
-    '  @keyframes spin { from { opacity: 0 } to { opacity: 1 } }',
-    '}',
+    "<style>",
+    "@media (prefers-reduced-motion: no-preference) {",
+    "  .h .a { animation: spin 2s ease; animation-iteration-count: 3; }",
+    "  @keyframes spin { from { opacity: 0 } to { opacity: 1 } }",
+    "}",
     extra_style,
-    '</style>', body, '<circle class="a" r="2"/></svg>')
+    "</style>", body, '<circle class="a" r="2"/></svg>'
+  )
 }
 
 write_hero <- function(pkg, lines, name = "hero.svg") {
@@ -738,8 +766,10 @@ test_that("svg hero refusals name the file and the problem", {
     set = good_hero_svg(body = '<set attributeName="x" to="1"/>'),
     viewbox = sub("viewBox=\"0 0 10 10\"", "width=\"10\"", good_hero_svg(), fixed = TRUE)
   )
-  pat <- c(xml = "<\\?xml", script = "<script", animate = "SMIL", animateTransform = "SMIL",
-           animateMotion = "SMIL", set = "SMIL", viewbox = "viewBox")
+  pat <- c(
+    xml = "<\\?xml", script = "<script", animate = "SMIL", animateTransform = "SMIL",
+    animateMotion = "SMIL", set = "SMIL", viewbox = "viewBox"
+  )
   for (nm in names(bad)) {
     p <- write_hero(pkg, bad[[nm]], paste0(nm, ".svg"))
     expect_error(.check_hero_svg(p), pat[[nm]], info = nm)
@@ -754,7 +784,8 @@ test_that("animation outside the no-preference media block is refused", {
   p2 <- write_hero(pkg, good_hero_svg(".h .b { animation-name: spin; }"), "outside-name.svg")
   expect_error(.check_hero_svg(p2), "prefers-reduced-motion")
   p3 <- write_hero(pkg, good_hero_svg(
-    "@media (prefers-reduced-motion: reduce) { .h .b { animation: spin 2s; } }"), "reduce.svg")
+    "@media (prefers-reduced-motion: reduce) { .h .b { animation: spin 2s; } }"
+  ), "reduce.svg")
   expect_error(.check_hero_svg(p3), "prefers-reduced-motion")
   p4 <- write_hero(pkg, good_hero_svg(body = '<rect style="animation: spin 2s"/>'), "inline.svg")
   expect_error(.check_hero_svg(p4), "inline")
@@ -815,8 +846,10 @@ test_that("js hero is copied with its poster and recorded", {
   writeLines("png", file.path(pkg, "ui", "hero", "poster.png"))
   site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
   hero <- yaml::read_yaml(file.path(site, "_landing.yml"))$pkgsite$hero
-  expect_identical(c(hero$kind, hero$src, hero$poster),
-                   c("js", "assets/hero/hero.js", "assets/hero/poster.png"))
+  expect_identical(
+    c(hero$kind, hero$src, hero$poster),
+    c("js", "assets/hero/hero.js", "assets/hero/poster.png")
+  )
   expect_true(file.exists(file.path(site, "assets", "hero", "hero.js")))
 })
 
@@ -832,13 +865,19 @@ test_that("no hero: fallback recorded and nothing copied", {
 
 # ---- hero slot, review round 1 ----
 
-G1 <- '@media (prefers-reduced-motion: no-preference) { .h .a { animation: s 2s; animation-iteration-count: 3; } }'
-mk1 <- function(style = "", body = "", head = G1) {
+g1 <- "@media (prefers-reduced-motion: no-preference) { .h .a { animation: s 2s; animation-iteration-count: 3; } }"
+mk1 <- function(style = "", body = "", head = g1) {
   paste0('<svg class="h" viewBox="0 0 1 1"><style>', head, "\n", style, "</style>", body, "</svg>")
 }
 hero_msg <- function(pkg, txt, name = "probe.svg") {
   p <- write_hero(pkg, txt, name)
-  tryCatch({ .check_hero_svg(p); NA_character_ }, error = function(e) conditionMessage(e))
+  tryCatch(
+    {
+      .check_hero_svg(p)
+      NA_character_
+    },
+    error = function(e) conditionMessage(e)
+  )
 }
 
 test_that("switching to fallback clears assets/hero", {
@@ -865,8 +904,10 @@ test_that("error messages are interpolated, not raw glue, and name the culprit",
 
 test_that("vendor-prefixed and uppercase animation properties are refused", {
   pkg <- make_site_fixture()
-  for (css in c(".h .b { -webkit-animation: s 2s infinite }", ".h .b { -webkit-animation-name: s }",
-                ".h .b { ANIMATION: s 1s }", ".h .b { -moz-animation: s 1s }")) {
+  for (css in c(
+    ".h .b { -webkit-animation: s 2s infinite }", ".h .b { -webkit-animation-name: s }",
+    ".h .b { ANIMATION: s 1s }", ".h .b { -moz-animation: s 1s }"
+  )) {
     expect_match(hero_msg(pkg, mk1(css)), "animation", info = css)
   }
 })
@@ -889,10 +930,13 @@ test_that("the no-preference prelude must be exact", {
 test_that("strings and comments cannot fake or unbalance the media block", {
   pkg <- make_site_fixture()
   cases <- c(
-    d1 = '<svg viewBox="0 0 1 1"><style>.x::after{content:"@media (prefers-reduced-motion: no-preference) {{"} .y{animation:s 1s infinite}</style></svg>',
+    d1 = paste0(
+      '<svg viewBox="0 0 1 1"><style>.x::after{content:"@media (prefers-reduced-motion: no-preference) {{"} ',
+      ".y{animation:s 1s infinite}</style></svg>"
+    ),
     c8 = mk1('.h .b::after { content: "}" } .h .c { animation: s 1s }'),
     c8b = mk1('.h .b::after { content: "{"; } .h .c{animation:s 1s}'),
-    c8x = mk1('.h .b::after { content: \'@media (prefers-reduced-motion: no-preference) {\' } .h .c { animation: s 1s }')
+    c8x = mk1(".h .b::after { content: '@media (prefers-reduced-motion: no-preference) {' } .h .c { animation: s 1s }")
   )
   for (nm in names(cases)) expect_false(is.na(hero_msg(pkg, cases[[nm]])), info = nm)
   # an escaped quote does not end the string early
@@ -935,11 +979,13 @@ test_that("untrusted-markup rules apply to hero svgs", {
     embed = mk1(body = "<embed src='x'/>"),
     SET = mk1(body = '<SET attributeName="x" to="1"/>'),
     ns_animate = mk1(body = '<svg:animate attributeName="x"/>'),
-    unclosed = paste0('<svg class="h" viewBox="0 0 1 1"><style>', G1)
+    unclosed = paste0('<svg class="h" viewBox="0 0 1 1"><style>', g1)
   )
   for (nm in names(bad)) expect_false(is.na(hero_msg(pkg, bad[[nm]])), info = nm)
-  ok <- mk1(body = paste0('<use href="#a"/><use xlink:href="#a"/>',
-                          '<image href="data:image/png;base64,AAAA"/>'))
+  ok <- mk1(body = paste0(
+    '<use href="#a"/><use xlink:href="#a"/>',
+    '<image href="data:image/png;base64,AAAA"/>'
+  ))
   expect_true(is.na(hero_msg(pkg, ok)))
 })
 
@@ -1071,7 +1117,8 @@ test_that("papers and talks pages from yml; absent yml omits them", {
 test_that("papers and talks yml errors abort with file and entry", {
   pkg <- make_site_fixture()
   dir.create(file.path(pkg, "ui"))
-  site <- file.path(pkg, "ui", "www"); dir.create(site, recursive = TRUE)
+  site <- file.path(pkg, "ui", "www")
+  dir.create(site, recursive = TRUE)
   writeLines(c("- title: [unclosed", "  url: x: y: :"), file.path(pkg, "ui", "papers.yml"))
   expect_error(.papers_page(pkg, site), "papers.yml")
   writeLines(c("- title: A", "  url: https://e.org", "- title: B"), file.path(pkg, "ui", "papers.yml"))
@@ -1112,7 +1159,8 @@ ui_site <- function(papers = NULL, talks = NULL) {
   dir.create(file.path(pkg, "ui"))
   if (!is.null(papers)) writeLines(papers, file.path(pkg, "ui", "papers.yml"))
   if (!is.null(talks)) writeLines(talks, file.path(pkg, "ui", "talks.yml"))
-  site <- file.path(pkg, "ui", "www"); dir.create(site, recursive = TRUE)
+  site <- file.path(pkg, "ui", "www")
+  dir.create(site, recursive = TRUE)
   list(pkg = pkg, site = site)
 }
 ok_paper <- c("- title: A", "  url: https://e.org/a")
@@ -1121,13 +1169,15 @@ marker <- "<!-- generated by dataimago::create_package_site() -->"
 
 test_that("generated papers and talks carry a marker; only marked pages are deleted or overwritten", {
   u <- ui_site(ok_paper, ok_talk)
-  .papers_page(u$pkg, u$site); .talks_page(u$pkg, u$site)
+  .papers_page(u$pkg, u$site)
+  .talks_page(u$pkg, u$site)
   expect_true(marker %in% readLines(file.path(u$site, "papers.qmd")))
   expect_true(marker %in% readLines(file.path(u$site, "talks.qmd")))
-  expect_no_error(.papers_page(u$pkg, u$site))  # regeneration over its own page
+  expect_no_error(.papers_page(u$pkg, u$site)) # regeneration over its own page
   unlink(file.path(u$pkg, "ui", "papers.yml"))
   writeLines("", file.path(u$pkg, "ui", "talks.yml"))
-  expect_null(.papers_page(u$pkg, u$site)); expect_null(.talks_page(u$pkg, u$site))
+  expect_null(.papers_page(u$pkg, u$site))
+  expect_null(.talks_page(u$pkg, u$site))
   expect_false(file.exists(file.path(u$site, "papers.qmd")))
   expect_false(file.exists(file.path(u$site, "talks.qmd")))
   # hand-written page: kept without yml, protected with yml
@@ -1335,7 +1385,10 @@ test_that("Rbuildignore excludes the first segment of output_path", {
 })
 
 test_that("desc urls drop fragments and non-repo github paths", {
-  u <- .desc_urls(list(URL = "https://github.com/orgs/foo, https://github.com/sponsors/x https://github.com/settings/y https://github.com/real/repo#readme"))
+  u <- .desc_urls(list(URL = paste(
+    "https://github.com/orgs/foo, https://github.com/sponsors/x",
+    "https://github.com/settings/y https://github.com/real/repo#readme"
+  )))
   expect_equal(u$repo_url, "https://github.com/real/repo")
   u2 <- .desc_urls(list(URL = "https://a.github.io/p/?x=1#top"))
   expect_equal(u2$site_url, "https://a.github.io/p/")
@@ -1394,7 +1447,8 @@ test_that("an existing _quarto.yml without the hero entry warns and is left alon
   writeLines("# my own config", file.path(site, "_quarto.yml"))
   expect_warning(
     create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/"),
-    "assets/hero/**", fixed = TRUE
+    "assets/hero/**",
+    fixed = TRUE
   )
   expect_equal(readLines(file.path(site, "_quarto.yml")), "# my own config")
 })
@@ -1419,12 +1473,17 @@ test_that("a comment or unrelated key naming assets/hero does not suppress the w
   pkg <- js_hero_fixture()
   site <- file.path(pkg, "ui", "www")
   dir.create(site, recursive = TRUE)
-  writeLines(c("# TODO add assets/hero/** later", "project:", "  type: website",
-               "  resources:", "    - assets/fonts/**", "other: assets/hero/x"),
-             file.path(site, "_quarto.yml"))
+  writeLines(
+    c(
+      "# TODO add assets/hero/** later", "project:", "  type: website",
+      "  resources:", "    - assets/fonts/**", "other: assets/hero/x"
+    ),
+    file.path(site, "_quarto.yml")
+  )
   expect_warning(
     create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/"),
-    "assets/hero/**", fixed = TRUE
+    "assets/hero/**",
+    fixed = TRUE
   )
 })
 
@@ -1433,17 +1492,24 @@ test_that("a comment or unrelated key naming assets/hero does not suppress the w
 probe_hero_cover <- function(resources_yaml, env = parent.frame()) {
   pkg <- js_hero_fixture(env)
   site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
-  yml <- c("project:", "  type: website", "  output-dir: _site", resources_yaml,
-           "website:", "  title: x", "  site-url: https://example.org/", "format:", "  pkgsite-html: default")
+  yml <- c(
+    "project:", "  type: website", "  output-dir: _site", resources_yaml,
+    "website:", "  title: x", "  site-url: https://example.org/", "format:", "  pkgsite-html: default"
+  )
   writeLines(yml, file.path(site, "_quarto.yml"))
   guard <- file.path(site, "tools", "check-quarto-yml.R")
   out <- suppressWarnings(system2(file.path(R.home("bin"), "Rscript"),
-    c(guard, file.path(site, "_quarto.yml")), stdout = TRUE, stderr = TRUE))
+    c(guard, file.path(site, "_quarto.yml")),
+    stdout = TRUE, stderr = TRUE
+  ))
   status <- if (is.null(attr(out, "status"))) 0L else attr(out, "status")
   warned <- FALSE
   withCallingHandlers(
     create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/"),
-    warning = function(w) { if (grepl("assets/hero/**", conditionMessage(w), fixed = TRUE)) warned <<- TRUE; invokeRestart("muffleWarning") }
+    warning = function(w) {
+      if (grepl("assets/hero/**", conditionMessage(w), fixed = TRUE)) warned <<- TRUE
+      invokeRestart("muffleWarning")
+    }
   )
   list(warned = warned, guard_ok = identical(status, 0L), guard_out = paste(out, collapse = "\n"))
 }
@@ -1451,8 +1517,10 @@ res_list <- function(...) c("  resources:", paste0("    - ", c(...)))
 
 test_that("covering resources stay silent in both the warning and the guard", {
   skip_if_not_installed("yaml")
-  for (e in list(c("assets/fonts/**", "assets/**"), c("assets/fonts/**", "./assets/hero/**"),
-                 c("assets/fonts/**", "assets/hero/"), c("assets/fonts/**", "assets/hero/**"))) {
+  for (e in list(
+    c("assets/fonts/**", "assets/**"), c("assets/fonts/**", "./assets/hero/**"),
+    c("assets/fonts/**", "assets/hero/"), c("assets/fonts/**", "assets/hero/**")
+  )) {
     r <- probe_hero_cover(res_list(e))
     expect_false(r$warned, info = paste(e, collapse = ","))
     expect_true(r$guard_ok, info = paste(e, collapse = ","))
@@ -1485,7 +1553,9 @@ test_that("a stale hero entry after switching from js to svg neither warns nor f
   expect_no_warning(create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/"))
   guard <- file.path(site, "tools", "check-quarto-yml.R")
   status <- suppressWarnings(system2(file.path(R.home("bin"), "Rscript"),
-    c(guard, file.path(site, "_quarto.yml")), stdout = FALSE, stderr = FALSE))
+    c(guard, file.path(site, "_quarto.yml")),
+    stdout = FALSE, stderr = FALSE
+  ))
   expect_equal(status, 0L)
 })
 
@@ -1499,7 +1569,9 @@ test_that("the guard finds nested and .mjs heroes", {
   cfg <- readLines(file.path(site, "_quarto.yml"))
   writeLines(cfg[!grepl("assets/hero", cfg, fixed = TRUE)], file.path(site, "_quarto.yml"))
   status <- suppressWarnings(system2(file.path(R.home("bin"), "Rscript"),
-    c(file.path(site, "tools", "check-quarto-yml.R"), file.path(site, "_quarto.yml")), stdout = FALSE, stderr = FALSE))
+    c(file.path(site, "tools", "check-quarto-yml.R"), file.path(site, "_quarto.yml")),
+    stdout = FALSE, stderr = FALSE
+  ))
   expect_equal(status, 1L)
 })
 
@@ -1574,7 +1646,11 @@ test_that("with no logo the config carries no logo, logo-alt or favicon keys and
   expect_false(any(grepl("assets/brand", readLines(file.path(site, "_quarto.yml")), fixed = TRUE)))
   expect_false(any(grepl("assets/brand", readLines(file.path(site, "_landing.yml")), fixed = TRUE)))
   guard <- file.path(site, "tools", "check-quarto-yml.R")
-  out <- suppressWarnings(system2(file.path(R.home("bin"), "Rscript"), c("--vanilla", shQuote(guard), shQuote(file.path(site, "_quarto.yml"))), stdout = TRUE, stderr = TRUE))
+  out <- suppressWarnings(system2(
+    file.path(R.home("bin"), "Rscript"),
+    c("--vanilla", shQuote(guard), shQuote(file.path(site, "_quarto.yml"))),
+    stdout = TRUE, stderr = TRUE
+  ))
   expect_equal(attr(out, "status") %||% 0L, 0L, info = paste(out, collapse = "\n"))
 })
 

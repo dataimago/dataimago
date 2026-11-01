@@ -1257,15 +1257,6 @@
                 "off"
               ],
               "default": "full"
-            },
-            "siteMode": {
-              "type": "string",
-              "enum": [
-                "bootstrap",
-                "merge-seeded",
-                "skip"
-              ],
-              "default": "bootstrap"
             }
           },
           "additionalProperties": false
