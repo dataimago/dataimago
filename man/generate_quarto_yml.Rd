@@ -9,7 +9,8 @@ generate_quarto_yml(
   template = "dataimago",
   navbar_pinned = NULL,
   reference = "single",
-  self_host_fonts = FALSE
+  self_host_fonts = FALSE,
+  font_css = NULL
 )
 }
 \arguments{
@@ -21,7 +22,9 @@ generate_quarto_yml(
 
 \item{reference}{\code{"single"} or \code{"topics"}, which sets the reference nav target}
 
-\item{self_host_fonts}{Link \code{assets/css/fonts.css} from the format}
+\item{self_host_fonts}{Link the \verb{@dataimago/css} font stylesheets from the format}
+
+\item{font_css}{Font stylesheet paths for \code{self_host_fonts}; \code{NULL} uses the template's mapping.}
 }
 \value{
 Character vector with _quarto.yml content
