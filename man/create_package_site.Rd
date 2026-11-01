@@ -16,7 +16,8 @@ create_package_site(
   reference_config = NULL,
   branch = "main",
   workflow = TRUE,
-  overwrite_config = FALSE
+  overwrite_config = FALSE,
+  sync = TRUE
 )
 }
 \arguments{
@@ -41,6 +42,10 @@ hide-on-scroll-down, show-on-scroll-up behaviour.}
 \item{workflow}{Write \code{.github/workflows/quarto-publish.yml}.}
 
 \item{overwrite_config}{Replace existing \verb{_quarto.yml}, \code{index.qmd} and workflow.}
+
+\item{sync}{Run \code{dataimago-sync} (via \code{npx}, or from \code{DATAIMAGO_DESIGN_FROM}) to place the
+theme extension and fonts from \verb{@dataimago/css}. \code{FALSE} writes \code{.dataimago/design.json}
+only, for offline use.}
 }
 \value{
 The site directory (invisibly).
@@ -48,9 +53,9 @@ The site directory (invisibly).
 \description{
 Writes a site into \code{output_path} (default \code{ui/www}) from the package's DESCRIPTION,
 \verb{man/}, README, \code{NEWS.md} and vignettes: \verb{_quarto.yml}, the \code{pkgsite} theme extension
-(dataimago tokens, light and dark), self-hosted Josefin Sans, Noto Sans, Noto Sans Mono
-and Noto Sans Math, \code{index.qmd}, per-topic reference pages, articles, \code{news.qmd},
-\code{citation.qmd}, a \verb{_quarto.yml} guard script and a GitHub Pages workflow.
+(dataimago tokens, light and dark) and the self-hosted fonts, both synced from
+\verb{@dataimago/css} through \code{.dataimago/design.json}, \code{index.qmd}, per-topic reference pages,
+articles, \code{news.qmd}, \code{citation.qmd}, a \verb{_quarto.yml} guard script and a GitHub Pages workflow.
 }
 \details{
 Existing \verb{_quarto.yml}, \code{index.qmd} and workflow files are kept unless

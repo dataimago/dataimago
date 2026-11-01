@@ -14,15 +14,6 @@ NULL
 
 `%||%` <- function(x, y) if (is.null(x) || length(x) == 0L || all(is.na(x))) y else x
 
-.pkgsite_asset_dir <- function() {
-  dir <- system.file("quarto-assets", "pkgsite", package = "dataimago")
-  if (!nzchar(dir)) {
-    # Running from a source checkout (devtools::load_all()) before installation.
-    dir <- file.path("inst", "quarto-assets", "pkgsite")
-  }
-  dir
-}
-
 .write_lines <- function(x, path) {
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
   writeLines(enc2utf8(x), path, useBytes = TRUE)
@@ -445,7 +436,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 }
 
 .pkg_quarto_yml <- function(desc, site_url, repo_url, navbar_pinned, org, org_url, has_news,
-                            has_articles, has_vignette_main, logo) {
+                            has_articles, has_vignette_main, logo, font_css) {
   pkg <- desc$Package
   year <- format(Sys.Date(), "%Y")
   people <- .authors(desc)
@@ -468,7 +459,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "    - \"reference/*.qmd\"",
     "    - \"articles/**/*.qmd\"",
     "  resources:",
-    "    - assets/fonts/*.woff2",
+    "    - assets/fonts/**",
     "",
     "execute:",
     "  freeze: auto",
@@ -513,7 +504,8 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "",
     "format:",
     "  pkgsite-html:",
-    "    css: assets/css/fonts.css",
+    "    css:",
+    paste0("      - ", font_css),
     "    toc: true",
     "    toc-depth: 3",
     "    page-layout: article",
@@ -659,9 +651,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 #'
 #' Writes a site into `output_path` (default `ui/www`) from the package's DESCRIPTION,
 #' `man/`, README, `NEWS.md` and vignettes: `_quarto.yml`, the `pkgsite` theme extension
-#' (dataimago tokens, light and dark), self-hosted Josefin Sans, Noto Sans, Noto Sans Mono
-#' and Noto Sans Math, `index.qmd`, per-topic reference pages, articles, `news.qmd`,
-#' `citation.qmd`, a `_quarto.yml` guard script and a GitHub Pages workflow.
+#' (dataimago tokens, light and dark) and the self-hosted fonts, both synced from
+#' `@dataimago/css` through `.dataimago/design.json`, `index.qmd`, per-topic reference pages,
+#' articles, `news.qmd`, `citation.qmd`, a `_quarto.yml` guard script and a GitHub Pages workflow.
 #'
 #' Existing `_quarto.yml`, `index.qmd` and workflow files are kept unless
 #' `overwrite_config = TRUE`. Reference, article, news and citation pages are always
@@ -680,6 +672,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 #' @param branch Default branch the Pages workflow deploys from.
 #' @param workflow Write `.github/workflows/quarto-publish.yml`.
 #' @param overwrite_config Replace existing `_quarto.yml`, `index.qmd` and workflow.
+#' @param sync Run `dataimago-sync` (via `npx`, or from `DATAIMAGO_DESIGN_FROM`) to place the
+#'   theme extension and fonts from `@dataimago/css`. `FALSE` writes `.dataimago/design.json`
+#'   only, for offline use.
 #' @return The site directory (invisibly).
 #' @examples
 #' \dontrun{
@@ -693,19 +688,16 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 create_package_site <- function(package_path = ".", output_path = "ui/www", site_url = NULL,
                                 repo_url = NULL, org = NULL, org_url = NULL,
                                 navbar_pinned = FALSE, logo = NULL, reference_config = NULL,
-                                branch = "main", workflow = TRUE, overwrite_config = FALSE) {
+                                branch = "main", workflow = TRUE, overwrite_config = FALSE,
+                                sync = TRUE) {
   desc <- .read_desc(package_path)
   pkg <- desc$Package
   site_dir <- file.path(package_path, output_path)
   dir.create(site_dir, recursive = TRUE, showWarnings = FALSE)
 
-  assets <- .pkgsite_asset_dir()
-  # theme extension
-  ext_dir <- file.path(site_dir, "_extensions", "dataimago", "pkgsite")
-  dir.create(ext_dir, recursive = TRUE, showWarnings = FALSE)
-  file.copy(list.files(file.path(assets, "extension"), full.names = TRUE), ext_dir, overwrite = TRUE)
-  # fonts
-  .copy_pkgsite_fonts(site_dir)
+  # theme extension and fonts: pinned in design.json, synced from @dataimago/css
+  .sync_pkgsite_theme(site_dir, sync = sync)
+  font_css <- .pkgsite_font_css(.design_json_read(site_dir)$outputs)
 
   # logo
   logo_src <- logo
@@ -753,7 +745,7 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
     .write_lines(.pkg_quarto_yml(
       desc, site_url, repo_url, navbar_pinned, org, org_url,
       has_news = !is.null(news), has_articles = length(other_articles) > 0L || (length(articles) > 0L && !has_main),
-      has_vignette_main = has_main, logo = logo_paths
+      has_vignette_main = has_main, logo = logo_paths, font_css = font_css
     ), yml_path)
   }
   index_path <- file.path(site_dir, "index.qmd")
@@ -768,13 +760,81 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   invisible(site_dir)
 }
 
-.copy_pkgsite_fonts <- function(site_dir) {
-  assets <- .pkgsite_asset_dir()
-  dir.create(file.path(site_dir, "assets", "fonts"), recursive = TRUE, showWarnings = FALSE)
-  dir.create(file.path(site_dir, "assets", "css"), recursive = TRUE, showWarnings = FALSE)
-  fonts <- list.files(file.path(assets, "assets", "fonts"), full.names = TRUE)
-  file.copy(fonts, file.path(site_dir, "assets", "fonts"), overwrite = TRUE)
-  css <- file.path(assets, "assets", "css", "fonts.css")
-  file.copy(css, file.path(site_dir, "assets", "css", "fonts.css"), overwrite = TRUE)
-  invisible(TRUE)
+# ---- theme and fonts: pinned in design.json, synced from @dataimago/css ----
+
+.pkgsite_design_template <- function() {
+  path <- system.file("pkgsite", "design.json", package = "dataimago")
+  if (!nzchar(path)) path <- file.path("inst", "pkgsite", "design.json") # load_all() fallback
+  path
+}
+
+# Writes `<site_dir>/.dataimago/design.json`. An existing file is merged: missing `outputs`
+# keys are added; existing keys, their values and the pinned `version` are never changed.
+.write_design_json <- function(site_dir, template = .pkgsite_design_template()) {
+  want <- jsonlite::read_json(template)
+  path <- file.path(site_dir, ".dataimago", "design.json")
+  dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+  out <- if (file.exists(path)) jsonlite::read_json(path) else want
+  if (is.null(out$package)) out$package <- want$package
+  if (is.null(out$version)) out$version <- want$version
+  if (is.null(out$outputs)) out$outputs <- list()
+  for (k in setdiff(names(want$outputs), names(out$outputs))) out$outputs[[k]] <- want$outputs[[k]]
+  jsonlite::write_json(out, path, auto_unbox = TRUE, pretty = TRUE)
+  invisible(path)
+}
+
+.design_json_read_template <- function() jsonlite::read_json(.pkgsite_design_template())
+
+.design_json_read <- function(site_dir) {
+  jsonlite::read_json(file.path(site_dir, ".dataimago", "design.json"))
+}
+
+# The font stylesheets, in order, derived from the design.json outputs mapping.
+.pkgsite_font_css <- function(outputs) {
+  dest <- unlist(outputs, use.names = FALSE)
+  src <- names(outputs)
+  dirs <- dest[grepl("^assets/fonts/.+/$", dest)]
+  lang <- dest[grepl("lang\\.css$", src)]
+  c(
+    if (length(dirs)) paste0(dirs, "fonts.css"),
+    if (length(lang)) paste0(sub("/?$", "/", lang), "lang.css")
+  )
+}
+
+.tool_path <- function(name) unname(Sys.which(name))
+
+.run_tool <- function(command, args, wd) {
+  processx::run(command, args, wd = wd, echo = TRUE, error_on_status = FALSE)$status
+}
+
+# Runs dataimago-sync in `site_dir`: from the pinned npm package, or from a local
+# dataimago-design build when `from` is set (DATAIMAGO_DESIGN_FROM).
+.run_dataimago_sync <- function(site_dir, version, from = Sys.getenv("DATAIMAGO_DESIGN_FROM")) {
+  if (nzchar(from)) {
+    command <- "node"
+    args <- c(file.path(from, "packages", "css", "dist", "bin", "dataimago-sync.mjs"), "--from", from)
+  } else {
+    command <- "npx"
+    args <- c("-p", paste0("@dataimago/css@", version), "dataimago-sync")
+  }
+  shown <- paste(c(command, args), collapse = " ")
+  if (!nzchar(.tool_path(command))) {
+    cli::cli_abort(c(
+      "{.code {command}} was not found on the PATH, so the theme and fonts cannot be synced.",
+      "i" = "Install Node.js, then run this in {.path {site_dir}}:",
+      " " = "{.code {shown}}"
+    ))
+  }
+  status <- .run_tool(command, args, wd = site_dir)
+  if (!identical(as.integer(status), 0L)) {
+    cli::cli_abort(c("{.code {shown}} exited with status {status}.", "i" = "Run it in {.path {site_dir}} to see why."))
+  }
+  invisible(status)
+}
+
+# design.json + sync, for callers that need the theme and fonts on disk.
+.sync_pkgsite_theme <- function(site_dir, sync = TRUE) {
+  .write_design_json(site_dir)
+  if (isTRUE(sync)) .run_dataimago_sync(site_dir, .design_json_read(site_dir)$version)
+  invisible(site_dir)
 }

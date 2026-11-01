@@ -56,9 +56,10 @@ navbar. \code{NULL} (the default) writes no \code{pinned} key, which is Quarto's
 matches earlier output; \code{TRUE} pins it; \code{FALSE} writes \code{pinned: false} explicitly
 (hide on scroll down, show on scroll up).}
 
-\item{self_host_fonts}{Logical. When \code{TRUE}, copies Josefin Sans, Noto Sans, Noto Sans
-Mono and Noto Sans Math (woff2) and \code{assets/css/fonts.css} into \code{output_path} so no
-font CDN is needed, and links the stylesheet from a scaffolded \verb{_quarto.yml}.}
+\item{self_host_fonts}{Logical. When \code{TRUE}, writes \code{.dataimago/design.json} and runs
+\code{dataimago-sync} to place the \verb{@dataimago/css} fonts (Josefin Sans, Noto Sans, Noto Sans
+Mono, Noto Sans Math) in \code{output_path} so no font CDN is needed, and links their
+stylesheets from a scaffolded \verb{_quarto.yml}. Needs \code{npx} (see \code{\link[=create_package_site]{create_package_site()}}).}
 
 \item{reference_config}{Optional list or YAML path of reference-index sections, used
 when \code{reference = "topics"} (see \code{\link[=create_package_reference]{create_package_reference()}}).}

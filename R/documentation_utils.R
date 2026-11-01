@@ -50,9 +50,10 @@ NULL
 #'   navbar. `NULL` (the default) writes no `pinned` key, which is Quarto's default and
 #'   matches earlier output; `TRUE` pins it; `FALSE` writes `pinned: false` explicitly
 #'   (hide on scroll down, show on scroll up).
-#' @param self_host_fonts Logical. When `TRUE`, copies Josefin Sans, Noto Sans, Noto Sans
-#'   Mono and Noto Sans Math (woff2) and `assets/css/fonts.css` into `output_path` so no
-#'   font CDN is needed, and links the stylesheet from a scaffolded `_quarto.yml`.
+#' @param self_host_fonts Logical. When `TRUE`, writes `.dataimago/design.json` and runs
+#'   `dataimago-sync` to place the `@dataimago/css` fonts (Josefin Sans, Noto Sans, Noto Sans
+#'   Mono, Noto Sans Math) in `output_path` so no font CDN is needed, and links their
+#'   stylesheets from a scaffolded `_quarto.yml`. Needs `npx` (see [create_package_site()]).
 #' @param reference_config Optional list or YAML path of reference-index sections, used
 #'   when `reference = "topics"` (see [create_package_reference()]).
 #'
@@ -192,7 +193,7 @@ create_quarto_documentation <- function(package_path = ".",
     # Write api_reference.qmd
     writeLines(api_reference_content, api_file)
   }
-  if (isTRUE(self_host_fonts)) .copy_pkgsite_fonts(output_path)
+  if (isTRUE(self_host_fonts)) .sync_pkgsite_theme(output_path)
 
   # Generate and write _quarto.yml
   #
@@ -668,7 +669,7 @@ add_function_docs_sections <- function(rd_content) {
 #' @param template Template type (currently supports "dataimago")
 #' @param navbar_pinned `NULL` (no key), `TRUE` or `FALSE`
 #' @param reference `"single"` or `"topics"`, which sets the reference nav target
-#' @param self_host_fonts Link `assets/css/fonts.css` from the format
+#' @param self_host_fonts Link the `@dataimago/css` font stylesheets from the format
 #' @return Character vector with _quarto.yml content
 #' @keywords internal
 generate_quarto_yml <- function(desc_content, template = "dataimago", navbar_pinned = NULL,
@@ -750,7 +751,7 @@ generate_quarto_yml <- function(desc_content, template = "dataimago", navbar_pin
   yml_content <- c(yml_content, "    code-copy: true")
   yml_content <- c(yml_content, "    code-overflow: wrap")
   if (isTRUE(self_host_fonts)) {
-    yml_content <- c(yml_content, "    css: assets/css/fonts.css")
+    yml_content <- c(yml_content, "    css:", paste0("      - ", .pkgsite_font_css(.design_json_read_template()$outputs)))
   }
 
   # Add dataimago-specific configuration if using dataimago template
