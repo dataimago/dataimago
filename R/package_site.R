@@ -834,29 +834,41 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 
 .hero_dir <- function(package_path) file.path(package_path, "ui", "hero")
 
-# Strip /* ... */ comments so they cannot hide or fake a declaration.
-.strip_css_comments <- function(x) gsub("/\\*.*?\\*/", "", x, perl = TRUE)
+# Remove /* ... */ comments and replace CSS strings (honouring escapes) with "",
+# so neither can hide a declaration or fake a block opener.
+.strip_css_noise <- function(x) {
+  re <- "/\\*.*?\\*/|\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'"
+  m <- gregexpr(re, x, perl = TRUE)
+  tok <- regmatches(x, m)[[1]]
+  if (length(tok)) regmatches(x, m) <- list(ifelse(startsWith(tok, "/*"), " ", "\"\""))
+  x
+}
+
+.np_prelude <- function(prelude) {
+  p <- tolower(trimws(gsub("\\s+", " ", prelude)))
+  p <- gsub("\\s*:\\s*", ": ", p)
+  grepl("^@media \\(prefers-reduced-motion: no-preference\\)( and \\([^()]*\\))*$", p)
+}
 
 # Scan CSS by brace depth. Returns the declarations as list(prop, value, in_np),
-# where in_np is TRUE when an enclosing block is a no-preference media query.
+# where in_np is TRUE when an enclosing block is exactly a no-preference media query.
 .css_declarations <- function(css) {
-  css <- .strip_css_comments(css)
-  chars <- strsplit(css, "")[[1]]
-  stack <- logical(0)
+  chars <- strsplit(.strip_css_noise(css), "")[[1]]
+  stack <- character(0)
   buf <- character(0)
   out <- list()
   flush_decl <- function() {
     seg <- trimws(paste(buf, collapse = ""))
     buf <<- character(0)
-    m <- regexec("^([A-Za-z-]+)\\s*:(.*)$", seg)
-    r <- regmatches(seg, m)[[1]]
-    if (length(r) == 3L) out[[length(out) + 1L]] <<- list(prop = tolower(r[2]), value = trimws(r[3]), in_np = any(stack))
+    r <- regmatches(seg, regexec("^([A-Za-z-]+)\\s*:(.*)$", seg))[[1]]
+    if (length(r) == 3L) out[[length(out) + 1L]] <<- list(prop = tolower(r[2]), value = trimws(r[3]), in_np = any(stack == "np") && !any(stack == "media"))
   }
   for (ch in chars) {
     if (ch == "{") {
       prelude <- paste(buf, collapse = "")
       buf <- character(0)
-      stack <- c(stack, grepl("@media[^{]*prefers-reduced-motion\\s*:\\s*no-preference", prelude, ignore.case = TRUE))
+      kind <- if (.np_prelude(prelude)) "np" else if (grepl("^\\s*@(media|supports|container|layer)", prelude, ignore.case = TRUE)) "media" else "other"
+      stack <- c(stack, kind)
     } else if (ch == "}") {
       flush_decl()
       if (length(stack)) stack <- stack[-length(stack)]
@@ -869,42 +881,116 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   out
 }
 
-.check_hero_svg <- function(path) {
-  txt <- paste(readLines(path, warn = FALSE), collapse = "\n")
-  f <- basename(path)
-  fail <- function(problem, hint) {
-    cli::cli_abort(c("{.file {f}}: {problem}", "i" = hint), call = NULL)
+.css_ms <- function(value) {
+  tok <- regmatches(value, gregexpr("(?<![A-Za-z0-9.])[0-9]*\\.?[0-9]+m?s(?![A-Za-z])", value, perl = TRUE))[[1]]
+  vapply(tok, function(t) if (endsWith(t, "ms")) as.numeric(sub("ms$", "", t)) else 1000 * as.numeric(sub("s$", "", t)), 0)
+}
+
+.hero_fail <- function(f, problem, hint) {
+  cli::cli_abort(c("{f}: {problem}", "i" = "{hint}"), call = NULL)
+}
+
+# Markup rules shared by hero.svg and poster.svg. The SVG is inlined into the
+# page, so it is untrusted markup as well as a motion surface.
+.check_svg_markup <- function(txt, f) {
+  fail <- function(problem, hint) .hero_fail(f, problem, hint)
+  tag <- function(names) paste0("<([A-Za-z_][A-Za-z0-9_.-]*:)?(", names, ")(?![A-Za-z0-9_:.-])")
+  hit <- function(names) {
+    r <- regmatches(txt, regexpr(tag(names), txt, perl = TRUE, ignore.case = TRUE))
+    if (length(r)) r else NULL
   }
-  if (grepl("<?xml", txt, fixed = TRUE)) {
-    fail("contains an {.code <?xml} declaration.", "Remove it; the build stamps SVGs with an HTML comment on line 1.")
+  txt <- gsub("(?s)<!--.*?-->", "", txt, perl = TRUE)
+  if (grepl("<\\?xml", txt, ignore.case = TRUE)) {
+    fail("contains an <?xml declaration.", "Remove it; the build stamps SVGs with an HTML comment on line 1.")
   }
-  if (grepl("<script", txt, ignore.case = TRUE)) {
-    fail("contains a {.code <script} element.", "Hero SVGs carry no scripts; use hero.js for scripted heroes.")
+  if (!is.null(h <- hit("script"))) {
+    fail(cli::format_inline("contains a {.code {h}} element."), "Hero SVGs carry no scripts; use hero.js for scripted heroes.")
   }
-  smil <- regmatches(txt, regexpr("<(animateTransform|animateMotion|animate|set)(?![A-Za-z])", txt, perl = TRUE))
-  if (length(smil)) {
-    fail("uses the SMIL element {.code {smil}}.",
+  if (!is.null(h <- hit("animateTransform|animateMotion|animate|set"))) {
+    fail(cli::format_inline("uses the SMIL element {.code {h}}."),
          "SMIL cannot be paused or lint-checked; animate with CSS inside @media (prefers-reduced-motion: no-preference).")
+  }
+  if (!is.null(h <- hit("foreignObject|iframe|object|embed"))) {
+    fail(cli::format_inline("contains {.code {h}}, which embeds foreign content."), "Remove it; hero SVGs are plain vector markup.")
+  }
+  if (grepl("@import", txt, ignore.case = TRUE)) {
+    fail("contains an @import.", "Hero SVGs may not load external stylesheets.")
   }
   root <- regmatches(txt, regexpr("<svg\\b[^>]*>", txt, perl = TRUE))
   if (!length(root) || !grepl("viewBox\\s*=", root)) {
-    fail("the root {.code <svg>} has no {.code viewBox}.", "Add a viewBox so the hero scales.")
+    fail("the root <svg> has no viewBox.", "Add a viewBox so the hero scales.")
   }
-
   styles <- regmatches(txt, gregexpr("(?is)<style\\b[^>]*>.*?</style>", txt, perl = TRUE))[[1]]
+  n_open <- lengths(regmatches(txt, gregexpr("<style\\b", txt, ignore.case = TRUE, perl = TRUE)))
+  if (n_open != length(styles)) fail("has an unclosed <style> element.", "Close every <style> with </style>.")
+  markup <- gsub("(?is)<style\\b[^>]*>.*?</style>", "", txt, perl = TRUE)
+  ev <- regmatches(markup, regexpr("(?i)\\bon[a-z]+\\s*=", markup, perl = TRUE))
+  if (length(ev)) {
+    fail(cli::format_inline("has the event attribute {.code {trimws(ev)}}."), "Hero SVGs carry no event handlers.")
+  }
+  if (grepl("javascript:", gsub("[[:space:][:cntrl:]]", "", markup), ignore.case = TRUE)) {
+    fail("contains a javascript: URL.", "Remove it.")
+  }
+  hrefs <- regmatches(markup, gregexpr("(?i)\\b(?:xlink:)?href\\s*=\\s*(\"[^\"]*\"|'[^']*'|[^\\s>]*)", markup, perl = TRUE))[[1]]
+  for (h in hrefs) {
+    val <- sub("^(?i)(?:xlink:)?href\\s*=\\s*", "", h, perl = TRUE)
+    val <- trimws(gsub("^[\"']|[\"']$", "", val))
+    if (!(startsWith(val, "#") || grepl("^data:image/", val, ignore.case = TRUE))) {
+      shown <- substr(val, 1, 60)
+      fail(cli::format_inline("has an href to {.url {shown}}."), "Only same-document fragments (#id) and data:image/ URIs are allowed.")
+    }
+  }
+  styles
+}
+
+.check_hero_svg <- function(path, variant = c("hero", "poster")) {
+  variant <- match.arg(variant)
+  txt <- paste(readLines(path, warn = FALSE), collapse = "\n")
+  f <- basename(path)
+  fail <- function(problem, hint) .hero_fail(f, problem, hint)
+  styles <- .check_svg_markup(txt, f)
+  txt <- gsub("(?s)<!--.*?-->", "", txt, perl = TRUE)
   css <- paste(sub("(?is)</style>$", "", sub("(?is)^<style\\b[^>]*>", "", styles, perl = TRUE), perl = TRUE), collapse = "\n")
   markup <- gsub("(?is)<style\\b[^>]*>.*?</style>", "", txt, perl = TRUE)
-  if (grepl("(?i)style\\s*=\\s*(\"[^\"]*|'[^']*)\\banimation(-name)?\\s*:", markup, perl = TRUE)) {
-    fail("an inline {.code style=\"animation: ...\"} attribute is outside the reduced-motion media query.",
-         "Move the animation into the <style> block, inside @media (prefers-reduced-motion: no-preference).")
+  inline <- "(?i)style\\s*=\\s*(\"[^\"]*|'[^']*|)(?<![A-Za-z-])(-[a-z]+-)?(animation|transition)"
+  if (variant == "poster") {
+    if (grepl(inline, markup, perl = TRUE)) {
+      fail("an inline style declares animation or transition.", "A poster is a still frame.")
+    }
+    d <- Filter(function(d) grepl("^(-[a-z]+-)?(animation|transition)", d$prop), .css_declarations(css))
+    if (length(d)) {
+      prop <- d[[1]]$prop
+      fail(cli::format_inline("declares {.code {prop}}."), "A poster is a still frame: no animation or transition declarations at all.")
+    }
+    return(invisible(path))
+  }
+  if (grepl(inline, markup, perl = TRUE)) {
+    fail("an inline style attribute declares animation or transition, which is outside the prefers-reduced-motion: no-preference media query.",
+         "Move it into the <style> block, inside @media (prefers-reduced-motion: no-preference).")
   }
 
   decls <- .css_declarations(css)
-  anim <- Filter(function(d) d$prop %in% c("animation", "animation-name"), decls)
+  is_anim <- function(d) grepl("^(-[a-z]+-)?animation(-name)?$", d$prop)
+  is_state <- function(d) grepl("^(-[a-z]+-)?animation-play-state$", d$prop)
+  is_trans <- function(d) grepl("^(-[a-z]+-)?transition(-duration)?$", d$prop)
+  state <- Filter(is_state, decls)
+  if (length(state)) {
+    prop <- state[[1]]$prop
+    fail(cli::format_inline("declares {.code {prop}}."), "The page's pause control owns animation-play-state; heroes must not set it.")
+  }
+  anim <- Filter(is_anim, decls)
   outside <- Filter(function(d) !d$in_np, anim)
+  np <- "@media (prefers-reduced-motion: no-preference)"
   if (length(outside)) {
-    fail("declares {.code {outside[[1]]$prop}} outside {.code @media (prefers-reduced-motion: no-preference)}.",
+    prop <- outside[[1]]$prop
+    fail(cli::format_inline("declares {.code {prop}} outside {.code {np}}."),
          "All hero animation must live inside that media query so reduced-motion readers get a still frame.")
+  }
+  long <- Filter(function(d) !d$in_np && is_trans(d) && any(.css_ms(d$value) > 300), decls)
+  if (length(long)) {
+    prop <- long[[1]]$prop
+    fail(cli::format_inline("declares {.code {prop}} longer than 300ms outside {.code {np}}."),
+         "Keep transitions at 300ms or less, or move them inside the media query.")
   }
 
   if (length(anim)) {
@@ -943,6 +1029,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   if (is.na(poster)) poster <- NULL
   svg <- file.path(dir, "hero.svg")
   js <- file.path(dir, "hero.js")
+  if (!is.null(poster) && endsWith(poster, ".svg") && (file.exists(svg) || file.exists(js))) {
+    .check_hero_svg(poster, variant = "poster")
+  }
   if (file.exists(svg)) {
     .check_hero_svg(svg)
     return(list(kind = "svg", src = svg, poster = poster, alt = alt))
@@ -962,9 +1051,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 # Copy the hero into <site>/assets/hero and return the site-relative record
 # that _landing.yml carries.
 .install_hero <- function(hero, site_dir) {
-  if (identical(hero$kind, "fallback")) return(list(kind = "fallback", alt = hero$alt))
   dest <- file.path(site_dir, "assets", "hero")
   unlink(dest, recursive = TRUE)
+  if (identical(hero$kind, "fallback")) return(list(kind = "fallback", alt = hero$alt))
   dir.create(dest, recursive = TRUE, showWarnings = FALSE)
   name <- paste0("hero.", tools::file_ext(hero$src))
   file.copy(hero$src, file.path(dest, name), overwrite = TRUE)

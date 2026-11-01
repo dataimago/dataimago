@@ -886,3 +886,154 @@ test_that("no hero: fallback recorded and nothing copied", {
   expect_null(hero$src)
   expect_false(dir.exists(file.path(site, "assets", "hero")))
 })
+
+# ---- hero slot, review round 1 ----
+
+G1 <- '@media (prefers-reduced-motion: no-preference) { .h .a { animation: s 2s; animation-iteration-count: 3; } }'
+mk1 <- function(style = "", body = "", head = G1) {
+  paste0('<svg class="h" viewBox="0 0 1 1"><style>', head, "\n", style, "</style>", body, "</svg>")
+}
+hero_msg <- function(pkg, txt, name = "probe.svg") {
+  p <- write_hero(pkg, txt, name)
+  tryCatch({ .check_hero_svg(p); NA_character_ }, error = function(e) conditionMessage(e))
+}
+
+test_that("switching to fallback clears assets/hero", {
+  pkg <- make_site_fixture()
+  site <- file.path(pkg, "www")
+  write_hero(pkg, good_hero_svg())
+  .install_hero(.find_hero(pkg), site)
+  expect_true(file.exists(file.path(site, "assets", "hero", "hero.svg")))
+  unlink(file.path(pkg, "ui"), recursive = TRUE)
+  .install_hero(.find_hero(pkg), site)
+  expect_length(list.files(file.path(site, "assets", "hero")), 0L)
+})
+
+test_that("error messages are interpolated, not raw glue, and name the culprit", {
+  pkg <- make_site_fixture()
+  m <- hero_msg(pkg, mk1(".h .b { animation-name: s }"))
+  expect_match(m, "animation-name", fixed = TRUE)
+  expect_false(grepl("[{}]", sub("\\{.*", "", m)) && grepl("\\{\\.code", m))
+  expect_false(grepl("{.code", m, fixed = TRUE))
+  m2 <- hero_msg(pkg, mk1(body = "<svg:animate attributeName='x'/>"))
+  expect_match(m2, "svg:animate", fixed = TRUE)
+  expect_false(grepl("{", m2, fixed = TRUE))
+})
+
+test_that("vendor-prefixed and uppercase animation properties are refused", {
+  pkg <- make_site_fixture()
+  for (css in c(".h .b { -webkit-animation: s 2s infinite }", ".h .b { -webkit-animation-name: s }",
+                ".h .b { ANIMATION: s 1s }", ".h .b { -moz-animation: s 1s }")) {
+    expect_match(hero_msg(pkg, mk1(css)), "animation", info = css)
+  }
+})
+
+test_that("the no-preference prelude must be exact", {
+  pkg <- make_site_fixture()
+  bad <- c(
+    "@media not (prefers-reduced-motion: no-preference) { .h .b{animation: s 1s} }",
+    "@media (prefers-reduced-motion: no-preference), (prefers-reduced-motion: reduce) { .h .b{animation: s 1s} }",
+    "@media only (prefers-reduced-motion: no-preference) or print { .h .b{animation: s 1s} }",
+    "@media (min-width: 0) { .h .b { animation: s 1s infinite } }",
+    "@media (min-width:0) /* prefers-reduced-motion: no-preference */ { .h .b{animation: s 1s} }",
+    "@supports (display:block) { .h .b{animation: s 1s} }"
+  )
+  for (css in bad) expect_false(is.na(hero_msg(pkg, mk1(css))), info = css)
+  ok <- "@MEDIA  (Prefers-Reduced-Motion:No-Preference)  and (min-width: 600px) { .h .b{animation: s 1s; animation-iteration-count: 3} }"
+  expect_true(is.na(hero_msg(pkg, mk1(ok))))
+})
+
+test_that("strings and comments cannot fake or unbalance the media block", {
+  pkg <- make_site_fixture()
+  cases <- c(
+    d1 = '<svg viewBox="0 0 1 1"><style>.x::after{content:"@media (prefers-reduced-motion: no-preference) {{"} .y{animation:s 1s infinite}</style></svg>',
+    c8 = mk1('.h .b::after { content: "}" } .h .c { animation: s 1s }'),
+    c8b = mk1('.h .b::after { content: "{"; } .h .c{animation:s 1s}'),
+    c8x = mk1('.h .b::after { content: \'@media (prefers-reduced-motion: no-preference) {\' } .h .c { animation: s 1s }')
+  )
+  for (nm in names(cases)) expect_false(is.na(hero_msg(pkg, cases[[nm]])), info = nm)
+  # an escaped quote does not end the string early
+  esc <- mk1('.h .b::after { content: "a\\"}" } .h .d { color: red }')
+  expect_true(is.na(suppressWarnings(hero_msg(pkg, esc))))
+})
+
+test_that("animation-play-state is refused anywhere", {
+  pkg <- make_site_fixture()
+  inside <- "@media (prefers-reduced-motion: no-preference) { .h .a { animation-play-state: paused } }"
+  m <- hero_msg(pkg, mk1(inside))
+  expect_match(m, "animation-play-state", fixed = TRUE)
+  expect_match(hero_msg(pkg, mk1(".h .a { -webkit-animation-play-state: paused }")), "animation-play-state")
+})
+
+test_that("long transitions outside the block are refused; inside they are allowed", {
+  pkg <- make_site_fixture()
+  expect_match(hero_msg(pkg, mk1(".h .b { transition: opacity 2s }")), "transition")
+  expect_match(hero_msg(pkg, mk1(".h .b { -webkit-transition-duration: 500ms }")), "transition")
+  expect_match(hero_msg(pkg, mk1(".h .b { transition: opacity 0.4s }")), "transition")
+  expect_true(is.na(hero_msg(pkg, mk1(".h .b { transition: opacity 200ms }"))))
+  inside <- "@media (prefers-reduced-motion: no-preference) { .h .b { transition: opacity 2s } }"
+  expect_true(is.na(hero_msg(pkg, mk1(inside))))
+})
+
+test_that("untrusted-markup rules apply to hero svgs", {
+  pkg <- make_site_fixture()
+  bad <- list(
+    import = mk1("@import url(https://evil.example/x.css);"),
+    import_str = mk1('@import "https://evil.example/x.css";'),
+    onload = '<svg class="h" viewBox="0 0 1 1" onload="alert(1)"><style></style></svg>',
+    onclick = mk1(body = '<rect onClick="x()"/>'),
+    jsurl = mk1(body = '<a href="javascript:alert(1)"><rect/></a>'),
+    jsxlink = mk1(body = '<a xlink:href=" JavaScript:alert(1)"><rect/></a>'),
+    use_ext = mk1(body = '<use xlink:href="https://evil.example/x.svg#a"/>'),
+    image_ext = mk1(body = '<image href="https://evil.example/x.svg"/>'),
+    foreign = mk1(body = "<foreignObject><div/></foreignObject>"),
+    iframe = mk1(body = "<iframe src='x'></iframe>"),
+    object = mk1(body = "<object data='x'></object>"),
+    embed = mk1(body = "<embed src='x'/>"),
+    SET = mk1(body = '<SET attributeName="x" to="1"/>'),
+    ns_animate = mk1(body = '<svg:animate attributeName="x"/>'),
+    unclosed = paste0('<svg class="h" viewBox="0 0 1 1"><style>', G1)
+  )
+  for (nm in names(bad)) expect_false(is.na(hero_msg(pkg, bad[[nm]])), info = nm)
+  ok <- mk1(body = paste0('<use href="#a"/><use xlink:href="#a"/>',
+                          '<image href="data:image/png;base64,AAAA"/>'))
+  expect_true(is.na(hero_msg(pkg, ok)))
+})
+
+test_that("poster.svg is checked as a still variant; poster.png is opaque", {
+  pkg <- make_site_fixture()
+  dir.create(file.path(pkg, "ui", "hero"), recursive = TRUE)
+  writeLines("export default function mount() {}", file.path(pkg, "ui", "hero", "hero.js"))
+  pp <- file.path(pkg, "ui", "hero", "poster.svg")
+  for (bad in c(
+    '<svg viewBox="0 0 1 1"><style>.a{animation: s 1s}</style></svg>',
+    '<svg viewBox="0 0 1 1"><style>.a{transition: opacity 1ms}</style></svg>',
+    '<svg viewBox="0 0 1 1"><style>@media (prefers-reduced-motion: no-preference){.a{animation: s 1s}}</style></svg>',
+    '<svg viewBox="0 0 1 1"><script>1</script></svg>',
+    '<svg viewBox="0 0 1 1"><animate/></svg>',
+    '<?xml version="1.0"?><svg viewBox="0 0 1 1"/>',
+    '<svg viewBox="0 0 1 1" onload="x()"/>',
+    '<svg width="1"/>'
+  )) {
+    writeLines(bad, pp)
+    expect_error(.find_hero(pkg), "poster.svg", fixed = TRUE, info = bad)
+  }
+  writeLines('<svg viewBox="0 0 1 1"><rect/></svg>', pp)
+  expect_identical(.find_hero(pkg)$kind, "js")
+  unlink(pp)
+  writeLines("not really a png <script>", file.path(pkg, "ui", "hero", "poster.png"))
+  expect_identical(.find_hero(pkg)$kind, "js")
+  # an svg hero's poster.svg is checked too
+  write_hero(pkg, good_hero_svg())
+  writeLines('<svg viewBox="0 0 1 1"><script>1</script></svg>', pp)
+  expect_error(.find_hero(pkg), "poster.svg", fixed = TRUE)
+})
+
+test_that("comment-split tags, uppercase xml, unquoted style and nested media are handled", {
+  pkg <- make_site_fixture()
+  expect_false(is.na(hero_msg(pkg, mk1(body = "<scr<!-- -->ipt>"))))
+  expect_false(is.na(hero_msg(pkg, paste0(" <?XML version='1.0'?>", mk1()))))
+  expect_false(is.na(hero_msg(pkg, '<svg viewBox="0 0 1 1"><rect style=animation:s></rect></svg>')))
+  nested <- "@media (prefers-reduced-motion: no-preference) { @media (prefers-reduced-motion: reduce) { .h .b { animation: s 1s } } }"
+  expect_false(is.na(hero_msg(pkg, mk1(nested))))
+})
