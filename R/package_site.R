@@ -530,12 +530,30 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   )
 }
 
-# TRUE when project.resources in the parsed _quarto.yml has an assets/hero entry.
+# The single definition of "does project.resources publish the JS hero". The generated
+# guard script embeds this function's deparsed source, so the warning and the guard agree.
+.hero_covers <- function(res) {
+  res <- unlist(res)
+  if (!is.character(res)) return(FALSE)
+  res <- sub("^\\./", "", res)
+  target <- "assets/hero/hero.js"
+  any(vapply(res, function(e) {
+    base <- sub("(/\\*\\*|/\\*|/)$", "", e)
+    if (base %in% c("assets", "assets/hero")) return(TRUE)
+    if (!grepl("*", e, fixed = TRUE)) return(FALSE)
+    rx <- gsub("([.+?^${}()|\\[\\]\\\\])", "\\\\\\1", e)
+    rx <- gsub("**", "\001", rx, fixed = TRUE)
+    rx <- gsub("*", "[^/]*", rx, fixed = TRUE)
+    rx <- gsub("\001", ".*", rx, fixed = TRUE)
+    grepl(paste0("^", rx, "$"), target)
+  }, logical(1)))
+}
+
+# TRUE when project.resources in the parsed _quarto.yml covers the hero.
 # An unparseable file counts as not covering it.
 .yml_covers_hero <- function(yml_path) {
   cfg <- tryCatch(yaml::read_yaml(yml_path), error = function(e) NULL)
-  res <- unlist(cfg$project$resources)
-  is.character(res) && any(startsWith(res, "assets/hero"))
+  .hero_covers(cfg$project$resources)
 }
 
 .guard_script <- function(output_path = "ui/www") {
@@ -550,9 +568,11 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "if (!any(grepl(\"^assets/fonts/\", unlist(cfg$project$resources)))) {",
     "  problems <- c(problems, \"project.resources must include assets/fonts/**\")",
     "}",
+    paste0("covers_hero <- ", deparse(.hero_covers)[1]),
+    deparse(.hero_covers)[-1],
     "site_dir <- dirname(path)",
-    "if (length(Sys.glob(file.path(site_dir, \"assets\", \"hero\", \"*.js\"))) &&",
-    "    !any(grepl(\"^assets/hero/?\", unlist(cfg$project$resources)))) {",
+    "hero_js <- list.files(file.path(site_dir, \"assets\", \"hero\"), pattern = \"\\\\.m?js$\", recursive = TRUE)",
+    "if (length(hero_js) && !covers_hero(cfg$project$resources)) {",
     "  problems <- c(problems, \"project.resources must include assets/hero/** (a JS hero is loaded by import(), which Quarto does not publish)\")",
     "}",
     "if (is.null(cfg$format$`pkgsite-html`)) problems <- c(problems, \"format must be pkgsite-html\")",

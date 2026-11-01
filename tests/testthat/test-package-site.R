@@ -1427,3 +1427,78 @@ test_that("a comment or unrelated key naming assets/hero does not suppress the w
     "assets/hero/**", fixed = TRUE
   )
 })
+
+# ---- B8 fix round 2: one coverage matcher, used by the warning and the guard ----
+
+probe_hero_cover <- function(resources_yaml, env = parent.frame()) {
+  pkg <- js_hero_fixture(env)
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  yml <- c("project:", "  type: website", "  output-dir: _site", resources_yaml,
+           "website:", "  title: x", "  site-url: https://example.org/", "format:", "  pkgsite-html: default")
+  writeLines(yml, file.path(site, "_quarto.yml"))
+  guard <- file.path(site, "tools", "check-quarto-yml.R")
+  out <- suppressWarnings(system2(file.path(R.home("bin"), "Rscript"),
+    c(guard, file.path(site, "_quarto.yml")), stdout = TRUE, stderr = TRUE))
+  status <- if (is.null(attr(out, "status"))) 0L else attr(out, "status")
+  warned <- FALSE
+  withCallingHandlers(
+    create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/"),
+    warning = function(w) { if (grepl("assets/hero/**", conditionMessage(w), fixed = TRUE)) warned <<- TRUE; invokeRestart("muffleWarning") }
+  )
+  list(warned = warned, guard_ok = identical(status, 0L), guard_out = paste(out, collapse = "\n"))
+}
+res_list <- function(...) c("  resources:", paste0("    - ", c(...)))
+
+test_that("covering resources stay silent in both the warning and the guard", {
+  skip_if_not_installed("yaml")
+  for (e in list(c("assets/fonts/**", "assets/**"), c("assets/fonts/**", "./assets/hero/**"),
+                 c("assets/fonts/**", "assets/hero/"), c("assets/fonts/**", "assets/hero/**"))) {
+    r <- probe_hero_cover(res_list(e))
+    expect_false(r$warned, info = paste(e, collapse = ","))
+    expect_true(r$guard_ok, info = paste(e, collapse = ","))
+  }
+})
+
+test_that("near-miss resources warn and fail the guard", {
+  skip_if_not_installed("yaml")
+  for (e in list(c("assets/fonts/**", "assets/heroes/**"), c("assets/fonts/**", "assets/hero-old/x"))) {
+    r <- probe_hero_cover(res_list(e))
+    expect_true(r$warned, info = paste(e, collapse = ","))
+    expect_false(r$guard_ok, info = paste(e, collapse = ","))
+  }
+})
+
+test_that("a string-valued resources key covering the hero is silent", {
+  skip_if_not_installed("yaml")
+  r <- probe_hero_cover("  resources: assets/hero/")
+  expect_false(r$warned)
+  # the guard still wants fonts here, but it must not complain about the hero
+  expect_false(grepl("assets/hero", r$guard_out, fixed = TRUE))
+})
+
+test_that("a stale hero entry after switching from js to svg neither warns nor fails the guard", {
+  skip_if_not_installed("yaml")
+  pkg <- js_hero_fixture()
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  unlink(file.path(pkg, "ui", "hero"), recursive = TRUE)
+  write_hero(pkg, good_hero_svg())
+  expect_no_warning(create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/"))
+  guard <- file.path(site, "tools", "check-quarto-yml.R")
+  status <- suppressWarnings(system2(file.path(R.home("bin"), "Rscript"),
+    c(guard, file.path(site, "_quarto.yml")), stdout = FALSE, stderr = FALSE))
+  expect_equal(status, 0L)
+})
+
+test_that("the guard finds nested and .mjs heroes", {
+  skip_if_not_installed("yaml")
+  pkg <- js_hero_fixture()
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  unlink(file.path(site, "assets", "hero", "hero.js"))
+  dir.create(file.path(site, "assets", "hero", "lib"))
+  writeLines("export {}", file.path(site, "assets", "hero", "lib", "m.mjs"))
+  cfg <- readLines(file.path(site, "_quarto.yml"))
+  writeLines(cfg[!grepl("assets/hero", cfg, fixed = TRUE)], file.path(site, "_quarto.yml"))
+  status <- suppressWarnings(system2(file.path(R.home("bin"), "Rscript"),
+    c(file.path(site, "tools", "check-quarto-yml.R"), file.path(site, "_quarto.yml")), stdout = FALSE, stderr = FALSE))
+  expect_equal(status, 1L)
+})
