@@ -130,3 +130,24 @@ skip_if_schema_lacks_sitemode <- function() {
     "bundled spec schema has no generator.siteMode yet (wi-20261101-spec-generator-sitemode)"
   )
 }
+
+# TRUE when ai() refuses the curated _quarto.yml written from `lines`
+# (or `raw` bytes) and never calls create_package_site().
+curated_refused <- function(lines, raw = NULL) {
+  tmp <- withr::local_tempdir()
+  spec_path <- site_spec_fixture(tmp)
+  www <- fs::path(tmp, "packages", "r-packages", "fixtpkg", "ui", "www")
+  fs::dir_create(www)
+  if (is.null(raw)) {
+    writeLines(lines, fs::path(www, "_quarto.yml"))
+  } else {
+    writeBin(raw, fs::path(www, "_quarto.yml"))
+  }
+  called <- FALSE
+  testthat::local_mocked_bindings(create_package_site = function(...) called <<- TRUE)
+  err <- tryCatch(
+    suppressWarnings(ai(spec_path = spec_path, verbose = FALSE)),
+    error = function(e) e
+  )
+  inherits(err, "error") && !called
+}
