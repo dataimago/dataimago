@@ -150,7 +150,7 @@ test_that("create_quarto_documentation reference = 'topics' routes the nav to th
       reference = "topics", navbar_pinned = FALSE, self_host_fonts = TRUE, template = "plain"
     )
   ))
-  expect_equal(synced, c(out, "0.1.0-alpha.23")) # self_host_fonts routes through the sync path
+  expect_equal(synced, c(out, "0.1.0-alpha.24")) # self_host_fonts routes through the sync path
   expect_true(file.exists(file.path(out, ".dataimago", "design.json")))
   yml <- paste(readLines(file.path(out, "_quarto.yml")), collapse = "\n")
   expect_match(yml, "reference/index.qmd", fixed = TRUE)
@@ -216,7 +216,7 @@ test_that("design.json is written with the spec keys", {
   expect_equal(path, file.path(site, ".dataimago", "design.json"))
   d <- jsonlite::read_json(path)
   expect_equal(d$package, "@dataimago/css")
-  expect_equal(d$version, "0.1.0-alpha.23")
+  expect_equal(d$version, "0.1.0-alpha.24")
   expect_equal(unlist(d$outputs), spec_outputs)
 })
 
@@ -989,6 +989,24 @@ test_that("untrusted-markup rules apply to hero svgs", {
   expect_true(is.na(hero_msg(pkg, ok)))
 })
 
+# fixtures/hero-svg-parity.json is vendored from dataimago-design
+# (tools/formats/fixtures/hero-svg-parity.json), where the pkgsite leaf's
+# landing.lua runs the same cases. Re-vendor when that file changes.
+test_that("svg markup checks agree with the leaf on every shared case", {
+  cases <- jsonlite::read_json(test_path("fixtures", "hero-svg-parity.json"))
+  expect_gte(length(cases), 40L)
+  for (case in cases) {
+    passed <- tryCatch(
+      {
+        .check_svg_markup(case$svg, case$name)
+        TRUE
+      },
+      error = function(e) FALSE
+    )
+    expect_identical(passed, case$ok, info = case$name)
+  }
+})
+
 test_that("poster.svg is checked as a still variant; poster.png is opaque", {
   pkg <- make_site_fixture()
   dir.create(file.path(pkg, "ui", "hero"), recursive = TRUE)
@@ -1613,8 +1631,8 @@ test_that("with no logo the config carries no logo, logo-alt or favicon keys and
   expect_equal(attr(out, "status") %||% 0L, 0L, info = paste(out, collapse = "\n"))
 })
 
-test_that("the design.json pin is at least 0.1.0-alpha.23, which ships the leaf", {
+test_that("the design.json pin is at least 0.1.0-alpha.24, which ships the hero-check parity fix", {
   tpl <- jsonlite::read_json(system.file("pkgsite", "design.json", package = "dataimago"))
   expect_match(tpl$version, "^0\\.1\\.0-alpha\\.[0-9]+$")
-  expect_gte(as.integer(sub(".*alpha\\.", "", tpl$version)), 23L)
+  expect_gte(as.integer(sub(".*alpha\\.", "", tpl$version)), 24L)
 })
