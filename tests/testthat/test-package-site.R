@@ -532,7 +532,7 @@ test_that("landing yml matches the contract", {
   ))
   expect_equal(vapply(p$cards, `[[`, "", "title"), c("Overview", "Documentation", "API", "What's new", "Source"))
   desc_of <- function(k) Filter(function(c) c$key == k, p$cards)[[1]]$desc
-  expect_equal(desc_of("api"), "2 functions, 1 data sets")
+  expect_equal(desc_of("api"), "2 functions, 1 data set")
   expect_equal(desc_of("overview"), "Why sitepkg exists and how it works")
   expect_equal(desc_of("documentation"), "2 articles; start with Getting started")
   expect_equal(desc_of("news"), "sitepkg 1.2-3.0")
@@ -547,20 +547,124 @@ test_that("landing yml degrades", {
   unlink(file.path(pkg, "NEWS.md"))
   unlink(file.path(pkg, "man", "figures"), recursive = TRUE)
   p <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = NULL)$pkgsite
-  expect_equal(length(p$cards), 5L)
-  expect_equal(vapply(p$cards, `[[`, "", "key"), c("overview", "documentation", "api", "news", "source"))
-  desc_of <- function(k) Filter(function(c) c$key == k, p$cards)[[1]]$desc
-  expect_equal(desc_of("documentation"), "Guides and articles")
-  expect_equal(desc_of("news"), "Release notes")
-  expect_equal(desc_of("source"), "Source code")
-  for (k in c("overview", "documentation", "api", "news", "source")) expect_true(nzchar(desc_of(k)))
+  keys <- function(p) vapply(p$cards, `[[`, "", "key")
+  # no NEWS.md and no repository: the news and source cards have no target, so they are dropped
+  expect_equal(keys(p), c("overview", "documentation", "api"))
+  desc_of <- function(p, k) Filter(function(c) c$key == k, p$cards)[[1]]$desc
+  expect_equal(desc_of(p, "documentation"), "Guides and articles")
+  for (k in keys(p)) expect_true(nzchar(desc_of(p, k)))
+  expect_false(any(vapply(p$cards, function(c) identical(c$href, "#"), logical(1))))
   expect_equal(p$links, list())
   txt <- paste(.landing_yaml_lines(list(pkgsite = p)), collapse = "\n")
   expect_false(grepl("CRAN|Issues", txt))
-  # a non-CRAN URL does not earn a CRAN link
-  writeLines(c(readLines(file.path(pkg, "DESCRIPTION")), "URL: https://example.org/sitepkg"), file.path(pkg, "DESCRIPTION"))
-  p2 <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = "https://github.com/o/sitepkg")$pkgsite
-  expect_equal(vapply(p2$links, `[[`, "", "text"), "GitHub")
+  # a known repository gives the news card its releases page and the source card its repo
+  p1 <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = "https://github.com/o/sitepkg")$pkgsite
+  expect_equal(keys(p1), c("overview", "documentation", "api", "news", "source"))
+  news <- Filter(function(c) c$key == "news", p1$cards)[[1]]
+  expect_equal(news$href, "https://github.com/o/sitepkg/releases")
+  expect_equal(news$desc, "Release notes")
+  # a NEWS.md with no versioned heading keeps the fallback line
+  writeLines(c("# Changes", "", "* x"), file.path(pkg, "NEWS.md"))
+  p2 <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = NULL)$pkgsite
+  expect_equal(keys(p2), c("overview", "documentation", "api", "news"))
+  expect_equal(desc_of(p2, "news"), "Release notes")
+  expect_equal(Filter(function(c) c$key == "news", p2$cards)[[1]]$href, "news.qmd")
+  # a heading with a version number wins over an earlier plain heading
+  writeLines(c("# Changes", "", "# sitepkg 2.0.1", "", "* x"), file.path(pkg, "NEWS.md"))
+  p3 <- .landing_data(pkg, .read_desc(pkg), hero = NULL, repo_url = NULL)$pkgsite
+  expect_equal(desc_of(p3, "news"), "sitepkg 2.0.1")
+})
+
+test_that("CRAN is linked only for a CRAN host URL", {
+  pkg <- make_site_fixture()
+  links_for <- function(url) {
+    d <- .read_desc(pkg)
+    d$URL <- url
+    vapply(.landing_data(pkg, d, repo_url = NULL)$pkgsite$links, `[[`, "", "text")
+  }
+  expect_equal(links_for("https://cran.r-project.org/package=sitepkg"), "CRAN")
+  expect_equal(links_for("https://example.org/pkg, https://www.cran.r-project.org/package=sitepkg"), "CRAN")
+  expect_equal(links_for("https://example.org/pkg,\n https://cran.r-project.org"), "CRAN")
+  expect_equal(links_for("https://cran.r-project.org.evil/x"), character(0))
+  expect_equal(links_for("https://x.org/?u=cran.r-project.org"), character(0))
+  expect_equal(links_for("https://cranXr-project.org"), character(0))
+})
+
+test_that("BugReports: http(s) linked as is, an email becomes mailto, anything else is omitted", {
+  pkg <- make_site_fixture()
+  issues <- function(v) {
+    d <- .read_desc(pkg)
+    d$BugReports <- v
+    l <- .landing_data(pkg, d, repo_url = NULL)$pkgsite$links
+    if (length(l)) l[[1]]$href else NULL
+  }
+  expect_equal(issues("https://github.com/o/p/issues"), "https://github.com/o/p/issues")
+  expect_equal(issues("http://x.org/bugs"), "http://x.org/bugs")
+  expect_equal(issues("bugs@example.org"), "mailto:bugs@example.org")
+  expect_null(issues("see the maintainer"))
+  expect_null(issues("javascript:alert(1)"))
+})
+
+test_that("API card uses singular and plural forms and counts only public functions", {
+  pkg <- make_site_fixture()
+  api <- function() Filter(function(c) c$key == "api", .landing_data(pkg, .read_desc(pkg), repo_url = NULL)$pkgsite$cards)[[1]]$desc
+  expect_equal(api(), "2 functions, 1 data set")
+  unlink(file.path(pkg, "man", "whisper.Rd"))
+  expect_equal(api(), "1 function, 1 data set")
+  writeLines(c("\\name{extra}", "\\alias{extra}", "\\title{Extra data}", "\\docType{data}", "\\keyword{datasets}"), file.path(pkg, "man", "extra.Rd"))
+  expect_equal(api(), "1 function, 2 data sets")
+})
+
+test_that("README lead block: only a real block-level tag is fenced", {
+  pkg <- make_site_fixture()
+  body <- function(lines) {
+    writeLines(lines, file.path(pkg, "README.md"))
+    .readme_overview_body(pkg)
+  }
+  b1 <- body(c("<https://x.org> is the home page", "", "More."))
+  expect_equal(b1[1], "<https://x.org> is the home page")
+  expect_false(any(grepl("{=html}", b1, fixed = TRUE)))
+  b2 <- body(c("<b>Bold</b> start of prose", "", "More."))
+  expect_equal(b2[1], "<b>Bold</b> start of prose")
+  b3 <- body(c("<div align=\"center\">", "Hi", "</div>", "", "More."))
+  expect_equal(b3[1], "```{=html}")
+  b4 <- body(c("<H2>Title</H2>", "", "More."))
+  expect_equal(b4[1], "```{=html}")
+})
+
+test_that("the first-H1 strip ignores comment lines inside code fences", {
+  pkg <- make_site_fixture()
+  writeLines(c("Intro first.", "", "```bash", "# not a heading", "echo hi", "```", "", "# sitepkg", "", "After."), file.path(pkg, "README.md"))
+  b <- .readme_overview_body(pkg)
+  expect_true("# not a heading" %in% b)
+  expect_false("# sitepkg" %in% b)
+  writeLines(c("~~~", "# in a tilde fence", "~~~", "", "# sitepkg"), file.path(pkg, "README.md"))
+  b <- .readme_overview_body(pkg)
+  expect_true("# in a tilde fence" %in% b)
+  expect_false("# sitepkg" %in% b)
+  # with no heading outside the fences, nothing is stripped
+  writeLines(c("```", "# keep me", "```"), file.path(pkg, "README.md"))
+  expect_true("# keep me" %in% .readme_overview_body(pkg))
+})
+
+test_that("README images point at assets/figures and only badge lines are dropped", {
+  pkg <- make_site_fixture()
+  writeLines(c(
+    "# sitepkg", "",
+    "[![Gitter](https://badges.gitter.im/x/y.svg)](https://gitter.im/x/y)",
+    "![Build](https://img.shields.io/badge/build-passing-green.svg)",
+    "<img src=\"man/figures/logo.png\" align=\"right\">", "",
+    "Chat with us on Gitter, and see the AppVeyor build for Windows.", "",
+    "![A plot](man/figures/plot.png)", "",
+    "<img src=\"man/figures/diagram.svg\" width=\"300\">", "",
+    "![Remote](https://example.org/man/figures/x.png)"
+  ), file.path(pkg, "README.md"))
+  b <- .readme_overview_body(pkg)
+  expect_false(any(grepl("badges.gitter|shields.io|logo.png", b)))
+  expect_true("Chat with us on Gitter, and see the AppVeyor build for Windows." %in% b)
+  expect_true("![A plot](assets/figures/plot.png)" %in% b)
+  expect_true(any(grepl("<img src=\"assets/figures/diagram.svg\"", b, fixed = TRUE)))
+  expect_true("![Remote](https://example.org/man/figures/x.png)" %in% b)
 })
 
 test_that("landing yml is written, round-trips, and is always regenerated", {

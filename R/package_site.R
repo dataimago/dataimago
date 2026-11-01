@@ -608,69 +608,105 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 
 # ---- landing data: _landing.yml (always regenerated) and index.qmd (author-owned) ----
 
-# Card descriptions are factual lines built from the package; each has a fallback so a card
-# never goes blank when a package has no vignettes, NEWS.md or repository.
-.card_descs <- function(package_path, desc, repo_url) {
+# Card descriptions are factual lines built from the package, for the cards in `keys` only.
+# Each has a fallback so a card never goes blank.
+.card_descs <- function(package_path, desc, repo_url, keys = c("overview", "documentation", "api", "news", "source")) {
   pkg <- desc$Package
-  rd_files <- list.files(file.path(package_path, "man"), pattern = "\\.Rd$", full.names = TRUE)
-  topics <- Filter(function(t) !t$internal && !t$is_package, lapply(rd_files, .rd_topic_meta))
-  n_data <- sum(vapply(topics, function(t) t$is_data, logical(1)))
-  n_fun <- length(topics) - n_data
-  api <- if (length(topics)) paste0(n_fun, " functions, ", n_data, " data sets") else "Function and data reference"
+  out <- list()
+  if ("overview" %in% keys) out$overview <- paste0("Why ", pkg, " exists and how it works")
 
-  vigs <- list.files(file.path(package_path, "vignettes"), pattern = "\\.(Rmd|qmd)$", recursive = TRUE, full.names = TRUE)
-  docs <- "Guides and articles"
-  if (length(vigs)) {
-    docs <- paste0(length(vigs), if (length(vigs) == 1L) " article" else " articles")
-    main <- vigs[basename(vigs) %in% paste0(pkg, c(".Rmd", ".qmd"))][1]
-    if (!is.na(main)) {
-      fm <- .split_front_matter(readLines(main, warn = FALSE, encoding = "UTF-8"))$yaml
-      ttl <- tryCatch(yaml::yaml.load(paste(fm, collapse = "\n"))$title, error = function(e) NULL)
-      if (is.character(ttl) && length(ttl) == 1L && nzchar(ttl)) docs <- paste0(docs, "; start with ", ttl)
+  if ("api" %in% keys) {
+    rd_files <- list.files(file.path(package_path, "man"), pattern = "\\.Rd$", full.names = TRUE)
+    topics <- Filter(function(t) !t$internal && !t$is_package, lapply(rd_files, .rd_topic_meta))
+    n_fun <- sum(vapply(topics, function(t) isTRUE(t$is_function) && !isTRUE(t$is_data), logical(1)))
+    n_data <- sum(vapply(topics, function(t) isTRUE(t$is_data), logical(1)))
+    out$api <- if (n_fun + n_data > 0L) {
+      paste0(n_fun, if (n_fun == 1L) " function, " else " functions, ", n_data, if (n_data == 1L) " data set" else " data sets")
+    } else {
+      "Function and data reference"
     }
   }
 
-  news_file <- file.path(package_path, c("NEWS.md", file.path("inst", "NEWS.md")))
-  news_file <- news_file[file.exists(news_file)][1]
-  news <- "Release notes"
-  if (!is.na(news_file)) {
-    h <- grep("^#+ ", readLines(news_file, warn = FALSE, encoding = "UTF-8"), value = TRUE)[1]
-    h <- trimws(sub("^#+\\s*", "", h))
-    if (!is.na(h) && nzchar(h)) news <- h
+  if ("documentation" %in% keys) {
+    vigs <- list.files(file.path(package_path, "vignettes"), pattern = "\\.(Rmd|qmd)$", recursive = TRUE, full.names = TRUE)
+    docs <- "Guides and articles"
+    if (length(vigs)) {
+      docs <- paste0(length(vigs), if (length(vigs) == 1L) " article" else " articles")
+      main <- vigs[basename(vigs) %in% paste0(pkg, c(".Rmd", ".qmd"))][1]
+      if (!is.na(main)) {
+        fm <- .split_front_matter(readLines(main, warn = FALSE, encoding = "UTF-8"))$yaml
+        ttl <- tryCatch(yaml::yaml.load(paste(fm, collapse = "\n"))$title, error = function(e) NULL)
+        if (is.character(ttl) && length(ttl) == 1L && nzchar(ttl)) docs <- paste0(docs, "; start with ", ttl)
+      }
+    }
+    out$documentation <- docs
   }
 
-  source <- if (!is.null(repo_url) && nzchar(repo_url)) sub("/+$", "", sub("^[a-z]+://", "", repo_url)) else "Source code"
+  if ("news" %in% keys) {
+    news <- "Release notes"
+    nf <- .news_file(package_path)
+    if (!is.na(nf)) {
+      h <- grep("^#+ ", readLines(nf, warn = FALSE, encoding = "UTF-8"), value = TRUE)
+      h <- trimws(sub("^#+\\s*", "", h))
+      h <- h[grepl("[0-9]+\\.[0-9]+", h)][1]
+      if (!is.na(h) && nzchar(h)) news <- h
+    }
+    out$news <- news
+  }
 
-  list(
-    overview = paste0("Why ", pkg, " exists and how it works"),
-    documentation = docs, api = api, news = news, source = source
-  )
+  if ("source" %in% keys) out$source <- sub("/+$", "", sub("^[a-z]+://", "", repo_url))
+  out
+}
+
+.news_file <- function(package_path) {
+  f <- file.path(package_path, c("NEWS.md", file.path("inst", "NEWS.md")))
+  f[file.exists(f)][1]
+}
+
+# URLs in a DESCRIPTION URL field are separated by commas and/or whitespace.
+.has_cran_url <- function(url) {
+  if (is.null(url) || is.na(url)) return(FALSE)
+  urls <- trimws(strsplit(url, "[,[:space:]]+")[[1]])
+  any(grepl("^https?://(www\\.)?cran\\.r-project\\.org(/|$)", urls, ignore.case = TRUE))
+}
+
+# http(s) values are linked as they are, an email becomes mailto:, anything else is omitted.
+.issues_href <- function(x) {
+  if (is.null(x) || is.na(x)) return(NULL)
+  x <- trimws(x)
+  if (grepl("^https?://[^[:space:]]+$", x, ignore.case = TRUE)) return(x)
+  if (grepl("^[^@[:space:]<>]+@[^@[:space:]<>]+\\.[^@[:space:]<>]+$", x)) return(paste0("mailto:", x))
+  NULL
 }
 
 # `hero` is the seam for the hero inputs (ui/hero, Task B3): NULL gives the fallback.
+# A card with no target is dropped rather than linked to a missing page.
 .landing_data <- function(package_path, desc, hero = NULL, repo_url = NULL) {
   pkg <- desc$Package
   if (is.null(hero)) hero <- list(kind = "fallback", alt = paste0("Animated illustration for ", pkg))
-  has <- function(x) !is.null(x) && !is.na(x) && nzchar(trimws(x))
+  has_repo <- !is.null(repo_url) && !is.na(repo_url) && nzchar(trimws(repo_url))
   links <- list()
-  if (has(repo_url)) links[[length(links) + 1L]] <- list(text = "GitHub", href = repo_url)
-  if (has(desc$URL) && grepl("cran.r-project.org", desc$URL, ignore.case = TRUE)) {
+  if (has_repo) links[[length(links) + 1L]] <- list(text = "GitHub", href = repo_url)
+  if (.has_cran_url(desc$URL)) {
     links[[length(links) + 1L]] <- list(text = "CRAN", href = paste0("https://cran.r-project.org/package=", pkg))
   }
-  if (has(desc$BugReports)) links[[length(links) + 1L]] <- list(text = "Issues", href = trimws(desc$BugReports))
-  d <- .card_descs(package_path, desc, repo_url)
-  source_href <- if (has(repo_url)) repo_url else "#"
-  card <- function(key, title, href) list(key = key, title = title, href = href, desc = d[[key]])
+  issues <- .issues_href(desc$BugReports)
+  if (!is.null(issues)) links[[length(links) + 1L]] <- list(text = "Issues", href = issues)
+
+  news_href <- if (!is.na(.news_file(package_path))) "news.qmd" else if (has_repo) paste0(sub("/+$", "", repo_url), "/releases") else NULL
+  cards <- list(
+    list(key = "overview", title = "Overview", href = "overview/index.qmd"),
+    list(key = "documentation", title = "Documentation", href = "documentation/index.qmd"),
+    list(key = "api", title = "API", href = "reference/index.qmd"),
+    if (!is.null(news_href)) list(key = "news", title = "What's new", href = news_href),
+    if (has_repo) list(key = "source", title = "Source", href = repo_url)
+  )
+  cards <- Filter(Negate(is.null), cards)
+  d <- .card_descs(package_path, desc, repo_url, keys = vapply(cards, `[[`, "", "key"))
+  cards <- lapply(cards, function(cd) c(cd, list(desc = d[[cd$key]])))
   list(pkgsite = list(
     name = pkg, title = desc$Title %||% "", version = desc$Version %||% "",
-    hero = hero, links = links,
-    cards = list(
-      card("overview", "Overview", "overview/index.qmd"),
-      card("documentation", "Documentation", "documentation/index.qmd"),
-      card("api", "API", "reference/index.qmd"),
-      card("news", "What's new", "news.qmd"),
-      card("source", "Source", source_href)
-    )
+    hero = hero, links = links, cards = cards
   ))
 }
 
@@ -688,10 +724,30 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 .readme_overview_body <- function(package_path) {
   readme <- file.path(package_path, "README.md")
   body <- if (file.exists(readme)) readLines(readme, warn = FALSE, encoding = "UTF-8") else character(0)
-  drop <- grepl("^\\s*\\[!\\[|^\\s*<img|^\\s*<a [^>]*>\\s*<img|<!--.*(badges|logo)|AppVeyor|Gitter|gitter", body)
+  in_fence <- .in_code_fence(body)
+
+  # badge-style lines only: image links, badge/logo images, and nothing else on the line
+  badge_url <- "shields\\.io|badges?[./]|badge\\.svg|travis-ci|codecov|appveyor|gitter|repostatus|cranlogs|r-pkg\\.org|lifecycle|zenodo|logo"
+  tokens <- c(
+    "\\[!\\[[^]]*\\]\\([^)]*\\)\\]\\([^)]*\\)",
+    "<a\\b[^>]*>\\s*<img\\b[^>]*>\\s*</a>",
+    paste0("!\\[[^]]*\\]\\([^)]*(", badge_url, ")[^)]*\\)"),
+    paste0("<img\\b[^>]*(", badge_url, ")[^>]*>")
+  )
+  is_badge_line <- function(x) {
+    rest <- x
+    for (tk in tokens) rest <- gsub(tk, "", rest, ignore.case = TRUE)
+    nzchar(trimws(x)) && !nzchar(trimws(rest)) && !identical(rest, x)
+  }
+  drop <- !in_fence & (vapply(body, is_badge_line, logical(1), USE.NAMES = FALSE) | grepl("<!--.*(badges|logo)", body))
   body <- body[!drop]
-  first_h1 <- which(grepl("^# ", body))[1]
+  in_fence <- in_fence[!drop]
+  first_h1 <- which(!in_fence & grepl("^# ", body))[1]
   if (!is.na(first_h1)) body <- body[-first_h1]
+
+  # figures in man/figures travel to assets/figures
+  body <- gsub("(\\]\\(|src=[\"'])(\\./)?man/figures/", "\\1assets/figures/", body)
+
   if (length(body)) {
     txt <- paste(body, collapse = "\n")
     repeat {
@@ -702,14 +758,47 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     body <- strsplit(txt, "\n", fixed = TRUE)[[1]]
   }
   while (length(body) && !nzchar(trimws(body[1]))) body <- body[-1]
-  if (length(body) && grepl("^\\s*<", body[1])) {
+  if (length(body) && grepl("^\\s*<(p|div|center|table|details|section|picture|a|h[1-6]|img)(\\s|>)", body[1], ignore.case = TRUE)) {
     end <- which(!nzchar(trimws(body)))[1]
     end <- if (is.na(end)) length(body) else end - 1L
     body <- c("```{=html}", body[seq_len(end)], "```", body[-seq_len(end)])
   }
   # a fence in the README must not be able to run into the closing `:::`
-  if (sum(grepl("^\\s*```", body)) %% 2L == 1L) body <- c(body, "```")
+  open_marker <- .fence_open_at_end(body)
+  if (!is.null(open_marker)) body <- c(body, strrep(open_marker, 3L))
   body
+}
+
+# TRUE for each line inside (or opening/closing) a ``` or ~~~ fenced block.
+.in_code_fence <- function(x) {
+  out <- logical(length(x))
+  marker <- NULL
+  for (i in seq_along(x)) {
+    m <- regmatches(x[i], regexpr("^\\s{0,3}(`{3,}|~{3,})", x[i]))
+    f <- if (length(m)) substr(trimws(m), 1L, 1L) else NA_character_
+    if (is.null(marker)) {
+      if (!is.na(f)) {
+        marker <- f
+        out[i] <- TRUE
+      }
+    } else {
+      out[i] <- TRUE
+      if (!is.na(f) && identical(f, marker)) marker <- NULL
+    }
+  }
+  out
+}
+
+.fence_open_at_end <- function(x) {
+  marker <- NULL
+  for (l in x) {
+    m <- regmatches(l, regexpr("^\\s{0,3}(`{3,}|~{3,})", l))
+    f <- if (length(m)) substr(trimws(m), 1L, 1L) else NA_character_
+    if (is.null(marker)) {
+      if (!is.na(f)) marker <- f
+    } else if (!is.na(f) && identical(f, marker)) marker <- NULL
+  }
+  marker
 }
 
 .write_index_qmd <- function(site_dir, package_path, desc, overwrite = FALSE) {
