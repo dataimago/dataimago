@@ -135,8 +135,8 @@ test_that("create_package_site scaffolds config, theme, fonts, articles and work
   expect_false(cfg$website$navbar$pinned)
   expect_equal(cfg$website$navbar$logo, "assets/brand/logo.svg")
   expect_true("pkgsite-html" %in% names(cfg$format))
-  hrefs <- vapply(cfg$website$navbar$left, function(x) x$href, character(1))
-  expect_true(all(c("index.qmd", "articles/sitepkg.qmd", "reference/index.qmd", "news.qmd", "citation.qmd") %in% hrefs))
+  hrefs <- vapply(cfg$website$navbar$left, function(x) x$href %||% NA_character_, character(1))
+  expect_true(all(c("overview/index.qmd", "reference/index.qmd", "news.qmd") %in% hrefs))
 
   expect_true(file.exists(file.path(site, ".dataimago", "design.json")))
   expect_equal(
@@ -1052,4 +1052,112 @@ test_that("only raster data:image URIs are allowed in hrefs", {
   for (u in c("data:image/png;base64,AAAA", "DATA:IMAGE/JPEG;base64,AAAA", "data:image/webp,AA", "data:image/gif;base64,AA")) {
     expect_true(is.na(hero_msg(pkg, mk1(body = sprintf('<image href="%s"/>', u)))), info = u)
   }
+})
+
+# ---- B4: Overview . Documentation . API navigation ----
+
+nav_site <- function(pkg, ...) {
+  suppressWarnings(create_package_site(pkg, sync = FALSE, repo_url = "https://github.com/o/sitepkg", ...))
+}
+nav_cfg <- function(site) yaml::read_yaml(file.path(site, "_quarto.yml"))$website$navbar
+
+test_that("navbar is Overview, Documentation, API, What's new, GitHub", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  dir.create(file.path(pkg, "ui"))
+  writeLines(c("- title: P", "  url: https://e.org/p", "  authors: A", "  year: 2025", "  venue: V"), file.path(pkg, "ui", "papers.yml"))
+  writeLines(c("- title: T", "  url: https://e.org/t", "  venue: V", "  date: 2026-01-02"), file.path(pkg, "ui", "talks.yml"))
+  nav <- nav_cfg(nav_site(pkg))
+  expect_equal(vapply(nav$left, function(x) x$text, ""), c("Overview", "Documentation", "API", "What's new"))
+  expect_equal(nav$left[[1]]$href, "overview/index.qmd")
+  expect_equal(nav$left[[3]]$href, "reference/index.qmd")
+  expect_equal(nav$left[[4]]$href, "news.qmd")
+  menu <- nav$left[[2]]$menu
+  expect_equal(vapply(menu, function(x) x$text, ""), c("Get started", "Articles", "Papers", "Talks", "Data", "Cite"))
+  expect_equal(vapply(menu, function(x) x$href, ""), c(
+    "articles/sitepkg.qmd", "articles/index.qmd", "papers.qmd", "talks.qmd", "reference/index.qmd#data-sets", "citation.qmd"
+  ))
+  expect_equal(nav$right[[1]]$icon, "github")
+  expect_false(any(c("Home", "Reference", "News", "Citation") %in% vapply(nav$left, function(x) x$text, "")))
+})
+
+test_that("Data, Papers and Talks leave the menu when absent", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  unlink(file.path(pkg, "man", "words.Rd"))
+  site <- nav_site(pkg)
+  menu <- nav_cfg(site)$left[[2]]$menu
+  expect_equal(vapply(menu, function(x) x$text, ""), c("Get started", "Articles", "Cite"))
+  expect_false(file.exists(file.path(site, "papers.qmd")))
+  expect_false(file.exists(file.path(site, "talks.qmd")))
+  doc <- paste(readLines(file.path(site, "documentation", "index.qmd")), collapse = "\n")
+  expect_false(grepl("papers.qmd|talks.qmd|Data", doc))
+  expect_match(doc, "../articles/sitepkg.qmd", fixed = TRUE)
+  expect_match(doc, "../citation.qmd", fixed = TRUE)
+})
+
+test_that("papers and talks pages from yml; absent yml omits them", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  dir.create(file.path(pkg, "ui"))
+  writeLines(c(
+    "- title: Old *one* [x]", "  url: https://e.org/old", "  authors: [A, B]", "  year: 2020", "  venue: J1",
+    "- title: New", "  url: https://e.org/new", "  authors: C", "  year: 2024", "  venue: J2",
+    "  doi: 10.1/abc", "  abstract: About it."
+  ), file.path(pkg, "ui", "papers.yml"))
+  writeLines(c(
+    "- title: Early", "  url: https://e.org/e", "  venue: V", "  date: 2025-01-05",
+    "- title: Late", "  url: https://e.org/l", "  venue: V", "  date: 2026-03-01", "  thumb: assets/l.png"
+  ), file.path(pkg, "ui", "talks.yml"))
+  site <- nav_site(pkg)
+  pp <- readLines(file.path(site, "papers.qmd"))
+  expect_lt(grep("New", pp)[1], grep("Old", pp)[1])
+  expect_true(any(grepl("Old \\*one\\* \\[x\\]", pp, fixed = TRUE)))
+  expect_true(any(grepl("https://doi.org/10.1/abc", pp, fixed = TRUE)))
+  expect_true(any(grepl("About it.", pp, fixed = TRUE)))
+  expect_false(any(grepl("doi.org", pp[grep("Old", pp)[1]:length(pp)][1:3], fixed = TRUE)))
+  tt <- readLines(file.path(site, "talks.qmd"))
+  expect_lt(grep("Late", tt)[1], grep("Early", tt)[1])
+  expect_true(any(grepl("assets/l.png", tt, fixed = TRUE)))
+  unlink(file.path(pkg, "ui"), recursive = TRUE)
+  site2 <- nav_site(pkg, output_path = "www2")
+  expect_false(file.exists(file.path(site2, "papers.qmd")))
+  expect_false(file.exists(file.path(site2, "talks.qmd")))
+})
+
+test_that("papers and talks yml errors abort with file and entry", {
+  pkg <- make_site_fixture()
+  dir.create(file.path(pkg, "ui"))
+  site <- file.path(pkg, "ui", "www"); dir.create(site, recursive = TRUE)
+  writeLines(c("- title: [unclosed", "  url: x: y: :"), file.path(pkg, "ui", "papers.yml"))
+  expect_error(.papers_page(pkg, site), "papers.yml")
+  writeLines(c("- title: A", "  url: https://e.org", "- title: B"), file.path(pkg, "ui", "papers.yml"))
+  expect_error(.papers_page(pkg, site), "papers.yml.*entry 2.*url")
+  writeLines(c("- title: A", "  url: https://e.org", "  venue: V"), file.path(pkg, "ui", "talks.yml"))
+  expect_error(.talks_page(pkg, site), "talks.yml.*entry 1.*date")
+})
+
+test_that("overview placeholder kept on regeneration", {
+  pkg <- make_site_fixture()
+  site <- nav_site(pkg)
+  ov <- file.path(site, "overview", "index.qmd")
+  expect_true(file.exists(ov))
+  txt <- paste(readLines(ov), collapse = "\n")
+  expect_match(txt, "The overview of sitepkg", fixed = TRUE)
+  expect_match(txt, "is being written", fixed = TRUE)
+  expect_match(txt, "../documentation/index.qmd", fixed = TRUE)
+  expect_match(txt, "../reference/index.qmd", fixed = TRUE)
+  writeLines(c("---", "title: Overview", "---", "", "Authored."), ov)
+  nav_site(pkg)
+  expect_equal(readLines(ov)[5], "Authored.")
+  expect_true(file.exists(file.path(site, "documentation", "index.qmd")))
+})
+
+test_that("news alias for pkgdown url", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  out <- withr::local_tempdir()
+  create_package_news(pkg, out)
+  fm <- yaml::yaml.load(paste(.split_front_matter(readLines(file.path(out, "news.qmd")))$yaml, collapse = "\n"))
+  expect_equal(fm$aliases, "news/index.html")
 })
