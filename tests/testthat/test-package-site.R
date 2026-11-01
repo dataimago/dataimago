@@ -724,3 +724,32 @@ test_that("README with leading raw HTML still yields a valid overview div", {
   expect_match(html, "Bold tagline", fixed = TRUE)
   expect_match(html, "<table", fixed = TRUE)
 })
+
+test_that("only a logo basename is dropped, not a content figure whose name starts with logo-", {
+  pkg <- make_site_fixture()
+  writeLines(c(
+    "# sitepkg", "",
+    "![Logo](man/figures/logo.png)", "",
+    "![Logo2](https://example.org/a/logo.svg?v=2)", "",
+    "<img src=\"man/figures/logo.png?raw=1\" align=\"right\">", "",
+    "![A diagram of the pipeline](docs/logo-pipeline.png)", "",
+    "<img src=\"docs/mylogo-diagram.svg\">"
+  ), file.path(pkg, "README.md"))
+  b <- .readme_overview_body(pkg)
+  expect_false(any(grepl("man/figures/logo|assets/figures/logo|a/logo.svg", b)))
+  expect_true("![A diagram of the pipeline](docs/logo-pipeline.png)" %in% b)
+  expect_true(any(grepl("docs/mylogo-diagram.svg", b, fixed = TRUE)))
+})
+
+test_that("the man/figures rewrite skips fenced code", {
+  pkg <- make_site_fixture()
+  writeLines(c(
+    "# sitepkg", "", "![P](man/figures/p.png)", "",
+    "```markdown", "![P](man/figures/p.png)", "```", "",
+    "~~~", "<img src=\"man/figures/q.png\">", "~~~"
+  ), file.path(pkg, "README.md"))
+  b <- .readme_overview_body(pkg)
+  expect_true("![P](assets/figures/p.png)" %in% b)
+  expect_equal(sum(b == "![P](man/figures/p.png)"), 1L)
+  expect_true("<img src=\"man/figures/q.png\">" %in% b)
+})

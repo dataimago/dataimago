@@ -727,12 +727,16 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   in_fence <- .in_code_fence(body)
 
   # badge-style lines only: image links, badge/logo images, and nothing else on the line
-  badge_url <- "shields\\.io|badges?[./]|badge\\.svg|travis-ci|codecov|appveyor|gitter|repostatus|cranlogs|r-pkg\\.org|lifecycle|zenodo|logo"
+  badge_url <- "shields\\.io|badges?[./]|badge\\.svg|travis-ci|codecov|appveyor|gitter|repostatus|cranlogs|r-pkg\\.org|lifecycle|zenodo"
+  logo_file <- "([^)\"'[:space:]]*/)?logo(@[0-9]+x|[-_][0-9]+(x[0-9]+)?)?\\.(png|svg|jpe?g|gif)(\\?[^)\"'[:space:]]*)?"
   tokens <- c(
     "\\[!\\[[^]]*\\]\\([^)]*\\)\\]\\([^)]*\\)",
     "<a\\b[^>]*>\\s*<img\\b[^>]*>\\s*</a>",
     paste0("!\\[[^]]*\\]\\([^)]*(", badge_url, ")[^)]*\\)"),
-    paste0("<img\\b[^>]*(", badge_url, ")[^>]*>")
+    paste0("<img\\b[^>]*(", badge_url, ")[^>]*>"),
+    # a logo is matched by basename only, never by a substring of the path
+    paste0("!\\[[^]]*\\]\\(", logo_file, "\\)"),
+    paste0("<img\\b[^>]*src=[\"']", logo_file, "[\"'][^>]*>")
   )
   is_badge_line <- function(x) {
     rest <- x
@@ -743,10 +747,13 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   body <- body[!drop]
   in_fence <- in_fence[!drop]
   first_h1 <- which(!in_fence & grepl("^# ", body))[1]
-  if (!is.na(first_h1)) body <- body[-first_h1]
+  if (!is.na(first_h1)) {
+    body <- body[-first_h1]
+    in_fence <- in_fence[-first_h1]
+  }
 
   # figures in man/figures travel to assets/figures
-  body <- gsub("(\\]\\(|src=[\"'])(\\./)?man/figures/", "\\1assets/figures/", body)
+  body[!in_fence] <- gsub("(\\]\\(|src=[\"'])(\\./)?man/figures/", "\\1assets/figures/", body[!in_fence])
 
   if (length(body)) {
     txt <- paste(body, collapse = "\n")
