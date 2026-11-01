@@ -1433,9 +1433,9 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   invisible(site_dir)
 }
 
-# First github.io and github.com repo URLs in DESCRIPTION `URL` (comma/whitespace separated).
-.desc_urls <- function(desc) {
-  u <- strsplit(trimws(desc$URL %||% ""), "[,[:space:]]+")[[1]]
+# First github.io and github.com repo URLs in a comma/whitespace separated URL string.
+.split_urls <- function(text) {
+  u <- strsplit(trimws(paste(text, collapse = " ")), "[,[:space:]]+")[[1]]
   u <- sub("[#?].*$", "", u[nzchar(u)])
   site <- u[grepl("^https://[^/]+\\.github\\.io(/|$)", u)][1]
   repo <- u[grepl("^https://github\\.com/[^/]+/[^/]+", u) &
@@ -1443,6 +1443,9 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   if (!is.na(repo)) repo <- sub("\\.git$", "", sub("/+$", "", sub("^(https://github\\.com/[^/]+/[^/]+).*$", "\\1", repo)))
   list(site_url = if (is.na(site)) NULL else site, repo_url = if (is.na(repo)) NULL else repo)
 }
+
+# First github.io and github.com repo URLs in DESCRIPTION `URL`.
+.desc_urls <- function(desc) .split_urls(desc$URL %||% "")
 
 # Appends the patterns not already present (exact, trimmed) to <pkg>/.Rbuildignore, keeping
 # the file's line ending and trailing-newline state.
