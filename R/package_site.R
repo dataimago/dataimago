@@ -935,9 +935,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   for (h in hrefs) {
     val <- sub("^(?i)(?:xlink:)?href\\s*=\\s*", "", h, perl = TRUE)
     val <- trimws(gsub("^[\"']|[\"']$", "", val))
-    if (!(startsWith(val, "#") || grepl("^data:image/", val, ignore.case = TRUE))) {
+    if (!(startsWith(val, "#") || grepl("^data:image/(png|jpeg|jpg|gif|webp)[;,]", val, ignore.case = TRUE))) {
       shown <- substr(val, 1, 60)
-      fail(cli::format_inline("has an href to {.url {shown}}."), "Only same-document fragments (#id) and data:image/ URIs are allowed.")
+      fail(cli::format_inline("has an href to {.url {shown}}."), "Only same-document fragments (#id) and raster data:image/ (png, jpeg, gif, webp) URIs are allowed.")
     }
   }
   styles
@@ -972,7 +972,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   decls <- .css_declarations(css)
   is_anim <- function(d) grepl("^(-[a-z]+-)?animation(-name)?$", d$prop)
   is_state <- function(d) grepl("^(-[a-z]+-)?animation-play-state$", d$prop)
-  is_trans <- function(d) grepl("^(-[a-z]+-)?transition(-duration)?$", d$prop)
+  is_trans <- function(d) grepl("^(-[a-z]+-)?transition(-duration|-delay)?$", d$prop)
   state <- Filter(is_state, decls)
   if (length(state)) {
     prop <- state[[1]]$prop

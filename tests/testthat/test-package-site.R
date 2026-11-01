@@ -1037,3 +1037,19 @@ test_that("comment-split tags, uppercase xml, unquoted style and nested media ar
   nested <- "@media (prefers-reduced-motion: no-preference) { @media (prefers-reduced-motion: reduce) { .h .b { animation: s 1s } } }"
   expect_false(is.na(hero_msg(pkg, mk1(nested))))
 })
+
+test_that("transition-delay longhand over 300ms is refused outside the block", {
+  pkg <- make_site_fixture()
+  expect_match(hero_msg(pkg, mk1(".h .b{transition-delay: 2s}")), "transition-delay")
+  expect_true(is.na(hero_msg(pkg, mk1(".h .b{transition-delay: 100ms}"))))
+})
+
+test_that("only raster data:image URIs are allowed in hrefs", {
+  pkg <- make_site_fixture()
+  for (u in c("data:image/svg+xml;base64,PHN2Zy8+", "data:image/svg+xml,%3Csvg%2F%3E", "DATA:IMAGE/SVG+XML;base64,AAAA")) {
+    expect_false(is.na(hero_msg(pkg, mk1(body = sprintf('<image href="%s"/>', u)))), info = u)
+  }
+  for (u in c("data:image/png;base64,AAAA", "DATA:IMAGE/JPEG;base64,AAAA", "data:image/webp,AA", "data:image/gif;base64,AA")) {
+    expect_true(is.na(hero_msg(pkg, mk1(body = sprintf('<image href="%s"/>', u)))), info = u)
+  }
+})
