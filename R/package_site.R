@@ -522,8 +522,8 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "cfg <- yaml::read_yaml(path)",
     "problems <- character(0)",
     "if (!identical(cfg$project$`output-dir`, \"_site\")) problems <- c(problems, \"project.output-dir must be _site\")",
-    "if (!any(grepl(\"fonts\", unlist(cfg$project$resources)))) {",
-    "  problems <- c(problems, \"project.resources must include assets/fonts/*.woff2\")",
+    "if (!any(grepl(\"^assets/fonts/\", unlist(cfg$project$resources)))) {",
+    "  problems <- c(problems, \"project.resources must include assets/fonts/**\")",
     "}",
     "if (is.null(cfg$format$`pkgsite-html`)) problems <- c(problems, \"format must be pkgsite-html\")",
     "if (!is.null(cfg$website$navbar$title) && is.null(cfg$website$`site-url`)) problems <- c(problems, \"website.site-url is missing\")",
@@ -770,17 +770,84 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
 
 # Writes `<site_dir>/.dataimago/design.json`. An existing file is merged: missing `outputs`
 # keys are added; existing keys, their values and the pinned `version` are never changed.
+# The merge is a text-level insertion, so an author's nulls, empty objects and layout survive;
+# a file that already has every key is not written at all.
 .write_design_json <- function(site_dir, template = .pkgsite_design_template()) {
-  want <- jsonlite::read_json(template)
   path <- file.path(site_dir, ".dataimago", "design.json")
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
-  out <- if (file.exists(path)) jsonlite::read_json(path) else want
-  if (is.null(out$package)) out$package <- want$package
-  if (is.null(out$version)) out$version <- want$version
-  if (is.null(out$outputs)) out$outputs <- list()
-  for (k in setdiff(names(want$outputs), names(out$outputs))) out$outputs[[k]] <- want$outputs[[k]]
-  jsonlite::write_json(out, path, auto_unbox = TRUE, pretty = TRUE)
+  if (!file.exists(path)) {
+    file.copy(template, path)
+    return(invisible(path))
+  }
+  want <- jsonlite::read_json(template)
+  have <- jsonlite::read_json(path)
+  txt <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  entry <- function(k, v, indent) {
+    paste0(indent, jsonlite::toJSON(k, auto_unbox = TRUE), ": ", jsonlite::toJSON(v, auto_unbox = TRUE))
+  }
+  missing_out <- setdiff(names(want$outputs), names(have$outputs))
+  if (length(missing_out)) {
+    ents <- vapply(missing_out, function(k) entry(k, want$outputs[[k]], "    "), "")
+    if (is.null(have$outputs)) {
+      txt <- .json_insert(txt, .json_object_end(txt, NULL), paste0('  "outputs": {\n', paste(ents, collapse = ",\n"), "\n  }"))
+    } else {
+      txt <- .json_insert(txt, .json_object_end(txt, "outputs"), paste(ents, collapse = ",\n"))
+    }
+  }
+  for (k in c("version", "package")) {
+    if (is.null(have[[k]])) txt <- .json_insert(txt, .json_object_end(txt, NULL), entry(k, want[[k]], "  "))
+  }
+  if (!identical(txt, paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n"))) {
+    writeLines(enc2utf8(txt), path, useBytes = TRUE)
+  }
   invisible(path)
+}
+
+# Character index of the `}` closing the top-level object (`key = NULL`) or the object that
+# is the value of top-level `key`.
+.json_object_end <- function(txt, key) {
+  ch <- strsplit(txt, "")[[1]]
+  depth <- 0L
+  in_str <- FALSE
+  str_start <- 0L
+  last_str <- ""
+  pending <- FALSE # the last string at depth 1 was `key`
+  target <- FALSE # inside the value object of `key`
+  for (i in seq_along(ch)) {
+    c <- ch[i]
+    if (in_str) {
+      if (c == "\"" && ch[i - 1L] != "\\") {
+        in_str <- FALSE
+        last_str <- paste(ch[(str_start + 1L):(i - 1L)], collapse = "")
+      }
+      # an escaped backslash before a quote is not handled specially; keys here are plain
+      next
+    }
+    if (c == "\"") {
+      in_str <- TRUE
+      str_start <- i
+    } else if (c == ":" && depth == 1L) {
+      pending <- !is.null(key) && identical(last_str, key)
+    } else if (c %in% c("{", "[")) {
+      depth <- depth + 1L
+      if (pending && depth == 2L && c == "{") target <- TRUE
+      pending <- FALSE
+    } else if (c %in% c("}", "]")) {
+      if (is.null(key) && depth == 1L) return(i)
+      if (target && depth == 2L) return(i)
+      depth <- depth - 1L
+    }
+  }
+  cli::cli_abort("Could not locate the object to extend in {.file design.json}.")
+}
+
+# Inserts `body` as the last member of the object closing at character `end`.
+.json_insert <- function(txt, end, body) {
+  ch <- strsplit(txt, "")[[1]]
+  before <- sub("\\s+$", "", paste(ch[seq_len(end - 1L)], collapse = ""))
+  after <- paste(ch[end:length(ch)], collapse = "")
+  sep <- if (grepl("[{]$", before)) "\n" else ",\n"
+  paste0(before, sep, body, "\n", after)
 }
 
 .design_json_read_template <- function() jsonlite::read_json(.pkgsite_design_template())
@@ -789,16 +856,18 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   jsonlite::read_json(file.path(site_dir, ".dataimago", "design.json"))
 }
 
-# The font stylesheets, in order, derived from the design.json outputs mapping.
+# The font stylesheets, in mapping order, from the mapped destinations: `<dest>fonts.css` for
+# each `fonts/<set>/` directory, and `<dest>lang.css` for `fonts/lang.css`.
 .pkgsite_font_css <- function(outputs) {
-  dest <- unlist(outputs, use.names = FALSE)
   src <- names(outputs)
-  dirs <- dest[grepl("^assets/fonts/.+/$", dest)]
-  lang <- dest[grepl("lang\\.css$", src)]
-  c(
-    if (length(dirs)) paste0(dirs, "fonts.css"),
-    if (length(lang)) paste0(sub("/?$", "/", lang), "lang.css")
-  )
+  dest <- unlist(outputs, use.names = FALSE)
+  out <- character(0)
+  for (i in seq_along(src)) {
+    if (grepl("^fonts/.+/$", src[i])) out <- c(out, paste0(dest[i], "fonts.css"))
+    if (grepl("^fonts/lang\\.css$", src[i])) out <- c(out, paste0(sub("/?$", "/", dest[i]), "lang.css"))
+  }
+  # directories first (mapping order), lang.css last
+  c(out[!grepl("lang\\.css$", out)], out[grepl("lang\\.css$", out)])
 }
 
 .tool_path <- function(name) unname(Sys.which(name))
@@ -811,11 +880,12 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
 # dataimago-design build when `from` is set (DATAIMAGO_DESIGN_FROM).
 .run_dataimago_sync <- function(site_dir, version, from = Sys.getenv("DATAIMAGO_DESIGN_FROM")) {
   if (nzchar(from)) {
+    from <- normalizePath(from, mustWork = TRUE) # the process runs in site_dir
     command <- "node"
     args <- c(file.path(from, "packages", "css", "dist", "bin", "dataimago-sync.mjs"), "--from", from)
   } else {
     command <- "npx"
-    args <- c("-p", paste0("@dataimago/css@", version), "dataimago-sync")
+    args <- c("--yes", "-p", paste0("@dataimago/css@", version), "dataimago-sync")
   }
   shown <- paste(c(command, args), collapse = " ")
   if (!nzchar(.tool_path(command))) {

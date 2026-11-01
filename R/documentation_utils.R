@@ -209,7 +209,8 @@ create_quarto_documentation <- function(package_path = ".",
   if (!config_exists || isTRUE(overwrite_config)) {
     quarto_yml_content <- generate_quarto_yml(
       desc_content, template,
-      navbar_pinned = navbar_pinned, reference = reference, self_host_fonts = self_host_fonts
+      navbar_pinned = navbar_pinned, reference = reference, self_host_fonts = self_host_fonts,
+      font_css = if (isTRUE(self_host_fonts)) .pkgsite_font_css(.design_json_read(output_path)$outputs)
     )
     writeLines(quarto_yml_content, quarto_yml_file)
   } else {
@@ -670,10 +671,11 @@ add_function_docs_sections <- function(rd_content) {
 #' @param navbar_pinned `NULL` (no key), `TRUE` or `FALSE`
 #' @param reference `"single"` or `"topics"`, which sets the reference nav target
 #' @param self_host_fonts Link the `@dataimago/css` font stylesheets from the format
+#' @param font_css Font stylesheet paths for `self_host_fonts`; `NULL` uses the template's mapping.
 #' @return Character vector with _quarto.yml content
 #' @keywords internal
 generate_quarto_yml <- function(desc_content, template = "dataimago", navbar_pinned = NULL,
-                                reference = "single", self_host_fonts = FALSE) {
+                                reference = "single", self_host_fonts = FALSE, font_css = NULL) {
   yml_content <- c()
 
   # Basic project configuration
@@ -751,7 +753,7 @@ generate_quarto_yml <- function(desc_content, template = "dataimago", navbar_pin
   yml_content <- c(yml_content, "    code-copy: true")
   yml_content <- c(yml_content, "    code-overflow: wrap")
   if (isTRUE(self_host_fonts)) {
-    yml_content <- c(yml_content, "    css:", paste0("      - ", .pkgsite_font_css(.design_json_read_template()$outputs)))
+    yml_content <- c(yml_content, "    css:", paste0("      - ", font_css %||% .pkgsite_font_css(.design_json_read_template()$outputs)))
   }
 
   # Add dataimago-specific configuration if using dataimago template

@@ -318,12 +318,13 @@ test_that("sync command uses npx with the pinned version", {
   )
   expect_equal(.run_dataimago_sync(site, "0.1.0-alpha.21", from = ""), 0L)
   expect_equal(seen$command, "npx")
-  expect_equal(seen$args, c("-p", "@dataimago/css@0.1.0-alpha.21", "dataimago-sync"))
+  expect_equal(seen$args, c("--yes", "-p", "@dataimago/css@0.1.0-alpha.21", "dataimago-sync"))
   expect_equal(seen$wd, site)
 
-  .run_dataimago_sync(site, "0.1.0-alpha.21", from = "/x/design")
+  from <- normalizePath(withr::local_tempdir())
+  .run_dataimago_sync(site, "0.1.0-alpha.21", from = from)
   expect_equal(seen$command, "node")
-  expect_equal(seen$args, c("/x/design/packages/css/dist/bin/dataimago-sync.mjs", "--from", "/x/design"))
+  expect_equal(seen$args, c(file.path(from, "packages/css/dist/bin/dataimago-sync.mjs"), "--from", from))
   expect_equal(seen$wd, site)
 })
 
@@ -340,6 +341,93 @@ test_that("create_package_site syncs by default and skips with sync = FALSE", {
 test_that("missing npx aborts with the command", {
   site <- withr::local_tempdir()
   local_mocked_bindings(.tool_path = function(name) "")
-  expect_error(.run_dataimago_sync(site, "0.1.0-alpha.21", from = ""), "npx -p @dataimago/css@0.1.0-alpha.21 dataimago-sync", fixed = TRUE)
-  expect_error(.run_dataimago_sync(site, "0.1.0-alpha.21", from = "/x/design"), "node /x/design/packages/css/dist/bin/dataimago-sync.mjs --from /x/design", fixed = TRUE)
+  expect_error(.run_dataimago_sync(site, "0.1.0-alpha.21", from = ""), "npx --yes -p @dataimago/css@0.1.0-alpha.21 dataimago-sync", fixed = TRUE)
+  from <- normalizePath(withr::local_tempdir())
+  expect_error(.run_dataimago_sync(site, "0.1.0-alpha.21", from = from), paste("node", file.path(from, "packages/css/dist/bin/dataimago-sync.mjs"), "--from", from), fixed = TRUE)
+})
+
+# ---- fix round 1 ---------------------------------------------------------------
+
+test_that("an up-to-date design.json is left byte-identical, nulls included", {
+  site <- withr::local_tempdir()
+  dir.create(file.path(site, ".dataimago"))
+  path <- file.path(site, ".dataimago", "design.json")
+  outs <- paste0('"', names(spec_outputs), '": "', spec_outputs, '"', collapse = ", ")
+  writeLines(paste0('{"package":"@dataimago/css","version":"9","n":null,"outputs":{', outs, "}}"), path)
+  before <- readBin(path, "raw", file.size(path))
+  .write_design_json(site)
+  expect_identical(readBin(path, "raw", file.size(path)), before)
+})
+
+test_that("adding missing keys preserves nulls, empty objects and arrays", {
+  site <- withr::local_tempdir()
+  dir.create(file.path(site, ".dataimago"))
+  path <- file.path(site, ".dataimago", "design.json")
+  writeLines('{"extra":{"a":[1,2],"e":{},"n":null},"version":"9","outputs":{"fonts/latin/":"custom/{x}\\"/"}}', path)
+  .write_design_json(site)
+  txt <- paste(readLines(path), collapse = "\n")
+  expect_match(txt, '"extra":{"a":[1,2],"e":{},"n":null}', fixed = TRUE)
+  d <- jsonlite::read_json(path)
+  expect_equal(d$version, "9")
+  expect_equal(d$outputs[["fonts/latin/"]], "custom/{x}\"/")
+  expect_equal(d$outputs[["fonts/math/"]], "assets/fonts/math/")
+  expect_equal(d$package, "@dataimago/css")
+})
+
+test_that("a relative `from` is normalised before the process runs in site_dir", {
+  site <- withr::local_tempdir()
+  base <- normalizePath(withr::local_tempdir())
+  dir.create(file.path(base, "design"))
+  withr::local_dir(base)
+  seen <- NULL
+  local_mocked_bindings(
+    .tool_path = function(name) "/usr/bin/fake",
+    .run_tool = function(command, args, wd) {
+      seen <<- args
+      0L
+    }
+  )
+  .run_dataimago_sync(site, "1", from = "design")
+  expect_equal(seen[3], normalizePath(file.path(base, "design")))
+  expect_equal(seen[1], file.path(normalizePath(file.path(base, "design")), "packages/css/dist/bin/dataimago-sync.mjs"))
+})
+
+test_that("font css paths follow the mapped destinations", {
+  out <- spec_outputs
+  out[["fonts/latin/"]] <- "custom/"
+  expect_equal(
+    .pkgsite_font_css(as.list(out)),
+    c("custom/fonts.css", "assets/fonts/latin-ext/fonts.css", "assets/fonts/josefin/fonts.css",
+      "assets/fonts/math/fonts.css", "assets/fonts/lang.css")
+  )
+})
+
+test_that("self_host_fonts reads the font list from the site's merged design.json", {
+  skip_without_pandoc()
+  pkg <- make_site_fixture()
+  out <- file.path(dirname(pkg), "www5")
+  dir.create(file.path(out, ".dataimago"), recursive = TRUE)
+  jsonlite::write_json(list(version = "9", outputs = list("fonts/latin/" = "custom/")),
+    file.path(out, ".dataimago", "design.json"), auto_unbox = TRUE)
+  local_mocked_bindings(.run_dataimago_sync = function(...) invisible(0L))
+  suppressMessages(utils::capture.output(
+    create_quarto_documentation(pkg, out, self_host_fonts = TRUE, template = "plain")
+  ))
+  yml <- paste(readLines(file.path(out, "_quarto.yml")), collapse = "\n")
+  expect_match(yml, "      - custom/fonts.css", fixed = TRUE)
+  expect_false(grepl("assets/fonts/latin/fonts.css", yml, fixed = TRUE))
+  expect_match(yml, "assets/fonts/math/fonts.css", fixed = TRUE)
+})
+
+test_that("the guard names assets/fonts/** and requires a fonts-directory resource", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  guard <- file.path(site, "tools", "check-quarto-yml.R")
+  cfg <- readLines(file.path(site, "_quarto.yml"))
+  writeLines(sub("assets/fonts/**", "static/unrelated-fonts-list/*.txt", cfg, fixed = TRUE), file.path(site, "bad.yml"))
+  rscript <- file.path(R.home("bin"), "Rscript")
+  res <- suppressWarnings(system2(rscript, c(guard, file.path(site, "bad.yml")), stdout = TRUE, stderr = TRUE))
+  expect_equal(attr(res, "status"), 1L)
+  expect_match(paste(res, collapse = "\n"), "assets/fonts/**", fixed = TRUE)
 })
