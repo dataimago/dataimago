@@ -530,6 +530,14 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   )
 }
 
+# TRUE when project.resources in the parsed _quarto.yml has an assets/hero entry.
+# An unparseable file counts as not covering it.
+.yml_covers_hero <- function(yml_path) {
+  cfg <- tryCatch(yaml::read_yaml(yml_path), error = function(e) NULL)
+  res <- unlist(cfg$project$resources)
+  is.character(res) && any(startsWith(res, "assets/hero"))
+}
+
 .guard_script <- function(output_path = "ui/www") {
   c(
     "# Guards the package-site _quarto.yml against edits that break the Pages artifact flow.",
@@ -1431,8 +1439,7 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
       has_data = has_data, has_papers = has_papers, has_talks = has_talks,
       has_js_hero = has_js_hero
     ), yml_path)
-  } else if (has_js_hero &&
-             !any(grepl("assets/hero", readLines(yml_path, warn = FALSE, encoding = "UTF-8"), fixed = TRUE))) {
+  } else if (has_js_hero && !.yml_covers_hero(yml_path)) {
     cli::cli_warn(c(
       "The existing {.file _quarto.yml} does not publish the JS hero.",
       "i" = "Quarto skips files that only a runtime {.code import()} references, so the landing page falls back to the poster.",

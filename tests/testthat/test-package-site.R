@@ -1413,3 +1413,17 @@ test_that("the guard fails for a js hero with no assets/hero resource", {
   expect_equal(attr(res, "status"), 1L)
   expect_match(paste(res, collapse = "\n"), "assets/hero/**", fixed = TRUE)
 })
+
+test_that("a comment or unrelated key naming assets/hero does not suppress the warning", {
+  skip_if_not_installed("yaml")
+  pkg <- js_hero_fixture()
+  site <- file.path(pkg, "ui", "www")
+  dir.create(site, recursive = TRUE)
+  writeLines(c("# TODO add assets/hero/** later", "project:", "  type: website",
+               "  resources:", "    - assets/fonts/**", "other: assets/hero/x"),
+             file.path(site, "_quarto.yml"))
+  expect_warning(
+    create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/"),
+    "assets/hero/**", fixed = TRUE
+  )
+})
