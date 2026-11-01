@@ -560,7 +560,9 @@ test_that("generated site is re-runnable under bootstrap", {
 })
 
 test_that("merge-seeded runs over a curated site without overwriting config", {
-  skip_if_schema_lacks_sitemode()
+  # The published schema lacks generator.siteMode until
+  # wi-20261101-spec-generator-sitemode; stub the schema check, not the dispatch.
+  testthat::local_mocked_bindings(validate_spec_schema = function(...) invisible(TRUE))
   tmp <- withr::local_tempdir()
   spec_path <- site_spec_fixture(tmp, "merge-seeded")
   www <- fs::path(tmp, "packages", "r-packages", "fixtpkg", "ui", "www")
@@ -576,7 +578,9 @@ test_that("merge-seeded runs over a curated site without overwriting config", {
 })
 
 test_that("skip does nothing", {
-  skip_if_schema_lacks_sitemode()
+  # The published schema lacks generator.siteMode until
+  # wi-20261101-spec-generator-sitemode; stub the schema check, not the dispatch.
+  testthat::local_mocked_bindings(validate_spec_schema = function(...) invisible(TRUE))
   tmp <- withr::local_tempdir()
   spec_path <- site_spec_fixture(tmp, "skip")
   called <- FALSE
