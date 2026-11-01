@@ -459,17 +459,7 @@ test_that("knowledge$wikiMode = 'skip' skips wiki and KNOWLEDGE scaffolding", {
 })
 
 # ---- quartoBuild dispatches to create_package_site(); generator.siteMode ----
-
-site_spec_fixture <- function(tmp, site_mode = NULL, quarto = TRUE) {
-  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
-  spec <- make_spec()
-  spec$features$quartoBuild <- quarto
-  spec$features$aiContext <- FALSE
-  if (!is.null(site_mode)) spec$generator$siteMode <- site_mode
-  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
-  yaml::write_yaml(spec, spec_path)
-  spec_path
-}
+# (site_spec_fixture() lives in helper-fixtures.R)
 
 test_that("quartoBuild dispatches to create_package_site", {
   tmp <- withr::local_tempdir()
@@ -570,6 +560,7 @@ test_that("generated site is re-runnable under bootstrap", {
 })
 
 test_that("merge-seeded runs over a curated site without overwriting config", {
+  skip_if_schema_lacks_sitemode()
   tmp <- withr::local_tempdir()
   spec_path <- site_spec_fixture(tmp, "merge-seeded")
   www <- fs::path(tmp, "packages", "r-packages", "fixtpkg", "ui", "www")
@@ -585,6 +576,7 @@ test_that("merge-seeded runs over a curated site without overwriting config", {
 })
 
 test_that("skip does nothing", {
+  skip_if_schema_lacks_sitemode()
   tmp <- withr::local_tempdir()
   spec_path <- site_spec_fixture(tmp, "skip")
   called <- FALSE
@@ -598,6 +590,7 @@ test_that("skip does nothing", {
 
 test_that("schema accepts siteMode", {
   skip_if_not_installed("jsonvalidate")
+  skip_if_schema_lacks_sitemode()
   tmp <- withr::local_tempdir()
   for (mode in c("bootstrap", "merge-seeded", "skip")) {
     spec <- make_spec()
@@ -647,8 +640,11 @@ curated_refused <- function(lines, raw = NULL) {
   spec_path <- site_spec_fixture(tmp)
   www <- fs::path(tmp, "packages", "r-packages", "fixtpkg", "ui", "www")
   fs::dir_create(www)
-  if (is.null(raw)) writeLines(lines, fs::path(www, "_quarto.yml"))
-  else writeBin(raw, fs::path(www, "_quarto.yml"))
+  if (is.null(raw)) {
+    writeLines(lines, fs::path(www, "_quarto.yml"))
+  } else {
+    writeBin(raw, fs::path(www, "_quarto.yml"))
+  }
   called <- FALSE
   testthat::local_mocked_bindings(create_package_site = function(...) called <<- TRUE)
   err <- tryCatch(
