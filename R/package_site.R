@@ -830,6 +830,154 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   ), path)
 }
 
+# ---- hero slot: ui/hero/hero.svg | hero.js + poster | fallback ----
+
+.hero_dir <- function(package_path) file.path(package_path, "ui", "hero")
+
+# Strip /* ... */ comments so they cannot hide or fake a declaration.
+.strip_css_comments <- function(x) gsub("/\\*.*?\\*/", "", x, perl = TRUE)
+
+# Scan CSS by brace depth. Returns the declarations as list(prop, value, in_np),
+# where in_np is TRUE when an enclosing block is a no-preference media query.
+.css_declarations <- function(css) {
+  css <- .strip_css_comments(css)
+  chars <- strsplit(css, "")[[1]]
+  stack <- logical(0)
+  buf <- character(0)
+  out <- list()
+  flush_decl <- function() {
+    seg <- trimws(paste(buf, collapse = ""))
+    buf <<- character(0)
+    m <- regexec("^([A-Za-z-]+)\\s*:(.*)$", seg)
+    r <- regmatches(seg, m)[[1]]
+    if (length(r) == 3L) out[[length(out) + 1L]] <<- list(prop = tolower(r[2]), value = trimws(r[3]), in_np = any(stack))
+  }
+  for (ch in chars) {
+    if (ch == "{") {
+      prelude <- paste(buf, collapse = "")
+      buf <- character(0)
+      stack <- c(stack, grepl("@media[^{]*prefers-reduced-motion\\s*:\\s*no-preference", prelude, ignore.case = TRUE))
+    } else if (ch == "}") {
+      flush_decl()
+      if (length(stack)) stack <- stack[-length(stack)]
+    } else if (ch == ";") {
+      flush_decl()
+    } else {
+      buf <- c(buf, ch)
+    }
+  }
+  out
+}
+
+.check_hero_svg <- function(path) {
+  txt <- paste(readLines(path, warn = FALSE), collapse = "\n")
+  f <- basename(path)
+  fail <- function(problem, hint) {
+    cli::cli_abort(c("{.file {f}}: {problem}", "i" = hint), call = NULL)
+  }
+  if (grepl("<?xml", txt, fixed = TRUE)) {
+    fail("contains an {.code <?xml} declaration.", "Remove it; the build stamps SVGs with an HTML comment on line 1.")
+  }
+  if (grepl("<script", txt, ignore.case = TRUE)) {
+    fail("contains a {.code <script} element.", "Hero SVGs carry no scripts; use hero.js for scripted heroes.")
+  }
+  smil <- regmatches(txt, regexpr("<(animateTransform|animateMotion|animate|set)(?![A-Za-z])", txt, perl = TRUE))
+  if (length(smil)) {
+    fail("uses the SMIL element {.code {smil}}.",
+         "SMIL cannot be paused or lint-checked; animate with CSS inside @media (prefers-reduced-motion: no-preference).")
+  }
+  root <- regmatches(txt, regexpr("<svg\\b[^>]*>", txt, perl = TRUE))
+  if (!length(root) || !grepl("viewBox\\s*=", root)) {
+    fail("the root {.code <svg>} has no {.code viewBox}.", "Add a viewBox so the hero scales.")
+  }
+
+  styles <- regmatches(txt, gregexpr("(?is)<style\\b[^>]*>.*?</style>", txt, perl = TRUE))[[1]]
+  css <- paste(sub("(?is)</style>$", "", sub("(?is)^<style\\b[^>]*>", "", styles, perl = TRUE), perl = TRUE), collapse = "\n")
+  markup <- gsub("(?is)<style\\b[^>]*>.*?</style>", "", txt, perl = TRUE)
+  if (grepl("(?i)style\\s*=\\s*(\"[^\"]*|'[^']*)\\banimation(-name)?\\s*:", markup, perl = TRUE)) {
+    fail("an inline {.code style=\"animation: ...\"} attribute is outside the reduced-motion media query.",
+         "Move the animation into the <style> block, inside @media (prefers-reduced-motion: no-preference).")
+  }
+
+  decls <- .css_declarations(css)
+  anim <- Filter(function(d) d$prop %in% c("animation", "animation-name"), decls)
+  outside <- Filter(function(d) !d$in_np, anim)
+  if (length(outside)) {
+    fail("declares {.code {outside[[1]]$prop}} outside {.code @media (prefers-reduced-motion: no-preference)}.",
+         "All hero animation must live inside that media query so reduced-motion readers get a still frame.")
+  }
+
+  if (length(anim)) {
+    counts <- Filter(function(d) d$prop == "animation-iteration-count", decls)
+    values <- vapply(counts, function(d) tolower(d$value), "")
+    shorthand <- vapply(Filter(function(d) d$prop == "animation", anim), function(d) tolower(d$value), "")
+    inf <- any(values == "infinite") || any(grepl("(^|\\s)infinite(\\s|$)", shorthand))
+    declared <- length(counts) > 0L || any(grepl("(^|\\s)[0-9]+(\\.[0-9]+)?(\\s|$)", shorthand))
+    if (inf) {
+      cli::cli_warn("{.file {f}}: {.code animation-iteration-count: infinite}; heroes should run a finite number of cycles (3) and rest.")
+    } else if (!declared) {
+      cli::cli_warn("{.file {f}}: no {.code animation-iteration-count}; heroes should run a finite number of cycles (3) and rest.")
+    }
+  }
+  invisible(path)
+}
+
+.hero_alt <- function(dir, pkg) {
+  alt <- paste0("Animated illustration for ", pkg)
+  yml <- file.path(dir, "hero.yml")
+  if (file.exists(yml)) {
+    got <- yaml::read_yaml(yml)$alt
+    if (is.character(got) && length(got) == 1L && nzchar(trimws(got))) alt <- trimws(got)
+  }
+  alt
+}
+
+# Returns list(kind, src, poster, alt); src/poster are source paths under ui/hero
+# (NULL when absent). Aborts on a rule-breaking SVG or a JS hero without a poster.
+.find_hero <- function(package_path) {
+  dir <- .hero_dir(package_path)
+  pkg <- .read_desc(package_path)$Package
+  alt <- .hero_alt(dir, pkg)
+  poster <- file.path(dir, c("poster.svg", "poster.png"))
+  poster <- poster[file.exists(poster)][1]
+  if (is.na(poster)) poster <- NULL
+  svg <- file.path(dir, "hero.svg")
+  js <- file.path(dir, "hero.js")
+  if (file.exists(svg)) {
+    .check_hero_svg(svg)
+    return(list(kind = "svg", src = svg, poster = poster, alt = alt))
+  }
+  if (file.exists(js)) {
+    if (is.null(poster)) {
+      cli::cli_abort(c(
+        "{.file ui/hero/hero.js} needs a poster.",
+        "i" = "Add {.file ui/hero/poster.svg} or {.file ui/hero/poster.png}; it is shown under reduced motion and while the module loads."
+      ), call = NULL)
+    }
+    return(list(kind = "js", src = js, poster = poster, alt = alt))
+  }
+  list(kind = "fallback", alt = alt)
+}
+
+# Copy the hero into <site>/assets/hero and return the site-relative record
+# that _landing.yml carries.
+.install_hero <- function(hero, site_dir) {
+  if (identical(hero$kind, "fallback")) return(list(kind = "fallback", alt = hero$alt))
+  dest <- file.path(site_dir, "assets", "hero")
+  unlink(dest, recursive = TRUE)
+  dir.create(dest, recursive = TRUE, showWarnings = FALSE)
+  name <- paste0("hero.", tools::file_ext(hero$src))
+  file.copy(hero$src, file.path(dest, name), overwrite = TRUE)
+  rec <- list(kind = hero$kind, src = paste0("assets/hero/", name))
+  if (!is.null(hero$poster)) {
+    pname <- paste0("poster.", tools::file_ext(hero$poster))
+    file.copy(hero$poster, file.path(dest, pname), overwrite = TRUE)
+    rec$poster <- paste0("assets/hero/", pname)
+  }
+  rec$alt <- hero$alt
+  rec
+}
+
 #' Scaffold a complete Quarto website for an R package
 #'
 #' Writes a site into `output_path` (default `ui/www`) from the package's DESCRIPTION,
@@ -931,7 +1079,8 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
       has_vignette_main = has_main, logo = logo_paths, font_css = font_css
     ), yml_path)
   }
-  .write_landing_yml(site_dir, .landing_data(package_path, desc, hero = NULL, repo_url = repo_url))
+  hero <- .install_hero(.find_hero(package_path), site_dir)
+  .write_landing_yml(site_dir, .landing_data(package_path, desc, hero = hero, repo_url = repo_url))
   .write_index_qmd(site_dir, package_path, desc, overwrite = overwrite_config)
   .write_lines(c("_site/", "/.quarto/", "_freeze/"), file.path(site_dir, ".gitignore"))
   if (isTRUE(workflow)) {

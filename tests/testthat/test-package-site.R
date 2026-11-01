@@ -753,3 +753,136 @@ test_that("the man/figures rewrite skips fenced code", {
   expect_equal(sum(b == "![P](man/figures/p.png)"), 1L)
   expect_true("<img src=\"man/figures/q.png\">" %in% b)
 })
+
+# ---- hero slot (Task B3) ----
+
+good_hero_svg <- function(extra_style = "", body = "") {
+  c('<!-- built -->',
+    '<svg class="h" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">',
+    '<style>',
+    '@media (prefers-reduced-motion: no-preference) {',
+    '  .h .a { animation: spin 2s ease; animation-iteration-count: 3; }',
+    '  @keyframes spin { from { opacity: 0 } to { opacity: 1 } }',
+    '}',
+    extra_style,
+    '</style>', body, '<circle class="a" r="2"/></svg>')
+}
+
+write_hero <- function(pkg, lines, name = "hero.svg") {
+  dir.create(file.path(pkg, "ui", "hero"), recursive = TRUE, showWarnings = FALSE)
+  writeLines(lines, file.path(pkg, "ui", "hero", name))
+  file.path(pkg, "ui", "hero", name)
+}
+
+test_that("a clean svg hero passes and is found", {
+  pkg <- make_site_fixture()
+  p <- write_hero(pkg, good_hero_svg())
+  expect_no_error(.check_hero_svg(p))
+  h <- .find_hero(pkg)
+  expect_identical(h$kind, "svg")
+  expect_identical(normalizePath(h$src), normalizePath(p))
+  expect_identical(h$alt, "Animated illustration for sitepkg")
+})
+
+test_that("svg hero refusals name the file and the problem", {
+  pkg <- make_site_fixture()
+  bad <- list(
+    xml = c('<?xml version="1.0"?>', good_hero_svg()),
+    script = good_hero_svg(body = "<script>alert(1)</script>"),
+    animate = good_hero_svg(body = '<animate attributeName="x" dur="1s"/>'),
+    animateTransform = good_hero_svg(body = '<animateTransform attributeName="transform"/>'),
+    animateMotion = good_hero_svg(body = '<animateMotion path="M0 0"/>'),
+    set = good_hero_svg(body = '<set attributeName="x" to="1"/>'),
+    viewbox = sub("viewBox=\"0 0 10 10\"", "width=\"10\"", good_hero_svg(), fixed = TRUE)
+  )
+  pat <- c(xml = "<\\?xml", script = "<script", animate = "SMIL", animateTransform = "SMIL",
+           animateMotion = "SMIL", set = "SMIL", viewbox = "viewBox")
+  for (nm in names(bad)) {
+    p <- write_hero(pkg, bad[[nm]], paste0(nm, ".svg"))
+    expect_error(.check_hero_svg(p), pat[[nm]], info = nm)
+    expect_error(.check_hero_svg(p), paste0(nm, ".svg"), fixed = TRUE, info = nm)
+  }
+})
+
+test_that("animation outside the no-preference media block is refused", {
+  pkg <- make_site_fixture()
+  p1 <- write_hero(pkg, good_hero_svg(".h .b { animation: spin 2s; }"), "outside.svg")
+  expect_error(.check_hero_svg(p1), "prefers-reduced-motion")
+  p2 <- write_hero(pkg, good_hero_svg(".h .b { animation-name: spin; }"), "outside-name.svg")
+  expect_error(.check_hero_svg(p2), "prefers-reduced-motion")
+  p3 <- write_hero(pkg, good_hero_svg(
+    "@media (prefers-reduced-motion: reduce) { .h .b { animation: spin 2s; } }"), "reduce.svg")
+  expect_error(.check_hero_svg(p3), "prefers-reduced-motion")
+  p4 <- write_hero(pkg, good_hero_svg(body = '<rect style="animation: spin 2s"/>'), "inline.svg")
+  expect_error(.check_hero_svg(p4), "inline")
+  # animation-duration alone is not an animation declaration
+  p5 <- write_hero(pkg, good_hero_svg(".h .b { animation-duration: 2s; }"), "dur.svg")
+  expect_no_error(.check_hero_svg(p5))
+})
+
+test_that("a missing or infinite iteration count warns but does not abort", {
+  pkg <- make_site_fixture()
+  none <- sub("animation-iteration-count: 3;", "", good_hero_svg(), fixed = TRUE)
+  expect_warning(.check_hero_svg(write_hero(pkg, none, "none.svg")), "animation-iteration-count")
+  inf <- sub("count: 3", "count: infinite", good_hero_svg(), fixed = TRUE)
+  expect_warning(.check_hero_svg(write_hero(pkg, inf, "inf.svg")), "infinite")
+  expect_no_warning(.check_hero_svg(write_hero(pkg, good_hero_svg(), "ok.svg")))
+})
+
+test_that("js hero without poster aborts; with poster it is found", {
+  pkg <- make_site_fixture()
+  dir.create(file.path(pkg, "ui", "hero"), recursive = TRUE)
+  writeLines("export default function mount() {}", file.path(pkg, "ui", "hero", "hero.js"))
+  expect_error(.find_hero(pkg), "poster")
+  writeLines("x", file.path(pkg, "ui", "hero", "poster.png"))
+  h <- .find_hero(pkg)
+  expect_identical(h$kind, "js")
+  expect_identical(basename(h$poster), "poster.png")
+})
+
+test_that("no hero gives the fallback; hero.yml supplies alt", {
+  pkg <- make_site_fixture()
+  expect_identical(.find_hero(pkg)$kind, "fallback")
+  skip_if_not_installed("yaml")
+  write_hero(pkg, good_hero_svg())
+  writeLines('alt: "A nested spiral of ordinals."', file.path(pkg, "ui", "hero", "hero.yml"))
+  expect_identical(.find_hero(pkg)$alt, "A nested spiral of ordinals.")
+})
+
+test_that("svg hero is copied to assets/hero and recorded in _landing.yml", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  write_hero(pkg, good_hero_svg())
+  writeLines("<svg viewBox='0 0 1 1'/>", file.path(pkg, "ui", "hero", "poster.svg"))
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  expect_true(file.exists(file.path(site, "assets", "hero", "hero.svg")))
+  expect_true(file.exists(file.path(site, "assets", "hero", "poster.svg")))
+  hero <- yaml::read_yaml(file.path(site, "_landing.yml"))$pkgsite$hero
+  expect_identical(hero$kind, "svg")
+  expect_identical(hero$src, "assets/hero/hero.svg")
+  expect_identical(hero$poster, "assets/hero/poster.svg")
+  expect_identical(hero$alt, "Animated illustration for sitepkg")
+})
+
+test_that("js hero is copied with its poster and recorded", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  dir.create(file.path(pkg, "ui", "hero"), recursive = TRUE)
+  writeLines("export default function mount() {}", file.path(pkg, "ui", "hero", "hero.js"))
+  writeLines("png", file.path(pkg, "ui", "hero", "poster.png"))
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  hero <- yaml::read_yaml(file.path(site, "_landing.yml"))$pkgsite$hero
+  expect_identical(c(hero$kind, hero$src, hero$poster),
+                   c("js", "assets/hero/hero.js", "assets/hero/poster.png"))
+  expect_true(file.exists(file.path(site, "assets", "hero", "hero.js")))
+})
+
+test_that("no hero: fallback recorded and nothing copied", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  hero <- yaml::read_yaml(file.path(site, "_landing.yml"))$pkgsite$hero
+  expect_identical(hero$kind, "fallback")
+  expect_null(hero$src)
+  expect_false(dir.exists(file.path(site, "assets", "hero")))
+})
