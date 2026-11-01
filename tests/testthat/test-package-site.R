@@ -431,3 +431,78 @@ test_that("the guard names assets/fonts/** and requires a fonts-directory resour
   expect_equal(attr(res, "status"), 1L)
   expect_match(paste(res, collapse = "\n"), "assets/fonts/**", fixed = TRUE)
 })
+
+# ---- fix round 2: hardened design.json scanner -----------------------------------
+
+merge_raw <- function(txt) {
+  site <- withr::local_tempdir(.local_envir = parent.frame())
+  dir.create(file.path(site, ".dataimago"))
+  path <- file.path(site, ".dataimago", "design.json")
+  writeBin(charToRaw(txt), path)
+  err <- tryCatch(
+    {
+      .write_design_json(site)
+      NULL
+    },
+    error = function(e) conditionMessage(e)
+  )
+  after <- rawToChar(readBin(path, "raw", file.size(path)))
+  list(after = after, err = err, parsed = tryCatch(jsonlite::read_json(path), error = function(e) NULL))
+}
+
+test_that("a trailing backslash in a string value does not derail the merge", {
+  cases <- c(
+    first = '{"path":"C:\\\\","version":"1","outputs":{"fonts/latin/":"x/"}}',
+    middle = '{"a":"b","path":"C:\\\\","z":"}","outputs":{"fonts/latin/":"x/"}}',
+    inside = '{"version":"1","outputs":{"fonts/latin/":"x\\\\","k":"v"},"z":1}'
+  )
+  for (nm in names(cases)) {
+    r <- merge_raw(cases[[nm]])
+    expect_null(r$err)
+    expect_false(is.null(r$parsed), info = nm)
+    expect_equal(r$parsed$outputs[["fonts/math/"]], "assets/fonts/math/", info = nm)
+    expect_equal(sum(gregexpr('"outputs"', r$after, fixed = TRUE)[[1]] > 0), 1L, info = nm)
+  }
+  expect_equal(merge_raw(cases[["inside"]])$parsed$outputs[["fonts/latin/"]], "x\\")
+})
+
+test_that("a non-object outputs aborts and leaves the file unchanged", {
+  for (txt in c('{"version":"1","outputs":null}', '{"version":"1","outputs":[]}')) {
+    r <- merge_raw(txt)
+    expect_match(r$err, "must be an object")
+    expect_identical(r$after, txt)
+  }
+})
+
+test_that("CRLF and the trailing-newline state are kept; only the inserted lines differ", {
+  crlf <- '{\r\n  "package": "p",\r\n  "version": "1",\r\n  "outputs": {\r\n    "fonts/latin/": "x/"\r\n  }\r\n}\r\n'
+  r <- merge_raw(crlf)
+  expect_false(grepl("[^\r]\n", r$after))
+  expect_true(endsWith(r$after, "\r\n"))
+  expect_true(startsWith(r$after, '{\r\n  "package": "p",\r\n  "version": "1",\r\n  "outputs": {\r\n    "fonts/latin/": "x/"'))
+  expect_true(endsWith(r$after, '\r\n  }\r\n}\r\n'))
+  expect_equal(r$parsed$outputs[["fonts/math/"]], "assets/fonts/math/")
+
+  bare <- '{\n  "package": "p",\n  "version": "1",\n  "outputs": {\n    "fonts/latin/": "x/"\n  }\n}'
+  r <- merge_raw(bare)
+  expect_false(endsWith(r$after, "\n"))
+  expect_true(startsWith(r$after, '{\n  "package": "p",\n  "version": "1",\n  "outputs": {\n    "fonts/latin/": "x/"'))
+  expect_true(endsWith(r$after, '\n  }\n}'))
+  expect_equal(r$parsed$outputs[["fonts/latin-ext/"]], "assets/fonts/latin-ext/")
+})
+
+test_that("inserted entries use the file's own indentation", {
+  four <- '{\n    "package": "p",\n    "version": "1",\n    "outputs": {\n        "fonts/latin/": "x/"\n    }\n}\n'
+  r <- merge_raw(four)
+  expect_match(r$after, '\n        "fonts/math/": ', fixed = TRUE)
+  expect_true(endsWith(r$after, '\n    }\n}\n'))
+  tab <- '{\n\t"package": "p",\n\t"version": "1",\n\t"outputs": {\n\t\t"fonts/latin/": "x/"\n\t}\n}\n'
+  r <- merge_raw(tab)
+  expect_match(r$after, '\n\t\t"fonts/math/": ', fixed = TRUE)
+  expect_true(endsWith(r$after, '\n\t}\n}\n'))
+  expect_false(grepl("\n  ", r$after))
+  # absent outputs: the new member follows the file's indent too
+  r <- merge_raw('{\n\t"package": "p",\n\t"version": "1"\n}\n')
+  expect_match(r$after, '\n\t"outputs": {\n\t\t"', fixed = TRUE)
+  expect_equal(r$parsed$outputs[["fonts/josefin/"]], "assets/fonts/josefin/")
+})

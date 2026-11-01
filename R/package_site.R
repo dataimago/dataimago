@@ -770,8 +770,8 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
 
 # Writes `<site_dir>/.dataimago/design.json`. An existing file is merged: missing `outputs`
 # keys are added; existing keys, their values and the pinned `version` are never changed.
-# The merge is a text-level insertion, so an author's nulls, empty objects and layout survive;
-# a file that already has every key is not written at all.
+# The merge is a text-level insertion, so an author's nulls, empty objects, layout, line
+# endings and trailing newline survive; a file that already has every key is not written.
 .write_design_json <- function(site_dir, template = .pkgsite_design_template()) {
   path <- file.path(site_dir, ".dataimago", "design.json")
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
@@ -781,73 +781,112 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   }
   want <- jsonlite::read_json(template)
   have <- jsonlite::read_json(path)
-  txt <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
-  entry <- function(k, v, indent) {
-    paste0(indent, jsonlite::toJSON(k, auto_unbox = TRUE), ": ", jsonlite::toJSON(v, auto_unbox = TRUE))
+  orig <- rawToChar(readBin(path, "raw", file.size(path)))
+  Encoding(orig) <- "UTF-8"
+  txt <- orig
+  if (!identical(.json_scan(txt)$outputs_kind %in% c("object", "absent"), TRUE)) {
+    cli::cli_abort("{.file {path}}: design.json {.field outputs} must be an object.")
+  }
+  eol <- if (grepl("\r\n", txt, fixed = TRUE)) "\r\n" else "\n"
+  indent <- .json_indent(txt)
+  entry <- function(k, v, ind) {
+    paste0(ind, jsonlite::toJSON(k, auto_unbox = TRUE), ": ", jsonlite::toJSON(v, auto_unbox = TRUE))
   }
   missing_out <- setdiff(names(want$outputs), names(have$outputs))
   if (length(missing_out)) {
-    ents <- vapply(missing_out, function(k) entry(k, want$outputs[[k]], "    "), "")
-    if (is.null(have$outputs)) {
-      txt <- .json_insert(txt, .json_object_end(txt, NULL), paste0('  "outputs": {\n', paste(ents, collapse = ",\n"), "\n  }"))
+    loc <- .json_scan(txt)
+    if (identical(loc$outputs_kind, "object")) {
+      ind <- .json_outputs_indent(txt, loc, indent)
+      ents <- vapply(missing_out, function(k) entry(k, want$outputs[[k]], ind$entry), "")
+      txt <- .json_insert(txt, loc$outputs_end, ents, eol, ind$close)
     } else {
-      txt <- .json_insert(txt, .json_object_end(txt, "outputs"), paste(ents, collapse = ",\n"))
+      ents <- vapply(missing_out, function(k) entry(k, want$outputs[[k]], paste0(indent, indent)), "")
+      member <- paste0(indent, '"outputs": {', eol, paste(ents, collapse = paste0(",", eol)), eol, indent, "}")
+      txt <- .json_insert(txt, loc$end, member, eol, "")
     }
   }
   for (k in c("version", "package")) {
-    if (is.null(have[[k]])) txt <- .json_insert(txt, .json_object_end(txt, NULL), entry(k, want[[k]], "  "))
+    if (is.null(have[[k]])) txt <- .json_insert(txt, .json_scan(txt)$end, entry(k, want[[k]], indent), eol, "")
   }
-  if (!identical(txt, paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n"))) {
-    writeLines(enc2utf8(txt), path, useBytes = TRUE)
-  }
+  if (!identical(txt, orig)) writeBin(charToRaw(enc2utf8(txt)), path)
   invisible(path)
 }
 
-# Character index of the `}` closing the top-level object (`key = NULL`) or the object that
-# is the value of top-level `key`.
-.json_object_end <- function(txt, key) {
+# Scans a JSON document: character index of the `}` closing the top-level object (`end`), and,
+# for the top-level key "outputs", whether it is "absent", an "object" (with `outputs_end`, the
+# index of its closing `}`) or some "other" value (null, array, string...).
+.json_scan <- function(txt, key = "outputs") {
   ch <- strsplit(txt, "")[[1]]
   depth <- 0L
   in_str <- FALSE
-  str_start <- 0L
+  skip <- FALSE
+  sstart <- 0L
   last_str <- ""
-  pending <- FALSE # the last string at depth 1 was `key`
-  target <- FALSE # inside the value object of `key`
+  expecting <- FALSE
+  res <- list(end = NA_integer_, outputs_kind = "absent", outputs_start = NA_integer_, outputs_end = NA_integer_)
   for (i in seq_along(ch)) {
     c <- ch[i]
     if (in_str) {
-      if (c == "\"" && ch[i - 1L] != "\\") {
+      if (skip) {
+        skip <- FALSE # the character after a backslash is escaped, whatever it is
+      } else if (c == "\\") {
+        skip <- TRUE
+      } else if (c == "\"") {
         in_str <- FALSE
-        last_str <- paste(ch[(str_start + 1L):(i - 1L)], collapse = "")
+        last_str <- if (i - 1L >= sstart + 1L) paste(ch[(sstart + 1L):(i - 1L)], collapse = "") else ""
       }
-      # an escaped backslash before a quote is not handled specially; keys here are plain
       next
+    }
+    if (expecting && !grepl("\\s", c)) {
+      expecting <- FALSE
+      res$outputs_kind <- if (c == "{") "object" else "other"
+      res$outputs_start <- i
     }
     if (c == "\"") {
       in_str <- TRUE
-      str_start <- i
+      sstart <- i
     } else if (c == ":" && depth == 1L) {
-      pending <- !is.null(key) && identical(last_str, key)
+      expecting <- identical(last_str, key) && res$outputs_kind == "absent"
     } else if (c %in% c("{", "[")) {
       depth <- depth + 1L
-      if (pending && depth == 2L && c == "{") target <- TRUE
-      pending <- FALSE
     } else if (c %in% c("}", "]")) {
-      if (is.null(key) && depth == 1L) return(i)
-      if (target && depth == 2L) return(i)
+      if (depth == 1L) {
+        res$end <- i
+        break
+      }
+      if (res$outputs_kind == "object" && is.na(res$outputs_end) && depth == 2L && i > res$outputs_start) res$outputs_end <- i
       depth <- depth - 1L
     }
   }
-  cli::cli_abort("Could not locate the object to extend in {.file design.json}.")
+  if (is.na(res$end)) cli::cli_abort("design.json is not a JSON object.")
+  res
 }
 
-# Inserts `body` as the last member of the object closing at character `end`.
-.json_insert <- function(txt, end, body) {
+# The file's own indent unit: the leading whitespace of its first indented key line.
+.json_indent <- function(txt) {
+  m <- regmatches(txt, regexpr("(?<=\n)[ \t]+(?=\")", txt, perl = TRUE))
+  if (length(m)) m else "  "
+}
+
+# Indent of existing `outputs` entries (else top-level indent doubled) and of its closing brace.
+.json_outputs_indent <- function(txt, loc, indent) {
   ch <- strsplit(txt, "")[[1]]
-  before <- sub("\\s+$", "", paste(ch[seq_len(end - 1L)], collapse = ""))
+  inner <- paste(ch[seq(loc$outputs_start + 1L, loc$outputs_end - 1L)], collapse = "")
+  m <- regmatches(inner, regexpr("(?<=\n)[ \t]+(?=\")", inner, perl = TRUE))
+  list(entry = if (length(m)) m else paste0(indent, indent), close = indent)
+}
+
+# Inserts `entries` as the last members of the object closing at character `end`, keeping the
+# whitespace that precedes the closing brace (or adding a line break and `close_indent`).
+.json_insert <- function(txt, end, entries, eol, close_indent) {
+  ch <- strsplit(txt, "")[[1]]
+  before <- paste(ch[seq_len(end - 1L)], collapse = "")
   after <- paste(ch[end:length(ch)], collapse = "")
-  sep <- if (grepl("[{]$", before)) "\n" else ",\n"
-  paste0(before, sep, body, "\n", after)
+  trimmed <- sub("\\s+$", "", before)
+  ws <- substring(before, nchar(trimmed) + 1L)
+  if (!grepl("\n", ws, fixed = TRUE)) ws <- paste0(eol, close_indent)
+  sep <- if (grepl("[{]$", trimmed)) eol else paste0(",", eol)
+  paste0(trimmed, sep, paste(entries, collapse = paste0(",", eol)), ws, after)
 }
 
 .design_json_read_template <- function() jsonlite::read_json(.pkgsite_design_template())
