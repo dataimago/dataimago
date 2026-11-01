@@ -443,7 +443,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 
 .pkg_quarto_yml <- function(desc, site_url, repo_url, navbar_pinned, org, org_url, has_news,
                             has_articles, has_vignette_main, logo, font_css, has_data = FALSE,
-                            has_papers = FALSE, has_talks = FALSE) {
+                            has_papers = FALSE, has_talks = FALSE, has_js_hero = FALSE) {
   pkg <- desc$Package
   year <- format(Sys.Date(), "%Y")
   people <- .authors(desc)
@@ -475,6 +475,8 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "    - \"articles/**/*.qmd\"",
     "  resources:",
     "    - assets/fonts/**",
+    # Quarto does not publish files only a runtime import() references.
+    if (isTRUE(has_js_hero)) "    - assets/hero/**",
     "",
     "execute:",
     "  freeze: auto",
@@ -539,6 +541,11 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "if (!identical(cfg$project$`output-dir`, \"_site\")) problems <- c(problems, \"project.output-dir must be _site\")",
     "if (!any(grepl(\"^assets/fonts/\", unlist(cfg$project$resources)))) {",
     "  problems <- c(problems, \"project.resources must include assets/fonts/**\")",
+    "}",
+    "site_dir <- dirname(path)",
+    "if (length(Sys.glob(file.path(site_dir, \"assets\", \"hero\", \"*.js\"))) &&",
+    "    !any(grepl(\"^assets/hero/?\", unlist(cfg$project$resources)))) {",
+    "  problems <- c(problems, \"project.resources must include assets/hero/** (a JS hero is loaded by import(), which Quarto does not publish)\")",
     "}",
     "if (is.null(cfg$format$`pkgsite-html`)) problems <- c(problems, \"format must be pkgsite-html\")",
     "if (!is.null(cfg$website$navbar$title) && is.null(cfg$website$`site-url`)) problems <- c(problems, \"website.site-url is missing\")",
@@ -1414,15 +1421,25 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   .overview_placeholder(site_dir, pkg)
 
   yml_path <- file.path(site_dir, "_quarto.yml")
+  hero_found <- .find_hero(package_path)
+  has_js_hero <- identical(hero_found$kind, "js")
   if (!file.exists(yml_path) || isTRUE(overwrite_config)) {
     .write_lines(.pkg_quarto_yml(
       desc, site_url, repo_url, navbar_pinned, org, org_url,
       has_news = !is.null(news), has_articles = has_articles,
       has_vignette_main = has_main, logo = logo_paths, font_css = font_css,
-      has_data = has_data, has_papers = has_papers, has_talks = has_talks
+      has_data = has_data, has_papers = has_papers, has_talks = has_talks,
+      has_js_hero = has_js_hero
     ), yml_path)
+  } else if (has_js_hero &&
+             !any(grepl("assets/hero", readLines(yml_path, warn = FALSE, encoding = "UTF-8"), fixed = TRUE))) {
+    cli::cli_warn(c(
+      "The existing {.file _quarto.yml} does not publish the JS hero.",
+      "i" = "Quarto skips files that only a runtime {.code import()} references, so the landing page falls back to the poster.",
+      "i" = "Add this line under {.code project: resources:} yourself: {.code - assets/hero/**}"
+    ))
   }
-  hero <- .install_hero(.find_hero(package_path), site_dir)
+  hero <- .install_hero(hero_found, site_dir)
   .write_landing_yml(site_dir, .landing_data(package_path, desc, hero = hero, repo_url = repo_url))
   .write_index_qmd(site_dir, package_path, desc, overwrite = overwrite_config)
   .write_lines(c("_site/", "/.quarto/", "_freeze/"), file.path(site_dir, ".gitignore"))

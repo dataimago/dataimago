@@ -1357,3 +1357,59 @@ test_that("a leading ./ output_path is allowed", {
   create_package_site(pkg, output_path = "./docs/site", sync = FALSE, site_url = "https://example.org/sitepkg/")
   expect_equal(readLines(file.path(pkg, ".Rbuildignore")), c("^docs$", "^\\.github$"))
 })
+
+# ---- B8: a runtime-imported JS hero must be a declared project resource ----
+
+js_hero_fixture <- function(env = parent.frame()) {
+  pkg <- make_site_fixture(withr::local_tempdir(.local_envir = env))
+  dir.create(file.path(pkg, "ui", "hero"), recursive = TRUE)
+  writeLines("export default function mount() {}", file.path(pkg, "ui", "hero", "hero.js"))
+  writeLines("png", file.path(pkg, "ui", "hero", "poster.png"))
+  pkg
+}
+
+test_that("a js hero adds assets/hero/** to project.resources", {
+  skip_if_not_installed("yaml")
+  pkg <- js_hero_fixture()
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  res <- unlist(yaml::read_yaml(file.path(site, "_quarto.yml"))$project$resources)
+  expect_true("assets/hero/**" %in% res)
+  expect_true("assets/fonts/**" %in% res)
+})
+
+test_that("svg and fallback heroes do not add a hero resource", {
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  expect_false(any(grepl("assets/hero", unlist(yaml::read_yaml(file.path(site, "_quarto.yml"))$project$resources))))
+  write_hero(pkg, good_hero_svg())
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/", overwrite_config = TRUE)
+  expect_false(any(grepl("assets/hero", unlist(yaml::read_yaml(file.path(site, "_quarto.yml"))$project$resources))))
+})
+
+test_that("an existing _quarto.yml without the hero entry warns and is left alone", {
+  pkg <- js_hero_fixture()
+  site <- file.path(pkg, "ui", "www")
+  dir.create(site, recursive = TRUE)
+  writeLines("# my own config", file.path(site, "_quarto.yml"))
+  expect_warning(
+    create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/"),
+    "assets/hero/**", fixed = TRUE
+  )
+  expect_equal(readLines(file.path(site, "_quarto.yml")), "# my own config")
+})
+
+test_that("the guard fails for a js hero with no assets/hero resource", {
+  skip_if_not_installed("yaml")
+  pkg <- js_hero_fixture()
+  site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  guard <- file.path(site, "tools", "check-quarto-yml.R")
+  rscript <- file.path(R.home("bin"), "Rscript")
+  ok <- suppressWarnings(system2(rscript, c(guard, file.path(site, "_quarto.yml")), stdout = FALSE, stderr = FALSE))
+  expect_equal(ok, 0L)
+  cfg <- readLines(file.path(site, "_quarto.yml"))
+  writeLines(cfg[!grepl("assets/hero", cfg, fixed = TRUE)], file.path(site, "_quarto.yml"))
+  res <- suppressWarnings(system2(rscript, c(guard, file.path(site, "_quarto.yml")), stdout = TRUE, stderr = TRUE))
+  expect_equal(attr(res, "status"), 1L)
+  expect_match(paste(res, collapse = "\n"), "assets/hero/**", fixed = TRUE)
+})
