@@ -42,7 +42,7 @@ make_spec <- function() {
       )
     ),
     features = list(
-      quartoBuild = TRUE,
+      quartoBuild = FALSE,
       thesisPdf = TRUE,
       mcpTools = TRUE,
       aiContext = TRUE,
