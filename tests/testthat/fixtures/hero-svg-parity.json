@@ -1,0 +1,203 @@
+[
+ {
+  "name": "style-lt-img-onerror",
+  "svg": "<svg viewBox=\"0 0 1 1\"><style><img src=x onerror=alert(1)></style></svg>",
+  "ok": false,
+  "_comment": "CANONICAL list of hero-SVG cases shared by the pkgsite leaf (landing.lua svg_problem; tools/formats/landing-filter.test.mjs runs every case through the real filter) and the dataimago R package (.check_svg_markup), whose tests vendor a copy of this file. Edit here first, then re-vendor. Only rules both sides share belong in it; R-only rules (durations, transitions over 300 ms, animation-play-state) stay out."
+ },
+ {
+  "name": "style-lt-anchor-javascript",
+  "svg": "<svg viewBox=\"0 0 1 1\"><style><a href=\"javascript:alert(1)\"></style></svg>",
+  "ok": false
+ },
+ {
+  "name": "style-url-https",
+  "svg": "<svg viewBox=\"0 0 1 1\"><rect fill=\"url(https://evil.example/x)\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "style-block-url-https",
+  "svg": "<svg viewBox=\"0 0 1 1\"><style>.a{fill:url(https://evil.example/x)}</style><rect class=\"a\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "style-url-data",
+  "svg": "<svg viewBox=\"0 0 1 1\"><style>.a{fill:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==)}</style><rect class=\"a\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "style-url-fragment",
+  "svg": "<svg viewBox=\"0 0 1 1\"><style>.a{fill:url(#g)}</style><defs><linearGradient id=\"g\"/></defs><rect class=\"a\"/></svg>",
+  "ok": true
+ },
+ {
+  "name": "onload-root",
+  "svg": "<svg viewBox=\"0 0 1 1\" onload=\"x()\"><rect/></svg>",
+  "ok": false
+ },
+ {
+  "name": "onclick-single-quote-mixed-case",
+  "svg": "<svg viewBox=\"0 0 1 1\"><rect OnClick='x()'/></svg>",
+  "ok": false
+ },
+ {
+  "name": "onclick-space-before-equals",
+  "svg": "<svg viewBox=\"0 0 1 1\"><rect onclick =\"x()\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "onmouseover-tab-before-equals",
+  "svg": "<svg viewBox=\"0 0 1 1\"><rect onmouseover\t=\"x()\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "javascript-href",
+  "svg": "<svg viewBox=\"0 0 1 1\"><a href=\"javascript:alert(1)\"><rect/></a></svg>",
+  "ok": false
+ },
+ {
+  "name": "javascript-mixed-case",
+  "svg": "<svg viewBox=\"0 0 1 1\"><a href=\"JaVaScRiPt:alert(1)\"><rect/></a></svg>",
+  "ok": false
+ },
+ {
+  "name": "script-element",
+  "svg": "<svg viewBox=\"0 0 1 1\"><script>alert(1)</script></svg>",
+  "ok": false
+ },
+ {
+  "name": "foreignobject-element",
+  "svg": "<svg viewBox=\"0 0 1 1\"><foreignObject><p>x</p></foreignObject></svg>",
+  "ok": false
+ },
+ {
+  "name": "iframe-element",
+  "svg": "<svg viewBox=\"0 0 1 1\"><iframe src=\"x\"></iframe></svg>",
+  "ok": false
+ },
+ {
+  "name": "object-element",
+  "svg": "<svg viewBox=\"0 0 1 1\"><object data=\"x\"></object></svg>",
+  "ok": false
+ },
+ {
+  "name": "embed-element",
+  "svg": "<svg viewBox=\"0 0 1 1\"><embed src=\"x\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "smil-animate",
+  "svg": "<svg viewBox=\"0 0 1 1\"><rect><animate attributeName=\"x\" to=\"1\"/></rect></svg>",
+  "ok": false
+ },
+ {
+  "name": "smil-animatetransform-mixed-case",
+  "svg": "<svg viewBox=\"0 0 1 1\"><rect><AnimateTransform attributeName=\"transform\"/></rect></svg>",
+  "ok": false
+ },
+ {
+  "name": "smil-set",
+  "svg": "<svg viewBox=\"0 0 1 1\"><rect><set attributeName=\"x\" to=\"1\"/></rect></svg>",
+  "ok": false
+ },
+ {
+  "name": "smil-prefixed-animate",
+  "svg": "<svg viewBox=\"0 0 1 1\"><rect><svg:animate attributeName=\"x\" to=\"1\"/></rect></svg>",
+  "ok": false
+ },
+ {
+  "name": "smil-prefixed-set",
+  "svg": "<svg viewBox=\"0 0 1 1\"><rect><svg:set attributeName=\"x\" to=\"1\"/></rect></svg>",
+  "ok": false
+ },
+ {
+  "name": "href-fragment",
+  "svg": "<svg viewBox=\"0 0 1 1\"><defs><g id=\"a\"/></defs><use href=\"#a\"/></svg>",
+  "ok": true
+ },
+ {
+  "name": "xlink-href-fragment",
+  "svg": "<svg viewBox=\"0 0 1 1\"><defs><g id=\"a\"/></defs><use xlink:href=\"#a\"/></svg>",
+  "ok": true
+ },
+ {
+  "name": "href-external-https",
+  "svg": "<svg viewBox=\"0 0 1 1\"><use href=\"https://evil.example/s.svg#a\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "xlink-href-protocol-relative",
+  "svg": "<svg viewBox=\"0 0 1 1\"><use xlink:href=\"//evil.example/s.svg#a\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "href-data-png-base64",
+  "svg": "<svg viewBox=\"0 0 1 1\"><image href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\" width=\"1\" height=\"1\"/></svg>",
+  "ok": true
+ },
+ {
+  "name": "xlink-href-data-jpeg",
+  "svg": "<svg viewBox=\"0 0 1 1\"><image xlink:href=\"data:image/jpeg;base64,/9j/4AAQ\" width=\"1\" height=\"1\"/></svg>",
+  "ok": true
+ },
+ {
+  "name": "href-data-mixed-case-webp",
+  "svg": "<svg viewBox=\"0 0 1 1\"><image href=\"DATA:Image/WebP;base64,UklGRg==\" width=\"1\" height=\"1\"/></svg>",
+  "ok": true
+ },
+ {
+  "name": "href-data-svg-xml",
+  "svg": "<svg viewBox=\"0 0 1 1\"><image href=\"data:image/svg+xml;base64,PHN2Zy8+\" width=\"1\" height=\"1\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "href-data-text-html",
+  "svg": "<svg viewBox=\"0 0 1 1\"><image href=\"data:text/html;base64,PHNjcmlwdD4=\" width=\"1\" height=\"1\"/></svg>",
+  "ok": false
+ },
+ {
+  "name": "import-url-fragment",
+  "svg": "<svg viewBox=\"0 0 1 1\"><style>@import url(#x);</style><rect/></svg>",
+  "ok": false
+ },
+ {
+  "name": "import-uppercase",
+  "svg": "<svg viewBox=\"0 0 1 1\"><style>@IMPORT \"x.css\";</style><rect/></svg>",
+  "ok": false
+ },
+ {
+  "name": "comment-hides-script",
+  "svg": "<svg viewBox=\"0 0 1 1\"><!-- <script>x</script> onload= javascript: --><rect/></svg>",
+  "ok": true
+ },
+ {
+  "name": "keyframes-no-preference",
+  "svg": "<svg viewBox=\"0 0 1 1\"><style>.a{fill:#123}@media (prefers-reduced-motion: no-preference){.a{animation-name:k;animation-duration:2400ms;animation-iteration-count:3}@keyframes k{from{opacity:0}to{opacity:1}}}</style><rect class=\"a\"/></svg>",
+  "ok": true
+ },
+ {
+  "name": "brand-fallback-inlined",
+  "svg": "<svg class=\"di-hero-fallback\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 800 800\" preserveAspectRatio=\"xMidYMid meet\" focusable=\"false\">\n<style>\n.di-hero-fallback { display: block; width: 100%; height: 100%; }\n.di-hero-fallback .axis { stroke: var(--color-border-moderate, #8a8a85); stroke-width: 2; fill: none; stroke-linecap: round; }\n.di-hero-fallback .grid { stroke: var(--color-border-subtle, #c9c9c4); stroke-width: 1; fill: none; }\n.di-hero-fallback .curve { fill: none; stroke-width: 5; stroke-linecap: round; }\n.di-hero-fallback .c1 { stroke: var(--color-interactive-primary, #1d3b2f); }\n.di-hero-fallback .c2 { stroke: var(--color-dataviz-categorical-1, #0072b2); }\n.di-hero-fallback .c3 { stroke: var(--color-dataviz-categorical-2, #d55e00); }\n.di-hero-fallback .c4 { stroke: var(--color-dataviz-categorical-3, #009e73); }\n.di-hero-fallback .c5 { stroke: var(--color-dataviz-categorical-5, #0072b2); }\n.di-hero-fallback .c6 { stroke: var(--color-interactive-accent, #b45f06); }\n.di-hero-fallback .c7 { stroke: var(--color-content-secondary, #5b5b57); stroke-width: 3; }\n.di-hero-fallback .dot { stroke: none; }\n.di-hero-fallback .d1 { fill: var(--color-interactive-primary, #1d3b2f); }\n.di-hero-fallback .d3 { fill: var(--color-dataviz-categorical-2, #d55e00); }\n.di-hero-fallback .d5 { fill: var(--color-dataviz-categorical-5, #0072b2); }\n@media (prefers-reduced-motion: no-preference) {\n  .di-hero-fallback .curve {\n    stroke-dasharray: 1;\n    stroke-dashoffset: 1;\n    animation-name: di-hero-draw;\n    animation-duration: 2400ms;\n    animation-timing-function: ease-in-out;\n    animation-iteration-count: 3;\n    animation-fill-mode: both;\n  }\n  .di-hero-fallback .c2 { animation-delay: 120ms; }\n  .di-hero-fallback .c3 { animation-delay: 240ms; }\n  .di-hero-fallback .c4 { animation-delay: 360ms; }\n  .di-hero-fallback .c5 { animation-delay: 480ms; }\n  .di-hero-fallback .c6 { animation-delay: 600ms; }\n  .di-hero-fallback .c7 { animation-delay: 720ms; }\n  @keyframes di-hero-draw {\n    from { stroke-dashoffset: 1; }\n    to { stroke-dashoffset: 0; }\n  }\n}\n</style>\n<path class=\"grid\" d=\"M80 560H720M80 400H720M80 240H720M80 80H720\"/>\n<path class=\"axis\" d=\"M80 80V720H720\"/>\n<path class=\"curve c7\" pathLength=\"1\" d=\"M80 720C240 716 400 690 720 640\"/>\n<path class=\"curve c6\" pathLength=\"1\" d=\"M80 720C230 700 400 640 720 520\"/>\n<path class=\"curve c5\" pathLength=\"1\" d=\"M80 720C220 690 400 590 720 410\"/>\n<path class=\"curve c4\" pathLength=\"1\" d=\"M80 720C210 670 390 540 720 310\"/>\n<path class=\"curve c3\" pathLength=\"1\" d=\"M80 720C190 640 370 470 720 210\"/>\n<path class=\"curve c2\" pathLength=\"1\" d=\"M80 720C170 600 340 400 720 140\"/>\n<path class=\"curve c1\" pathLength=\"1\" d=\"M80 720C150 560 300 330 720 90\"/>\n<circle class=\"dot d1\" cx=\"720\" cy=\"90\" r=\"9\"/>\n<circle class=\"dot d3\" cx=\"720\" cy=\"210\" r=\"7\"/>\n<circle class=\"dot d5\" cx=\"720\" cy=\"410\" r=\"7\"/>\n</svg>",
+  "ok": true
+ },
+ {
+  "name": "style-unclosed-before-svg-close",
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\"><style>.a{fill:red}</svg>",
+  "ok": false
+ },
+ {
+  "name": "style-second-unclosed",
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\"><style>.a{fill:red}</style><rect class=\"a\" width=\"10\" height=\"10\"/><style>.b{fill:blue}</svg>",
+  "ok": false
+ },
+ {
+  "name": "style-two-closed",
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\"><style>.a{fill:red}</style><style>.b{fill:blue}</style><rect class=\"a\" width=\"10\" height=\"10\"/></svg>",
+  "ok": true
+ },
+ {
+  "name": "href-raster-data-leading-space",
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 10 10\"><image href=\" data:image/png;base64,iVBORw0KGgo\" width=\"10\" height=\"10\"/></svg>",
+  "ok": true
+ }
+]

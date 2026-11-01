@@ -119,18 +119,6 @@ site_spec_fixture <- function(tmp, site_mode = NULL, quarto = TRUE) {
   spec_path
 }
 
-# The published spec schema does not carry generator.siteMode yet; schema-validated spec
-# files that set it are rejected until @dataimago/spec adds it. Skips automatically once
-# the bundled schema gains the property.
-skip_if_schema_lacks_sitemode <- function() {
-  schema <- jsonlite::read_json(system.file("schemas", "dataimago-spec.v1alpha1.schema.json", package = "dataimago"))
-  has_site_mode <- !is.null(schema$properties$generator$properties$siteMode)
-  testthat::skip_if_not(
-    has_site_mode,
-    "bundled spec schema has no generator.siteMode yet (wi-20261101-spec-generator-sitemode)"
-  )
-}
-
 # TRUE when ai() refuses the curated _quarto.yml written from `lines`
 # (or `raw` bytes) and never calls create_package_site().
 curated_refused <- function(lines, raw = NULL) {
