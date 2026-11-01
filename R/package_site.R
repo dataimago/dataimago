@@ -1015,7 +1015,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
       out <- c(
         out, paste0("## [", ttl, "](", .url_escape(.field(t, "url")), ")"), "",
         if (!is.null(.field(t, "thumb"))) c(paste0("![Thumbnail of the talk ", ttl, "](", .url_escape(.field(t, "thumb")), ")"), ""),
-        paste(meta, collapse = " · "), ""
+        paste(meta, collapse = " \u00b7 "), ""
       )
     }
     out

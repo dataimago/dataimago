@@ -25,7 +25,9 @@ create_package_site(
 
 \item{output_path}{Quarto project directory, relative to \code{package_path}.}
 
-\item{site_url, repo_url}{Canonical site and repository URLs.}
+\item{site_url, repo_url}{Canonical site and repository URLs. When \code{NULL}, the first
+\verb{https://<user>.github.io/...} and the first \verb{https://github.com/<owner>/<repo>} URL in
+the DESCRIPTION \code{URL} field are used.}
 
 \item{org, org_url}{Organisation credited in the footer.}
 
@@ -59,7 +61,7 @@ articles, \code{news.qmd}, \code{citation.qmd}, a \verb{_quarto.yml} guard scrip
 }
 \details{
 Existing \verb{_quarto.yml}, \code{index.qmd} and workflow files are kept unless
-\code{overwrite_config = TRUE}. Reference, article, news and citation pages are always
+\code{overwrite_config = TRUE}. \verb{_landing.yml}, reference, article, news and citation pages are always
 regenerated, so edit their sources (\verb{man/}, \verb{vignettes/}, \code{NEWS.md}) rather than the
 pages.
 }
