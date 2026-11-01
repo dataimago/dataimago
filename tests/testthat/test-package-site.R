@@ -1399,3 +1399,18 @@ test_that("desc urls drop fragments and non-repo github paths", {
   expect_null(.desc_urls(list(URL = "https://github.com/orgs/foo"))$repo_url)
   expect_null(.desc_urls(list(URL = "https://github.com/onlyowner"))$repo_url)
 })
+
+test_that("output_path outside the package or degenerate aborts", {
+  pkg <- make_site_fixture()
+  for (bad in c(".", "./", "..", "../x", "a/../b", "/abs/path", "a//b")) {
+    expect_error(create_package_site(pkg, output_path = bad, sync = FALSE), "output_path", info = bad)
+  }
+})
+
+test_that("a leading ./ output_path is allowed", {
+  skip_without_pandoc()
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  create_package_site(pkg, output_path = "./docs/site", sync = FALSE, site_url = "https://example.org/sitepkg/")
+  expect_equal(readLines(file.path(pkg, ".Rbuildignore")), c("^docs$", "^\\.github$"))
+})

@@ -1341,6 +1341,14 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
       x = "Found: {.val {bad}}"
     ))
   }
+  segs <- strsplit(sub("^\\./", "", output_path), "/", fixed = TRUE)[[1]]
+  if (!nzchar(output_path) || startsWith(output_path, "/") || !length(segs) ||
+    any(!nzchar(segs)) || any(segs %in% c(".", ".."))) {
+    cli::cli_abort(c(
+      "{.arg output_path} must be a relative sub-directory of the package.",
+      x = "Got {.val {output_path}}: no leading {.code /}, {.code .}, {.code ..} or empty segments."
+    ))
+  }
   desc <- .read_desc(package_path)
   pkg <- desc$Package
   site_dir <- file.path(package_path, output_path)
