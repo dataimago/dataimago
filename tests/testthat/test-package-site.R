@@ -150,7 +150,7 @@ test_that("create_quarto_documentation reference = 'topics' routes the nav to th
       reference = "topics", navbar_pinned = FALSE, self_host_fonts = TRUE, template = "plain"
     )
   ))
-  expect_equal(synced, c(out, "0.1.0-alpha.21")) # self_host_fonts routes through the sync path
+  expect_equal(synced, c(out, "0.1.0-alpha.23")) # self_host_fonts routes through the sync path
   expect_true(file.exists(file.path(out, ".dataimago", "design.json")))
   yml <- paste(readLines(file.path(out, "_quarto.yml")), collapse = "\n")
   expect_match(yml, "reference/index.qmd", fixed = TRUE)
@@ -216,7 +216,7 @@ test_that("design.json is written with the spec keys", {
   expect_equal(path, file.path(site, ".dataimago", "design.json"))
   d <- jsonlite::read_json(path)
   expect_equal(d$package, "@dataimago/css")
-  expect_equal(d$version, "0.1.0-alpha.21")
+  expect_equal(d$version, "0.1.0-alpha.23")
   expect_equal(unlist(d$outputs), spec_outputs)
 })
 
@@ -633,8 +633,8 @@ test_that("index.qmd wraps README in .di-landing-overview and is kept on regener
   dir.create(site)
   .write_index_qmd(site, pkg, .read_desc(pkg), overwrite = FALSE)
   idx <- readLines(file.path(site, "index.qmd"))
-  expect_equal(idx[1:5], c("---", "pagetitle: \"sitepkg\"", "page-layout: custom", "metadata-files: [_landing.yml]", "---"))
-  expect_equal(idx[7:9], c("::: {.di-landing}", "::: {.di-landing-overview}", "Shout and whisper words."))
+  expect_equal(idx[1:7], c("---", "pagetitle: \"sitepkg\"", "page-layout: custom", "toc: false", "shift-heading-level-by: 1", "metadata-files: [_landing.yml]", "---"))
+  expect_equal(idx[9:11], c("::: {.di-landing}", "::: {.di-landing-overview}", "Shout and whisper words."))
   expect_equal(tail(idx[nzchar(idx)], 2), c(":::", ":::"))
   expect_false(any(grepl("^# sitepkg|\\[!\\[CRAN", idx)))
   writeLines("mine", file.path(site, "index.qmd"))
@@ -1513,4 +1513,73 @@ test_that("matcher edge cases agree between the warning and the guard", {
   r <- probe_hero_cover(res_list("assets/fonts/**", "assets/*"))
   expect_true(r$warned)
   expect_false(r$guard_ok)
+})
+
+# ---- final fix pass B ----
+
+test_that("index.qmd front matter turns the TOC off and demotes README headings", {
+  pkg <- make_site_fixture()
+  site <- withr::local_tempdir()
+  .write_index_qmd(site, pkg, .read_desc(pkg), overwrite = TRUE)
+  idx <- readLines(file.path(site, "index.qmd"))
+  fm <- idx[seq_len(which(idx == "---")[2])]
+  expect_true("toc: false" %in% fm)
+  expect_true("shift-heading-level-by: 1" %in% fm)
+})
+
+test_that("a setext H1 title is stripped, fence-aware", {
+  pkg <- make_site_fixture()
+  writeLines(c(
+    "toOrdinal", "===========", "", "Body text.", "",
+    "```", "Not a title", "=====", "```", "", "## Usage"
+  ), file.path(pkg, "README.md"))
+  b <- .readme_overview_body(pkg)
+  expect_false("toOrdinal" %in% b)
+  expect_false(any(b == "==========="))
+  expect_true("Body text." %in% b)
+  expect_true("Not a title" %in% b)
+  expect_true("=====" %in% b)
+  expect_true("## Usage" %in% b)
+})
+
+test_that("script cannot hide inside an SVG hero's style element", {
+  pkg <- make_site_fixture()
+  bad <- list(
+    img = good_hero_svg(extra_style = "<img src=x onerror=alert(1)>"),
+    anchor = good_hero_svg(extra_style = "<a href=\"javascript:alert(1)\">x</a>"),
+    urlhttp = good_hero_svg(extra_style = ".a { fill: url(https://x/y.svg#p) }"),
+    urldata = good_hero_svg(extra_style = ".a { fill: url(data:image/svg+xml;base64,AAAA) }"),
+    urlrel = good_hero_svg(extra_style = ".a { fill: url('other.svg#p') }"),
+    handler = good_hero_svg(extra_style = "<g onload=\"x()\"/>")
+  )
+  for (nm in names(bad)) {
+    p <- write_hero(pkg, bad[[nm]], paste0(nm, ".svg"))
+    expect_error(.check_hero_svg(p), paste0(nm, ".svg"), fixed = TRUE, info = nm)
+  }
+  ok <- write_hero(pkg, good_hero_svg(extra_style = ".a { fill: url(#grad) }"), "ok.svg")
+  expect_no_error(.check_hero_svg(ok))
+  expect_no_error(.check_hero_svg(write_hero(pkg, good_hero_svg(), "ok2.svg")))
+})
+
+test_that("with no logo the config carries no logo, logo-alt or favicon keys and the guard passes", {
+  skip_without_pandoc()
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  unlink(file.path(pkg, "man", "figures", "logo.svg"))
+  expect_warning(site <- create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/"), "logo")
+  cfg <- yaml::read_yaml(file.path(site, "_quarto.yml"))
+  expect_null(cfg$website$navbar$logo)
+  expect_null(cfg$website$navbar$`logo-alt`)
+  expect_null(cfg$website$favicon)
+  expect_false(any(grepl("assets/brand", readLines(file.path(site, "_quarto.yml")), fixed = TRUE)))
+  expect_false(any(grepl("assets/brand", readLines(file.path(site, "_landing.yml")), fixed = TRUE)))
+  guard <- file.path(site, "tools", "check-quarto-yml.R")
+  out <- suppressWarnings(system2(file.path(R.home("bin"), "Rscript"), c("--vanilla", shQuote(guard), shQuote(file.path(site, "_quarto.yml"))), stdout = TRUE, stderr = TRUE))
+  expect_equal(attr(out, "status") %||% 0L, 0L, info = paste(out, collapse = "\n"))
+})
+
+test_that("the design.json pin is at least 0.1.0-alpha.23, which ships the leaf", {
+  tpl <- jsonlite::read_json(system.file("pkgsite", "design.json", package = "dataimago"))
+  expect_match(tpl$version, "^0\\.1\\.0-alpha\\.[0-9]+$")
+  expect_gte(as.integer(sub(".*alpha\\.", "", tpl$version)), 23L)
 })

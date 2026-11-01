@@ -8,12 +8,31 @@
   page built from `_landing.yml` (overview, hero, and one card each for
   Overview, Documentation, API, What's new and Source), with the navbar
   Overview, Documentation, API, What's new. `_landing.yml` is regenerated on
-  every run; degrades to factual fallbacks when a package has no vignettes,
-  NEWS or logo.
+  every run. The landing page has no table of contents and demotes the README's
+  headings by one level under its own `h1`; a README title (ATX `#` or setext
+  `===`) is dropped. A package with no vignettes or NEWS gets factual fallbacks;
+  a package with no logo gets a site with no navbar logo or favicon (and a
+  warning), not a reference to a file that does not exist.
+* Hero inputs: `ui/hero/hero.svg` (with an optional `poster.svg`, a still frame) or `hero.js`
+  fill the landing hero. SVG heroes are checked at build time: no script, SMIL,
+  foreign content, event handlers, `javascript:` URLs, markup inside `<style>`,
+  or `url()` to anything but `#id`, and animation only inside
+  `prefers-reduced-motion: no-preference`. A JS hero is published through
+  `project.resources` (`assets/hero/**`), which Quarto does not do for
+  runtime `import()`.
+* `papers.qmd` and `talks.qmd` pages (with navbar entries) are generated from
+  `ui/papers.yml` and `ui/talks.yml` when a package supplies them.
+* A guard script, `tools/check-quarto-yml.R`, is written beside the site and run
+  by the Pages workflow; it fails when `_quarto.yml` loses `output-dir: _site`,
+  the fonts or hero resources, or the `pkgsite-html` format.
+* `output_path` is validated: it must be a relative path inside the package.
 * `sync = TRUE` (the default) copies the format extension and the web fonts from
   `@dataimago/css` through `dataimago-sync`, pinned to the version recorded in
   `design.json`. Setting `DATAIMAGO_DESIGN_FROM` syncs from a local
-  dataimago-design build instead, without the network.
+  dataimago-design build instead, without the network. The package-site format
+  needs `@dataimago/css` >= 0.1.0-alpha.23; until that version is published,
+  `create_package_site(sync = TRUE)` and the workflow's sync check fail, so
+  build locally with `DATAIMAGO_DESIGN_FROM`.
 * Site and repository URLs default to those in the DESCRIPTION `URL` field.
 * `ai()` with `features.quartoBuild` dispatches to `create_package_site()`, and
   `generator.siteMode` selects how; it refuses to overwrite a site whose

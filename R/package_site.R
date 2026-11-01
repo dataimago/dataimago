@@ -486,7 +486,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     paste0("  description: ", .yaml_quote(desc$Title %||% pkg)),
     if (!is.null(site_url)) paste0("  site-url: ", .yaml_quote(site_url)),
     if (!is.null(repo_url)) paste0("  repo-url: ", .yaml_quote(repo_url)),
-    paste0("  favicon: ", logo$favicon),
+    if (!is.null(logo)) paste0("  favicon: ", logo$favicon),
     "  open-graph: true",
     "  page-navigation: false",
     "  search:",
@@ -494,8 +494,10 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "    type: overlay",
     "  navbar:",
     paste0("    title: ", .yaml_quote(pkg)),
-    paste0("    logo: ", logo$navbar),
-    paste0("    logo-alt: ", .yaml_quote(paste(pkg, "hex logo"))),
+    if (!is.null(logo)) c(
+      paste0("    logo: ", logo$navbar),
+      paste0("    logo-alt: ", .yaml_quote(paste(pkg, "hex logo")))
+    ),
     paste0("    pinned: ", if (isTRUE(navbar_pinned)) "true" else "false"),
     "    left:",
     left,
@@ -819,10 +821,19 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   drop <- !in_fence & (vapply(body, is_badge_line, logical(1), USE.NAMES = FALSE) | grepl("<!--.*(badges|logo)", body))
   body <- body[!drop]
   in_fence <- in_fence[!drop]
-  first_h1 <- which(!in_fence & grepl("^# ", body))[1]
-  if (!is.na(first_h1)) {
-    body <- body[-first_h1]
-    in_fence <- in_fence[-first_h1]
+  # the first H1, ATX (`# x`) or setext (a text line over a run of `=`), is the page title
+  atx <- which(!in_fence & grepl("^# ", body))[1]
+  n <- length(body)
+  setext <- if (n > 1L) {
+    which(!in_fence[-n] & !in_fence[-1] & nzchar(trimws(body[-n])) & !grepl("^\\s*(#|>|[-*+] )", body[-n]) &
+      grepl("^ {0,3}=+\\s*$", body[-1]))[1]
+  } else NA_integer_
+  if (!is.na(setext) && (is.na(atx) || setext < atx)) {
+    body <- body[-c(setext, setext + 1L)]
+    in_fence <- in_fence[-c(setext, setext + 1L)]
+  } else if (!is.na(atx)) {
+    body <- body[-atx]
+    in_fence <- in_fence[-atx]
   }
 
   # figures in man/figures travel to assets/figures
@@ -890,6 +901,8 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "---",
     paste0("pagetitle: ", .yaml_quote(desc$Package)),
     "page-layout: custom",
+    "toc: false",
+    "shift-heading-level-by: 1",
     "metadata-files: [_landing.yml]",
     "---",
     "",
@@ -1182,7 +1195,23 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   styles <- regmatches(txt, gregexpr("(?is)<style\\b[^>]*>.*?</style>", txt, perl = TRUE))[[1]]
   n_open <- lengths(regmatches(txt, gregexpr("<style\\b", txt, ignore.case = TRUE, perl = TRUE)))
   if (n_open != length(styles)) fail("has an unclosed <style> element.", "Close every <style> with </style>.")
-  markup <- gsub("(?is)<style\\b[^>]*>.*?</style>", "", txt, perl = TRUE)
+  # A <style> body is parsed as markup by an HTML parser once the SVG is inlined, so the
+  # script checks run over the full text, style bodies included.
+  for (st in styles) {
+    body <- sub("(?is)</style>$", "", sub("(?is)^<style\\b[^>]*>", "", st, perl = TRUE), perl = TRUE)
+    if (grepl("<", body, fixed = TRUE)) {
+      fail("has a '<' inside a <style> element.", "Style content is CSS only; markup inside it can smuggle elements and scripts.")
+    }
+  }
+  urls <- regmatches(txt, gregexpr("(?i)url\\s*\\(\\s*[\"']?\\s*[^)]*", txt, perl = TRUE))[[1]]
+  for (u in urls) {
+    target <- trimws(sub("^(?i)url\\s*\\(\\s*[\"']?\\s*", "", u, perl = TRUE))
+    if (!startsWith(target, "#")) {
+      shown <- substr(target, 1, 60)
+      fail(cli::format_inline("has a url() to {.url {shown}}."), "Only same-document url(#id) references are allowed.")
+    }
+  }
+  markup <- txt
   ev <- regmatches(markup, regexpr("(?i)\\bon[a-z]+\\s*=", markup, perl = TRUE))
   if (length(ev)) {
     fail(cli::format_inline("has the event attribute {.code {trimws(ev)}}."), "Hero SVGs carry no event handlers.")
@@ -1190,6 +1219,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   if (grepl("javascript:", gsub("[[:space:][:cntrl:]]", "", markup), ignore.case = TRUE)) {
     fail("contains a javascript: URL.", "Remove it.")
   }
+  markup <- gsub("(?is)<style\\b[^>]*>.*?</style>", "", txt, perl = TRUE)
   hrefs <- regmatches(markup, gregexpr("(?i)\\b(?:xlink:)?href\\s*=\\s*(\"[^\"]*\"|'[^']*'|[^\\s>]*)", markup, perl = TRUE))[[1]]
   for (h in hrefs) {
     val <- sub("^(?i)(?:xlink:)?href\\s*=\\s*", "", h, perl = TRUE)
@@ -1421,8 +1451,8 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
     }
     logo_paths <- list(navbar = paste0("assets/brand/logo.", ext), hero = paste0("assets/brand/logo.", ext), favicon = fav_rel)
   } else {
-    logo_paths <- list(navbar = "assets/brand/logo.svg", hero = "assets/brand/logo.svg", favicon = "assets/brand/logo.svg")
-    warning("No hex logo found; the site references assets/brand/logo.svg.", call. = FALSE)
+    logo_paths <- NULL
+    warning("No hex logo found; the site is built without a navbar logo or favicon.", call. = FALSE)
   }
 
   # content

@@ -49,8 +49,9 @@ make_site_fixture <- function(dir = withr::local_tempdir(.local_envir = parent.f
   svg <- "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\"><path d=\"M0 0h10v10z\"/></svg>"
   writeLines(svg, file.path(pkg, "man", "figures", "logo.svg"))
   readme <- c(
-    "# sitepkg", "", "[![CRAN](x.svg)](y)", "", "Shout and whisper words.", "",
-    "## Install", "", "`install.packages(\"sitepkg\")`"
+    "sitepkg", "=======", "", "[![CRAN](x.svg)](y)", "", "Shout and whisper words.", "",
+    "## Installation", "", "```r", "install.packages(\"sitepkg\")", "```", "",
+    "## Usage", "", "`shout(\"a\")`"
   )
   writeLines(readme, file.path(pkg, "README.md"))
   pkg

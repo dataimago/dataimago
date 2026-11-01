@@ -24,6 +24,23 @@ test_that("site renders with the synced leaf", {
   for (cls in c("di-landing-intro", "di-landing-overview", "di-landing-hero", "di-landing-cards")) {
     expect_match(html, paste0("class=\"", cls, "\""), fixed = TRUE)
   }
+  # the hero and cards are siblings of the overview, never inside it
+  if (requireNamespace("xml2", quietly = TRUE)) {
+    doc <- xml2::read_html(html)
+    inside <- function(cls) length(xml2::xml_find_all(doc, sprintf(
+      "//*[contains(concat(' ', normalize-space(@class), ' '), ' di-landing-overview ')]//*[contains(concat(' ', normalize-space(@class), ' '), ' %s ')]", cls)))
+    expect_equal(inside("di-landing-hero"), 0L)
+    expect_equal(inside("di-landing-cards"), 0L)
+    expect_equal(length(xml2::xml_find_all(doc, "//h1")), 1L)
+    expect_equal(length(xml2::xml_find_all(doc, "//*[@id='TOC']")), 0L)
+  } else {
+    ov <- regexpr("class=\"di-landing-overview\"", html, fixed = TRUE)[1]
+    hero <- regexpr("class=\"di-landing-hero\"", html, fixed = TRUE)[1]
+    cards <- regexpr("class=\"di-landing-cards\"", html, fixed = TRUE)[1]
+    expect_true(ov < hero && hero < cards)
+    expect_equal(lengths(regmatches(html, gregexpr("<h1[ >]", html))), 1L)
+  }
+  expect_false(grepl("id=\"TOC\"", html, fixed = TRUE))
   nav <- regmatches(html, regexpr("(?s)<nav[^>]*navbar.*?</nav>", html, perl = TRUE))
   expect_length(nav, 1L)
   nav_text <- gsub("\\s+", " ", gsub("<[^>]+>", " ", nav))
