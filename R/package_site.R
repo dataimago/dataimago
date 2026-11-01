@@ -571,6 +571,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "      - \"man/**\"",
     "      - \"vignettes/**\"",
     "      - \"NEWS.md\"",
+    "      - \".github/workflows/quarto-publish.yml\"",
     "  workflow_dispatch:",
     "",
     "permissions:",
@@ -585,7 +586,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "    runs-on: ubuntu-latest",
     "    steps:",
     "      - uses: actions/checkout@v7",
-    "      - uses: quarto-actions/setup@v2",
+    "      - uses: quarto-dev/quarto-actions/setup@v2",
     "        with:",
     "          version: 1.8.24",
     "      - uses: r-lib/actions/setup-r@v2",
@@ -601,7 +602,10 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "          package-manager-cache: false",
     "      - name: Check design sync",
     paste0("        working-directory: ", op),
-    "        run: npx --yes -p @dataimago/css@$(node -p \"require('./.dataimago/design.json').version\") dataimago-sync --check",
+    "        run: |",
+    "          V=$(node -p \"require('./.dataimago/design.json').version\") || { echo '::error::missing or unreadable .dataimago/design.json' >&2; exit 1; }",
+    "          [ -n \"$V\" ] || { echo '::error::design.json has no version' >&2; exit 1; }",
+    "          npx --yes -p \"@dataimago/css@${V}\" dataimago-sync --check",
     "      - name: Check _quarto.yml",
     paste0("        run: Rscript ", op, "/tools/check-quarto-yml.R"),
     "      - name: Render",
@@ -1330,6 +1334,13 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
                                 navbar_pinned = FALSE, logo = NULL, reference_config = NULL,
                                 branch = "main", workflow = TRUE, overwrite_config = FALSE,
                                 sync = TRUE) {
+  bad <- unique(strsplit(gsub("[A-Za-z0-9._/-]", "", output_path), "")[[1]])
+  if (length(bad)) {
+    cli::cli_abort(c(
+      "{.arg output_path} may only contain letters, digits, {.code . _ / -}.",
+      x = "Found: {.val {bad}}"
+    ))
+  }
   desc <- .read_desc(package_path)
   pkg <- desc$Package
   site_dir <- file.path(package_path, output_path)
@@ -1337,7 +1348,8 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   urls <- .desc_urls(desc)
   if (is.null(site_url)) site_url <- urls$site_url
   if (is.null(repo_url)) repo_url <- urls$repo_url
-  .ensure_rbuildignore(package_path, c("^ui$", "^\\.github$"))
+  seg <- strsplit(sub("^\\./", "", output_path), "/")[[1]][1]
+  .ensure_rbuildignore(package_path, c(paste0("^", gsub("([.])", "\\\\\\1", seg), "$"), "^\\.github$"))
 
   # theme extension and fonts: pinned in design.json, synced from @dataimago/css
   .sync_pkgsite_theme(site_dir, sync = sync)
@@ -1416,9 +1428,10 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
 # First github.io and github.com repo URLs in DESCRIPTION `URL` (comma/whitespace separated).
 .desc_urls <- function(desc) {
   u <- strsplit(trimws(desc$URL %||% ""), "[,[:space:]]+")[[1]]
-  u <- u[nzchar(u)]
+  u <- sub("[#?].*$", "", u[nzchar(u)])
   site <- u[grepl("^https://[^/]+\\.github\\.io(/|$)", u)][1]
-  repo <- u[grepl("^https://github\\.com/[^/]+/[^/]+", u)][1]
+  repo <- u[grepl("^https://github\\.com/[^/]+/[^/]+", u) &
+    !grepl("^https://github\\.com/(orgs|sponsors|settings)/", u)][1]
   if (!is.na(repo)) repo <- sub("\\.git$", "", sub("/+$", "", sub("^(https://github\\.com/[^/]+/[^/]+).*$", "\\1", repo)))
   list(site_url = if (is.na(site)) NULL else site, repo_url = if (is.na(repo)) NULL else repo)
 }
