@@ -528,12 +528,12 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   )
 }
 
-.guard_script <- function() {
+.guard_script <- function(output_path = "ui/www") {
   c(
     "# Guards the package-site _quarto.yml against edits that break the Pages artifact flow.",
-    "# Run from the package root before `quarto render ui/www`.",
+    paste0("# Run from the package root before `quarto render ", output_path, "`."),
     "args <- commandArgs(trailingOnly = TRUE)",
-    "path <- if (length(args)) args[1] else \"ui/www/_quarto.yml\"",
+    paste0("path <- if (length(args)) args[1] else \"", output_path, "/_quarto.yml\""),
     "cfg <- yaml::read_yaml(path)",
     "problems <- character(0)",
     "if (!identical(cfg$project$`output-dir`, \"_site\")) problems <- c(problems, \"project.output-dir must be _site\")",
@@ -550,7 +550,8 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
   )
 }
 
-.publish_workflow <- function(branch, pkg) {
+.publish_workflow <- function(branch, output_path = "ui/www") {
+  op <- sub("/+$", "", output_path)
   c(
     "name: Publish site",
     "",
@@ -558,7 +559,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "  push:",
     paste0("    branches: [", branch, "]"),
     "    paths:",
-    "      - \"ui/www/**\"",
+    paste0("      - \"", op, "/**\""),
     "      - \"man/**\"",
     "      - \"vignettes/**\"",
     "      - \"NEWS.md\"",
@@ -566,7 +567,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "      - \".github/workflows/quarto-publish.yml\"",
     "  pull_request:",
     "    paths:",
-    "      - \"ui/www/**\"",
+    paste0("      - \"", op, "/**\""),
     "      - \"man/**\"",
     "      - \"vignettes/**\"",
     "      - \"NEWS.md\"",
@@ -584,7 +585,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "    runs-on: ubuntu-latest",
     "    steps:",
     "      - uses: actions/checkout@v7",
-    "      - uses: quarto-dev/quarto-actions/setup@v2",
+    "      - uses: quarto-actions/setup@v2",
+    "        with:",
+    "          version: 1.8.24",
     "      - uses: r-lib/actions/setup-r@v2",
     "        with:",
     "          use-public-rspm: true",
@@ -592,18 +595,25 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "        with:",
     "          extra-packages: any::yaml, any::knitr, any::rmarkdown, local::.",
     "          needs: website",
+    "      - uses: actions/setup-node@v5",
+    "        with:",
+    "          node-version: 22",
+    "          package-manager-cache: false",
+    "      - name: Check design sync",
+    paste0("        working-directory: ", op),
+    "        run: npx --yes -p @dataimago/css@$(node -p \"require('./.dataimago/design.json').version\") dataimago-sync --check",
     "      - name: Check _quarto.yml",
-    "        run: Rscript ui/www/tools/check-quarto-yml.R",
+    paste0("        run: Rscript ", op, "/tools/check-quarto-yml.R"),
     "      - name: Render",
-    "        run: quarto render ui/www",
+    paste0("        run: quarto render ", op),
     "      - name: Link check (internal)",
     "        uses: lycheeverse/lychee-action@v2",
     "        with:",
-    "          args: --offline --no-progress --root-dir ${{ github.workspace }}/ui/www/_site 'ui/www/_site/**/*.html'",
+    paste0("          args: --offline --no-progress --root-dir ${{ github.workspace }}/", op, "/_site '", op, "/_site/**/*.html'"),
     "          fail: true",
     "      - uses: actions/upload-pages-artifact@v5",
     "        with:",
-    "          path: ui/www/_site",
+    paste0("          path: ", op, "/_site"),
     "",
     "  deploy:",
     paste0("    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/", branch, "'"),
@@ -1290,7 +1300,9 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
 #'
 #' @param package_path Path to the package root.
 #' @param output_path Quarto project directory, relative to `package_path`.
-#' @param site_url,repo_url Canonical site and repository URLs.
+#' @param site_url,repo_url Canonical site and repository URLs. When `NULL`, the first
+#'   `https://<user>.github.io/...` and the first `https://github.com/<owner>/<repo>` URL in
+#'   the DESCRIPTION `URL` field are used.
 #' @param org,org_url Organisation credited in the footer.
 #' @param navbar_pinned Keep the navbar fixed. `FALSE` (default) uses Quarto's
 #'   hide-on-scroll-down, show-on-scroll-up behaviour.
@@ -1322,6 +1334,10 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   pkg <- desc$Package
   site_dir <- file.path(package_path, output_path)
   dir.create(site_dir, recursive = TRUE, showWarnings = FALSE)
+  urls <- .desc_urls(desc)
+  if (is.null(site_url)) site_url <- urls$site_url
+  if (is.null(repo_url)) repo_url <- urls$repo_url
+  .ensure_rbuildignore(package_path, c("^ui$", "^\\.github$"))
 
   # theme extension and fonts: pinned in design.json, synced from @dataimago/css
   .sync_pkgsite_theme(site_dir, sync = sync)
@@ -1366,7 +1382,7 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
     ), file.path(site_dir, "articles", "index.qmd"))
   }
   .write_lines(.citation_page(package_path, desc), file.path(site_dir, "citation.qmd"))
-  .write_lines(.guard_script(), file.path(site_dir, "tools", "check-quarto-yml.R"))
+  .write_lines(.guard_script(output_path), file.path(site_dir, "tools", "check-quarto-yml.R"))
 
   has_articles <- length(other_articles) > 0L || (length(articles) > 0L && !has_main)
   ref_index <- file.path(site_dir, "reference", "index.qmd")
@@ -1392,9 +1408,37 @@ create_package_site <- function(package_path = ".", output_path = "ui/www", site
   .write_lines(c("_site/", "/.quarto/", "_freeze/"), file.path(site_dir, ".gitignore"))
   if (isTRUE(workflow)) {
     wf <- file.path(package_path, ".github", "workflows", "quarto-publish.yml")
-    if (!file.exists(wf) || isTRUE(overwrite_config)) .write_lines(.publish_workflow(branch, pkg), wf)
+    if (!file.exists(wf) || isTRUE(overwrite_config)) .write_lines(.publish_workflow(branch, output_path), wf)
   }
   invisible(site_dir)
+}
+
+# First github.io and github.com repo URLs in DESCRIPTION `URL` (comma/whitespace separated).
+.desc_urls <- function(desc) {
+  u <- strsplit(trimws(desc$URL %||% ""), "[,[:space:]]+")[[1]]
+  u <- u[nzchar(u)]
+  site <- u[grepl("^https://[^/]+\\.github\\.io(/|$)", u)][1]
+  repo <- u[grepl("^https://github\\.com/[^/]+/[^/]+", u)][1]
+  if (!is.na(repo)) repo <- sub("\\.git$", "", sub("/+$", "", sub("^(https://github\\.com/[^/]+/[^/]+).*$", "\\1", repo)))
+  list(site_url = if (is.na(site)) NULL else site, repo_url = if (is.na(repo)) NULL else repo)
+}
+
+# Appends the patterns not already present (exact, trimmed) to <pkg>/.Rbuildignore, keeping
+# the file's line ending and trailing-newline state.
+.ensure_rbuildignore <- function(package_path, patterns) {
+  path <- file.path(package_path, ".Rbuildignore")
+  txt <- if (file.exists(path)) rawToChar(readBin(path, "raw", file.size(path))) else ""
+  have <- trimws(strsplit(txt, "\r?\n")[[1]])
+  add <- setdiff(patterns, have)
+  if (!length(add)) return(invisible(path))
+  eol <- if (grepl("\r\n", txt, fixed = TRUE)) "\r\n" else "\n"
+  if (nzchar(txt) && !grepl("\n$", txt)) {
+    out <- paste0(txt, eol, paste(add, collapse = eol))
+  } else {
+    out <- paste0(txt, paste0(add, eol, collapse = ""))
+  }
+  writeBin(charToRaw(out), path)
+  invisible(path)
 }
 
 # ---- theme and fonts: pinned in design.json, synced from @dataimago/css ----

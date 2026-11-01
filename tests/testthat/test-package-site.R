@@ -1281,3 +1281,87 @@ test_that("field types are enforced", {
     }
   }
 })
+
+# ---- B5: output_path everywhere, URL defaults, pinned Quarto, sync check, Rbuildignore ----
+
+test_that("custom output_path flows into workflow and guard", {
+  skip_without_pandoc()
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  site <- create_package_site(pkg, output_path = "docs/site", sync = FALSE, site_url = "https://example.org/sitepkg/")
+  wf <- readLines(file.path(pkg, ".github", "workflows", "quarto-publish.yml"))
+  expect_false(any(grepl("ui/www", wf, fixed = TRUE)))
+  expect_true(any(grepl("\"docs/site/**\"", wf, fixed = TRUE)))
+  expect_true(any(grepl("run: Rscript docs/site/tools/check-quarto-yml.R", wf, fixed = TRUE)))
+  expect_true(any(grepl("run: quarto render docs/site", wf, fixed = TRUE)))
+  expect_true(any(grepl("path: docs/site/_site", wf, fixed = TRUE)))
+  expect_true(any(grepl("working-directory: docs/site", wf, fixed = TRUE)))
+  guard <- readLines(file.path(site, "tools", "check-quarto-yml.R"))
+  expect_false(any(grepl("ui/www", guard, fixed = TRUE)))
+  expect_true(any(grepl("docs/site/_quarto.yml", guard, fixed = TRUE)))
+})
+
+test_that("site and repo url default from DESCRIPTION", {
+  skip_without_pandoc()
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  cat("URL: https://example.org/x, https://someone.github.io/sitepkg/ https://github.com/someone/sitepkg.git\n",
+    file = file.path(pkg, "DESCRIPTION"), append = TRUE
+  )
+  site <- create_package_site(pkg, sync = FALSE)
+  cfg <- yaml::read_yaml(file.path(site, "_quarto.yml"))
+  expect_equal(cfg$website$`site-url`, "https://someone.github.io/sitepkg/")
+  expect_equal(cfg$website$`repo-url`, "https://github.com/someone/sitepkg")
+  landing <- paste(readLines(file.path(site, "_landing.yml")), collapse = "\n")
+  expect_match(landing, "https://github.com/someone/sitepkg", fixed = TRUE)
+  # explicit arguments win
+  site2 <- create_package_site(pkg,
+    sync = FALSE, overwrite_config = TRUE,
+    site_url = "https://other.example/", repo_url = "https://github.com/o/r"
+  )
+  cfg2 <- yaml::read_yaml(file.path(site2, "_quarto.yml"))
+  expect_equal(cfg2$website$`site-url`, "https://other.example/")
+  expect_equal(cfg2$website$`repo-url`, "https://github.com/o/r")
+})
+
+test_that("workflow pins quarto and checks sync", {
+  wf <- .publish_workflow("main", "ui/www")
+  expect_true(any(grepl("quarto-actions/setup@v2", wf, fixed = TRUE)))
+  expect_true(any(grepl("version: 1.8.24", wf, fixed = TRUE)))
+  expect_true(any(grepl("actions/setup-node@v5", wf, fixed = TRUE)))
+  expect_true(any(grepl("node-version: 22", wf, fixed = TRUE)))
+  expect_true(any(grepl("package-manager-cache: false", wf, fixed = TRUE)))
+  sync <- grep("dataimago-sync --check", wf, fixed = TRUE, value = TRUE)
+  expect_length(sync, 1L)
+  expect_match(sync, "npx --yes -p @dataimago/css@", fixed = TRUE)
+  expect_match(sync, "require('./.dataimago/design.json').version", fixed = TRUE)
+  expect_false(grepl("@dataimago/css@[0-9]", sync))
+  i_sync <- grep("dataimago-sync --check", wf, fixed = TRUE)
+  i_node <- grep("setup-node", wf, fixed = TRUE)
+  i_render <- grep("quarto render", wf, fixed = TRUE)
+  expect_true(i_node < i_sync && i_sync < i_render)
+  expect_identical(names(formals(.publish_workflow)), c("branch", "output_path"))
+  expect_false(exists(".readme_to_index"))
+})
+
+test_that("Rbuildignore entries added once", {
+  skip_without_pandoc()
+  skip_if_not_installed("yaml")
+  pkg <- make_site_fixture()
+  bi <- file.path(pkg, ".Rbuildignore")
+  writeBin(charToRaw("^foo$\r\n^ui$ \r\n"), bi)
+  create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  raw1 <- rawToChar(readBin(bi, "raw", file.size(bi)))
+  expect_equal(raw1, "^foo$\r\n^ui$ \r\n^\\.github$\r\n")
+  create_package_site(pkg, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  expect_equal(rawToChar(readBin(bi, "raw", file.size(bi))), raw1)
+  # no file: created with both
+  pkg2 <- make_site_fixture()
+  create_package_site(pkg2, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  expect_equal(readLines(file.path(pkg2, ".Rbuildignore")), c("^ui$", "^\\.github$"))
+  # no trailing newline kept as is
+  pkg3 <- make_site_fixture()
+  writeBin(charToRaw("^a$"), file.path(pkg3, ".Rbuildignore"))
+  create_package_site(pkg3, sync = FALSE, site_url = "https://example.org/sitepkg/")
+  expect_equal(rawToChar(readBin(file.path(pkg3, ".Rbuildignore"), "raw", 100)), "^a$\n^ui$\n^\\.github$")
+})
