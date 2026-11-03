@@ -638,7 +638,7 @@ create_package_news <- function(package_path = ".", output_path = "ui/www", file
     "      - uses: actions/checkout@v7",
     "      - uses: quarto-dev/quarto-actions/setup@v2",
     "        with:",
-    "          version: 1.8.24",
+    "          version: 1.11.9",
     "      - uses: r-lib/actions/setup-r@v2",
     "        with:",
     "          use-public-rspm: true",
