@@ -1,5 +1,11 @@
 # dataimago 0.0-5.0
 
+## Quarto 1.11 baseline (2026-11-02)
+
+* The package-site workflow that `create_package_site()` writes installs Quarto
+  1.11.9 (was 1.8.24), matching the dataimago Quarto baseline: the `pkgsite`
+  format now requires Quarto 1.11 or later.
+
 ## Package-site factory (2026-11-01)
 
 ### New features

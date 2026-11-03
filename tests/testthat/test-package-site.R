@@ -1329,7 +1329,7 @@ test_that("site and repo url default from DESCRIPTION", {
 test_that("workflow pins quarto and checks sync", {
   wf <- .publish_workflow("main", "ui/www")
   expect_true(any(grepl("uses: quarto-dev/quarto-actions/setup@v2", wf, fixed = TRUE)))
-  expect_true(any(grepl("version: 1.8.24", wf, fixed = TRUE)))
+  expect_true(any(grepl("version: 1.11.9", wf, fixed = TRUE)))
   expect_true(any(grepl("actions/setup-node@v5", wf, fixed = TRUE)))
   expect_true(any(grepl("node-version: 22", wf, fixed = TRUE)))
   expect_true(any(grepl("package-manager-cache: false", wf, fixed = TRUE)))
