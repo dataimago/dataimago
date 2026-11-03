@@ -88,7 +88,7 @@ type: decision
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 status: proposed | accepted | superseded | deprecated
-superseded_by: <ADR page name if superseded>
+superseded-by: <ADR page name if superseded>
 sources:
   - <pages or raw files that informed this decision>
 tags: []
@@ -116,7 +116,7 @@ What does this enable? What does it foreclose? What monitoring is needed?
 - [[pattern-name]] — The implementation pattern this decision authorizes
 ```
 
-ADRs are **append-only in spirit**: when a decision changes, mark the old ADR `status: superseded`, add `superseded_by: new-adr-name`, and create a new ADR. Never silently overwrite the reasoning history.
+ADRs are **append-only in spirit**: when a decision changes, mark the old ADR `status: superseded`, add `superseded-by: new-adr-name`, and create a new ADR. Never silently overwrite the reasoning history.
 
 ---
 

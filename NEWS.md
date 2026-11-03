@@ -1,5 +1,12 @@
 # dataimago 0.0-5.0
 
+## KNOWLEDGE template: `superseded-by` key (2026-11-03)
+
+* The framework `KNOWLEDGE.md` template that `generate_knowledge_md()` renders
+  now spells the ADR supersession key `superseded-by:` (was `superseded_by:`),
+  matching the dataimago-design wiki schema and its lint check. The bundled
+  copy stays identical to `dataimago-design/templates/KNOWLEDGE-framework.md`.
+
 ## Quarto 1.11 baseline (2026-11-02)
 
 * The package-site workflow that `create_package_site()` writes installs Quarto
