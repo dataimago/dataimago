@@ -9,28 +9,34 @@ importers:
   .:
     dependencies:
       '@dataimago/css':
-        specifier: 0.1.0-alpha.13
-        version: 0.1.0-alpha.13
+        specifier: 0.1.0-alpha.54
+        version: 0.1.0-alpha.54
       '@dataimago/tokens':
-        specifier: 0.1.0-alpha.13
-        version: 0.1.0-alpha.13
+        specifier: 0.1.0-alpha.54
+        version: 0.1.0-alpha.54
       '@dataimago/ui':
-        specifier: 0.1.0-alpha.11
-        version: 0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        specifier: 0.1.0-alpha.54
+        version: 0.1.0-alpha.54(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.54)(@dataimago/tokens@0.1.0-alpha.54)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
 packages:
 
   '@dataimago/brand@0.1.0-alpha.7':
     resolution: {integrity: sha512-QgBEYyw9NciGQbCP2MkrZmSHz7eFDQO+paHJozi8giN3j2NWULVC2v9OORl2fmYdJibMisBXDDtf2XVaNs/jzA==}
 
-  '@dataimago/css@0.1.0-alpha.13':
-    resolution: {integrity: sha512-BIdTdh4QpKCxpL95IYr56H9jk1688xYh2rSVeokZSBR73Y8v+mar9eRQYmNJo7bAd1upanOdja/Lxln4U20AJw==}
+  '@dataimago/css@0.1.0-alpha.54':
+    resolution: {integrity: sha512-IqvXI393dLgsUxleLaSn1k3HmDC+YprHFJmdY7UaAPJuL0AzXtFiukJI7Xn+9Ebc/wkx6QNlb+hJlEDHREEqHg==}
+    hasBin: true
+    peerDependencies:
+      tailwindcss: '>=3.0.0'
+    peerDependenciesMeta:
+      tailwindcss:
+        optional: true
 
-  '@dataimago/tokens@0.1.0-alpha.13':
-    resolution: {integrity: sha512-5hMbU4CQzbbaGlbs+9XmrrLNlD/BJ0PTTASk0077g1OIfDsvKLequNokZi3cCXzCboY64XbBX7RYwXE7UrKXHg==}
+  '@dataimago/tokens@0.1.0-alpha.54':
+    resolution: {integrity: sha512-pbde7GdFPE8aqf1ZW2ywIa/JuNdqZoRcTdi4NuQ9PVrracJ7Khwvm4bTiZ7IEkgxp03P/NDd7pOaScyDVeLT+A==}
 
-  '@dataimago/ui@0.1.0-alpha.11':
-    resolution: {integrity: sha512-1TRtHRm1xmnmHoYlnQxcLvn6WZvhfOrbyh5SZrCzxlv2KdReiC8jJ11A+kFbNZM4YS0bTTHDRtgHZUzpuy8qbA==}
+  '@dataimago/ui@0.1.0-alpha.54':
+    resolution: {integrity: sha512-LuxD6ffhPz+QH2w0jI2bTQ9T2/UyUCs8kKhHP8zKZI8n2hicvSxfPYj49LJP9P7L1gGSDKqhIqyRsQWWdgf2Eg==}
     peerDependencies:
       '@dataimago/brand': ^0.1.0-alpha.0
       '@dataimago/css': ^0.1.0-alpha.0
@@ -54,17 +60,17 @@ snapshots:
 
   '@dataimago/brand@0.1.0-alpha.7': {}
 
-  '@dataimago/css@0.1.0-alpha.13':
+  '@dataimago/css@0.1.0-alpha.54':
     dependencies:
-      '@dataimago/tokens': 0.1.0-alpha.13
+      '@dataimago/tokens': 0.1.0-alpha.54
 
-  '@dataimago/tokens@0.1.0-alpha.13': {}
+  '@dataimago/tokens@0.1.0-alpha.54': {}
 
-  '@dataimago/ui@0.1.0-alpha.11(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.13)(@dataimago/tokens@0.1.0-alpha.13)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@dataimago/ui@0.1.0-alpha.54(@dataimago/brand@0.1.0-alpha.7)(@dataimago/css@0.1.0-alpha.54)(@dataimago/tokens@0.1.0-alpha.54)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@dataimago/brand': 0.1.0-alpha.7
-      '@dataimago/css': 0.1.0-alpha.13
-      '@dataimago/tokens': 0.1.0-alpha.13
+      '@dataimago/css': 0.1.0-alpha.54
+      '@dataimago/tokens': 0.1.0-alpha.54
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
 
