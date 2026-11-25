@@ -35,5 +35,5 @@ then commit the updated file here. The version-stamped filename tracks the spec'
 
 The `ProjectSpec Bridge` CI workflow is the drift gate. It runs the published
 package pinned by `DATAIMAGO_SPEC_PACKAGE` (currently
-`@dataimago/spec@0.1.0-alpha.0`) from the public npm registry and uses
+`@dataimago/spec@0.1.0-alpha.23`) from the public npm registry and uses
 `--kind ProjectSpec --check` to require byte identity with the committed schema.

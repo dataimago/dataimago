@@ -28,9 +28,11 @@ make_spec <- function() {
       rPackage = list(
         name = "fixtpkg",
         submoduleUrl = "https://github.com/x/fixtpkg",
-        submodulePath = "packages/r-packages/fixtpkg",
-        quartoRoot = "ui/www"
-      )
+        submodulePath = "packages/r-packages/fixtpkg"
+      ),
+      # retrofit: the hub created the package, so the manuscript lives in it
+      # (quarto-two-places amendment, 2026-11-25).
+      quartoHome = list(repo = "package", path = "ui/www")
     ),
     vertical = list(
       rpkg = list(
@@ -104,6 +106,52 @@ make_fixture_pkg <- function(parent_dir, pkg_name = "fixtpkg") {
   ), fs::path(pkg_dir, "R", "functions.R"))
 
   pkg_dir
+}
+
+# make_spec() for one row of the quarto-two-places table (amended 2026-11-25),
+# with the quartoHome that row requires. `row` is one of "no-r",
+# "extension-package", "extension-referenced", "retrofit", "greenfield".
+make_case_spec <- function(row) {
+  spec <- make_spec()
+  switch(row,
+    "no-r" = {
+      spec$source$case <- "no-r"
+      spec$source$rPackage <- NULL
+      spec$source$quartoHome <- list(repo = "app")
+    },
+    "extension-package" = {
+      spec$source$case <- "extension"
+      spec$source$quartoHome <- list(repo = "app")
+    },
+    "extension-referenced" = {
+      spec$source$case <- "extension"
+      spec$source$rPackage <- NULL
+      spec$source$referencedRepo <- list(url = "https://github.com/tester/my-dissertation")
+      spec$source$quartoHome <- list(repo = "referenced")
+    },
+    "retrofit" = {
+      spec$source$quartoHome <- list(repo = "package")
+    },
+    "greenfield" = {
+      spec$source$case <- "greenfield"
+      spec$source$quartoHome <- list(repo = "package")
+    }
+  )
+  spec
+}
+
+# validate_spec(spec) fails with exactly the Zod case-rule message from
+# @dataimago/spec core.ts for `repo` and `condition`.
+expect_case_rule_message <- function(spec, repo, condition) {
+  err <- tryCatch(validate_spec(spec), error = function(e) e)
+  testthat::expect_s3_class(err, "error")
+  testthat::expect_identical(
+    err$message,
+    paste0(
+      "source.quartoHome.repo must be \"", repo, "\" when ", condition,
+      " (the manuscript's home goes by who created the package)"
+    )
+  )
 }
 
 # A schema-valid spec file at <tmp>/dataimago-spec.yaml with quartoBuild on (or off) and

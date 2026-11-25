@@ -115,9 +115,8 @@
                       "minLength": 1
                     },
                     "quartoRoot": {
-                      "type": "string",
-                      "minLength": 1,
-                      "default": "ui/www"
+                      "not": {},
+                      "description": "quartoRoot was replaced by source.quartoHome on 2026-11-25; regenerate the spec"
                     },
                     "descriptionSource": {
                       "type": "string",
@@ -159,11 +158,72 @@
                 }
               ],
               "default": null
+            },
+            "quartoHome": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "repo": {
+                      "type": "string",
+                      "const": "app"
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))[^\\u0000-\\u001f\\u007f\\u2028\\u2029]+$",
+                      "default": "thesis"
+                    }
+                  },
+                  "required": [
+                    "repo"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "repo": {
+                      "type": "string",
+                      "const": "package"
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))[^\\u0000-\\u001f\\u007f\\u2028\\u2029]+$",
+                      "default": "ui/www"
+                    }
+                  },
+                  "required": [
+                    "repo"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "repo": {
+                      "type": "string",
+                      "const": "referenced"
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))[^\\u0000-\\u001f\\u007f\\u2028\\u2029]+$"
+                    }
+                  },
+                  "required": [
+                    "repo"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
             }
           },
           "required": [
             "case",
-            "rPackage"
+            "rPackage",
+            "quartoHome"
           ],
           "additionalProperties": false
         },
@@ -466,9 +526,10 @@
                             "none",
                             "one-year",
                             "two-year",
-                            "custom"
+                            "custom",
+                            "not-stated"
                           ],
-                          "default": "none"
+                          "default": "not-stated"
                         },
                         "durationMonths": {
                           "type": "integer",
@@ -482,7 +543,7 @@
                       },
                       "additionalProperties": false,
                       "default": {
-                        "type": "none",
+                        "type": "not-stated",
                         "durationMonths": 0,
                         "reason": ""
                       }
@@ -834,9 +895,10 @@
                             "pending",
                             "approved",
                             "exempt",
-                            "not-required"
+                            "not-required",
+                            "not-stated"
                           ],
-                          "default": "not-required"
+                          "default": "not-stated"
                         },
                         "number": {
                           "type": "string",
@@ -853,7 +915,7 @@
                       },
                       "additionalProperties": false,
                       "default": {
-                        "status": "not-required",
+                        "status": "not-stated",
                         "number": "",
                         "expirationDate": "",
                         "link": ""
@@ -888,7 +950,7 @@
                   "additionalProperties": false,
                   "default": {
                     "irb": {
-                      "status": "not-required",
+                      "status": "not-stated",
                       "number": "",
                       "expirationDate": "",
                       "link": ""
@@ -1148,9 +1210,8 @@
                       "default": "static"
                     },
                     "quartoRoot": {
-                      "type": "string",
-                      "minLength": 1,
-                      "default": "ui/www"
+                      "not": {},
+                      "description": "quartoRoot was replaced by source.quartoHome on 2026-11-25; regenerate the spec"
                     }
                   },
                   "additionalProperties": false,
