@@ -140,6 +140,20 @@ make_case_spec <- function(row) {
   spec
 }
 
+# validate_spec(spec) fails with exactly the Zod case-rule message from
+# @dataimago/spec core.ts for `repo` and `condition`.
+expect_case_rule_message <- function(spec, repo, condition) {
+  err <- tryCatch(validate_spec(spec), error = function(e) e)
+  testthat::expect_s3_class(err, "error")
+  testthat::expect_identical(
+    err$message,
+    paste0(
+      "source.quartoHome.repo must be \"", repo, "\" when ", condition,
+      " (the manuscript's home goes by who created the package)"
+    )
+  )
+}
+
 # A schema-valid spec file at <tmp>/dataimago-spec.yaml with quartoBuild on (or off) and
 # an optional generator.siteMode; returns its path.
 site_spec_fixture <- function(tmp, site_mode = NULL, quarto = TRUE) {

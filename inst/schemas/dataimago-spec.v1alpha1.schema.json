@@ -171,7 +171,7 @@
                     "path": {
                       "type": "string",
                       "minLength": 1,
-                      "pattern": "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))",
+                      "pattern": "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))[^\\u0000-\\u001f\\u007f\\u2028\\u2029]+$",
                       "default": "thesis"
                     }
                   },
@@ -190,7 +190,7 @@
                     "path": {
                       "type": "string",
                       "minLength": 1,
-                      "pattern": "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))",
+                      "pattern": "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))[^\\u0000-\\u001f\\u007f\\u2028\\u2029]+$",
                       "default": "ui/www"
                     }
                   },
@@ -209,7 +209,7 @@
                     "path": {
                       "type": "string",
                       "minLength": 1,
-                      "pattern": "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))"
+                      "pattern": "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))[^\\u0000-\\u001f\\u007f\\u2028\\u2029]+$"
                     }
                   },
                   "required": [
@@ -526,9 +526,10 @@
                             "none",
                             "one-year",
                             "two-year",
-                            "custom"
+                            "custom",
+                            "not-stated"
                           ],
-                          "default": "none"
+                          "default": "not-stated"
                         },
                         "durationMonths": {
                           "type": "integer",
@@ -542,7 +543,7 @@
                       },
                       "additionalProperties": false,
                       "default": {
-                        "type": "none",
+                        "type": "not-stated",
                         "durationMonths": 0,
                         "reason": ""
                       }
@@ -894,9 +895,10 @@
                             "pending",
                             "approved",
                             "exempt",
-                            "not-required"
+                            "not-required",
+                            "not-stated"
                           ],
-                          "default": "not-required"
+                          "default": "not-stated"
                         },
                         "number": {
                           "type": "string",
@@ -913,7 +915,7 @@
                       },
                       "additionalProperties": false,
                       "default": {
-                        "status": "not-required",
+                        "status": "not-stated",
                         "number": "",
                         "expirationDate": "",
                         "link": ""
@@ -948,7 +950,7 @@
                   "additionalProperties": false,
                   "default": {
                     "irb": {
-                      "status": "not-required",
+                      "status": "not-stated",
                       "number": "",
                       "expirationDate": "",
                       "link": ""

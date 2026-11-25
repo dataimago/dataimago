@@ -8,7 +8,8 @@
   `no-r` and `extension` with an R package → `app` (default path `thesis`);
   `extension` with `referencedRepo` → `referenced` (path optional); `retrofit` and
   `greenfield` → `package` (default path `ui/www`). `validate_spec()` checks this
-  rule and that `path` is relative with no `..` segment.
+  rule, with the same message as `@dataimago/spec`, and that `path` is relative,
+  with no `..` segment and no control characters or line separators.
 * The package-site step builds a site only when the home is `package`, at its
   `path` inside the package. With `app`, it writes nothing into the author's
   package.
@@ -17,8 +18,10 @@
   source.quartoHome on 2026-11-25; regenerate the spec". A spec without
   `quartoHome` fails and names it. Specs generated before this change are
   deprecated; there is no compatibility shim.
-* `inst/schemas/dataimago-spec.v1alpha1.schema.json` mirrors the schema from
-  `@dataimago/spec` (dataimago-ai#365). The apiVersion stays
+* `inst/schemas/dataimago-spec.v1alpha1.schema.json` is regenerated from
+  `@dataimago/spec` 0.1.0-alpha.23 (dataimago-ai#365 and #367; #367 adds
+  `not-stated` to the IRB status and embargo type enums, which R does not read).
+  The ProjectSpec Bridge pin moves to alpha.23. The apiVersion stays
   `dataimago.ai/v1alpha1`.
 
 ## KNOWLEDGE template: `superseded-by` key (2026-11-03)

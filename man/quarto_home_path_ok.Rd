@@ -8,6 +8,10 @@ quarto_home_path_ok(path)
 }
 \description{
 The same pattern as the JSON Schema (and the Zod regex): no leading \code{/} or
-\verb{\\}, and no \code{..} segment.
+\verb{\\}, no \code{..} segment, and no control characters or line separators (NUL to
+U+001F, U+007F, U+2028, U+2029), matched over the whole string. JavaScript's
+\code{$} (no \code{m} flag) is PCRE's \verb{\\z}; PCRE's \code{$} would also match before a
+final newline. The pattern holds U+2028/U+2029 as characters so PCRE runs in
+UTF mode.
 }
 \keyword{internal}

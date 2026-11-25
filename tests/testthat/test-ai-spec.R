@@ -507,11 +507,7 @@ test_that("quartoHome row: no-r -> app, default path thesis", {
   expect_equal(out$source$quartoHome, list(repo = "app", path = "thesis"))
   spec <- make_case_spec("no-r")
   spec$source$quartoHome <- list(repo = "package")
-  expect_error(
-    validate_spec(spec),
-    'source.quartoHome.repo must be "app" when source.case is "no-r"',
-    fixed = TRUE
-  )
+  expect_case_rule_message(spec, "app", 'source.case is "no-r"')
 })
 
 test_that("quartoHome row: extension with rPackage -> app; ai() writes nothing into the package", {
@@ -519,10 +515,8 @@ test_that("quartoHome row: extension with rPackage -> app; ai() writes nothing i
   expect_equal(out$source$quartoHome, list(repo = "app", path = "thesis"))
   spec <- make_case_spec("extension-package")
   spec$source$quartoHome <- list(repo = "package")
-  expect_error(
-    validate_spec(spec),
-    'must be "app" when source.case is "extension" and source.referencedRepo is null',
-    fixed = TRUE
+  expect_case_rule_message(
+    spec, "app", 'source.case is "extension" and source.referencedRepo is null'
   )
 
   tmp <- withr::local_tempdir()
@@ -548,10 +542,8 @@ test_that("quartoHome row: extension with referencedRepo -> referenced, path opt
   spec$source$quartoHome <- list(repo = "referenced", path = "manuscript")
   expect_equal(validate_spec(spec)$source$quartoHome$path, "manuscript")
   spec$source$quartoHome <- list(repo = "app")
-  expect_error(
-    validate_spec(spec),
-    'must be "referenced" when source.case is "extension" and source.referencedRepo is set',
-    fixed = TRUE
+  expect_case_rule_message(
+    spec, "referenced", 'source.case is "extension" and source.referencedRepo is set'
   )
 })
 
@@ -560,11 +552,7 @@ test_that("quartoHome row: retrofit -> package; ai() builds the site at its path
   expect_equal(out$source$quartoHome, list(repo = "package", path = "ui/www"))
   spec <- make_case_spec("retrofit")
   spec$source$quartoHome <- list(repo = "app")
-  expect_error(
-    validate_spec(spec),
-    'must be "package" when source.case is "retrofit"',
-    fixed = TRUE
-  )
+  expect_case_rule_message(spec, "package", 'source.case is "retrofit"')
 
   tmp <- withr::local_tempdir()
   make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
@@ -586,21 +574,19 @@ test_that("quartoHome row: greenfield -> package, default path ui/www", {
   expect_equal(out$source$quartoHome, list(repo = "package", path = "ui/www"))
   spec <- make_case_spec("greenfield")
   spec$source$quartoHome <- list(repo = "app")
-  expect_error(
-    validate_spec(spec),
-    'must be "package" when source.case is "greenfield"',
-    fixed = TRUE
-  )
+  expect_case_rule_message(spec, "package", 'source.case is "greenfield"')
 })
 
 test_that("either quartoRoot field fails with the same plain message", {
   msg <- "quartoRoot was replaced by source.quartoHome on 2026-11-25; regenerate the spec"
   spec <- make_spec()
   spec$source$rPackage$quartoRoot <- "ui/www"
-  expect_error(validate_spec(spec), msg, fixed = TRUE)
+  err <- tryCatch(validate_spec(spec), error = function(e) e)
+  expect_identical(err$message, msg)
   spec <- make_spec()
   spec$vertical$rpkg$integration <- list(quartoRoot = "ui/www")
-  expect_error(validate_spec(spec), msg, fixed = TRUE)
+  err <- tryCatch(validate_spec(spec), error = function(e) e)
+  expect_identical(err$message, msg)
 
   # ai() gives the same message before the JSON-Schema gate.
   tmp <- withr::local_tempdir()
@@ -612,8 +598,14 @@ test_that("either quartoRoot field fails with the same plain message", {
 test_that("a spec without quartoHome fails, naming the replacement", {
   spec <- make_spec()
   spec$source$quartoHome <- NULL
-  expect_error(validate_spec(spec), "source.quartoHome is required", fixed = TRUE)
-  expect_error(validate_spec(spec), "replaced quartoRoot", fixed = TRUE)
+  err <- tryCatch(validate_spec(spec), error = function(e) e)
+  expect_identical(
+    err$message,
+    paste0(
+      "source.quartoHome is required: it names the manuscript's home, ",
+      "and it replaced quartoRoot on 2026-11-25; regenerate the spec"
+    )
+  )
 
   tmp <- withr::local_tempdir()
   spec_path <- fs::path(tmp, "dataimago-spec.yaml")
@@ -626,11 +618,17 @@ test_that("a spec without quartoHome fails, naming the replacement", {
 })
 
 test_that("quartoHome path must be relative with no '..' segment", {
-  bad <- c("../x", "a/../b", "a/..", "..", "/abs", "\\abs", "a\\..\\b", "")
+  bad <- c(
+    "../x", "a/../b", "a/..", "..", "/abs", "\\abs", "a\\..\\b", "",
+    # control characters and line separators; `.` in the `..` lookahead does
+    # not cross a newline, so without them "safe\n/../../etc" would pass.
+    "safe\n/../../etc", "a\u2028b", "a\u2029b", "a\tb", "a\rb", "a\x01b",
+    "a\x7fb", "thesis\n"
+  )
   for (p in bad) {
     spec <- make_spec()
     spec$source$quartoHome$path <- p
-    expect_error(validate_spec(spec), "no \"..\" segment", fixed = TRUE, info = p)
+    expect_error(validate_spec(spec), "no control characters", fixed = TRUE, info = p)
   }
   for (p in c("ui/www", "a/..b", "..foo", "docs/site/")) {
     spec <- make_spec()
@@ -655,9 +653,11 @@ test_that("the bundled schema agrees on the path guard and the tombstones", {
   for (row in c("no-r", "extension-package", "extension-referenced", "greenfield")) {
     expect_true(check(make_case_spec(row)), info = row)
   }
-  spec <- make_spec()
-  spec$source$quartoHome$path <- "a/../b"
-  expect_false(check(spec))
+  for (p in c("a/../b", "safe\n/../../etc", "a\u2028b", "a\tb", "a\x7fb")) {
+    spec <- make_spec()
+    spec$source$quartoHome$path <- p
+    expect_false(check(spec), info = p)
+  }
   spec <- make_spec()
   spec$source$rPackage$quartoRoot <- "ui/www"
   expect_false(check(spec))

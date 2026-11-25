@@ -654,6 +654,12 @@ quarto_home_required_msg <- paste0(
   "and it replaced quartoRoot on 2026-11-25; regenerate the spec"
 )
 
+# The Zod/JSON-Schema path pattern, in PCRE (see quarto_home_path_ok()).
+quarto_home_path_pattern <- paste0(
+  "^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|\\z))",
+  "[^\\x{00}-\\x{1f}\\x{7f}\u2028\u2029]+\\z"
+)
+
 # Default `path` per repo; `referenced` has none.
 quarto_home_default_path <- list(app = "thesis", package = "ui/www")
 
@@ -666,22 +672,15 @@ quarto_home_default_path <- list(app = "thesis", package = "ui/www")
 #' @keywords internal
 check_quarto_home_present <- function(spec) {
   has_key <- function(x, key) is.list(x) && key %in% names(x)
-  found <- c(
-    if (has_key(spec$source$rPackage, "quartoRoot")) {
-      "source.rPackage.quartoRoot"
-    },
-    if (has_key(spec$vertical$rpkg$integration, "quartoRoot")) {
-      "vertical.rpkg.integration.quartoRoot"
-    }
-  )
-  if (length(found)) {
-    cli::cli_abort(c(
-      quarto_root_replaced_msg,
-      i = "Found {.field {found}}."
-    ))
+  if (
+    has_key(spec$source$rPackage, "quartoRoot") ||
+      has_key(spec$vertical$rpkg$integration, "quartoRoot")
+  ) {
+    # rlang::abort(), not cli: the one plain message, byte-exact (no wrapping).
+    rlang::abort(quarto_root_replaced_msg)
   }
   if (is.null(spec$source$quartoHome)) {
-    cli::cli_abort(quarto_home_required_msg)
+    rlang::abort(quarto_home_required_msg)
   }
   invisible(TRUE)
 }
@@ -707,14 +706,19 @@ expected_quarto_home_repo <- function(source) {
 #' TRUE when `path` is relative to its repo with no `..` segment.
 #'
 #' The same pattern as the JSON Schema (and the Zod regex): no leading `/` or
-#' `\`, and no `..` segment.
+#' `\`, no `..` segment, and no control characters or line separators (NUL to
+#' U+001F, U+007F, U+2028, U+2029), matched over the whole string. JavaScript's
+#' `$` (no `m` flag) is PCRE's `\z`; PCRE's `$` would also match before a
+#' final newline. The pattern holds U+2028/U+2029 as characters so PCRE runs in
+#' UTF mode.
 #' @keywords internal
 quarto_home_path_ok <- function(path) {
   is.character(path) &&
     length(path) == 1L &&
     !is.na(path) &&
     nzchar(path) &&
-    grepl("^(?![/\\\\])(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$))", path, perl = TRUE)
+    validUTF8(path) &&
+    grepl(quarto_home_path_pattern, enc2utf8(path), perl = TRUE)
 }
 
 #' Validate `source.quartoHome` and return it with its default `path`.
@@ -752,7 +756,10 @@ validate_quarto_home <- function(spec) {
   }
   if (!is.null(home$path) && !quarto_home_path_ok(home$path)) {
     cli::cli_abort(
-      "Invalid spec source$quartoHome$path: must be a path relative to the repository, with no leading \"/\" and no \"..\" segment."
+      paste0(
+        "Invalid spec source$quartoHome$path: must be a path relative to the ",
+        "repository, with no leading \"/\", no \"..\" segment and no control characters."
+      )
     )
   }
 
@@ -766,9 +773,10 @@ validate_quarto_home <- function(spec) {
     } else {
       paste0("source.case is \"", spec$source$case, "\"")
     }
-    cli::cli_abort(paste0(
+    # Exactly the Zod issue message (@dataimago/spec core.ts), unwrapped.
+    rlang::abort(paste0(
       "source.quartoHome.repo must be \"", expected, "\" when ", when,
-      " (the manuscript's home goes by who created the package)."
+      " (the manuscript's home goes by who created the package)"
     ))
   }
   home
