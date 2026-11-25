@@ -24,6 +24,9 @@ runs the producer-driver generators gated by \code{features}. A spec with no R
 package -- \code{source$case = "no-r"}, or an \code{extension} spec whose
 \code{source$referencedRepo} names an existing repository that is the whole
 dissertation -- generates nothing and returns the result list (which
-carries \code{referenced_repo}).
+carries \code{referenced_repo}). The package-site step runs only when
+\code{source$quartoHome$repo} is \code{package}, at \code{quartoHome$path} inside the
+package; with \code{repo: app} the manuscript lives in the app repo and nothing
+is written into the author's package.
 }
 \keyword{internal}

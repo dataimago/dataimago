@@ -1,5 +1,26 @@
 # dataimago 0.0-5.0
 
+## `source.quartoHome` replaces `quartoRoot` (2026-11-25)
+
+* `ai(spec_path)` reads the manuscript's home from the new required spec field
+  `source.quartoHome: { repo, path }` and no longer joins paths. The home goes by
+  who created the package (the quarto-two-places amendment of 2026-11-25):
+  `no-r` and `extension` with an R package → `app` (default path `thesis`);
+  `extension` with `referencedRepo` → `referenced` (path optional); `retrofit` and
+  `greenfield` → `package` (default path `ui/www`). `validate_spec()` checks this
+  rule and that `path` is relative with no `..` segment.
+* The package-site step builds a site only when the home is `package`, at its
+  `path` inside the package. With `app`, it writes nothing into the author's
+  package.
+* `source.rPackage.quartoRoot` and `vertical.rpkg.integration.quartoRoot` are
+  removed. A spec that still has either fails with "quartoRoot was replaced by
+  source.quartoHome on 2026-11-25; regenerate the spec". A spec without
+  `quartoHome` fails and names it. Specs generated before this change are
+  deprecated; there is no compatibility shim.
+* `inst/schemas/dataimago-spec.v1alpha1.schema.json` mirrors the schema from
+  `@dataimago/spec` (dataimago-ai#365). The apiVersion stays
+  `dataimago.ai/v1alpha1`.
+
 ## KNOWLEDGE template: `superseded-by` key (2026-11-03)
 
 * The framework `KNOWLEDGE.md` template that `generate_knowledge_md()` renders

@@ -143,6 +143,7 @@ test_that("source$case = 'no-r' is a no-op for the producer-driver family", {
   spec <- make_spec()
   spec$source$case <- "no-r"
   spec$source$rPackage <- NULL
+  spec$source$quartoHome <- list(repo = "app")
   tmp <- withr::local_tempdir()
   spec_path <- fs::path(tmp, "dataimago-spec.yaml")
   yaml::write_yaml(spec, spec_path)
@@ -161,6 +162,7 @@ test_that("validate_spec accepts an extension spec that references a repo instea
   spec$source$case <- "extension"
   spec$source$rPackage <- NULL
   spec$source$referencedRepo <- list(url = "https://github.com/tester/my-dissertation")
+  spec$source$quartoHome <- list(repo = "referenced")
   out <- validate_spec(spec)
   expect_equal(out$source$referencedRepo$url, "https://github.com/tester/my-dissertation")
 })
@@ -204,6 +206,7 @@ test_that("ai(spec_path) generates nothing for a referenced repo and records the
   spec$source$case <- "extension"
   spec$source$rPackage <- NULL
   spec$source$referencedRepo <- list(url = "https://github.com/tester/my-dissertation")
+  spec$source$quartoHome <- list(repo = "referenced")
   tmp <- withr::local_tempdir()
   spec_path <- fs::path(tmp, "dataimago-spec.yaml")
   yaml::write_yaml(spec, spec_path)
@@ -222,6 +225,7 @@ test_that("validate_spec_schema accepts the referenced-repo shape the hub writes
   spec$source$case <- "extension"
   spec$source$rPackage <- NULL # written as an explicit null, as the hub does
   spec$source$referencedRepo <- list(url = "https://github.com/tester/my-dissertation")
+  spec$source$quartoHome <- list(repo = "referenced")
   tmp <- withr::local_tempdir()
   spec_path <- fs::path(tmp, "dataimago-spec.yaml")
   yaml::write_yaml(spec, spec_path)
@@ -494,31 +498,184 @@ test_that("quartoBuild = FALSE does not call create_package_site", {
   expect_false(called)
 })
 
-test_that("conflicting quartoRoot aborts", {
-  spec <- make_spec()
-  spec$source$rPackage$quartoRoot <- "ui/www"
-  spec$vertical$rpkg$integration <- list(quartoRoot = "docs/site")
-  expect_error(validate_spec(spec), "ui/www.*docs/site|docs/site.*ui/www")
-  spec$vertical$rpkg$integration$quartoRoot <- "ui/www"
-  expect_no_error(validate_spec(spec))
+# ---- source.quartoHome (quarto-two-places amendment, 2026-11-25) ----
+# One test per row of the table: the manuscript's home goes by who created the
+# package. make_case_spec() lives in helper-fixtures.R.
+
+test_that("quartoHome row: no-r -> app, default path thesis", {
+  out <- validate_spec(make_case_spec("no-r"))
+  expect_equal(out$source$quartoHome, list(repo = "app", path = "thesis"))
+  spec <- make_case_spec("no-r")
+  spec$source$quartoHome <- list(repo = "package")
+  expect_error(
+    validate_spec(spec),
+    'source.quartoHome.repo must be "app" when source.case is "no-r"',
+    fixed = TRUE
+  )
 })
 
-test_that("quartoRoot falls back to integration then ui/www", {
+test_that("quartoHome row: extension with rPackage -> app; ai() writes nothing into the package", {
+  out <- validate_spec(make_case_spec("extension-package"))
+  expect_equal(out$source$quartoHome, list(repo = "app", path = "thesis"))
+  spec <- make_case_spec("extension-package")
+  spec$source$quartoHome <- list(repo = "package")
+  expect_error(
+    validate_spec(spec),
+    'must be "app" when source.case is "extension" and source.referencedRepo is null',
+    fixed = TRUE
+  )
+
   tmp <- withr::local_tempdir()
   make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
-  spec <- make_spec()
-  spec$source$rPackage$quartoRoot <- NULL
+  spec <- make_case_spec("extension-package")
   spec$features$quartoBuild <- TRUE
-  spec$vertical$rpkg$integration <- list(quartoRoot = "docs/site")
+  spec$features$aiContext <- FALSE
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+  called <- FALSE
+  testthat::local_mocked_bindings(create_package_site = function(...) called <<- TRUE)
+  res <- suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
+  expect_false(called)
+  expect_false("create_package_site" %in% res$generators_run)
+  expect_false(fs::dir_exists(fs::path(tmp, "packages", "r-packages", "fixtpkg", "ui")))
+})
+
+test_that("quartoHome row: extension with referencedRepo -> referenced, path optional", {
+  out <- validate_spec(make_case_spec("extension-referenced"))
+  expect_equal(out$source$quartoHome, list(repo = "referenced"))
+  expect_null(dataimago:::spec_quarto_home(out)$path)
+  spec <- make_case_spec("extension-referenced")
+  spec$source$quartoHome <- list(repo = "referenced", path = "manuscript")
+  expect_equal(validate_spec(spec)$source$quartoHome$path, "manuscript")
+  spec$source$quartoHome <- list(repo = "app")
+  expect_error(
+    validate_spec(spec),
+    'must be "referenced" when source.case is "extension" and source.referencedRepo is set',
+    fixed = TRUE
+  )
+})
+
+test_that("quartoHome row: retrofit -> package; ai() builds the site at its path", {
+  out <- validate_spec(make_case_spec("retrofit"))
+  expect_equal(out$source$quartoHome, list(repo = "package", path = "ui/www"))
+  spec <- make_case_spec("retrofit")
+  spec$source$quartoHome <- list(repo = "app")
+  expect_error(
+    validate_spec(spec),
+    'must be "package" when source.case is "retrofit"',
+    fixed = TRUE
+  )
+
+  tmp <- withr::local_tempdir()
+  make_fixture_pkg(fs::path(tmp, "packages", "r-packages"), "fixtpkg")
+  spec <- make_case_spec("retrofit")
+  spec$source$quartoHome$path <- "docs/site"
+  spec$features$quartoBuild <- TRUE
   spec$features$aiContext <- FALSE
   spec_path <- fs::path(tmp, "dataimago-spec.yaml")
   yaml::write_yaml(spec, spec_path)
   got <- NULL
-  testthat::local_mocked_bindings(
-    create_package_site = function(...) got <<- list(...)$output_path
-  )
+  testthat::local_mocked_bindings(create_package_site = function(...) got <<- list(...))
   suppressWarnings(ai(spec_path = spec_path, verbose = FALSE))
-  expect_equal(got, "docs/site")
+  expect_equal(got$output_path, "docs/site")
+  expect_match(as.character(got$package_path), "packages/r-packages/fixtpkg$")
+})
+
+test_that("quartoHome row: greenfield -> package, default path ui/www", {
+  out <- validate_spec(make_case_spec("greenfield"))
+  expect_equal(out$source$quartoHome, list(repo = "package", path = "ui/www"))
+  spec <- make_case_spec("greenfield")
+  spec$source$quartoHome <- list(repo = "app")
+  expect_error(
+    validate_spec(spec),
+    'must be "package" when source.case is "greenfield"',
+    fixed = TRUE
+  )
+})
+
+test_that("either quartoRoot field fails with the same plain message", {
+  msg <- "quartoRoot was replaced by source.quartoHome on 2026-11-25; regenerate the spec"
+  spec <- make_spec()
+  spec$source$rPackage$quartoRoot <- "ui/www"
+  expect_error(validate_spec(spec), msg, fixed = TRUE)
+  spec <- make_spec()
+  spec$vertical$rpkg$integration <- list(quartoRoot = "ui/www")
+  expect_error(validate_spec(spec), msg, fixed = TRUE)
+
+  # ai() gives the same message before the JSON-Schema gate.
+  tmp <- withr::local_tempdir()
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+  expect_error(suppressWarnings(ai(spec_path = spec_path, verbose = FALSE)), msg, fixed = TRUE)
+})
+
+test_that("a spec without quartoHome fails, naming the replacement", {
+  spec <- make_spec()
+  spec$source$quartoHome <- NULL
+  expect_error(validate_spec(spec), "source.quartoHome is required", fixed = TRUE)
+  expect_error(validate_spec(spec), "replaced quartoRoot", fixed = TRUE)
+
+  tmp <- withr::local_tempdir()
+  spec_path <- fs::path(tmp, "dataimago-spec.yaml")
+  yaml::write_yaml(spec, spec_path)
+  expect_error(
+    suppressWarnings(ai(spec_path = spec_path, verbose = FALSE)),
+    "source.quartoHome is required",
+    fixed = TRUE
+  )
+})
+
+test_that("quartoHome path must be relative with no '..' segment", {
+  bad <- c("../x", "a/../b", "a/..", "..", "/abs", "\\abs", "a\\..\\b", "")
+  for (p in bad) {
+    spec <- make_spec()
+    spec$source$quartoHome$path <- p
+    expect_error(validate_spec(spec), "no \"..\" segment", fixed = TRUE, info = p)
+  }
+  for (p in c("ui/www", "a/..b", "..foo", "docs/site/")) {
+    spec <- make_spec()
+    spec$source$quartoHome$path <- p
+    expect_equal(validate_spec(spec)$source$quartoHome$path, p, info = p)
+  }
+})
+
+test_that("the bundled schema agrees on the path guard and the tombstones", {
+  skip_if_not_installed("jsonvalidate")
+  tmp <- withr::local_tempdir()
+  check <- function(spec) {
+    p <- fs::path(tmp, "s.yaml")
+    yaml::write_yaml(spec, p)
+    # Bypass the R pre-check so the schema itself is exercised.
+    testthat::with_mocked_bindings(
+      tryCatch(isTRUE(validate_spec_schema(p)), error = function(e) FALSE),
+      check_quarto_home_present = function(spec) invisible(TRUE)
+    )
+  }
+  expect_true(check(make_spec()))
+  for (row in c("no-r", "extension-package", "extension-referenced", "greenfield")) {
+    expect_true(check(make_case_spec(row)), info = row)
+  }
+  spec <- make_spec()
+  spec$source$quartoHome$path <- "a/../b"
+  expect_false(check(spec))
+  spec <- make_spec()
+  spec$source$rPackage$quartoRoot <- "ui/www"
+  expect_false(check(spec))
+  spec <- make_spec()
+  spec$vertical$rpkg$integration <- list(quartoRoot = "ui/www")
+  expect_false(check(spec))
+  spec <- make_spec()
+  spec$source$quartoHome <- NULL
+  expect_false(check(spec))
+})
+
+test_that("quartoHome rejects an unknown repo or field", {
+  spec <- make_spec()
+  spec$source$quartoHome <- list(repo = "elsewhere")
+  expect_error(validate_spec(spec), "quartoHome\\$repo")
+  spec <- make_spec()
+  spec$source$quartoHome$extra <- "x"
+  expect_error(validate_spec(spec), "unknown field")
 })
 
 test_that("curated site refused under bootstrap", {
@@ -622,14 +779,6 @@ test_that("spec_site_urls splits every URL like DESCRIPTION", {
   expect_equal(r$repo_url, "https://github.com/o/p")
   r <- e(list(url = "https://github.com/a/b", bugReports = "https://github.com/o/p/issues"))
   expect_equal(r$repo_url, "https://github.com/a/b")
-})
-
-test_that("quartoRoot is normalised before comparing", {
-  spec <- make_spec()
-  spec$source$rPackage$quartoRoot <- "ui/www/"
-  spec$vertical$rpkg$integration <- list(quartoRoot = "./ui/www")
-  expect_no_error(validate_spec(spec))
-  expect_equal(dataimago:::spec_quarto_root(spec), "ui/www")
 })
 
 test_that("header check is strict", {
